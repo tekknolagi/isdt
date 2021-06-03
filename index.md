@@ -514,3 +514,6 @@ proposal:
 * MIT's [missing semester](https://missing.csail.mit.edu/)
 * Berkeley's [EECS201](https://www.eecs.umich.edu/courses/eecs201/)
 * Berkeley's [CS9E](https://www2.eecs.berkeley.edu/Courses/CS9E/)
+
+<p style="position:absolute;bottom:0; font-size:x-small;">The source of this
+page is available <a href="https://github.com/tekknolagi/isdt">here</a></p>
