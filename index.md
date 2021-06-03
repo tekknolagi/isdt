@@ -57,15 +57,19 @@ undoubtedly encounter outside of the classroom.
 
 ## Administrivia
 
-Soft prerequisite: CS 15 or permission of instructor
+**Soft prerequisite:** CS 15 or permission of instructor
 
-Textbook: none
+**Textbook:** none
 
-Equipment: none
+**Equipment:** none
 
-Lectures are via video call (maybe one in-person visit). Course communication
-happens primarily on Piazza. Assignments are to be submitted via some TBD
-system.
+**Lectures:** via video call (maybe one in-person visit) at TBD. Course
+communication happens primarily on Piazza. Assignments are to be submitted via
+TBD.
+
+**Exams:** none
+
+**Teaching Assistants:** TBD, TBD
 
 ## Learning objectives
 
@@ -498,8 +502,6 @@ LO: Students should be able to...
 ## Grading
 
 Students will be evaluated 100% on homework assignments.
-
-Additional resources
 
 ## Contributors
 
