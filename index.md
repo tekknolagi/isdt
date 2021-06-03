@@ -1,6 +1,25 @@
 ---
 ---
 
+<style type="text/css">
+kbd {
+    background-color: #eee;
+    border-radius: 3px;
+    border: 1px solid #b4b4b4;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset;
+    color: #333;
+    display: inline-block;
+    font-size: .85em;
+    font-weight: 700;
+    line-height: 1;
+    padding: 2px 4px;
+    white-space: nowrap;
+}
+code {
+    color: green;
+}
+</style>
+
 # Home
 
 *Introduction to Software Development Tooling* is a course being taught by [Max
@@ -22,7 +41,7 @@ Even tools that students are exposed to, like the POSIX shell, are not
 presented as things to be learned and understood. Instead, our courses treat
 them as obstacles to be brushed aside as quickly as possible so students can
 get back to the "real work" of programming. We give students pre-written build
-scripts and rote "g++" commands to memorize and don't expect them to know or
+scripts and rote `g++` commands to memorize and don't expect them to know or
 care what's going on behind the scenes.
 
 To solve this problem, we propose a new course covering the fundamentals of
@@ -50,7 +69,8 @@ system.
 
 ## Learning objectives
 
-By the end of this course, we hope that students will be able to do the following:
+By the end of this course, we hope that students will be able to do the
+following:
 
 1. Track changes in their software projects, including developing multiple
    parallel changesets, using Git.
@@ -62,7 +82,7 @@ By the end of this course, we hope that students will be able to do the followin
 5. Write tests for their software using UTest.
 6. Set up continuous integration to run tests on new code changes using GitHub
    Actions.
-7. Search for and read documentation for new and unfamiliar tools using "man"
+7. Search for and read documentation for new and unfamiliar tools using `man`
    and the internet.
 8. Independently answer questions about unfamiliar systems by reading
    documentation, carrying out experiments, and exploring the underlying source
@@ -95,17 +115,17 @@ By the end of this course, we hope that students will be able to do the followin
 1. Live demo: show how to create a trivial Git repo, add commits, and move
    between them
 2. Git data structures (commits, trees, blobs; the commit graph)
-3. Operations on the index (add, rm, mv)
-4. Operations on the commit graph (commit, rebase, cherry-pick, merge, revert)
-5. Operations on the working tree (checkout, stash)
+3. Operations on the index (`add`, `rm`, `mv`)
+4. Operations on the commit graph (`commit`, `rebase`, `cherry-pick`, `merge`, `revert`)
+5. Operations on the working tree (`checkout`, `stash`)
 
 ### Week 2, Lecture 1: Collaboration with Git (VCS 3)
 
 1. What does it mean that Git is a DVCS? (No authoritative copy of any repo,
    all contain the same info. Use "torvalds/linux" as an example.)
-2. Live demo of "git remote": add SSH remote to homework server, push and pull
+2. Live demo of `git remote`: add SSH remote to homework server, push and pull
    from multiple computers / VMs
-3. Operations to sync local and remote repos (push, fetch, pull)
+3. Operations to sync local and remote repos (`push`, `fetch`, `pull`)
 4. Merge requests & patches (as a concept, not specifically GitHub PRs)
 5. Using GitHub to host repositories (demo that basic functionality is
    identical to Git, but highlight extra features, e.g. Pull Requests)
@@ -122,10 +142,10 @@ By the end of this course, we hope that students will be able to do the followin
 ### Week 3, Lecture 1: Git Internals, continued (VCS 5)
 
 1. What is a DAG? And why do Git graphs have to be acyclic?
-2. What is a branch? (Just an alias to a hash; cat .git/refs/heads/$BRANCH)
-3. Operations that "change" branches (rebase, reset) and what they actually do
-   (construct a new history and redirect the branch)
-4. Stale objects and "git gc"
+2. What is a branch? (Just an alias to a hash; `cat .git/refs/heads/$BRANCH`)
+3. Operations that "change" branches (`rebase`, `reset`) and what they actually
+   do (construct a new history and redirect the branch)
+4. Stale objects and `git gc`
 5. Bare vs full repositories
 
 ### Week 3, Lecture 2: Survey of alternative and related tools (VCS 6)
@@ -143,67 +163,71 @@ By the end of this course, we hope that students will be able to do the followin
 1. Survey the class to see what people have experienced in previous CS courses
    (What is a shell? What is a server? What is an operating system?)
 2. What am I looking at here?
-        utln01@hw06> ls
-        ...
-        utln01@hw06>
-3. Poke around the home directory using "cd", "ls", and "cat"; show hierarchy
-   with "tree" and file explorer GUI
-4. What is Linux & how is it organized? /bin? /etc? /proc? /sys? /comp? /dev?
+```
+utln01@hw06> ls
+...
+utln01@hw06>
+```
+3. Poke around the home directory using `cd`, `ls`, and `cat`; show hierarchy
+   with `tree` and file explorer GUI
+4. What is Linux & how is it organized? `/bin`? `/etc`? `/proc`? `/sys`?
+   `/comp`? `/dev`?
 5. Permissions by example: what can we read, write, execute, list, etc in the
    above directories?
 6. Fast facts for shell navigation (if you forget everything else)
    1. Read-eval-print-loop
    2. Commands take arguments and sometimes input from stdin
    3. You are navigating a hierarchical filesystem (files & folders)
-   4. "man tool" for help with "tool" (including "man man")
+   4. `man TOOL` for help with `TOOL` (including `man man`)
    7. Explain common instructions people have seen ("ssh into the homework
       server")
 
 ### Week 4, Lecture 2: Common tools (Linux 2)
 
 1. Talk about argument parsing and flags
-2. grep: simple text; line numbers and context; regular expressions; inverted
+2. `grep`: simple text; line numbers and context; regular expressions; inverted
    matching
-3. find: by name; -delete; xargs
-4. sed
-5. man: man prog; sections
-6. ln: why would you ever want a link; symlinks; hardlinks
-7. top/htop: what does this show you?
-8. tmux
-9. diff
-10. which
+3. `find`: by name; `-delete`; `xargs`
+4. `sed`
+5. `man`: `man prog`; sections
+6. `ln`: why would you ever want a link; symlinks; hardlinks
+7. `top`/`htop`: what does this show you?
+8. `tmux`
+9. `diff`
+10. `which`
 
 ### Week 5, Lecture 1: Interactive shell tips & tricks (Linux 3)
 
 1. Tab completion
 2. Command history search
-3. Executing multiple commands using ";" and "&&" and "||"
-4. Job control ("&", C-z, "bg", "fg", "jobs")
-5. C-r
+3. Executing multiple commands using `;` and `&&` and `||`
+4. Job control (`&`, <kbd>Ctrl</kbd>-<kbd>z</kbd>, `bg`, `fg`, `jobs`)
+5. <kbd>Ctrl</kbd>-<kbd>r</kbd>
 6. Dataflow and pipes and redirection (redirecting to files; redirecting files
-   to stdin; redirecting stderr to stdout, aka 2>&1)
-7. Environment variables. PATH
+   to stdin; redirecting stderr to stdout, aka `2>&1`)
+7. Environment variables. `PATH`
 8. Wildcards and globs
 
 ### Week 5, Lecture 2: The shell as a programming language (Linux 4)
 
 1. Shell variables (and how they differ from environment variables)
 2. Loops and control flow
-3. Error handling ("set -euo pipefail" is your friend)
+3. Error handling (`set -euo pipefail` is your friend)
 4. When NOT to use a shell script (non-textual operations, complex logic that
    can't be delegated to an existing tool, script grows to more than a
-   screenful of code[d])
-5. #! lines and how the kernel interprets them
+   screenful of code)
+5. `#!` lines and how the kernel interprets them
 
 ### Week 6, Lecture 1: Behind the scenes (Linux 5)
 
 1. How the shell interacts with the operating system (just like any program you
    write! Many shell features map very closely to kernel features, but those
    features aren't available only to shells)
-2. How a program gets run (fork and exec syscalls)
-3. How pipes and redirections work (file descriptors, pipe syscall)
-4. How Ctrl-C and Ctrl-Z work (signals)
-5. Linux vs POSIX man pages ("man 2" vs "man 3"), and how they differ
+2. How a program gets run (`fork` and `exec` syscalls)
+3. How pipes and redirections work (file descriptors, `pipe` syscall)
+4. How <kbd>Ctrl</kbd>-<kbd>c</kbd> and <kbd>Ctrl</kbd>-<kbd>z</kbd> work
+   (signals)
+5. Linux vs POSIX man pages (`man 2` vs `man 3`), and how they differ
    (implementation vs specification)
 
 ### Week 6, Lecture 2: Beyond Linux and POSIX (Linux 6)
@@ -221,14 +245,14 @@ By the end of this course, we hope that students will be able to do the followin
 
 ### Week 7, Lecture 1: Intro to build systems (Build 1)
 
-1. What problem do build systems solve? (Do you hate typing g++ repeatedly to
+1. What problem do build systems solve? (Do you hate typing `g++` repeatedly to
    compile your projects? Do you hate waiting for your entire project to get
    rebuilt every time you make a change? How is a COMP 11 project different
    from another project - what different needs might they have?)
 2. How does it solve it? (Specify end results and what their component parts
    are; let the tooling do the repetitive work)
-3. Build systems can be closely tied to specific languages (mention npm, Python
-   setuptools, Cargo, go build, Cabal, etc)
+3. Build systems can be closely tied to specific languages (mention `npm`,
+   Python setuptools, Cargo, `go build`, Cabal, etc)
 4. Why will we focus on Make in this class? (Doesn't assume a specific
    language, although definitely geared towards C; easily applicable to C/C++
    projects in Tufts CS classes; widely used in the real world)
@@ -240,7 +264,7 @@ By the end of this course, we hope that students will be able to do the followin
 1. Targets and rules
 2. Dependency relations
 3. The dependency graph (a DAG, just like Git uses!)
-4. What happens when you type "make"
+4. What happens when you type `make`
 5. Why is a Makefile better than a shell script? (Better performance and
    correctness)
 
@@ -249,8 +273,8 @@ By the end of this course, we hope that students will be able to do the followin
 1. Variables
 2. Special variables and implicit rules (i.e. convenience features for C
    projects)
-3. Pattern rules, .PHONY, @
-4. Macros and parse-time vs runtime evaluation (why you should avoid $(shell)
+3. Pattern rules, `.PHONY`, `@`
+4. Macros and parse-time vs runtime evaluation (why you should avoid `$(shell)`
    unless you know what you're doing)
 5. Imperative logic using macros and shell control flow; why it should be
    avoided if possible
@@ -268,20 +292,20 @@ By the end of this course, we hope that students will be able to do the followin
 
 1. Compilation vs linking vs loading (What is a .o file? A .so file? An
    executable?)
-2. Why a single "gcc" invocation with multiple C files doesn't scale
+2. Why a single `gcc` invocation with multiple C files doesn't scale
 3. Separating compilation and linking into separate steps
-4. Depending on system libraries (-l/-L linker flags, -I cflag,
-   LD_LIBRARY_PATH)
+4. Depending on system libraries (`-l`/`-L` linker flags, `-I` cflag,
+   `LD_LIBRARY_PATH`)
 
 ### Week 9, Lecture 2: Other build systems and meta-tools (Build 6)
 
-1. Why rebuild files if only their mtime changed? ccache
+1. Why rebuild files if only their mtime changed? `ccache`
 2. What happens if you have enormous amounts of software that take too long to
-   compile on one computer? distcc/icecc, bazel, buck
+   compile on one computer? `distcc`/`icecc`, `bazel`, `buck`
 3. What about other parts of the operating system that are not the files being
    built? Hermetic and reproducible builds, etc
 4. What about building other things than C programs? Distributed rendering;
-   package management for other languages like cargo, npm, maven
+   package management for other languages like `cargo`, `npm`, `maven`
 5. What if I hate writing all these rules by hand? (CMake, SCons, etc)
 6. How to choose a build system
 7. If your code belongs to a project or company with established tooling, use
@@ -303,7 +327,7 @@ By the end of this course, we hope that students will be able to do the followin
    it." - Knuth
 5. Mention throughout: surprising snippets about things people generally assume
    to be true or reliable: math (integer) - mention Gangnam Style view counter
-   "overflow"; math (floating point); writing to disk; 
+   "overflow"; math (floating point); writing to disk
 6. Mention: patriot missile floating point
 
 ### Week 10, Lecture 2: Philosophy of software testing (Testing 2)
@@ -320,6 +344,7 @@ By the end of this course, we hope that students will be able to do the followin
    explicitly (using a library, RPC). Time.
 4. Mention: Logan mentioning that recompiling for different computers will
    change his floating point math. Error propagation / AVX / ...
+5. Mention: Google's new [CPU failures paper](https://sigops.org/s/conferences/hotos/2021/papers/hotos21-s01-hochschild.pdf)
 
 ### Week 11, Lecture 1: Writing unit tests (Testing 3)
 
@@ -351,7 +376,7 @@ By the end of this course, we hope that students will be able to do the followin
 ### Week 12, Lecture 1: Continuous integration (Testing 5)
 
 1. Tests should be run on trunk and change requests.
-2. Introduction to GitHub Actions[e] and writing manifests. (Survey: SourceHut
+2. Introduction to GitHub Actions and writing manifests. (Survey: SourceHut
    builds?)
 3. How can you test CI itself? Continuously monitor? Who watches the watcher?
 
@@ -402,8 +427,8 @@ history.
 LO (reading): Students should be able to...
 
 1. Examine the history and current branches of an existing Git repository using
-   subcommands such as "branch" and "log"
-2. Figure out who authored some code and in what context using "blame"
+   subcommands such as `branch` and `log`
+2. Figure out who authored some code and in what context using `blame`
 
 
 LO (writing): Students should be able to...
@@ -426,16 +451,16 @@ script to do something new?
 
 LO: Students should be able to...
 
-1. Navigate a hierarchical filesystem using "cd" and "ls" and "pwd"
-2. Explore unfamiliar directory structures using "grep", "find", "tree", "du"
-3. String together text processing commands such as "grep", "wc", "sed", "cut"
+1. Navigate a hierarchical filesystem using `cd` and `ls` and `pwd`
+2. Explore unfamiliar directory structures using `grep`, `find`, `tree`, `du`
+3. String together text processing commands such as `grep`, `wc`, `sed`, `cut`
    using pipes to solve a problem
 4. Articulate the differences between types of files (regular, directory, link,
    device node)
 5. Enumerate the system directories on a standard Linux installation that are
    likely to be involved when performing common operations (executing a
    program, loading libraries, loading config, compiling a program), including
-   $PATH resolution
+   `$PATH` resolution
 6. Set permissions on a file or directory given a list of who should be able to
    access it
 7. Feel at home on the Linux command line
@@ -450,8 +475,8 @@ LO: Students should be able to...
    runs and what other targets it invokes
 3. Use variables (in Makefiles, on the Make command line, and in the
    environment) to abstract behavior over different concrete parameters
-4. Produce a shared object and link against it (incl. LD_LIBRARY_PATH or
-   DT_RUNPATH)
+4. Produce a shared object and link against it (incl. `LD_LIBRARY_PATH` or
+   `DT_RUNPATH`)
 5. Download an open source project (like scdoc, masscan, or ripme) and examine
    how the build system is put together.
 
