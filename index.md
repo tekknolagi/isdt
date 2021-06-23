@@ -502,8 +502,8 @@ Students will be evaluated 100% on homework assignments.
 
 ## Contributors
 
-We consulted Ming Chow, Mike Shah, Chris Gregg, and Mark Sheldon while
-developing this course.
+We consulted Ming Chow, Mike Shah, Chris Gregg, Mark Sheldon, Tyler Lubeck, and
+Lexi Galantino while developing this course.
 
 These similar courses from other institutions inspired elements of this
 proposal:
