@@ -499,6 +499,52 @@ LO: Students should be able to...
 6. How does this project test itself?
 7. How does this project do CI, if at all?
 
+## Academic Integrity
+
+You are expected to adhere to [Tufts' Academic Integrity Policy][tufts-policy]
+in this course. Plagarism of code or answers to assignments is strictly
+probihited, as is sharing answers with or accepting answers from others.
+
+You are allowed to reference Linux man pages and any open source projects while
+completing assignments. You are also allowed to read any internet resource,
+with the exception of material outside this website that explicitly pertains to
+this course (e.g. assignment solutions accidentally shared by a former
+student).  However, no matter what resources you reference, you must not
+plagiarise or complete a substantial part of an assignment using someone else's
+work, even if you credit that work.
+
+You are, however, allowed to base your answers on information you find online.
+The purpose of this course is to learn, so if you find a useful resource that
+clarifies a misunderstanding or explains a tricky topic and in doing so gives
+you the knowledge you need to complete an assignment, you are welcome to read
+it (and share it with other students)! You may even copy short snippets of code
+from examples you find online, given that either 1) you cite your source, or 2)
+the snippet is something that couldn't reasonably be implemented any other way
+(e.g. a call to a Linux API function that we have asked you to use).
+
+As a rule of thumb, it's okay to look for resources to answer specific
+questions that come up while you are working on an assignment, but it's not
+okay to look for resources to avoid having to work on the assignment at all.
+
+In the former case, you may end up copying or retyping small snippets of code
+from the resources you find. If what you copy has no originality (e.g. if you
+look up the name of a specific function or command-line flag) and so serves
+only as an expression of thoughts you already had, no attribution is needed.
+However, if what you copy affected your thinking about how to go about solving
+the problem (e.g. by using a command in a way you hadn't considered before),
+you should cite your source. Either way, things like this are generally okay
+and won't affect your grade.
+
+What's not okay is copying a function, program, or command that solves a
+substantial portion of the problem we've given you, regardless of whether you
+attribute it. You are graded on what *you* bring to the course, and if the
+course staff believes that you did not bring your own originality and
+problem-solving skills to an assignment, you will receive a failing grade for
+that assignment. Additionally, if you don't attribute the unoriginal code, you
+will be guilty of plagiarism and the extra consequences that entails.
+
+[tufts-policy]: https://students.tufts.edu/student-affairs/student-code-conduct/academic-integrity-resources
+
 ## Grading
 
 Students will be evaluated 100% on homework assignments.
