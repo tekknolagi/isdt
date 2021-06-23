@@ -402,8 +402,6 @@ utln01@hw06>
 
 ## Assignments
 
-> Taken from Jeff Foster's COMP 121 syllabus.
-
 Projects must be submitted electronically following the instructions given in
 class. Projects may not be submitted by any other means (e.g., please do not
 email your projects to us). It is your responsibility to test your program and
@@ -419,11 +417,6 @@ late with no penalty. Contact a TA if you need to check the status of your late
 tokens.
 
 ### Git
-
-We will have two assignments: one investigative ("reading") and one other one
-("writing"). These assignments will be problem sets on repositories we provide
-or of their own making. We will evaluate the work by examining the commit
-history.
 
 LO (reading): Students should be able to...
 
@@ -443,12 +436,6 @@ LO (writing): Students should be able to...
 7. "Write something you hope to get out of this class in a commit message"
 
 ### Linux
-
-Writing: CTF-like assignment like Bandit
-
-Reading: Examine an existing project; Read a man page; Read a shell script and
-figure out what it's doing? Track down a bug in a shell script? Extend a shell
-script to do something new?
 
 LO: Students should be able to...
 
@@ -504,6 +491,9 @@ Students will be evaluated 100% on homework assignments.
 
 We consulted Ming Chow, Mike Shah, Chris Gregg, Mark Sheldon, Tyler Lubeck, and
 Lexi Galantino while developing this course.
+
+We borrowed the "Assignments" submission guidelines from Jeff Foster's CS 121
+syllabus.
 
 These similar courses from other institutions inspired elements of this
 proposal:
