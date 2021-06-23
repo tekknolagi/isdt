@@ -18,7 +18,24 @@ kbd {
 code {
     color: green;
 }
+.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 !important;
+}
+.navbar li {
+    display: inline;
+    padding-right: 16px;
+    font-size: 20px;
+}
 </style>
+
+<ul class="navbar">
+  <li><a href="#administrivia">Administrivia</a></li>
+  <li><a href="#schedule">Schedule</a></li>
+  <li><a href="#assignments">Assignments</a></li>
+  <li><a href="#grading">Grading</a></li>
+</ul>
 
 # Home
 
