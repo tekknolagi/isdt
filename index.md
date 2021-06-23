@@ -33,8 +33,8 @@ to program: it teaches them to break down problems and solve them in terms of
 primitive operations that a computer can perform, and it teaches them to
 express those solutions using various programming languages. However, there is
 a lot more to software engineering than just programming. The existing
-curriculum does not spend much time focusing on the ubiquitous tooling -- like
-source control, build systems, and testing infrastructure -- that makes
+curriculum does not spend much time focusing on the ubiquitous tooling--like
+source control, build systems, and testing infrastructure--that makes
 efficient development and maintenance of large software systems possible.
 
 Even tools that students are exposed to, like the POSIX shell, are not part of
