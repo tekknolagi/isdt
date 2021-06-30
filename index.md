@@ -178,6 +178,15 @@ will be guilty of plagiarism and the extra consequences that entails.
 
 Students will be evaluated 100% on homework assignments.
 
+Often on homework assignments we will ask you questions as part of an
+"investigative" assignment. The purpose of these questions is to guide you
+through a learning process and teach you how to find things out for yourself.
+You should explain "why" or "how" in your answers to demonstrate your process.
+This is similar to "showing your work" for math. For example, if a question
+asks, "how many files are in the directory?", we would expect you to say "42. I
+found the answer with `ls -l | wc -l`" or similar. Just responding "42" would
+not be enough.
+
 ### Submitting assignments
 
 Projects must be submitted electronically following the instructions given in
