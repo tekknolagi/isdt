@@ -497,8 +497,8 @@ LO: Students should be able to...
 4. Structure code such that their interfaces are testable and don't have hidden
    dependencies
 5. Evaluate an existing project's testing infrastructure:
-6. How does this project test itself?
-7. How does this project do CI, if at all?
+   1. How does this project test itself?
+   2. How does this project do CI, if at all?
 
 ## Academic Integrity
 
