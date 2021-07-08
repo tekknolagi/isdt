@@ -503,8 +503,8 @@ LO: Students should be able to...
 ## Academic Integrity
 
 You are expected to adhere to [Tufts' Academic Integrity Policy][tufts-policy]
-in this course. Plagarism of code or answers to assignments is strictly
-probihited, as is sharing answers with or accepting answers from others.
+in this course. Plagiarism of code or answers to assignments is strictly
+prohibited, as is sharing answers with or accepting answers from others.
 
 You are allowed to reference Linux man pages and any open source projects while
 completing assignments. You are also allowed to read any internet resource,
