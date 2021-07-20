@@ -296,6 +296,8 @@ utln01@hw06>
    unless you know what you're doing)
 5. Imperative logic using macros and shell control flow; why it should be
    avoided if possible
+6. Limitations of Make (max one output per rule, not sandboxed, always uses
+   mtime).
 
 ### Week 8, Lecture 2: Large projects using Make (Build 4)
 
