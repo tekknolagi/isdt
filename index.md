@@ -405,7 +405,7 @@ utln01@hw06>
 2. Dynamic invariant checks inside software ("asserts"), which are especially
    helpful when they come with messages and context
 3. Unit vs integration vs property vs regression vs proofs vs types & static
-   analysis
+   analysis vs fuzzing
 4. What kinds of errors happen in a language like Ruby, Python, or JavaScript
    that do not happen in C? Or OCaml? Haskell? Idris? Agda?
 5. What happens if you turn the problem on its head: the program is not
