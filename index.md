@@ -421,86 +421,7 @@ utln01@hw06>
 
 ## Assignments
 
-Projects must be submitted electronically following the instructions given in
-class. Projects may not be submitted by any other means (e.g., please do not
-email your projects to us). It is your responsibility to test your program and
-verify that it works properly before submitting. All projects are due at
-11:59pm on the day indicated on the project assignment, according to the
-submission server's internal clock. Your project score will be for the last
-version of the project you submit.
-
-You have two late tokens that you can use during the semester. Using one late
-token allows you to submit one project up to 24 hours late with no penalty. You
-may also use your two late tokens together to submit one project up to 48 hours
-late with no penalty. Contact a TA if you need to check the status of your late
-tokens.
-
-### Git
-
-LO (reading): Students should be able to...
-
-1. Examine the history and current branches of an existing Git repository using
-   subcommands such as `branch` and `log`
-2. Figure out who authored some code and in what context using `blame`
-
-
-LO (writing): Students should be able to...
-
-1. Create a new repository
-2. Clone an existing repository
-3. Create a commit in a repository
-4. Create a branch
-5. Merge one branch into another
-6. Amend/rebase a commit
-7. "Write something you hope to get out of this class in a commit message"
-
-### Linux
-
-LO: Students should be able to...
-
-1. Navigate a hierarchical filesystem using `cd` and `ls` and `pwd`
-2. Explore unfamiliar directory structures using `grep`, `find`, `tree`, `du`
-3. String together text processing commands such as `grep`, `wc`, `sed`, `cut`
-   using pipes to solve a problem
-4. Articulate the differences between types of files (regular, directory, link,
-   device node)
-5. Enumerate the system directories on a standard Linux installation that are
-   likely to be involved when performing common operations (executing a
-   program, loading libraries, loading config, compiling a program), including
-   `$PATH` resolution
-6. Set permissions on a file or directory given a list of who should be able to
-   access it
-7. Feel at home on the Linux command line
-
-### Make
-
-LO: Students should be able to...
-
-1. Write an idiomatic Makefile to express basic C targets and explicitly list
-   their interdependencies
-2. Given an existing Makefile and target, determine what commands that target
-   runs and what other targets it invokes
-3. Use variables (in Makefiles, on the Make command line, and in the
-   environment) to abstract behavior over different concrete parameters
-4. Produce a shared object and link against it (incl. `LD_LIBRARY_PATH` or
-   `DT_RUNPATH`)
-5. Download an open source project (like scdoc, masscan, or ripme) and examine
-   how the build system is put together.
-
-### Testing
-
-LO: Students should be able to...
-
-1. Read a program and determine some effective coverage-based unit tests
-2. Configure a basic GitHub Actions pipeline to build a project and run tests
-   for each new commit
-3. Write a regression test that fails on a specific piece of buggy code they're
-   given, such that it will ensure that same bug does not get introduced again
-4. Structure code such that their interfaces are testable and don't have hidden
-   dependencies
-5. Evaluate an existing project's testing infrastructure:
-   1. How does this project test itself?
-   2. How does this project do CI, if at all?
+Assignments will be posted here as they are released. Check back soon...
 
 ## Academic Integrity
 
@@ -551,6 +472,24 @@ will be guilty of plagiarism and the extra consequences that entails.
 ## Grading
 
 Students will be evaluated 100% on homework assignments.
+
+### Submitting assignments
+
+Projects must be submitted electronically following the instructions given in
+class. Projects may not be submitted by any other means (e.g., please do not
+email your projects to us). It is your responsibility to test your program and
+verify that it works properly before submitting. All projects are due at
+11:59pm on the day indicated on the project assignment, according to the
+submission server's internal clock. Your project score will be for the last
+version of the project you submit.
+
+### Late policy
+
+You have two late tokens that you can use during the semester. Using one late
+token allows you to submit one project up to 24 hours late with no penalty. You
+may also use your two late tokens together to submit one project up to 48 hours
+late with no penalty. Contact a TA if you need to check the status of your late
+tokens.
 
 ## Contributors
 
