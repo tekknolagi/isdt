@@ -39,9 +39,13 @@ code {
 
 # Home
 
-*Introduction to Software Development Tooling* is a course being taught by [Max
-Bernstein](https://bernsteinbear.com) and [Tom Hebb](https://tchebb.me/) in the
-Fall 2021 semester at Tufts University.
+*CS 50: Introduction to Software Development Tooling* is a course being taught
+by [Max Bernstein](https://bernsteinbear.com) and [Tom
+Hebb](https://tchebb.me/) in the Fall 2021 semester at Tufts University.
+
+*Note:* The course staff reserves the right to change this page at any time
+without notice. View the [change
+history](https://github.com/tekknolagi/isdt/commits/main).
 
 ## Overview
 
