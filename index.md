@@ -28,6 +28,12 @@ code {
     padding-right: 16px;
     font-size: 20px;
 }
+div#elephant img {
+  width: 100px;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+}
 </style>
 
 <ul class="navbar">
@@ -496,6 +502,8 @@ proposal:
 * MIT's [missing semester](https://missing.csail.mit.edu/)
 * Berkeley's [EECS201](https://www.eecs.umich.edu/courses/eecs201/)
 * Berkeley's [CS9E](https://www2.eecs.berkeley.edu/Courses/CS9E/)
+
+<div id="elephant"><img src="jumbo.png" alt="Jumbo on a laptop" /></div>
 
 <p style="position:relative;bottom:0; font-size:x-small;">The source of this
 page is available <a href="https://github.com/tekknolagi/isdt">here</a>.</p>
