@@ -49,29 +49,16 @@ history](https://github.com/tekknolagi/isdt/commits/main).
 
 ## Overview
 
-Tufts' core computer science curriculum mainly focuses on teaching students how
-to program: it teaches them to break down problems and solve them in terms of
-primitive operations that a computer can perform, and it teaches them to
-express those solutions using various programming languages. However, there is
-a lot more to software engineering than just programming. The existing
-curriculum does not spend much time focusing on the ubiquitous tooling--like
-source control, build systems, and testing infrastructure--that makes
-efficient development and maintenance of large software systems possible.
-
-Even tools that students are exposed to, like the POSIX shell, are not part of
-the explicit learning objectives for the existing courses. Instead, our
-courses treat them as obstacles in the "real work" of programming.
-
-To solve this problem, we propose a new course covering the fundamentals of
-four different categories of tooling, taught via concrete examples that
-students are likely to encounter. We will cover source control, focusing on
-Git; OS utilities, focusing on Linux and the POSIX shell; build systems,
-focusing on Make; and testing and continuous integration, focusing on UTest and
-GitHub Actions.
-
-Knowing these tools will help students both to write high quality software and
-to get up to speed quickly in the large, unfamiliar codebases that they will
-undoubtedly encounter outside of the classroom.
+Effective software development requires more than just coding skill: in
+industry and academia alike, developers use tools to keep their code
+maintainable and reliable. In this course, you will learn four fundamental
+categories of tooling: version control, the Linux shell, build systems, and
+testing. We’ll dive deep into one industry-standard tool from each category via
+hands-on projects and exploration of existing codebases, then survey other
+tools in the same category and discuss why you might choose one over another.
+By the end of the course, you will have a robust toolset both to manage
+complexity in your future projects and to effectively ramp up on software
+projects you encounter in the real world.
 
 ## Administrivia
 
