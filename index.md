@@ -491,7 +491,7 @@ We borrowed the "Assignments" submission guidelines from Jeff Foster's CS 121
 syllabus.
 
 These similar courses from other institutions inspired elements of this
-proposal:
+course:
 
 * MIT's [missing semester](https://missing.csail.mit.edu/)
 * Berkeley's [EECS201](https://www.eecs.umich.edu/courses/eecs201/)
