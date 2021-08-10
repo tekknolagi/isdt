@@ -105,7 +105,9 @@ following:
 
 ## Schedule
 
-### Week 1, Lecture 1a: Course administrivia
+### Course administrivia
+
+*September 8, 2021*
 
 1. Who are we?
 2. What will you get out of this course?
@@ -114,66 +116,9 @@ following:
 5. This course is not about writing lines of code. It is about the ecosystem
    and practices that surround the code you write.
 
-### Week 1, Lecture 1b: Intro to version control (VCS 1)
+### Intro to Linux and the shell (Linux 1)
 
-1. What problem does version control solve? (Did you ever break your COMP 11
-   code somehow without knowing what you changed? How is a COMP 11 project
-   different from another project - what different needs might they have?)
-2. How does it solve it? (Globally applicable concepts like commits/changesets,
-   a log/history, and checking out historical tree states)
-3. Why will we focus on Git in this class? (Widely used in industry and
-   open-source)
-4. Git vs GitHub (i.e. local vs remote repositories)
-
-### Week 1, Lecture 2: Intro to Git & structure of a repo (VCS 2)
-
-1. Live demo: show how to create a trivial Git repo, add commits, and move
-   between them
-2. Git data structures (commits, trees, blobs; the commit graph)
-3. Operations on the index (`add`, `rm`, `mv`)
-4. Operations on the commit graph (`commit`, `rebase`, `cherry-pick`, `merge`, `revert`)
-5. Operations on the working tree (`checkout`, `stash`)
-
-### Week 2, Lecture 1: Collaboration with Git (VCS 3)
-
-1. What does it mean that Git is a DVCS? (No authoritative copy of any repo,
-   all contain the same info. Use "torvalds/linux" as an example.)
-2. Live demo of `git remote`: add SSH remote to homework server, push and pull
-   from multiple computers / VMs
-3. Operations to sync local and remote repos (`push`, `fetch`, `pull`)
-4. Merge requests & patches (as a concept, not specifically GitHub PRs)
-5. Using GitHub to host repositories (demo that basic functionality is
-   identical to Git, but highlight extra features, e.g. Pull Requests)
-
-### Week 2, Lecture 2: Git Internals (VCS 4)
-
-1. What data is stored in each type of object (blob, tree, commit)?
-2. UI representation of commits (as diffs from parent) vs internal
-   representation (as complete trees), and performance implications
-3. What is hashing? Why can't an object change and keep the same hash?
-4. Implication: a commit hash depends on not only that commit's contents and
-   metadata, but those of every commit before it in the entire lineage.
-
-### Week 3, Lecture 1: Git Internals, continued (VCS 5)
-
-1. What is a DAG? And why do Git graphs have to be acyclic?
-2. What is a branch? (Just an alias to a hash; `cat .git/refs/heads/$BRANCH`)
-3. Operations that "change" branches (`rebase`, `reset`) and what they actually
-   do (construct a new history and redirect the branch)
-4. Stale objects and `git gc`
-5. Bare vs full repositories
-
-### Week 3, Lecture 2: Survey of alternative and related tools (VCS 6)
-
-1. "Batteries included" hosting services: GitHub, GitLab, Bitbucket, sourcehut,
-   SourceForge
-2. Other version control systems (Subversion, Mercurial, rcs, darcs, fossil,
-   pijul, perforce, ...) and what they do differently
-3. Why does Git have a staging area and other systems do not? Other interesting
-   comparisons
-4. Other tools: porcelains and UIs (gitk, gitkraken, ...), Gerrit, email patches
-
-### Week 4, Lecture 1: Intro to Linux and the shell (Linux 1)
+*September 8, 2021*
 
 1. Survey the class to see what people have experienced in previous CS courses
    (What is a shell? What is a server? What is an operating system?)
@@ -197,7 +142,9 @@ utln01@hw06>
    7. Explain common instructions people have seen ("ssh into the homework
       server")
 
-### Week 4, Lecture 2: Common tools (Linux 2)
+### Common tools (Linux 2)
+
+*September 14, 2021*
 
 1. Talk about argument parsing and flags
 2. `grep`: simple text; line numbers and context; regular expressions; inverted
@@ -211,7 +158,9 @@ utln01@hw06>
 9. `diff`
 10. `which`
 
-### Week 5, Lecture 1: Interactive shell tips & tricks (Linux 3)
+### Interactive shell tips & tricks (Linux 3)
+
+*September 16, 2021*
 
 1. Tab completion
 2. Command history search
@@ -223,7 +172,9 @@ utln01@hw06>
 7. Environment variables. `PATH`
 8. Wildcards and globs
 
-### Week 5, Lecture 2: The shell as a programming language (Linux 4)
+### The shell as a programming language (Linux 4)
+
+*September 21, 2021*
 
 1. Shell variables (and how they differ from environment variables)
 2. Loops and control flow
@@ -233,7 +184,9 @@ utln01@hw06>
    screenful of code)
 5. `#!` lines and how the kernel interprets them
 
-### Week 6, Lecture 1: Behind the scenes (Linux 5)
+### Behind the scenes (Linux 5)
+
+*September 23, 2021*
 
 1. How the shell interacts with the operating system (just like any program you
    write! Many shell features map very closely to kernel features, but those
@@ -245,7 +198,9 @@ utln01@hw06>
 5. Linux vs POSIX man pages (`man 2` vs `man 3`), and how they differ
    (implementation vs specification)
 
-### Week 6, Lecture 2: Beyond Linux and POSIX (Linux 6)
+### Beyond Linux and POSIX (Linux 6)
+
+*September 28, 2021*
 
 1. Alternative shells on Linux (Bash, zsh, fish, oilshell, even PowerShell!)
 2. Why can these shells run on Linux, BSD, and macOS but not on Windows?
@@ -258,7 +213,80 @@ utln01@hw06>
 5. Running POSIX environments on Windows with Cygwin and WSL. Running Windows
    apps on Linux and macOS with WINE. (Lesson: APIs are APIs)
 
-### Week 7, Lecture 1: Intro to build systems (Build 1)
+### Intro to version control (VCS 1)
+
+*September 30, 2021*
+
+1. What problem does version control solve? (Did you ever break your COMP 11
+   code somehow without knowing what you changed? How is a COMP 11 project
+   different from another project - what different needs might they have?)
+2. How does it solve it? (Globally applicable concepts like commits/changesets,
+   a log/history, and checking out historical tree states)
+3. Why will we focus on Git in this class? (Widely used in industry and
+   open-source)
+4. Git vs GitHub (i.e. local vs remote repositories)
+
+### Intro to Git & structure of a repo (VCS 2)
+
+*October 5, 2021*
+
+1. Live demo: show how to create a trivial Git repo, add commits, and move
+   between them
+2. Git data structures (commits, trees, blobs; the commit graph)
+3. Operations on the index (`add`, `rm`, `mv`)
+4. Operations on the commit graph (`commit`, `rebase`, `cherry-pick`, `merge`, `revert`)
+5. Operations on the working tree (`checkout`, `stash`)
+
+### Collaboration with Git (VCS 3)
+
+*October 7, 2021*
+
+1. What does it mean that Git is a DVCS? (No authoritative copy of any repo,
+   all contain the same info. Use "torvalds/linux" as an example.)
+2. Live demo of `git remote`: add SSH remote to homework server, push and pull
+   from multiple computers / VMs
+3. Operations to sync local and remote repos (`push`, `fetch`, `pull`)
+4. Merge requests & patches (as a concept, not specifically GitHub PRs)
+5. Using GitHub to host repositories (demo that basic functionality is
+   identical to Git, but highlight extra features, e.g. Pull Requests)
+
+### Git Internals (VCS 4)
+
+*October 12, 2021*
+
+1. What data is stored in each type of object (blob, tree, commit)?
+2. UI representation of commits (as diffs from parent) vs internal
+   representation (as complete trees), and performance implications
+3. What is hashing? Why can't an object change and keep the same hash?
+4. Implication: a commit hash depends on not only that commit's contents and
+   metadata, but those of every commit before it in the entire lineage.
+
+### Git Internals, continued (VCS 5)
+
+*October 14, 2021*
+
+1. What is a DAG? And why do Git graphs have to be acyclic?
+2. What is a branch? (Just an alias to a hash; `cat .git/refs/heads/$BRANCH`)
+3. Operations that "change" branches (`rebase`, `reset`) and what they actually
+   do (construct a new history and redirect the branch)
+4. Stale objects and `git gc`
+5. Bare vs full repositories
+
+### Survey of alternative and related tools (VCS 6)
+
+*October 19, 2021*
+
+1. "Batteries included" hosting services: GitHub, GitLab, Bitbucket, sourcehut,
+   SourceForge
+2. Other version control systems (Subversion, Mercurial, rcs, darcs, fossil,
+   pijul, perforce, ...) and what they do differently
+3. Why does Git have a staging area and other systems do not? Other interesting
+   comparisons
+4. Other tools: porcelains and UIs (gitk, gitkraken, ...), Gerrit, email patches
+
+### Intro to build systems (Build 1)
+
+*October 21, 2021*
 
 1. What problem do build systems solve? (Do you hate typing `g++` repeatedly to
    compile your projects? Do you hate waiting for your entire project to get
@@ -274,7 +302,9 @@ utln01@hw06>
 5. Live demo: show how to write a trivial Makefile specifying a binary with .h,
    .cpp dependencies
 
-### Week 7, Lecture 2: Intro to Make (Build 2)
+### Intro to Make (Build 2)
+
+*October 26, 2021*
 
 1. Targets and rules
 2. Dependency relations
@@ -283,7 +313,9 @@ utln01@hw06>
 5. Why is a Makefile better than a shell script? (Better performance and
    correctness)
 
-### Week 8, Lecture 1: The Make language (Build 3)
+### The Make language (Build 3)
+
+*October 28, 2021*
 
 1. Variables
 2. Special variables and implicit rules (i.e. convenience features for C
@@ -296,7 +328,9 @@ utln01@hw06>
 6. Limitations of Make (max one output per rule, not sandboxed, always uses
    mtime).
 
-### Week 8, Lecture 2: Large projects using Make (Build 4)
+### Large projects using Make (Build 4)
+
+*November 2, 2021*
 
 1. Problem: how to split project into multiple Makefiles?
 2. Recursive make via submake invocations (read: Recursive Make Considered
@@ -305,7 +339,9 @@ utln01@hw06>
 4. Whole-project make via include directives
 5. Case study: Android
 
-### Week 9, Lecture 1: How does compilation and linking work? (Build 5)
+### How does compilation and linking work? (Build 5)
+
+*November 4, 2021*
 
 1. Compilation vs linking vs loading (What is a .o file? A .so file? An
    executable?)
@@ -314,7 +350,9 @@ utln01@hw06>
 4. Depending on system libraries (`-l`/`-L` linker flags, `-I` cflag,
    `LD_LIBRARY_PATH`)
 
-### Week 9, Lecture 2: Other build systems and meta-tools (Build 6)
+### Other build systems and meta-tools (Build 6)
+
+*November 9, 2021*
 
 1. Why rebuild files if only their mtime changed? `ccache`
 2. What happens if you have enormous amounts of software that take too long to
@@ -332,7 +370,11 @@ utln01@hw06>
 9. If your project is small and you want it to be buildable on any POSIX system
    under the sun, use plain (read: non-GNU) Make.
 
-### Week 10, Lecture 1: Intro to software correctness (Testing 1)
+*November 11, 2021* -- Veterans' Day; no class
+
+### Intro to software correctness (Testing 1)
+
+*November 16, 2021*
 
 1. What does it mean for software to be correct? (End on "no bugs")
 2. Why are bugs bad? (What is a spec? Is this a deviation from a spec?
@@ -347,7 +389,9 @@ utln01@hw06>
    "overflow"; math (floating point); writing to disk
 6. Mention: patriot missile floating point
 
-### Week 10, Lecture 2: Philosophy of software testing (Testing 2)
+### Philosophy of software testing (Testing 2)
+
+*November 18, 2021*
 
 1. Even simple software has edge cases. Complex software has many more edge
    cases.  Simple software has a few easily enumerable states. Complex software
@@ -363,7 +407,9 @@ utln01@hw06>
    change his floating point math. Error propagation / AVX / ...
 5. Mention: Google's new [CPU failures paper](https://sigops.org/s/conferences/hotos/2021/papers/hotos21-s01-hochschild.pdf)
 
-### Week 11, Lecture 1: Writing unit tests (Testing 3)
+### Writing unit tests (Testing 3)
+
+*November 23, 2021*
 
 1. Write tests for functions, both internal and API.
 2. Start with the specification: what should the function do? Test what is
@@ -381,7 +427,11 @@ utln01@hw06>
    request succeed, etc).
 9. It's not a test unless you watch it fail.
 
-### Week 11, Lecture 2: Testing interactions of complex systems (Testing 4)
+*November 25, 2021 -- Thanksgiving; no classes*
+
+### Testing interactions of complex systems (Testing 4)
+
+*November 30, 2021*
 
 1. What makes software difficult to test? (API surface is I/O heavy and not
    mockable; software is fundamentally nondeterministic; etc)
@@ -390,14 +440,18 @@ utln01@hw06>
 3. When you change your software, do you run the tests of everybody who uses
    your software?
 
-### Week 12, Lecture 1: Continuous integration (Testing 5)
+### Continuous integration (Testing 5)
+
+*December 2, 2021*
 
 1. Tests should be run on trunk and change requests.
 2. Introduction to GitHub Actions and writing manifests. (Survey: SourceHut
    builds?)
 3. How can you test CI itself? Continuously monitor? Who watches the watcher?
 
-### Week 12, Lecture 2: Other methods for ensuring software correctness (Testing 6)
+### Other methods for ensuring software correctness (Testing 6)
+
+*December 7, 2021*
 
 1. Tests only make guarantees about the exposed runtime behavior of programs.
    This leaves us wanting for more.
@@ -415,6 +469,16 @@ utln01@hw06>
    regressions?
 8. If your program runs at scale, can you collect logs of crashes and determine
    why they happened? Use that to fix bugs?
+
+### TBD
+
+*December 9, 2021*
+
+### TBD
+
+*December 14, 2021 -- classes end*
+
+Good luck on finals!
 
 ## Assignments
 
