@@ -108,19 +108,19 @@ following:
 | Week   | Tuesday | Thursday |
 | ----   | ------- | -------- |
 |  1     | *Sep 7*<br />*No class* | *Sep 9*<br />Course Administrivia &amp; Linux 1: Intro to Linux and the shell |
-|  2     | *Sep 14*<br />Linux 2: Common tools | *Sep 16*<br />Linux 3: Interactive shell tips &amp; tricks |
-|  3     | *Sep 21*<br />Linux 4: The shell as a programming language | *Sep 23*<br />Linux 5: Behind the scenes |
-|  4     | *Sep 28*<br />Linux 6: Linux and POSIX | *Sep 30*<br />VCS 1: Intro to version control |
-|  5     | *Oct 5*<br />VCS 2: Intro to Git and the structure of a repo | *Oct 7*<br />VCS 3: Collaboration with Git |
-|  6     | *Oct 12*<br />VCS 4: Git internals | *Oct 14*<br />VCS 5: Git internals, continued |
-|  7     | *Oct 19*<br />VCS 6: Survey of alternative and related tools | *Oct 21*<br />Build 1: Intro to build systems |
-|  8     | *Oct 26*<br />Build 2: Intro to Make | *Oct 28*<br />Build 3: The Make language |
-|  9     | *Nov 2*<br />Build 4: Large projects using Make | *Nov 4*<br />Build 5: Compilation and linking |
-| 10     | *Nov 9*<br />Build 6: Other build systems and meta-tools | *Nov 11*<br />*Veterans' Day; no class* |
-| 11     | *Nov 16*<br />Testing 1: Intro to software correctness | *Nov 18*<br />Testing 2: Philosophy of software testing |
+|  2     | *Sep 14*<br />Linux 2: Common tools<br/>Homework 1 out | *Sep 16*<br />Linux 3: Interactive shell tips &amp; tricks |
+|  3     | *Sep 21*<br />Linux 4: The shell as a programming language<br />Homework 1 due; Homework 2 out | *Sep 23*<br />Linux 5: Behind the scenes |
+|  4     | *Sep 28*<br />Linux 6: Linux and POSIX<br /> Homework 2 due | *Sep 30*<br />VCS 1: Intro to version control |
+|  5     | *Oct 5*<br />VCS 2: Intro to Git and the structure of a repo<br />Homework 3 out | *Oct 7*<br />VCS 3: Collaboration with Git |
+|  6     | *Oct 12*<br />VCS 4: Git internals<br />Homework 3 due; Homework 4 out | *Oct 14*<br />VCS 5: Git internals, continued |
+|  7     | *Oct 19*<br />VCS 6: Survey of alternative and related tools; Homework 4 due | *Oct 21*<br />Build 1: Intro to build systems |
+|  8     | *Oct 26*<br />Build 2: Intro to Make<br />Homework 5 out | *Oct 28*<br />Build 3: The Make language |
+|  9     | *Nov 2*<br />Build 4: Large projects using Make<br />Homework 5 due; Homework 6 out | *Nov 4*<br />Build 5: Compilation and linking |
+| 10     | *Nov 9*<br />Build 6: Other build systems and meta-tools<br />Homework 6 due | *Nov 11*<br />*Veterans' Day; no class* |
+| 11     | *Nov 16*<br />Testing 1: Intro to software correctness | *Nov 18*<br />Testing 2: Philosophy of software testing<br />Homework 7 out |
 | 12     | *Nov 23*<br />Testing 3: Writing unit tests | *Nov 25*<br />*Thanksgiving; no class* |
-| 13     | *Nov 30*<br />Testing 4: Testing interactions of complex systems | *Dec 2*<br />Testing 5: Continuous integration |
-| 14     | *Dec 7*<br />Testing 6: Other methods for ensuring software correctness | *Dec 9*<br />TBD |
+| 13     | *Nov 30*<br />Testing 4: Testing interactions of complex systems<br />Homework 7 due; Homework 8 out | *Dec 2*<br />Testing 5: Continuous integration |
+| 14     | *Dec 7*<br />Testing 6: Other methods for ensuring software correctness; Homework 8 due | *Dec 9*<br />TBD |
 | 15     | *Dec 14*<br />*No class* | *Dec 16*<br />*No class* |
 
 ## Assignments
