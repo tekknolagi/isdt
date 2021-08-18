@@ -75,7 +75,8 @@ projects you encounter in the real world.
 **Equipment:** none
 
 **Lectures:** via video call (platform TBD) on Tuesday and Thursday 7:30p-8:45p
-ET. Course communication happens primarily on Piazza. Assignments are to be
+ET. Course communication happens primarily on
+[Piazza](https://piazza.com/tufts/fall2021/cs50isdt). Assignments are to be
 submitted via TBD.
 
 **Exams:** none
