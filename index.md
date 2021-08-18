@@ -1,6 +1,9 @@
 ---
 ---
 
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="favicon.ico" />
+
 <style type="text/css">
 kbd {
     background-color: #eee;
