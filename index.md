@@ -121,7 +121,7 @@ following:
 | 11     | *Nov 16*<br />Testing 1: Intro to software correctness | *Nov 18*<br />Testing 2: Philosophy of software testing<br />Homework 7 out |
 | 12     | *Nov 23*<br />Testing 3: Writing unit tests | *Nov 25*<br />*Thanksgiving; no class* |
 | 13     | *Nov 30*<br />Testing 4: Testing interactions of complex systems<br />Homework 7 due; Homework 8 out | *Dec 2*<br />Testing 5: Continuous integration |
-| 14     | *Dec 7*<br />Testing 6: Other methods for ensuring software correctness; Homework 8 due | *Dec 9*<br />TBD |
+| 14     | *Dec 7*<br />Testing 6: Other methods for ensuring software correctness<br /> Homework 8 due | *Dec 9*<br />TBD |
 | 15     | *Dec 14*<br />*No class* | *Dec 16*<br />*No class* |
 
 ## Assignments
