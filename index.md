@@ -113,7 +113,7 @@ following:
 |  4     | *Sep 28*<br />Linux 6: Linux and POSIX<br /> Homework 2 due | *Sep 30*<br />VCS 1: Intro to version control |
 |  5     | *Oct 5*<br />VCS 2: Intro to Git and the structure of a repo<br />Homework 3 out | *Oct 7*<br />VCS 3: Collaboration with Git |
 |  6     | *Oct 12*<br />VCS 4: Git internals<br />Homework 3 due; Homework 4 out | *Oct 14*<br />VCS 5: Git internals, continued |
-|  7     | *Oct 19*<br />VCS 6: Survey of alternative and related tools; Homework 4 due | *Oct 21*<br />Build 1: Intro to build systems |
+|  7     | *Oct 19*<br />VCS 6: Survey of alternative and related tools<br /> Homework 4 due | *Oct 21*<br />Build 1: Intro to build systems |
 |  8     | *Oct 26*<br />Build 2: Intro to Make<br />Homework 5 out | *Oct 28*<br />Build 3: The Make language |
 |  9     | *Nov 2*<br />Build 4: Large projects using Make<br />Homework 5 due; Homework 6 out | *Nov 4*<br />Build 5: Compilation and linking |
 | 10     | *Nov 9*<br />Build 6: Other build systems and meta-tools<br />Homework 6 due | *Nov 11*<br />*Veterans' Day; no class* |
