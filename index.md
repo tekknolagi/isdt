@@ -72,16 +72,18 @@ projects you encounter in the real world.
 
 **Textbook:** none
 
-**Equipment:** none
+**Equipment:** Access to a computer (personal or lab are fine) with a terminal
 
 **Lectures:** via video call (platform TBD) on Tuesday and Thursday 7:30p-8:45p
 ET. Course communication happens primarily on
 [Piazza](https://piazza.com/tufts/fall2021/cs50isdt). Assignments are to be
-submitted via TBD.
+submitted via `provide`.
+
+**Office Hours:** TBD
 
 **Exams:** none
 
-**Teaching Assistants:** TBD, TBD
+**Teaching Assistants:** Lexi Galantino, TBD, TBD
 
 ## Learning objectives
 
