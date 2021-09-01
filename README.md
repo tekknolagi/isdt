@@ -11,3 +11,10 @@ the [compiled HTML site](https://bernsteinbear.com/isdt/). Please consider that
 Issues and Pull Requests are primarily intended for use by course staff but if
 you discover something glaring or would like to make a contribution, please go
 ahead and file something.
+
+## How to build locally
+
+1. Install `rbenv`
+1. `rbenv install 2.7.0`
+1. `bundle install`
+1. `bundle exec jekyll serve --watch`
