@@ -68,22 +68,18 @@ projects you encounter in the real world.
 
 ## Administrivia
 
-**Soft prerequisite:** CS 15 or permission of instructor
+**Teaching Assistants:** Lexi Galantino, TBD, TBD  
 
-**Textbook:** none
+**Office Hours:** TBD  
+**Discussion board:** [Piazza](https://piazza.com/tufts/fall2021/cs50isdt)  
 
-**Equipment:** Access to a computer (personal or lab are fine) with a terminal
+**Prerequisites:** CS 15 or permission of instructor  
+**Equipment:** A computer with SSH access to the Tufts homework server  
+**Textbook:** none  
 
-**Lectures:** via video call (platform TBD) on Tuesday and Thursday 7:30p-8:45p
-ET. Course communication happens primarily on
-[Piazza](https://piazza.com/tufts/fall2021/cs50isdt). Assignments are to be
-submitted via `provide`.
-
-**Office Hours:** TBD
-
-**Exams:** none
-
-**Teaching Assistants:** Lexi Galantino, TBD, TBD
+**Lectures:** Tuesday and Thursday 7:30p-8:45p ET via video call (platform TBD)  
+**Assignments:** 8 assignments (2 per module), to be submitted with `provide`  
+**Exams:** none  
 
 ## Learning objectives
 
