@@ -223,6 +223,3 @@ course:
 * Berkeley's [CS9E](https://www2.eecs.berkeley.edu/Courses/CS9E/)
 
 <div id="elephant"><img src="jumbo.png" alt="Jumbo on a laptop" /></div>
-
-<p style="position:relative;bottom:0; font-size:x-small;">The source of this
-page is available <a href="https://github.com/tekknolagi/isdt">here</a>.</p>
