@@ -177,7 +177,7 @@ will be guilty of plagiarism and the extra consequences that entails.
 
 ## Grading
 
-Students will be evaluated 100% on homework assignments.
+You will be evaluated 100% on homework assignments.
 
 Often on homework assignments we will ask you questions as part of an
 "investigative" assignment. The purpose of these questions is to guide you
@@ -190,7 +190,7 @@ not be enough.
 
 ### Submitting assignments
 
-Projects must be submitted electronically following the instructions given in
+You must submit projects electronically following the instructions given in
 class. Projects may not be submitted by any other means (e.g., please do not
 email your projects to us). It is your responsibility to test your program and
 verify that it works properly before submitting. All projects are due at
