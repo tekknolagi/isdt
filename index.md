@@ -80,7 +80,7 @@ Hebb](https://tchebb.me/)
 **Equipment:** A computer with SSH access to the Tufts homework server  
 **Textbook:** none  
 
-**Lectures:** Tuesday and Thursday 7:30p-8:45p ET via video call (platform TBD)  
+**Lectures:** Tuesday and Thursday 7:30p-8:45p ET via Zoom (access via Canvas)  
 **Assignments:** 8 assignments (2 per module), to be submitted with `provide`  
 **Exams:** none  
 
