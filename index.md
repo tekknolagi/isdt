@@ -71,9 +71,9 @@ projects you encounter in the real world.
 
 **Instructors:** [Max Bernstein](https://bernsteinbear.com) and [Tom
 Hebb](https://tchebb.me/)  
-**Teaching Assistants:** Lexi Galantino, TBD, TBD  
+**Teaching Assistants:** Dana Estra, Lexi Galantino, David Gantt  
 
-**Office Hours:** TBD  
+**Office Hours:** Mondays 4:45p-6:00p ET; extra hours to be announced on Piazza  
 **Discussion board:** [Piazza](https://piazza.com/tufts/fall2021/cs50isdt)  
 
 **Prerequisites:** CS 15 or permission of instructor  
