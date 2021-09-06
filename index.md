@@ -106,6 +106,11 @@ By the end of this course, we hope that you will be able to do the following:
 
 ## Schedule
 
+*Note:* We will publish notes for each lecture after it happens, but the lecture
+recordings will not be available to students. If you require access to 
+recordings for your accommodations, please contact us using a private post on
+Piazza.
+
 | Week   | Tuesday | Thursday |
 | ----   | ------- | -------- |
 |  1     | *Sep 7*<br />*No class* | *Sep 9*<br />Course Administrivia &amp; CLI 1: Intro to Linux and the shell |
