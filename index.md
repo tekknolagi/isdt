@@ -86,24 +86,23 @@ Hebb](https://tchebb.me/)
 
 ## Learning objectives
 
-By the end of this course, we hope that students will be able to do the
-following:
+By the end of this course, we hope that you will be able to do the following:
 
-1. Track changes in their software projects, including developing multiple
+1. Track changes to your software projects, including developing multiple
    parallel changesets, using Git.
 2. Carry out development comfortably on a Linux system by using shell commands
    and OS utilities, including synthesizing multiple utilities together to
    answer novel questions.
 3. Write and understand simple Makefiles for building C projects.
 4. Write software that is designed to be tested as well as used.
-5. Write tests for their software using UTest.
+5. Write tests for your software using UTest.
 6. Set up continuous integration to run tests on new code changes using GitHub
    Actions.
 7. Search for and read documentation for new and unfamiliar tools using `man`
    and the internet.
 8. Independently answer questions about unfamiliar systems by reading
    documentation, carrying out experiments, and exploring the underlying source
-   code using the tools they've learned.
+   code using the tools you've learned.
 
 ## Schedule
 
