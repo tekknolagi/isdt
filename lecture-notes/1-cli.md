@@ -192,7 +192,8 @@ historical reasons that have been lost to time.
 [^prompt-shorthand]: Because prompts vary between people, computers, shells,
                      and operating systems, in this course we will simply use
                      `$ ` to indicate a shell prompt unless we have a good
-                     reason otherwise.
+		     reason otherwise. To learn more, look up the `PS1` and
+		     `PS2` shell variables.
 
 ### Entering commands
 But the prompt isn't just a pretty thing to look at: it's also a rich interface
