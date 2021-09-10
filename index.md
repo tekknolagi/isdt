@@ -32,6 +32,15 @@ By the end of the course, you will have a robust toolset both to manage
 complexity in your future projects and to effectively ramp up on software
 projects you encounter in the real world.
 
+We are teaching this course as a series of four modules. The first, Command
+Line, will give you an overview of the operating system and tools available to
+you to make your life as a software engineer easier. The second, VCS, will
+teach you about how to version control your software with Git, so that you may
+maintain a history of your changes and collaborate with others. The third,
+Build, will teach you about how to reliably build your software with Make. The
+fourth and final module, Correctness, will introduce you to testing and other
+tools for ensuring that your software meets quality standards.
+
 ## Administrivia
 
 **Instructors:** [Max Bernstein](https://bernsteinbear.com) and [Tom
@@ -94,9 +103,25 @@ Piazza.
 | 14     | *Dec 7*<br />COR 6: Other methods for ensuring software correctness<br /> Homework 8 due | *Dec 9*<br />TBD |
 | 15     | *Dec 14*<br />*No class* | *Dec 16*<br />*No class* |
 
-## Assignments
+## Course philosophy
 
-Assignments will be posted here as they are released. Check back soon...
+This course will consist of 25 lectures (unplanned cancellations
+notwithstanding) and 8 assignments, spaced evenly throughout the semester.
+There will be no exams. We'll use the lectures (accompanied by written lecture
+notes, assigned readings, and other media) to introduce new material, and we'll
+use the assignments to reinforce that material and evaluate your progress.
+
+While we hope you enjoy this course, we will only be present for a small
+minority of your lifelong learning. Therefore, we have done our best to build
+assignments and lectures that show you how to find documentation, read code,
+and carry out small experiments on your own so that you can continue to broaden
+your knowledge long after this course has ended. We believe this ability is
+just as important to your success as anything we can teach you directly.
+
+*Note:* This is a new course, written from scratch and being taught for the
+first time. Some things might feel rough, slightly out-of-order, or poorly
+scheduled. When this happens, please let us know on Piazza. Your feedback will
+help us shape future iterations of the course.
 
 ## Academic Integrity
 
