@@ -170,7 +170,7 @@ let's look at a different prompt. Here's the Bash prompt from the computer I'm
 writing these notes on, which runs Arch Linux:
 
 ```
-[thebb@stingray ~]$
+[thebb@stingray ~]$ 
 ```
 
 You can see that the username and hostname are still there, although now in
@@ -352,7 +352,7 @@ see where your working directory lives under the root directory:
 ```
 $ pwd
 /h/utln01
-$
+$ 
 ```
 
 The path `/h/utln01` refers to a directory called `utln01`, inside a directory
@@ -375,7 +375,7 @@ directory1  file1  file1-link  file2  file3  missing-link
 ls: cannot access  comp/50ISDT/examples/file-zoo: No such file or directory
 /comp $ ls 50ISDT/examples/file-zoo
 directory1  file1  file1-link  file2  file3  missing-link
-/comp $
+/comp $ 
 ```
 
 In this example, we've added the working directory to the prompt to make each
