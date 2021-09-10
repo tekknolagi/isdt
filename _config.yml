@@ -1,5 +1,6 @@
 title: Introduction to Software Development Tooling
-description: Learn version control, Linux, build systems, and CI in Tufts' CS
-  50.
+description: >
+  Learn the command line, version control, build systems, and correctness in
+  Tufts' CS 50ISDT.
 theme: jekyll-theme-primer
 google_analytics: UA-26440738-1
