@@ -399,16 +399,17 @@ actually implemented very differently. While `/` and `..` and `.` are
 implemented by the Linux kernel and work as part of any path, `~` is
 implemented by the shell and so only works when you're running a shell command.
 It won't work, for example, from an `fopen()` call in C. To see this for
-yourself, you can put some of these special directory names inside quotes when
-passing them to shell commands. As you'll see later, quotes suppress some of
-the shell's processing, including `~` expansion:
+yourself, you can put some of these special directory names inside single
+quotes when passing them to shell commands. As you'll see next lecture, quotes
+(both single and double) suppress some of the shell's processing, including `~`
+expansion:
 
 ```
-$ ls "/comp/50ISDT/examples/file-zoo"
+$ ls '/comp/50ISDT/examples/file-zoo'
 directory1  file1  file1-link  file2  file3  missing-link
-$ ls "/comp/50ISDT/examples/file-zoo/directory1/.."
+$ ls '/comp/50ISDT/examples/file-zoo/directory1/..'
 directory1  file1  file1-link  file2  file3  missing-link
-$ ls "~"
+$ ls '~'
 ls: cannot access ~: No such file or directory
 $ 
 ```
