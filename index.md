@@ -4,7 +4,6 @@
 <ul class="navbar">
   <li><a href="#administrivia">Administrivia</a></li>
   <li><a href="#schedule">Schedule</a></li>
-  <li><a href="#grading">Grading</a></li>
 </ul>
 
 # Home
