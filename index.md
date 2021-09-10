@@ -78,7 +78,7 @@ Piazza.
 
 | Week   | Tuesday | Thursday |
 | ----   | ------- | -------- |
-|  1     | *Sep 7*<br />*No class* | *Sep 9*<br />Course Administrivia &amp; CLI 1: Intro to Linux and the shell |
+|  1     | *Sep 7*<br />*No class* | *Sep 9*<br />Course Administrivia &amp; [CLI 1: Intro to Linux and the shell](/lecture-notes/1-cli.html#lecture-1) |
 |  2     | *Sep 14*<br />CLI 2: Common tools<br/>Homework 1 out | *Sep 16*<br />CLI 3: Interactive shell tips &amp; tricks |
 |  3     | *Sep 21*<br />CLI 4: The shell as a programming language<br />Homework 1 due; Homework 2 out | *Sep 23*<br />CLI 5: Behind the scenes |
 |  4     | *Sep 28*<br />CLI 6: Linux and POSIX<br /> Homework 2 due | *Sep 30*<br />VCS 1: Intro to version control |
