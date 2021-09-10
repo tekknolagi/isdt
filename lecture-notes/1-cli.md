@@ -60,12 +60,11 @@ well as by WSL, Windows' Linux compatibility layer.
 There are a number of things that make Bash a good shell to learn. First and
 foremost, it's what's called a *POSIX* shell. POSIX is the IEEE standard that
 defines UNIX-like operating systems, and both Linux[^linux-posix] and macOS
-follow it. [Part of
-POSIX](https://pubs.opengroup.org/onlinepubs/9699919799.2018edition/utilities/V3_chap02.html)
-defines what syntax and commands a shell needs to support. Most of the shell
-features we cover in this course are part of POSIX, meaning they won't apply
-just to Bash but to any POSIX shell you encounter--for example, *zsh*, which is
-macOS's default shell and a popular alternative to Bash on Linux.
+follow it. [Part of POSIX][posix-scl] defines what syntax and commands a shell
+needs to support. Most of the shell features we cover in this course are part
+of POSIX, meaning they won't apply just to Bash but to any POSIX shell you
+encounter--for example, *zsh*, which is macOS's default shell and a popular
+alternative to Bash on Linux.
 
 Bash does have some nice quality-of-life features that go beyond what POSIX
 mandates, though. For example, POSIX doesn't say anything about interactive
@@ -84,6 +83,8 @@ the servers looks identical to Bash's, so `bash --login` won't appear to have
 any effect when you run it. However, if you don't do so, tcsh will interpret
 your commands, meaning much of the more advanced syntax we cover will result in
 error messages or unexpected behavior.
+
+[posix-scl]: https://pubs.opengroup.org/onlinepubs/9699919799.2018edition/utilities/V3_chap02.html
 
 [^linux-posix]: The majority of Linux distributions are not actually
                 POSIX-certified, but nevertheless are generally accepted to be
