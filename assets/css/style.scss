@@ -21,6 +21,12 @@ code {
     color: green;
 }
 
+.footnotes {
+    @extend .border-top;
+    @extend .border-gray-light;
+    font-size: 0.9em;
+}
+
 .navbar {
     list-style-type: none;
     margin: 0;
