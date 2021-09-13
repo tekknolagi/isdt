@@ -35,19 +35,16 @@ interface to expose the full set of functionality that's available from the
 command line.
 
 [^ide-abstraction]: You almost certainly rely on command-line tools any time
-                    you write a program, even if you don't realize it. To be
-                    sure, there are IDEs that let you program without ever
-                    seeing a command line; on Windows and macOS, such
-                    environments (in the form of Visual Studio and Xcode) are
-                    in fact the sanctioned way to develop native applications!
-                    Behind the scenes, however, both of these tools invoke
-                    command-line tools in order to compile your code, run
-                    tests, process resource files, sign and package your
-                    application for distribution, and so on. Knowing how to
-                    find and run these commands directly will help you figure
-                    out what's happening when things go wrong and will give you
-                    the freedom to go beyond the IDEs in cases where they can't
-                    do exactly what you need.
+    you write a program, even if you don't realize it. To be sure, there are
+    IDEs that let you program without ever seeing a command line; on Windows
+    and macOS, such environments (in the form of Visual Studio and Xcode) are
+    in fact the sanctioned way to develop native applications!  Behind the
+    scenes, however, both of these tools invoke command-line tools in order to
+    compile your code, run tests, process resource files, sign and package your
+    application for distribution, and so on. Knowing how to find and run these
+    commands directly will help you figure out what's happening when things go
+    wrong and will give you the freedom to go beyond the IDEs in cases where
+    they can't do exactly what you need.
 
 #### Bash
 Every major OS has a shell (and some have multiple!), and they all provide the
@@ -87,9 +84,9 @@ error messages or unexpected behavior.
 [posix-scl]: https://pubs.opengroup.org/onlinepubs/9699919799.2018edition/utilities/V3_chap02.html
 
 [^linux-posix]: The majority of Linux distributions are not actually
-                POSIX-certified, but nevertheless are generally accepted to be
-                POSIX compliant in all the ways that matter. macOS, on the
-                other hand, is officially certified since version 10.5.
+    POSIX-certified, but nevertheless are generally accepted to be POSIX
+    compliant in all the ways that matter. macOS, on the other hand, is
+    officially certified since version 10.5.
 
 #### GNU + Linux
 As you'll see shortly, most of the command line's power comes from programs you
@@ -115,20 +112,16 @@ operating systems like macOS, but some of it (for example, the directory
 hierarchy) is not.
 
 [^linux-distros]: For example, Ubuntu, Debian, Fedora, Red Hat Enterprise
-                  Linux, Arch Linux, or Gentoo. The Tufts homework servers run
-                  Red Hat.
+    Linux, Arch Linux, or Gentoo. The Tufts homework servers run Red Hat.
 
 [^other-userspaces]: It's possible to run the Linux kernel with no GNU project
-                     code at all: [BusyBox](https://busybox.net/), for example,
-                     implements most POSIX tools (including a shell!) in a
-                     single tiny program that can fit on even the most
-                     space-constrained systems; Android uses the Linux kernel
-                     combined with its own BusyBox-inspired implementation of
-                     POSIX tools and a custom Java runtime;
-                     [FreeBSD](https://www.freebsd.org) and other UNIX
-                     derivatives have their own sets of POSIX tools, many of
-                     which are easily ported to run on Linux (and which are
-                     also the basis for macOS's tools).
+    code at all: [BusyBox](https://busybox.net/), for example, implements most
+    POSIX tools (including a shell!) in a single tiny program that can fit on
+    even the most space-constrained systems; Android uses the Linux kernel
+    combined with its own BusyBox-inspired implementation of POSIX tools and a
+    custom Java runtime; [FreeBSD](https://www.freebsd.org) and other UNIX
+    derivatives have their own sets of POSIX tools, many of which are easily
+    ported to run on Linux (and which are also the basis for macOS's tools).
 
 ### Anatomy of a shell prompt
 The first thing you see when you open a command line is what's known as a
@@ -191,10 +184,9 @@ command to see where you are. Most Bash prompts also end with `$ `, for
 historical reasons that have been lost to time.
 
 [^prompt-shorthand]: Because prompts vary between people, computers, shells,
-                     and operating systems, in this course we will simply use
-                     `$ ` to indicate a shell prompt unless we have a good
-		     reason otherwise. To learn more, look up the `PS1` and
-		     `PS2` shell variables.
+    and operating systems, in this course we will simply use `$ ` to indicate a
+    shell prompt unless we have a good reason otherwise. To learn more, look up
+    the `PS1` and `PS2` shell variables.
 
 ### Entering commands
 But the prompt isn't just a pretty thing to look at: it's also a rich interface
@@ -238,11 +230,11 @@ almost universally four letters or less, it's not usually as useful there) and
 some other command-specific things as well. If ever in doubt, just try it!
 
 [^readline]: See `man 3 readline` for more information on this wondrous
-             ability.
+    ability.
 
 [^no-ls]: This means you don't have to abandon your command to run `ls` every
-          time you forget a file name! You can tab complete without losing what
-          you've already typed.
+    time you forget a file name! You can tab complete without losing what
+    you've already typed.
 
 ### Anatomy of a command
 Now that you're a pro at typing in commands, let's talk about the things you
@@ -318,21 +310,20 @@ details of that structure for later, after you've learned a bit more about some
 common conventions for arguments.
 
 [^repl]: This flow of you typing a command at the shell prompt, that command
-         taking control of the terminal and running to completion (optionally
-         printing output or reading input in the process), and then the shell
-         printing a new prompt is known as a *read-eval-print loop*, or a
-         *REPL* for short. Some programming languages also have REPLs--modes
-         where you can enter one statement at a time instead of running a whole
-         file at once. REPLs are common for interpreted languages like Python
-         and Ruby and much less common for compiled languages like C and C++.
+    taking control of the terminal and running to completion (optionally
+    printing output or reading input in the process), and then the shell
+    printing a new prompt is known as a *read-eval-print loop*, or a *REPL* for
+    short. Some programming languages also have REPLs--modes where you can
+    enter one statement at a time instead of running a whole file at once.
+    REPLs are common for interpreted languages like Python and Ruby and much
+    less common for compiled languages like C and C++.
 
 [^path-security]: This behavior is not only convenient but also improves
-                  security. If the shell looked in the working directory first
-                  for every command, an attacker could write a malicious
-                  program named `ls`, `cat` or similar and place it in a
-                  publicly-readable directory. Then anyone who went to that
-                  directory and typed `ls` or `cat` would unknowingly invoke
-                  the attacker's program!
+    security. If the shell looked in the working directory first for every
+    command, an attacker could write a malicious program named `ls`, `cat` or
+    similar and place it in a publicly-readable directory. Then anyone who went
+    to that directory and typed `ls` or `cat` would unknowingly invoke the
+    attacker's program!
 
 ### The Linux filesystem
 Many of the examples so far have revolved around files and directories: the
@@ -416,12 +407,11 @@ $
 ```
 
 [^why-self]: You may wonder why `.` needs to exist at all, since adding or
-             removing it from any path doesn't change that path at all. One
-             reason is to get around the shell's special treatment of command
-             names without slashes: if you really do want to run a program in
-             your current directory, prefixing its name with `./` is an easy
-             way to do that. Another reason is because some programs assign
-             special meaning to the empty string (for example, as an indicator
-             that you want them to use a default value). To explicitly signal
-             to these programs that you're talking about the current directory,
-             you can use `.` as a path.
+    removing it from any path doesn't change that path at all. One reason is to
+    get around the shell's special treatment of command names without slashes:
+    if you really do want to run a program in your current directory, prefixing
+    its name with `./` is an easy way to do that. Another reason is because
+    some programs assign special meaning to the empty string (for example, as
+    an indicator that you want them to use a default value). To explicitly
+    signal to these programs that you're talking about the current directory,
+    you can use `.` as a path.
