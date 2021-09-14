@@ -210,13 +210,13 @@ to a fresh prompt no matter how far back you are.
 
 Tab completion is how you ask the shell to figure out what you want to type
 before you're done typing it. For example, let's say you want to list files in
-this course's directory, `/comp/50ISDT`, on the Tufts homework server. Type `ls
-/comp/50` (without pressing <kbd>Enter</kbd>) and then press the <kbd>Tab</kbd>
-key to trigger tab completion. If you did it right, nothing will happen
-immediately. This is because there are lots of different CS 50s on the server
-and Bash doesn't know which one you want, which it signals by ignoring your
-first press of <kbd>Tab</kbd>. However, if you press <kbd>Tab</kbd> again, Bash
-will show you a list of every option it knows about[^no-ls]:
+this course's directory, `/comp/50ISDT/`, on the Tufts homework server. Type
+`ls /comp/50` (without pressing <kbd>Enter</kbd>) and then press the
+<kbd>Tab</kbd> key to trigger tab completion. If you did it right, nothing will
+happen immediately. This is because there are lots of different CS 50s on the
+server and Bash doesn't know which one you want, which it signals by ignoring
+your first press of <kbd>Tab</kbd>. However, if you press <kbd>Tab</kbd> again,
+Bash will show you a list of every option it knows about[^no-ls]:
 
 ```
 50/     50AIR/  50BIO/  50cog/  50CP/   50FCD/  50GD/   50IOT/  50ISDT/ 50NLP/  50PSS/  50SDT/  50WD/
@@ -346,7 +346,7 @@ $ pwd
 $ 
 ```
 
-The path `/h/utln01` refers to a directory called `utln01`, inside a directory
+The path `/h/utln01/`[^trailing-slash] refers to a directory called `utln01`, inside a directory
 called `h`, inside the root directory `/`. This style of path--relative to the
 root--is called an *absolute path* and always starts with a slash. The other
 type of path you'll encounter is called a *relative path* and never starts with
@@ -355,16 +355,16 @@ so can mean different things at different times:
 
 ```
 ~ $ cd /
-/ $ ls /comp/50ISDT/examples/file-zoo
+/ $ ls /comp/50ISDT/examples/file-zoo/
 directory1  file1  file1-link  file2  file3  missing-link
-/ $ ls comp/50ISDT/examples/file-zoo
+/ $ ls comp/50ISDT/examples/file-zoo/
 directory1  file1  file1-link  file2  file3  missing-link
 / $ cd comp
-/comp $ ls /comp/50ISDT/examples/file-zoo
+/comp $ ls /comp/50ISDT/examples/file-zoo/
 directory1  file1  file1-link  file2  file3  missing-link
-/comp $ ls comp/50ISDT/examples/file-zoo
+/comp $ ls comp/50ISDT/examples/file-zoo/
 ls: cannot access  comp/50ISDT/examples/file-zoo: No such file or directory
-/comp $ ls 50ISDT/examples/file-zoo
+/comp $ ls 50ISDT/examples/file-zoo/
 directory1  file1  file1-link  file2  file3  missing-link
 /comp $ 
 ```
@@ -374,15 +374,15 @@ command's working directory clearer. We start in our home directory `~` and
 immediately move to the root with `cd /`. While in the root, an absolute path
 refers to the exact same place as a relative path with the same components. But
 as soon as we switch into a subdirectory (`h` in this case), that's no longer
-the case: `ls h/utln01` is now equivalent to `ls /h/h/utln01`, which refers to
-a directory that doesn't exist.
+the case: `ls h/utln01/` is now equivalent to `ls /h/h/utln01/`, which refers
+to a directory that doesn't exist.
 
 In addition to `/`, there are some other special directory names you should
 know about. Every directory has a hidden subdirectory named `..`, which refers
 to its parent directory, as well as one named `.`, which refers to
 itself[^why-self]. These are most often useful in relative paths, for example
-`../../somedir`, but are also perfectly legal to use in absolute paths:
-`/h/utln01` is the same as `/h/../h/utln01`.
+`../../somedir/`, but are also perfectly legal to use in absolute paths:
+`/h/utln01/` is the same as `/h/../h/utln01/`.
 
 Finally, we mentioned the home directory shorthand `~` earlier in the lecture.
 Although this behaves similarly to the special directories mentioned above
@@ -405,6 +405,14 @@ $ ls '~'
 ls: cannot access ~: No such file or directory
 $ 
 ```
+
+[^trailing-slash]: A trailing slash is optional for paths that refer to a
+    directory and forbidden for paths that refer to a file. For most purposes,
+    the slash makes no difference to how a path gets treated.  (One exception
+    to this is when the final entry in the path is a symbolic link to a
+    directory; we'll introduce symbolic links later.) Our convention in these
+    notes is to always include a trailing slash in directory paths to make it
+    easier to distinguish them from file paths.
 
 [^why-self]: You may wonder why `.` needs to exist at all, since adding or
     removing it from any path doesn't change that path at all. One reason is to
