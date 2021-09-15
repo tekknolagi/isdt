@@ -76,7 +76,7 @@ syllabus for an example) with each:
    This is not a trivial problem. Expect to have several different commands in
    your pipeline. Please ask for help early if you are struggling.
 
-## Exploring files with find & grep: murder mystery in /comp/50ISDT/!
+## Exploring files with find & grep: murder mystery in `/comp/50ISDT/`!
 
 There was a murder last night at your old university colleague David's dinner
 party! A guest found a body in the living room, and nobody knows who did it.
