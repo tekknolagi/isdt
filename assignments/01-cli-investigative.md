@@ -80,7 +80,7 @@ syllabus for an example) with each:
 
 There was a murder last night at your old university colleague David's dinner
 party! A guest found a body in the living room, and nobody knows who did it.
-You, the premiere private investigator in Medford, MA have been called into
+You, the premiere private investigator in Medford, MA, have been called into
 help. Explore David's magnificent mansion (represented conveniently by a
 directory tree in `/comp/50ISDT/cli1-murder-mystery/`) to see what you can
 find! Start your journey in the *entryway*.
