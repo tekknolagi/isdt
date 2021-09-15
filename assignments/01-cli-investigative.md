@@ -20,7 +20,7 @@ nothing.
     (including each account's shell) locally, but rather in a centrally-managed
     database of students and staff, which only the department administrators
     can modify. To change your default shell to bash, write an email to
-    staff@eecs.tufts.edu.
+    [staff@eecs.tufts.edu](mailto:staff@eecs.tufts.edu).
 
 ## CaLIsthenics: what's on the homework server?
 
