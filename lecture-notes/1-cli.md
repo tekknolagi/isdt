@@ -423,3 +423,616 @@ $
     an indicator that you want them to use a default value). To explicitly
     signal to these programs that you're talking about the current directory,
     you can use `.` as a path.
+
+## Lecture 2
+
+### Quoting
+We mentioned at the end of last lecture that the shell's expansion of the
+special home directory shorthand `~` can be suppressed by putting the `~`
+inside single quotes. This isn't the only piece of processing that quotes
+prevent: many shell features are triggered by command names or arguments that
+include special characters. Often you'll want those characters to be taken
+literally instead, though--especially if you don't even know that the feature
+in question exists! This is where quotes come in.
+
+Any piece of a Bash command that's enclosed in single quotes will be preserved
+exactly as typed when the command gets processed, except that Bash will remove
+the quotes themselves. Notably, the quotes don't have to be around an entire
+command name or argument: you can type a single word that consists of both
+quoted and unquoted bits. A useful command for seeing how the shell processes a
+word is `echo`. `echo` prints out all the argument values it receives separated
+by spaces, so it lets you clearly see which arguments the shell has
+proprocessed or expanded:
+
+```
+$ echo ~
+/h/utln01
+$ echo '~'
+~
+$ echo ~/foobar
+/h/utln01/foobar
+$ echo '~/foobar'
+~/foobar
+$ echo '~'/foobar
+~/foobar
+$ echo '~/fo'obar
+~/foobar
+$ 
+```
+
+Quotes can be used anywhere in a command, even in its name:
+
+```
+$ echo 'Hello, world!'
+Hello, world!
+$ 'ec'ho 'Hello, world!'
+Hello, world!
+$ 
+```
+
+And `~` is far from the only character that would otherwise have special
+meaning. POSIX [specifies][posix-scl] the full set of characters that the shell
+cares about to be `|`, `&`, `;`, `<`, `>`, `(`, `)`, `$`, `` ` ``, `\`, `"`, `'`,
+`*`, `?`, `[`, `#`, `~`, `=`, `%`, space, tab, and newline. Bash also treats
+`!` specially[^history-event-number]. We'll talk about what many of these
+characters mean to the shell next lecture, but for now just be aware that if
+you include them in a command unquoted, that command may not behave as
+expected.
+
+[^history-event-number]: This is related to the history event number we
+    mentioned last time.
+
+One notable thing about this list of characters is that it includes the single
+and double quote characters themselves. And that makes sense, since we've just
+seen that the shell treats quoted strings specially. But what if you want to
+pass a literal single or double quote to a command? Since single-quoted strings
+undergo no processing at all, there's no way to include a single quote inside
+one of them; the shell will interpret any it finds to be the ending quote.
+
+Luckily, there are ways to get around this. The shell has two other common ways
+to prevent processing of one or more characters. The first is to precede any
+character by a backslash `\\`. The backslash causes the character immediately
+following it to be treated as if you'd enclosed it in single quotes. This is
+known as *escaping* that character. Since the backslash needs no closing
+delimiter, it can escape `'` (`\\'`) and even itself ('\\\\')!
+
+```
+$ echo \'
+'
+$ echo can\'t
+can't
+$ echo \\
+\
+$ echo \a\b\c\d
+abcd
+$ echo \~
+~
+$ 
+```
+
+The second way is to enclose the characters in double quotes. Double quotes
+behave similarly to single quotes, except that certain special processing is
+still allowed. One such piece of processing is the backslash escape (meaning
+you can use a backslash to include double quotes inside a double quoted
+string). (We'll go over the other pieces when we discuss variable and command
+substitution in a later lecture.)
+
+```
+$ echo "can't"
+can't
+$ echo "The last command printed \"can't\""
+The last command printed "can't"
+$ 
+```
+
+One of the most common uses of quotes is to include spaces, tabs, or newlines
+in an argument value. The shell typically treats whitespace as a separator
+between arguments, and quotes/backslashes suppress this behavior. In the `echo`
+examples so far, we haven't really cared whether we're passing a single
+argument containing multiple words or multiple arguments each containing one,
+since `echo` joins all its arguments with spaces before printing them anyway.
+But the distinction is much more important when we're trying to specify
+something like a filename.
+
+To illustrate, let's look at an example directory on the homework server with a
+file named `hello` (containing "1"), one named `world` (containing "2"), and
+one named `hello world` (containing "3"). When viewing these files using the
+`cat` command (which prints the contents of one or more files), quotes make a
+big difference:
+
+```
+$ cd /comp/50ISDT/examples/file-zoo/directory1/
+$ ls
+hello  hello world  world
+$ cat hello world
+1
+2
+$ cat "hello world"
+3
+$ 
+```
+
+### Argument parsing and flags
+Besides the shell's preprocessing we've just discussed, there's no one set of
+rules about how arguments work: every program decides how to process its own
+arguments. However, there are some common conventions for arguments that the
+vast majority of commands follow. Knowing these conventions, which we discuss
+here, will help you interpret help text and man pages for many tools.
+
+*As an aside:* There's a family of C library functions called getopt (`man 3
+getopt`) that many software packages use to parse arguments, which has
+solidified these conventions somewhat. Similar libraries, inspired by getopt,
+exist in other languages. For example, [Python's
+argparse](https://docs.python.org/3/library/argparse.html) and [Rust's
+clap](https://clap.rs/).
+
+Part of these conventions are the notion of *flags*. Flags are optional
+arguments that, when provided, alter the behavior of a piece of software. Some
+flags operate alone and indicate that a program should (or shouldn't) behave in
+a certain way. For example, `ls`'s `-l` flag indicates that `ls` should use its
+long listing format. Certain flags require an argument (to the flag!); for
+example, in `gcc -o filename`, `filename` indicates to `-o` where the output
+file should go.
+
+Because command-line users usually value brevity, flags are often written as
+just a single (sometimes cryptic) letter or number. Flags like these are by
+convention prefixed with a single dash (`-`) and can often be coalesced
+together behind that dash if you want to specify multiple. For example, a pair
+of flags `-l -v` could also be written as `-lv`. Note that short-form flags
+that take arguments cannot be followed by other short-form flags in this way:
+consider, for example, that `gcc -ohello` means `-o hello` and not `-o -h -e -l
+-l -o`.
+
+Many programs augment these short-form, single-letter flags with corresponding
+long-form versions that consist of whole words and are more descriptive.
+Long-form flags are typically prefixed with `--` and cannot be coalesced.
+
+To illustrate, let's look at a sample program, `wc`. `wc`, which stands for
+"word count", counts the number of words in its input file. Running `wc myfile`
+prints the number of words in `myfile`. But the authors also taught `wc` to
+count other things, and they exposed that functionality using flags. `wc -c`,
+for example, will count characters, while `wc -l` will count lines. `wc -w` is
+another way to ask for the default behavior of counting words. The authors also
+added long-form variants--`--bytes`, `--lines`, and `--words`, respectively. In
+general, short-form flags are handy at the command line, but long-form ones are
+better for shell scripts (which we'll talk about later) and documentation
+because they better convey meaning.
+
+Although each program parses its own flags, many different programs recognize
+`--version`/`-v` and `--help`/`-h`. Because the command-line ecosystem is
+written by thousands of people, and everyone writes software differently, not
+all programs adhere to this convention. Some use `-v` to mean `--verbose`, or
+use `-version` (one hyphen!) as the long form, or something else entirely. As
+usual, your best bet is to look at the manual pages.
+
+Let's learn about some common commands to both apply our new knowledge of
+argument parsing and get acquainted with useful CLI tools.
+
+### Common commands
+You'll find yourself using some tools more frequently than others. Here is a
+shortlist of tools you will likely use often, alongside their descriptions, and
+some common invocations. Refer to their man pages for more information.
+
+Many of these commands can read input from a file whose name is given as an
+argument, and that's what we'll focus on in this section. However, those same
+commands can also read input directly from what you type into the terminal
+(also known as `stdin`). If you ever forget to give a command a filename and it
+appears to hang forever, it's probably waiting for you to type something. You
+can get back to the prompt by pressing <kbd>Ctrl-c</kbd>. We'll talk about more
+powerful ways to make use of this mode later in this module.
+
+#### `ls`
+Although many of our examples have already used `ls`, they've thus far shown
+only its default behavior, which is to print the name of each file in the
+directory it's passed (or the working directory if run with no arguments). `ls`
+has quite a few flags which alter this behavior, though.
+
+The most common flag you're likely to see is `-l` (which stands for "long
+listing" and has no long-form version). This flag causes `ls` to list not only
+the name of each file but also its type, link count, permissions, owner, group,
+size, and last modification date. Files are printed one per line in this mode
+to make room for the extra information:
+
+```
+$ ls -l
+drwxrwsr-x. 2 thebb01 ta50isdt 4096 Sep  8 00:41 directory1
+-rw-rw-r--. 1 thebb01 ta50isdt   11 Sep  8 00:16 file1
+lrwxrwxrwx. 1 thebb01 ta50isdt    5 Sep  8 00:10 file1-link -> file1
+-rw-rw-r--. 1 thebb01 ta50isdt   13 Sep  8 00:17 file2
+-rw-rw----. 1 thebb01 ta50isdt   20 Sep  8 00:24 file3
+lrwxrwxrwx. 1 thebb01 ta50isdt    6 Sep  8 00:11 missing-link -> foobar
+$ 
+```
+
+Some of these fields are of little use and so we'll skip discussing them, and
+others are complex enough that we'll discuss them separately later on. The main
+things to notice at for the moment are the following:
+
+ * The first character of each line indicates the file's *type*. `-` indicates
+   a regular file; `d` indicates a directory; `l` indicates a symbolic link
+   (see `ln` below). There are other file types, but these three are the ones
+   you'll encounter most.
+ * The fifth field of each line shows the file's size in bytes. For
+   directories, this will usually be 4096, which is the size of the data
+   structure that Linux internally uses to represent directories. (For
+   directories with many files, it's sometimes a higher multiple of 4096
+   instead.)
+ * The sixth field of each line shows the date and time the file was last
+   modified. For directories, this changes only when files are added or
+   removed. Linux allows modification dates to be changed arbitrarily (see `man
+   touch`), so don't rely on this as a guarantee the file hasn't been altered!
+ * The seventh field of each line is the name of the file, but for symbolic
+   links it additionally includes the name of the file the link points to after
+   ` -> `.
+
+Another common flag of `ls` is `--all`/`-a`, which causes it to show files
+whose names begin with a `.`. Although such files have no special meaning to
+Linux, `ls` hides them by default. This behavior [started out as a
+bug](https://superuser.com/a/1293202) ([archive
+link](http://web.archive.org/web/20190211031031/https://plus.google.com/+RobPikeTheHuman/posts/R58WgWwN9jp))
+but became a feature when people realized it could be used to hide things like
+configuration files that you don't normally care about.
+
+#### `mv`
+Rename a file, or move it elsewhere in the filesystem with `mv source
+destination`. Overwrites the destination by default; be careful! If source and
+destination both exist and are different types, `mv` will complain. If the
+destination exists and is a directory, `mv` will instead put the source inside
+the destination directory.
+
+#### `cp`
+Copy a file or copy multiple files into a directory. Overwrites the destination
+by default; be careful! `cp` will not copy directories without
+`--recursive`/`-r`.
+
+#### `mkdir`
+Make a directory with the name specified, like `mkdir foo`. If you want to make
+nested directories in one command or avoid an error if the directory already
+exists, use `--parents`/`-p`.
+
+#### `rm`
+Remove one or more files. Be careful! This deletion is irreversible. Specify
+the filenames to be deleted in a list: `rm file1 file2 file3` and so on. To
+remove directory contents recursively, use `--recursive`/`-r`. To avoid error
+messages when files and directories don't exist, use `--force`/`-f`.
+
+#### `cat`
+Join files together and print to stdout. This is useful when sticking two files
+end-to-end (e.g. `cat fileA fileB` will print first `fileA` then `fileB` to
+stdout) or just showing the contents of one file.
+
+#### `grep`
+While programming it is often useful to find where a word, phrase, or regular
+expression occurs in a file or folder. `grep` can do all of that.
+
+`grep -r "functionName" projectFolder/` looks for the string "functionName"
+recursively (the `-r`) in all of the files in `projectFolder/`. It will print
+the matching lines in the format `filename:line`.
+
+If you want to see what line number a match is found, you can use the `-n`
+flag. This will add filenames so the format becomes `filename:linenumber:line`.
+If you want to see some context around this line, you can also pass `-A NUM`
+(shows NUM lines of trailing context), `-B NUM` (shows NUM lines of leading
+context), or `-C NUM` (shows NUM lines before and after).
+
+You may want to eventually search for *patterns* of text instead of just small
+strings. Imagine you want to find all calls to the function "myfunction". You
+could search `grep "myfunction(.*)"`, which would look for a call to
+"myfunction" with any number of characters between parentheses. This is called
+a regular expression search.
+
+Sometimes you might want to find all the lines that do *not* contain a pattern,
+because the pattern is very frequent. In this case you can do `grep -v
+"pattern" file`, where `-v` stands for "invert".
+
+#### `find`
+Searching files by their contents is all well and good but it's also useful to
+search for files by their attributes. To find a file by name, you can run `find
+myfolder -name filename`. The filename can also be a pattern with `find`'s
+limited pattern support. For example, you can find files whose names end in
+"ed" by running `find -name "*ed"`. `find` supports many other predicates--you
+should read the man page to get some ideas.
+
+`find` also supports a limited number of operations on the files it finds, such
+as `-delete`. In the event that you want to delete the files matching your
+search, you can add `-delete` to your find command. For more complicated
+actions, the `xargs` program can help you run a command for every file found.
+
+You may have noticed that `find` does not follow the expected short/long flag
+convention, with single and double hyphens, respectively. The simplest, and
+somewhat dissatisfying answer, is that the authors of `find` hand-wrote their
+own argument parser instead of using the more standard `getopt` library. The
+course staff is not sure what sequence of events led to them writing their own
+parser.
+
+#### `sed`
+To replace text and text patterns in files and streams, use `sed`. For example,
+to replace the word "hello" with "goodbye" in a file `original.txt`, use `sed
+'s/hello/goodbye/' original.txt`. This will print the output to `stdout`. To
+replace it in-place, use the `-i` flag. *Note: doing `sed COMMAND original.txt
+> original.txt` will **not** work because the `>` causes the shell to overwrite
+your file before `sed` even runs.* We will talk more about this when we get to
+our section on pipelines.
+
+Although the above usage is probably the majority of use, `sed` supports some
+regular expressions and other commands (other than `s`). Take a look at the
+COMMAND SYNOPSIS section of the `sed` manual pages for more information.
+
+#### `cut`
+If the input data is separated logically into columns, it's possible to use
+`cut` to only print the selected columns. The data need not be space separated;
+it's possible to specify a delimiter.
+
+For example, to print column 2 of a file with comma separated columns, use `cut
+-f2 -d',' myfile`. It's also possible to specify ranges of columns. Read the
+man pages for more information.
+
+#### `sort`
+To sort a file or stream's lines, use `sort`. The default behavior is to sort
+lexicographically--in alphabetical order--so it will not sort numbers as you
+expect. For that, you want `sort --numeric-sort`, or `sort -n`. It also can
+reverse the sorting order with `--reverse`/`-r`.
+
+Depending on your system's implementation, there may be some other fun options,
+such as a stable sort, a merge of two already sorted lists (to be used in merge
+sort), or even sorting in parallel.
+
+#### `head`
+To keep only the first part of a file or stream, use `head`. It is useful for
+examining only the first line of a file, or the first ten lines, or any number
+of lines (`--lines=NUM`, `-nNUM`), really.
+
+#### `tail`
+The opposite of `head`! To keep only the last part of a file or stream, use
+`tail`. It also takes `--lines`/`-n`, but has additional features, too: if the
+file is growing, or there is more information coming in the stream, you can use
+`--follow`/`-f` to make `tail` continually print output.
+
+Software engineers often use `tail -f` to observe a continually growing log
+file, maybe of a server, or a build process.
+
+#### `man`
+To help you make better use of your tools, package maintainers write manual
+pages for their software. To read a manual page for a particular piece of
+software, use `man PROGRAM`, like `man ls`. Some software is available in two
+forms: for example, `printf` is both a program in GNU coreutils and a C
+standard library function. Since the manual pages are separated into sections,
+you can refer to them separately: `man 1 printf` for the coreutils command and
+`man 3 printf` for the stdlib function. To read more about sections, check out
+`man man`.
+
+Manual pages are available in a centralized place (like `/usr/share/man`) for
+package managers and install scripts to write to and you to read from.
+
+#### `ln`
+Create a *symbolic link* to a file, when used with the `--symbolic`/`-s` flag.
+The syntax is the same as `cp`--`ln source destination`--but instead of copying
+a file, it creates a special kind of file at the destination that forwards all
+accesses to the source. Symbolic links can be created to both files and
+directories, and you can generally treat the link just as you would the
+original file when using it in commands. `ln` with no flags creates *hard
+links*, which are a different and lesser-used type of link that we won't
+discuss in this course.
+
+#### `diff`
+Sometimes you have two files and you don't know if they are different. Or
+perhaps you know that they are different and you don't know what is different
+about them. The `diff` command will print out a list of differences between two
+files (or directories) in a regular format:
+
+```
+LINEcCOL
+< LEFT-FILE-LINE
+---
+> RIGHT-FILE-LINE
+```
+
+It also changes status code depending on the result: 0 if the same, 1 if
+different. This can be useful in shell scripts, so you can do things like `diff
+fileA fileB || echo "different"` or `diff fileA fileB && echo "same"`. We will
+have more about this coming up in our section on pipelines.
+
+#### `which`
+`which` helps find commands. If the command exists as a binary, it will tell
+the path. To find all the matching binaries, use `-a`.
+
+While some shells have `which` as a shell built-in, so it can report other
+shell built-ins, Bash uses the system `which` binary instead. Therefore, it is
+unable to report on other built-ins and aliases.
+
+See also the POSIX utility `type`.
+
+#### `top` and `htop`
+`top` and `htop` are interactive commands. Instead of running in a
+pipeline--consuming input from stdin and printing to stdout--they are meant to
+be used directly by the user. `top` prints live statistics about running
+programs, and is helpful for getting an overview of the pressures on your
+system--memory, CPU, etc. `htop` is a colorful variant with some more
+information about individual CPU cores and graphs.
+
+These tools read from `/proc`, which is a virtual filesystem with information
+about processes pretending to be files.
+
+#### `tmux`
+`tmux` is another interactive program. It stands for "terminal multiplexer",
+which is a fancy way of saying that it allows you to run multiple programs in
+the same terminal--kind of like in The Matrix. It is very useful for systems
+administrators to see live updating commands like `top`, some kind of live log,
+and maybe also have an editor running, all at once.
+
+It also allows you to detach and reattach to the session you started, so you
+can persist your work across logins to the homework server. Note that it does
+not survive system restarts.
+
+The keybindings are customizable, so read the manual pages for the default
+bindings.
+
+See also the `screen` command, which is similar.
+
+#### `vi`
+`vi` is a POSIX-specified text editor that is available on almost every system
+you will use. Unlike text editors such as Notepad and Kate, is a *modal*
+editor, meaning that when it is open it is in one of several modes: INSERT,
+NORMAL, etc. The default mode is NORMAL mode, which means that opening it and
+trying to directly start typing will not work. To enter INSERT mode, type
+<kbd>i</kbd>, and to go back to NORMAL mode, type <kbd>Esc</kbd>. To quit Vi,
+type `<kbd>:</kbd><kbd>q</kbd>` in NORMAL mode.
+
+Most newer systems include Vim (Vi-iMproved), instead of plain Vi. Check out
+this [getting started guide](https://learnxinyminutes.com/docs/vim/) to read
+more. We won't get too deep into text editing in this course.
+
+### File ownership and permissions
+Nearly every command we've just shown you manipulates files in some way: some
+read files, some create, delete or move them, and a few (like `sed` and `vi`)
+can write to them as well. So what's stopping you from using these commands to
+alter another user's personal files in their home directory? Or to read a
+confidential system file[^fhs] such as `/etc/shadow`, which holds the hashed
+passwords of users on most Linux systems[^etc-shadow]? Let's see what happens
+when we try!
+
+```
+$ cat /etc/shadow
+cat: /etc/shadow: Permission denied
+$ 
+```
+
+Unlike other files we've seen (e.g. `/comp/50ISDT/examples/file-zoo/file1`),
+`/etc/shadow` can't be read by `cat`. To understand why, you need to understand
+the concept of file *permissions*. Let's take another look at some bits of `ls
+-l` that we glossed over earlier:
+
+```
+$ ls -l /comp/50ISDT/examples/file-zoo/file1 /etc/shadow
+-rw-rw-r--. 1 thebb01 ta50isdt   11 Sep  8 00:16 /comp/50ISDT/examples/file-zoo/file1
+----------. 1 root    root     1195 Dec 20  2019 /etc/shadow
+$ 
+```
+
+You know that the first character in each line indicates the file's type, but
+what about the rest of that field (`rw-rw-r--.` and `---------.`,
+respectively)? These characters encode the file's permissions, which control
+who is allowed to access it and in what ways. The first nine of these
+characters encode nine individual *permission bits*. When all nine bits are
+set, `ls` will show "rwxrwxrwx."[^extra-mode-bits]. If one or more bits are
+unset, the corresponding characters are replaced with a dash, as in
+`rw-rw-r--.`.
+
+So what do these nine bits actually control? As the characters imply, the nine
+bits are split into three groups, each group having a *read* permission (`r`),
+a *write* permission (`w`), and an *execute/traverse* permission (`x`). The
+first of the three groups specifies what the file's *owner* is allowed to do.
+The second specifies what members of the file's *group* are allowed to do. And
+the third specifies what everyone else is allowed to do.
+
+That's a lot of information, so dig into it bit by bit. Let's first talk about
+owners and groups. Every file in Linux has as its owner exactly one user on the
+system. New files are owned by whoever runs the program that creates them
+(except in the case of setuid--see the footnote above). A file's owner can't be
+changed once it's been set, not even by that owner (with one exception,
+described below). `ls -l` shows a file's owner in the third field: the files in
+our example are owned by thebb01 and root, respectively. If you own a file, the
+first group of `rwx` bits tells you how you can access it.
+
+Every file on Linux also belongs to exactly one group. Groups are named, just
+like users, and every user is a member of one or more groups. (You can run
+`groups` to see which groups you're in.) `ls -l` shows a file's group in the
+fourth field. In our example, the files belong to the ta50isdt and root groups,
+respectively. (The group named root is distinct from the user named root.) If
+you are a member of a file's group, the second group of `rwx` bits tells you
+how you can access it.
+
+Finally, if you are neither a file's owner or in its group, the final group of
+`rwx` bits tells you how you can access it.
+
+Let's next talk about the bits themselves. If the group of bits your user is
+subject to has an `r`, it means you can read the file in question (and for
+directories, list their contents). If it has a `w`, it means you can write to
+that file (and for directories, add, remove, and rename the contents). If it
+has an `x` and is for a regular file, it means you can execute that file as a
+program. If it has an `x` and is for a directory, it means you can access files
+within that directory (a.k.a. *traverse* the directory). In the case where you
+can traverse but not read a directory, you aren't allowed to list its contents,
+so you must already know the name of the file you want to access.
+
+The final character in the mode string, if present, indicates that the file is
+subject to extra access checks beyond the user/group/owner permissions just
+described. A `.` indicates that a Linux-specific framework called
+[SELinux](http://www.selinuxproject.org/page/Main_Page), which lets the system
+administrator set access rules on files that even their owner can't change, is
+in use. A `+` usually indicates the presence of an *access control list* (ACL),
+a more granular but infrequently-used way of specifying permissions. We won't
+cover ACLs or SELinux in this course, but you can read `man acl`, `man
+getfacl`, and `man setfacl`, and `man selinux` to learn about them on your own.
+
+We can now go back to our original listing (reproduced below) and make sense of
+it:
+
+```
+$ ls -l /comp/50ISDT/examples/file-zoo/file1 /etc/shadow
+-rw-rw-r--. 1 thebb01 ta50isdt   11 Sep  8 00:16 /comp/50ISDT/examples/file-zoo/file1
+----------. 1 root    root     1195 Dec 20  2019 /etc/shadow
+$ 
+```
+
+We can see that, for `/comp/50ISDT/examples/file-zoo/file1`, its owner
+(thebb01) is allowed to read and write but not execute, members of its group
+(ta50isdt) are allowed to do the same, and everyone else can read but not write
+or execute. But for `/etc/shadow`, no one is allowed to do anything! Not even
+its owner (root) can read or write to it.
+
+This latter setup isn't quite as perplexing as it sounds for two reasons:
+firstly, a file's owner is always allowed to change that file's permissions
+(see `man chmod` for how). So if root wanted to read or write `/etc/shadow`, it
+could first grant itself permissions, then perform the operation, then take the
+permissions away again.
+
+However, it turns out that not even this is necessary, and that's because the
+user root is special. Also known as the *superuser*, root on Linux is a user
+account with ultimate administrative privileges. One of the privileges unique
+to root[^capabilities] is that any file access by root bypasses all permission
+checks: root can read or write any file on the system without having to change
+its permissions first. root is also the only user that can change the ownership
+of an existing file.
+
+Because of all these extra powers, it's incredibly easy to accidentally make a
+system unusable (for example, by deleting core system files) when operating as
+root. As such, most system administrators generally use a standard user account
+and use the `sudo` and `su` commands to run individual commands as root when
+needed. Note that the root *account* has no special relation to the root
+*directory* you learned about last lecture.
+
+[^fhs]: The location of system files is no secret: directories like
+    `/usr/bin/`, and `/etc/` will exist on nearly every Linux system you'll
+    encounter and will contain many of the same files. These common paths are,
+    like POSIX, a historical artifact that was later standardized. The standard
+    was named the [Filesystem Hierarchy Standard
+    (FHS)](https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html), and it
+    defines the paths where different kinds of system artifacts should live.
+    Most Linux distributions--and programs written for Linux--at least loosely
+    respect FHS. (For a fun distro that doesn't, check out
+    [NixOS](https://nixos.org/).)
+
+[^etc-shadow]: See `man 5 shadow` and `man 5 passwd` for more information on
+    these files specifically, and [OWASP's password storage cheat
+    sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)
+    for a decent overview of password hashing in general.
+
+[^extra-mode-bits]: Occasionally, you might see an `s`, `S`, `t`, or `T` in
+    place of an `x`. These characters indicate special behavior of the file
+    beyond its basic permissions. When an `s` replaces an `x` in the owner or
+    group permissions, it means that, when the file is executed, the resulting
+    program will run as its owner or group, respectively, rather than as those
+    of the user who ran it. An `S` indicates the same thing but replaces a `-`.
+    Look up the *setuid* and *setgid* bits for more information on how this is
+    useful.
+
+    When a `t` replaces an `x` or a `T` replaces a `-` in the other permissions
+    for a directory, it means that files inside that directory can be moved or
+    removed by their owner as well as by anyone with write permission for the
+    directory. Normally, only the latter is true.
+
+[^capabilities]: On Linux, the various special powers of the superuser can
+    actually be granted and revoked more granularly using a system called
+    *capabilities* (`man capabilities`), but it's generally still the case that
+    programs run by root have every capability and others don't have any.
