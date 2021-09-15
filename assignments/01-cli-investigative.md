@@ -87,3 +87,12 @@ find! Start your journey in the *entryway*.
 
 Please provide the name of the murderer (and an outline of your investigation)
 as your answer.
+
+## Submitting your work
+
+Please format your answers in a text file, `answers.txt`, split into two
+sections (CaLIsthenics and mystery), and numbered where appropriate.
+
+When you are done, submit your work with `provide comp50isdt
+cli-investigative answers.txt`. You must be logged into the homework server to
+use Provide.
