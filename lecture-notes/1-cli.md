@@ -494,7 +494,7 @@ to prevent processing of one or more characters. The first is to precede any
 character by a backslash `\\`. The backslash causes the character immediately
 following it to be treated as if you'd enclosed it in single quotes. This is
 known as *escaping* that character. Since the backslash needs no closing
-delimiter, it can escape `'` (`\\'`) and even itself ('\\\\')!
+delimiter, it can escape `'` (`\'`) and even itself (`\\`)!
 
 ```
 $ echo \'
