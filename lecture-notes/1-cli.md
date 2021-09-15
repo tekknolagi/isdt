@@ -749,10 +749,10 @@ parser.
 To replace text and text patterns in files and streams, use `sed`. For example,
 to replace the word "hello" with "goodbye" in a file `original.txt`, use `sed
 's/hello/goodbye/' original.txt`. This will print the output to `stdout`. To
-replace it in-place, use the `-i` flag. *Note: doing `sed COMMAND original.txt
-> original.txt` will **not** work because the `>` causes the shell to overwrite
-your file before `sed` even runs.* We will talk more about this when we get to
-our section on pipelines.
+replace it in-place, use the `-i` flag. *Note: doing `sed COMMAND original.txt >original.txt`
+will **not** work because the `>` causes the shell to overwrite your file
+before `sed` even runs.* We will talk more about this when we get to our
+section on pipelines.
 
 Although the above usage is probably the majority of use, `sed` supports some
 regular expressions and other commands (other than `s`). Take a look at the
