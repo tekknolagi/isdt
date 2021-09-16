@@ -871,12 +871,12 @@ See also the `screen` command, which is similar.
 
 #### `vi`
 `vi` is a POSIX-specified text editor that is available on almost every system
-you will use. Unlike text editors such as Notepad and Kate, is a *modal*
+you will use. Unlike text editors such as Notepad and Kate, Vi is a *modal*
 editor, meaning that when it is open it is in one of several modes: INSERT,
 NORMAL, etc. The default mode is NORMAL mode, which means that opening it and
 trying to directly start typing will not work. To enter INSERT mode, type
 <kbd>i</kbd>, and to go back to NORMAL mode, type <kbd>Esc</kbd>. To quit Vi,
-type `<kbd>:</kbd><kbd>q</kbd>` in NORMAL mode.
+type <kbd>:</kbd><kbd>q</kbd> in NORMAL mode.
 
 Most newer systems include Vim (Vi-iMproved), instead of plain Vi. Check out
 this [getting started guide](https://learnxinyminutes.com/docs/vim/) to read
