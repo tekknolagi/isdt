@@ -1036,3 +1036,677 @@ needed. Note that the root *account* has no special relation to the root
     actually be granted and revoked more granularly using a system called
     *capabilities* (`man capabilities`), but it's generally still the case that
     programs run by root have every capability and others don't have any.
+
+## Lecture 3
+Last lecture, we talked about argument parsing and some common tools that
+you'll likely encounter during your illustrious career in computing. This
+lecture, we'll talk about some shell syntax that lets you combine these and
+other tools together in powerful ways. We'll also introduce some more shell
+features that make it easier to find, edit, and run commands.
+
+For a fun bit of history, take a look at [this
+video](https://www.youtube.com/watch?v=tc4ROCJYbm0), which depicts some of the
+original authors of UNIX first introducing concepts we'll cover today.
+
+### More ways to find previous commands
+In our very first lecture, we showed you how you can use the up and down arrow
+keys to cycle through past commands. Although that's probably the most
+commonly-used history navigation shortcut, the shell has other features that
+can make history navigation even more efficient.
+
+The first of these features is *history search*. If you know a piece of a
+command you want to rerun but can't quite remember when you last ran it, press
+<kbd>Ctrl-r</kbd>. You will see your prompt replaced with a new
+``(reverse-i-search)`':`` prompt. Within this prompt, you can type any snippet
+of a command from your history, and Bash will find the most recent command
+matching that snippet. To find older commands matching the same snippet, you
+can keep pressing <kbd>Ctrl-r</kbd>.
+
+Once you've found what you're looking for, you can either run it immediately by
+pressing <kbd>Enter</kbd> or bring it into a normal prompt for editing by
+pressing <kbd>Esc</kbd>, <kbd>Tab</kbd> or a left/right arrow key. If you can't
+find what you're looking for and want to get back to a blank prompt, you can
+always press <kbd>Ctrl-c</kbd>.
+
+The next feature is *history expansion*. Just as Bash expands `~` to your home
+directory, it also expands the special sequence `!!` to the last command you
+ran. You can use this to rerun the last command verbatim (e.g. to repeatedly
+compile a program) or to add something to the beginning or end of it (e.g. to
+rerun the previous command as root with `sudo !!`).
+
+History expansion isn't confined to the last command you ran. Remember the
+history event number in the example shell prompt from Lecture 1?[^ps1] By
+prefixing the history event number of a given command with a single `!`, you
+can rerun that command. Here's an example:
+
+```
+vm-hw03{thebb01}1013: gcc -Wall -Werror -o hello hello.c
+vm-hw03{thebb01}1014: ./hello
+Hello wordl!
+vm-hw03{thebb01}1015: vim hello.c  # fix the typo
+vm-hw03{thebb01}1016: !1013
+gcc -Wall -Werror -o hello hello.c
+vm-hw03{thebb01}1017: !1014
+./hello
+Hello world!
+vm-hw03{thebb01}1018: 
+```
+
+Note that Bash prints a line after each command with a history expansion, prior
+to the command's output, showing what was actually run. This is for clarity and
+also happens with `!!`.
+
+[^ps1]: If the prompt on your local system doesn't have a history event number,
+    you can add one by changing the `$PS1` shell variable. See the PROMPTING
+    section of `man bash` for details.
+
+### Variables in the shell
+We now change focus from shell features that help you run simple commands at an
+interactive prompt to ones that let you express complex relations and
+interdependencies between commands. Although you can use these features
+interactively, they really shine as part of shell scripts (which we'll cover
+next lecture).
+
+Let's start with *variables*. Any programming language needs a way to store
+data, and the shell is no exception. Every running shell holds a set of
+variables, which persist between commands but go away when the shell exits.
+Each variable has a name made up of letters, numbers, and underscores. (By
+tradition, variable names are all uppercase, but this isn't enforced anywhere.)
+To create or change a variable, separate the name and desired value with an
+equals sign (`=`). You must **not** put spaces around the `=`:
+
+```
+$ FOOBAR=somevalue
+$
+```
+
+To read a variable, prefix its name with a dollar sign (`$`) and use it in a
+command:
+
+```
+$ echo $FOOBAR
+somevalue
+$ 
+```
+
+The shell expands `$VARNAME` to the contents of VARNAME, just like it expands
+`~` to your home directory. Variable names can be used inside double quotes but
+not inside single quotes, and the `$` can be escaped with a backslash just like
+any special character:
+
+```
+$ echo $FOOBAR
+somevalue
+$ echo "$FOOBAR"
+somevalue
+$ echo '$FOOBAR'
+$FOOBAR
+$ echo \$FOOBAR
+$FOOBAR
+$ 
+```
+
+Shell variables hold strings. The value you assign to a variable is substituted
+textually when you use that variable in a command. As such, you can put
+variable expansions nearly anywhere:
+
+```
+$ COMMAND=ls
+$ DIRECTORY=/comp/50ISDT/examples/file-zoo/
+$ $COMMAND $DIRECTORY
+directory1  file1  file1-link  file2  file3  missing-link
+$ 
+```
+
+Sometimes, it can be ambiguous where a variable name ends and subsequent text
+begins. In those situations, you can make it clear by enclosing the name in
+curly braces:
+
+```
+$ $COMMAND -l ${DIRECTORY}file3
+-rw-rw----. 1 thebb01 ta50isdt 20 Sep  8 00:24 /comp/50ISDT/examples/file-zoo/file3
+$ 
+```
+
+If you're done with a variable and want to get rid of it, you can use `unset`.
+Note that it's not an error to access a variable that doesn't exist, although
+next lecture we'll show you how to change that to make debugging scripts
+easier:
+
+```
+$ unset FOOBAR
+$ echo "$FOOBAR"
+
+$ 
+```
+
+#### Environment variables
+The variables we created in the preceding example exist only within the shell.
+But Linux itself also has a concept of variables. These variables, called
+*environment variables*, provide another way of passing data to programs. Like
+arguments, environment variables can be read by programs and used to make
+decisions. Unlike arguments, environment variables are passed implicitly: new
+programs automatically inherit the environment of their parent unless the
+parent explicitly decides otherwise. This makes the environment a good place to
+hold system or user configurations that many programs care about.
+
+To see the environment variables in your shell session (which will be inherited
+by any command you run), run `env`:
+
+```
+$ env
+HOSTNAME=vm-hw01
+SHELL=/bin/bash
+USER=thebb01
+PATH=/h/thebb01/local/bin:/comp/105/bin:/comp/105/submit/bin:/usr/lib64/qt-3.3/bin:/usr/condabin:/usr/sup/bin:/usr/bin:/usr/sup/sbin:/usr/sbin:/h/thebb01/bin:/usr/cots/bin:/bin:/opt/puppetlabs/bin
+PWD=/h/thebb01
+EDITOR=vim
+LANG=en_US.UTF-8
+HOME=/h/thebb01
+$ 
+```
+
+The homework server has a much bigger environment than this, but I've omitted
+most of the variables so we can focus on these. Some of these variables hold
+system information: HOSTNAME is the computer's name and LANG is the language
+that programs should prefer. Others hold information about my user: USER and
+HOME are my username and home directory; SHELL is the shell that I use by
+default (but *not* necessarily the currently-running one); EDITOR is my
+preferred text editor. PWD is my working directory and holds the same value
+that `pwd` prints.
+
+Notably, PATH is how the shell knows where to look for commands. Like we
+mentioned in the first lecture, commands without a `/` in their name execute a
+program with a matching name from one of several system directories; PATH holds
+a `:`-separated list of those system directories. In the middle of my PATH, you
+can see `/usr/bin/`, which is where `ls` and most of the other commands we've
+used so far live.
+
+It's no coincidence that `env` formats its output to look like shell variable
+assignments. **Every environment variable is accessible as a shell variable**,
+and you can read and modify them as such:
+
+```
+$ echo "I am $USER, my home is at $HOME, and this place is called $HOSTNAME"
+I am thebb01, my home is at /h/thebb01, and this place is called vm-hw01
+$ 
+```
+
+However, the reverse is not true: a shell variable is not part of the
+environment automatically, but you can add it using `export` (and remove it
+using `export -n`):
+
+```
+$ FOOBAR=somevalue
+$ env | grep FOOBAR
+$ export FOOBAR
+$ env | grep FOOBAR
+FOOBAR=somevalue
+$ 
+```
+
+### Chaining commands together
+Sometimes you'll find yourself with a problem that can't be exactly solved by
+any one program. Luckily, the shell offers a number of powerful operators that
+let you run multiple programs with a single command, connecting the inputs and
+outputs of those programs in various ways. Before we get into the specifics of
+these operators, let's talk about what inputs and outputs a program can have.
+
+There are three ways the shell can send input to a program. We've already
+discussed the first two, arguments and environment variables. The third is
+*standard in* (a.k.a. *stdin*). stdin refers to text that a program reads while
+it's running. For those who've written C++ programs, this is where `cin` gets
+its data from. Many of the commands we've already shown, like `cat` and `grep`,
+will default to reading from stdin if no filename is given as an argument.
+
+There are also three ways a program can send output to the shell--*standard
+out* (a.k.a. *stdout*), *standard error* (a.k.a. *stderr*), and its *exit
+code*. stdout and stderr are both text streams that programs can write to while
+they're running (`cout` and `cerr` in C++), and the contents of both are
+printed to the terminal by default (but we'll see how that can change shortly).
+stdout is used for normal output of a program, such as filenames located by
+`find` or lines matched by `grep`. stderr is reserved for error and diagnostic
+messages, such as those printed when a program doesn't have permission to
+access a file. In the following example, `cat` prints `Hello, world` to stdout
+and `cat: file3: Permission denied` to stderr:
+
+```
+$ cd /comp/50ISDT/examples/file-zoo/
+$ cat file2 file3
+Hello, world
+cat: file3: Permission denied
+$ 
+```
+
+The final way of producing output, the *exit code*, is a number that every
+program returns when it exits. This number is traditionally used to report
+whether the program succeeded, indicated by a value of zero, or failed in some
+way, indicated by any nonzero value. (Individual programs assign their own
+meanings to different failure values.) You don't see the exit code of commands
+you run interactively, as the text they print is usually enough to tell whether
+they succeeded or failed. However, the shell always keeps track of the last
+command's exit code. You can view it through the special shell variable `$?`:
+
+```
+$ cd /comp/50ISDT/examples/file-zoo/
+$ cat file2
+Hello, world
+$ echo $?
+0
+$ cat file3
+cat: file3: Permission denied
+$ echo $?
+1
+$ 
+```
+
+Here, `cat` returned a success code of zero when it completed normally but a
+failure code of one when it couldn't read its input file. You can try out other
+programs on your own to see what codes they return in different situations.
+
+#### `test`
+There is a command, `test`, dedicated to producing error codes for use in
+conditionals. It comes bundled with a bunch of different *predicates*. (A
+predicate is a function that takes an input or multiple inputs and produces a
+boolean result.) If the predicate returns true, the exit code is zero, and if
+it returns false, the exit code is one. This is different from C, where true is
+one, but matches the POSIX convention of returning zero on success.
+
+To test if a string is the empty string `""`--if it has length zero--use `test
+-z "$STRING"`. You might wonder why we've quoted `$STRING` in this example.
+Take a moment to think about what might go wrong if it were left unquoted, then
+check this footnote[^variable-quoting] for the answer!
+
+[^variable-quoting]: If you thought "because it might be a string with spaces
+    and that would expand into multiple arguments to `test`", you are right!
+    Quoting ensures everything in STRING is a single argument to `test`.
+
+```
+$ test -z ""
+$ echo $?
+0
+$ test -z "hello"
+$ echo $?
+1
+$
+```
+
+To test if a string is not the empty string--if it has nonzero length--use
+`test -n "$STRING"`:
+
+```
+$ test -n ""
+$ echo $?
+1
+$ test -n "hello"
+$ echo $?
+0
+$
+```
+
+`test` also provides a string equality predicate. To test if two strings are
+equal, use `test "$LEFT" = "$RIGHT"`. Note that this uses *one* equals sign
+instead of the two you may be used to. To check inequality, use `!=`:
+
+```
+$ test "hello" = "hello"
+$ echo $?
+0
+$ test "hello" = "world"
+$ echo $?
+1
+$
+```
+
+Even though variables are always strings, the text in those variables can
+represent other types of data. To that end, `test` also provides predicates for
+numbers and files. For numbers, use `-lt` for "less than", `-ge` for "greater
+than or equal", and so on (see `help test` for a full listing):
+
+```
+$ test 5 -lt 7
+$ echo $?
+0
+$ test 5 -lt 5
+$ echo $?
+1
+$
+```
+
+To test if a file or directory exists, use `test -e "$FILENAME"`. To test if it
+exists *and is a file*, use `test -f`. To test if it exists *and is a
+directory*, use `test -d`.
+
+#### Running programs sequentially
+Now that we've seen how programs can communicate with the shell, we come to our
+first few shell operators for combining multiple commands into a single, larger
+command. The first of these operators is the semicolon (`;`). By separating two
+commands with `;`, you tell the shell to run the first one followed by the
+second, just as if you'd put them each on their own line. We can use this
+operator to rewrite the last example more concisely:
+
+```
+$ cd /comp/50ISDT/examples/file-zoo/
+$ cat file2 ; echo $?
+Hello, world
+0
+$ cat file3 ; echo $?
+cat: file3: Permission denied
+1
+$ 
+```
+
+As the third command demonstrates, each command in the chain will run
+regardless of whether the one preceding it succeeded or not. This is sometimes
+desirable, as in the case of printing an exit code. But sometimes a later
+command depends on an earlier one, as in the case of making a directory and
+then creating a file there. For situations like this, you can use the `&&`
+operator, which runs the second command only if the first is successful (and
+returns success only if both are). Here, the failure of the second `mkdir`
+prevents `touch file2` from ever running:
+
+```
+$ mkdir dir1 && touch dir1/file1
+$ echo $?
+0
+$ ls dir1
+file1
+$ mkdir dir1 && touch dir1/file2
+mkdir: cannot create directory ‘dir1’: File exists
+$ echo $?
+1
+$ ls dir1
+file1
+$ 
+```
+
+As you might expect, there's also a `||` operator, which runs the second
+command only if the first fails and returns success if either succeeds. You can
+chain as many commands you want together using any of these three operators,
+and they'll be run left-to-right.
+
+#### Pipelines
+The next operator we'll discuss is one of the hallmarks of POSIX shells. It's
+the foundation upon which the [UNIX
+Philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)--to write small
+programs that do one thing well--is built. This operator is known as the
+*pipe*, and it's denoted with a vertical bar (`|`).
+
+When you separate two commands with `|`, the shell connects stdout of the first
+command to stdin of the second, forming a *pipeline*. Pipelines can be
+arbitrarily long, and they let you express complex data processing operations
+in terms of the basic operations provided by individual programs.
+
+To illustrate this, let's build a pipeline to find which header file in
+`/usr/include/` has the most lines. (`/usr/include/` is the standard location
+for system headers like `stdio.h`.) We'll start with a command to find all the
+header files in the directory. We learned about `find` last lecture, so let's
+use that:
+
+```
+$ find /usr/include/ -type f -name '*.h'
+/usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlib.h
+/usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlibrgb.h
+/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-loader.h
+/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-autocleanups.h
+<lots more lines>
+$ 
+```
+
+Here, we're looking for files in `/usr/include/` whose name ends in `.h`. As
+you can see, there are lots of them. We're using `find` instead of `ls` because
+`find` also looks in subdirectories.
+
+The next thing we'll do is count the number of lines in each file. We know that
+`wc` can count lines in a file, but there's a problem: `wc` as we've used it so
+far wants filenames as arguments, but if we add it to our pipeline it will get
+the list of files on stdin instead. As it happens, however, `wc` has an
+alternate mode that does nearly what we need[^files-as-args]. From its man
+page:
+
+>     --files0-from=F
+>            read input from the files specified by NUL-terminated names in
+>            file F; If F is - then read names from standard input
+
+[^files-as-args]: If you ever encounter a command that doesn't have such a mode
+    and can only take filenames as arguments, worry not! There is a special
+    tool called `xargs` (`man xargs`) designed specifically for using such
+    tools in pipelines. In the case of piping from `find` specifically, you can
+    also use `find`'s `-exec` flag (`man find`).
+
+By passing `--files0-from=-`, we can have `wc -l` read a list of files to count
+from standard in! "NUL-terminated" is a concept you'll see often when dealing
+with pipelines containing filenames: POSIX tools typically operate on a
+line-by-line basis, but this becomes problematic when working with filenames,
+since filenames are allowed to contain newlines[^filename-chars]. To work
+around this issue, many programs that read or write lists of files offer an
+alternate mode where each entry is separated by the unprintable character `\0`,
+which can't occur in filenames. As luck would have it, `find` offers such a
+mode with its `-print0` flag.
+
+[^filename-chars]: And a lot of other unexpected characters, unfortunately.
+    Don't treat your filenames as nicely encoded strings; instead, treat them
+    as byte arrays.
+
+Adding this flag to our `find` invocation and piping into `wc` yields the
+following:
+
+```
+$ find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l
+92 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlib.h
+233 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlibrgb.h
+119 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-loader.h
+37 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-autocleanups.h
+<lots more lines>
+83 /usr/include/netrom/netrom.h
+70 /usr/include/H5Object.h
+4233248 total
+$ 
+```
+
+We've made some progress! Now every filename is preceded by its line count.
+(Note that this command may take a while to run, since `wc` has to read
+thousands of files.)
+
+Wait a minute, though--what's this `4233248 total` line? That's not a file
+ending in `.h`! As it turns out, `wc` prints a total line count at the end of
+its output, and there's no flag to disable it. Such an inconvenience is no
+match for the power of pipelines though: we can use `head -n -1` (note: `-1`,
+not `1`) to discard the last line of output from `wc`[^annoying-edge-case]:
+
+```
+$ find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l | head -n -1
+92 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlib.h
+233 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlibrgb.h
+119 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-loader.h
+37 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-autocleanups.h
+<lots more lines>
+83 /usr/include/netrom/netrom.h
+70 /usr/include/H5Object.h
+$ 
+```
+
+[^annoying-edge-case]: Unfortunately, this has an annoying edge case. If `find`
+    produces zero or one filenames to pass to `wc`, `wc` won't print the
+    `total` line. And in the general case, we can't use `grep -v` to filter out
+    lines that contain `total` either, since a file could be named `total`. In
+    this case, however, we're exclusively looking for files that end in `.h`,
+    so adding `grep -v 'total$'` to the pipeline would be a more robust
+    solution.
+
+But how do we pick the biggest one out of this list? We haven't learned about
+any utility to do this directly, but we have learned about `sort`, which can
+ensure that the biggest number is at one end of the list. Let's sort the list
+such that the biggest number is on top:
+
+```
+$ find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l | head -n -1 | sort -rn
+4233248 total
+40496 /usr/include/php/Zend/zend_vm_execute.h
+20054 /usr/include/opencv2/ts/ts_gtest.h
+19634 /usr/include/epoxy/gl_generated.h
+19455 /usr/include/openblas/lapacke.h
+<lots more lines>
+$ 
+```
+
+Now we have the line we care about at the very top, and all we have to do is
+get rid of all the other uninteresting lines. For that, let's again use `head`:
+
+```
+$ find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l | head -n -1 | sort -rn | head -n 1
+40496 /usr/include/php/Zend/zend_vm_execute.h
+$ 
+```
+
+It would probably be fine to call the pipeline finished at this point, but if
+we really want we can also get rid of the line count and leave just the
+filename using `cut -d' ' -f2`. The `-d` stands for `--delimiter`, which in our
+case is a space, and the `-f` stands for `--fields`, where we specify that we
+only want field number 2. (The fields are 1-indexed.)
+
+```
+$ find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l | head -n -1 | sort -rn | head -n 1 | cut -d' ' -f2
+/usr/include/php/Zend/zend_vm_execute.h
+$ 
+```
+
+And we're done! By combining six commands, we answered our question, and we now
+have a pipeline skeleton that can be modified in minor ways to answer all sorts
+of related questions, too. (What about the top 5 longest files? Top 10
+shortest? And so on.) Hopefully, this example illustrated some of the
+flexibility the pipe operator brings.
+
+### Redirection
+One limitation of pipelines is that they write their final output to the
+terminal. In the case of our example above, that's fine because the output is
+just one file. But what if we wanted to save a report of how many lines were in
+each header file at a given time? On the homework server, `find /usr/include/
+-type f -name '*.h' -print0 | wc --files0-from=- -l` outputs over 18,000 lines,
+so manually retyping, or even copy/pasting, the output would not be fun.
+
+The shell's *redirection* operators can help in situations like this. `>`, the
+output redirection operator, saves stdout to a given file. Similarly, `<`, the
+input redirection operator, copies a file's contents to stdin.
+
+Let's split our pipeline from above into two commands using redirection:
+
+```
+$ find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l >header-line-counts
+$ ls
+header-line-counts
+$ cat header-line-counts
+92 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlib.h
+233 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlibrgb.h
+119 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-loader.h
+37 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-autocleanups.h
+<lots more lines>
+$ head -n -1 <header-line-counts | sort -rn | head -n 1 | cut -d' ' -f2
+/usr/include/php/Zend/zend_vm_execute.h
+$ 
+```
+
+The filename always goes after the redirection character, meaning the arrow
+points in the direction data flows. For output redirection (`>file1`) , the
+file gets written and so the arrow points towards it. For input redirection
+(`<file1`), the file gets read and so the arrow points away from it.
+
+Be careful with the filenames you specify for output redirection! If you
+redirect into a file that  already exists, that file's contents will be
+completely replaced with no warning! **Output files are overwritten before the
+command runs, so a command like `sed 's/a/b/' file1 >file1` will empty your
+file!** There is a variant of output redirection, `>>`, that appends to a file
+that already exists instead of overwriting it.
+
+You may have noticed that the last command in our example can be written
+without input redirection at all, as `head -n -1 header-line-counts | sort -rn
+| head -n 1 | cut -d' ' -f2`. This is indeed true, and it's why you'll see
+output redirection used a lot more than input redirection: most tools can read
+from a filename given as an argument, so input redirection is usually
+unnecessary.
+
+Output redirection, like pipelines, only redirects stdout by default. stderr is
+still sent to the terminal so you can see errors and so that the output file
+doesn't contain error messages that might confuse a later tool. If you have
+reason to redirect stderr, you can do it with `2>`. (2 is the number POSIX
+assigns to stderr; 1 is stdout, so `1>` is the same as `>`.)
+
+### Job control
+One thing common to every command you've seen so far is that, once you run it,
+you can't run anything else until it finishes and the shell prints a new
+prompt. In fact, we told you that this was core to how shells work when we
+talked about REPLs in Lecture 1.
+
+As it turns out, though, Bash and other POSIX shells provide a way to opt out
+of this behavior. By suffixing a command with an ampersand (`&`), you can tell
+Bash to start that command and then immediately print a new prompt without
+waiting for it to finish. Although it's hard for us to show this in a pasted
+transcript, you can try it out for yourself using the `sleep` command! `sleep`
+takes a number as its only argument and waits that many seconds before exiting.
+Try running `sleep 3`; you'll see that it takes three seconds for a new prompt
+to appear. Now try running `sleep 3 &`; this time, a new prompt should appear
+immediately and you'll see a message like this:
+
+```
+[1] 8328
+```
+
+This message is from the shell's *job control* subsystem, which is responsible
+for keeping track of and reporting the state of *background jobs* like the one
+you just created. It includes two pieces of information: the first, `[1]` is
+the *job ID* that the shell assigned the newly-created job. The second piece of
+information, `8328`, is the *process ID* of the command you just
+ran[^process-ids].
+
+Once a job is in the background, it will run to completion on its own time. You
+will be able to see its output[^interspersed-output], but you won't be able to
+give it input because anything you type will go to the shell or foreground job
+instead. You can bring the last background job you ran back into the foreground
+by typing `fg`, at which point it will accept input again.
+
+You can also move foreground jobs to the background. To do this, first press
+<kbd>Ctrl-z</kbd>. This will temporarily pause the job and bring you back to a
+prompt. You can then either leave the job stopped until you bring it back to
+the foreground with `fg` or tell it to continue as a background job with `bg`.
+
+To see a list of jobs that haven't finished yet, use the built in `jobs`
+command:
+
+```
+$ jobs
+[1]+  Running                 sleep 3 &
+$ 
+```
+
+Each line shows the ID, state ("Running" or "Stopped") and command for a single
+job. The last and second-to-last jobs to run are annotated with `+` and `-`,
+respectively. When a background job finishes, the job control subsystem will
+notify you of that fact by printing a message following much the same format
+before your next prompt:
+
+```
+[1]+  Done                    sleep 3
+$ 
+```
+
+The `fg`, `bg`, and `jobs` commands can all take a *job specifier* as an
+optional argument, which if present will tell them which job to act on. `%%`
+and ``%+`` both refer to the current job, while `%` followed by a job ID refers
+to that job. For more ways to refer to a given job, as well as details on how
+Bash leverages features of the Linux kernel to implement job control, see the
+JOB CONTROL section of `man bash`.
+
+[^process-ids]: Process IDs (a.k.a. PIDs) are what the Linux kernel uses to
+    keep track of running programs, and every program you run (regardless of
+    `&`) has one. The shell prints the PID prominently for background jobs
+    because commands that aren't part of the shell don't know about job IDs but
+    might still want to interact with the process as it runs.
+
+[^interspersed-output]: If you run a background job that prints output, that
+    output will end up interspersed with the output of whatever's in the
+    foreground. This can be confusing, especially if you're running something
+    that expects to have full control of the terminal, like vi, in the
+    foreground. To prevent this, you can redirect the background job's output
+    to a file. *Tip:* the special file `/dev/null` will discard any data
+    written to it and so can be a redirection target for output you don't care
+    about.

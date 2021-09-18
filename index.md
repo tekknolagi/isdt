@@ -66,7 +66,7 @@ Piazza.
 | Week   | Tuesday | Thursday |
 | ----   | ------- | -------- |
 |  1     | *Sep 7*<br />*No class* | *Sep 9*<br />Course Administrivia &amp; [CLI 1: Intro to Linux and the shell](lecture-notes/1-cli/#lecture-1) |
-|  2     | *Sep 14*<br />[CLI 2: Quoting, common tools, and permissions](lecture-notes/1-cli/#lecture-2)<br/>[Homework 1](assignments/01-cli-investigative/) out | *Sep 16*<br />CLI 3: Advanced shell features |
+|  2     | *Sep 14*<br />[CLI 2: Quoting, common tools, and permissions](lecture-notes/1-cli/#lecture-2)<br/>[Homework 1](assignments/01-cli-investigative/) out | *Sep 16*<br />[CLI 3: Advanced shell features](lecture-notes/1-cli/#lecture-3) |
 |  3     | *Sep 21*<br />CLI 4: The shell as a programming language | *Sep 23*<br />CLI 5: Behind the scenes<br />Homework 1 due; Homework 2 out |
 |  4     | *Sep 28*<br />CLI 6: Linux and POSIX | *Sep 30*<br />VCS 1: Intro to version control<br /> Homework 2 due |
 |  5     | *Oct 5*<br />VCS 2: Intro to Git and the structure of a repo | *Oct 7*<br />VCS 3: Collaboration with Git<br />Homework 3 out |
