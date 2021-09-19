@@ -722,6 +722,8 @@ could search `grep "myfunction(.*)"`, which would look for a call to
 "myfunction" with any number of characters between parentheses. This is called
 a regular expression search.
 
+<!-- TODO: Link to more info on regexes -->
+
 Sometimes you might want to find all the lines that do *not* contain a pattern,
 because the pattern is very frequent. In this case you can do `grep -v
 "pattern" file`, where `-v` stands for "invert".
@@ -1304,6 +1306,8 @@ $
 Here, `cat` returned a success code of zero when it completed normally but a
 failure code of one when it couldn't read its input file. You can try out other
 programs on your own to see what codes they return in different situations.
+
+<!-- TODO: Move this section to the next lecture -->
 
 #### `test`
 There is a command, `test`, dedicated to producing error codes for use in
