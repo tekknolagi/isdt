@@ -872,6 +872,8 @@ bindings.
 
 See also the `screen` command, which is similar.
 
+<!-- TODO: Talk about `less` -->
+
 #### `vi`
 `vi` is a POSIX-specified text editor that is available on almost every system
 you will use. Unlike text editors such as Notepad and Kate, Vi is a *modal*
