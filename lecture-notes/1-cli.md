@@ -77,9 +77,10 @@ the homework servers are in a small minority of Linux systems that are not
 configured to use Bash by default. Instead, they default to a non-POSIX shell
 called tcsh for historical reasons that we are not privy to. tcsh's prompt on
 the servers looks identical to Bash's, so `bash --login` won't appear to have
-any effect when you run it. However, if you don't do so, tcsh will interpret
-your commands, meaning much of the more advanced syntax we cover will result in
-error messages or unexpected behavior.
+any effect when you run it. You can run `echo $0` (which will make more sense
+after lecture 4) to check which shell you're using. If you don't switch to
+Bash, tcsh will interpret your commands, meaning much of the more advanced
+syntax we cover will result in error messages or unexpected behavior.
 
 [posix-scl]: https://pubs.opengroup.org/onlinepubs/9699919799.2018edition/utilities/V3_chap02.html
 

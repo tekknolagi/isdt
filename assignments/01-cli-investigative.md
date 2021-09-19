@@ -11,8 +11,8 @@ in [lecture](../lecture-notes/1-cli.html). The Tufts CS department's default
 shell for new users is tcsh, so unless you've asked to have yours
 changed[^change-shell], you'll need to run `bash -l` *each time you connect to
 the server prior to working on coursework*. Your prompt won't look any
-different after running this command, so don't worry if it appears to have done
-nothing.
+different after running this command, but you can run `echo $0` to check which
+shell you're using.
 
 [^change-shell]: On most Linux systems, you can use the `chsh` command to
     change your own shell, but this method doesn't work on the Tufts homework
