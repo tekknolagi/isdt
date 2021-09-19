@@ -1241,6 +1241,9 @@ However, the reverse is not true: a shell variable is not part of the
 environment automatically, but you can add it using `export` (and remove it
 using `export -n`):
 
+<!-- TODO: Mention why quoting variable substitutions is good practice, and
+quote all examples -->
+
 ```
 $ FOOBAR=somevalue
 $ env | grep FOOBAR
