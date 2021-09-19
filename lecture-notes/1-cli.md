@@ -1117,7 +1117,7 @@ equals sign (`=`). You must **not** put spaces around the `=`:
 
 ```
 $ FOOBAR=somevalue
-$
+$ 
 ```
 
 To read a variable, prefix its name with a dollar sign (`$`) and use it in a
@@ -1328,7 +1328,7 @@ $ echo $?
 $ test -z "hello"
 $ echo $?
 1
-$
+$ 
 ```
 
 To test if a string is not the empty string--if it has nonzero length--use
@@ -1341,7 +1341,7 @@ $ echo $?
 $ test -n "hello"
 $ echo $?
 0
-$
+$ 
 ```
 
 `test` also provides a string equality predicate. To test if two strings are
@@ -1355,7 +1355,7 @@ $ echo $?
 $ test "hello" = "world"
 $ echo $?
 1
-$
+$ 
 ```
 
 Even though variables are always strings, the text in those variables can
@@ -1370,7 +1370,7 @@ $ echo $?
 $ test 5 -lt 5
 $ echo $?
 1
-$
+$ 
 ```
 
 To test if a file or directory exists, use `test -e "$FILENAME"`. To test if it
