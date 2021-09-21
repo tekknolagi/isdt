@@ -873,6 +873,7 @@ bindings.
 See also the `screen` command, which is similar.
 
 <!-- TODO: Talk about `less` -->
+<!-- TODO: talk about `uniq` -->
 
 #### `vi`
 `vi` is a POSIX-specified text editor that is available on almost every system
