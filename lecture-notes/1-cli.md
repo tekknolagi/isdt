@@ -1159,9 +1159,25 @@ variable expansions nearly anywhere:
 ```
 $ COMMAND=ls
 $ DIRECTORY=/comp/50ISDT/examples/file-zoo/
-$ $COMMAND $DIRECTORY
+$ "$COMMAND" "$DIRECTORY"
 directory1  file1  file1-link  file2  file3  missing-link
 $ 
+```
+
+Because of this direct textual expansion, **variable names should almost always
+be used inside double quotes**. Consider what would happen if the variable
+contained a string with spaces! Well, we're right back to our old
+"hello"/"hello world"/"world" example from before:
+
+```
+$ cd /comp/50ISDT/examples/file-zoo/directory1/
+$ FILENAME="hello world"
+$ cat $FILENAME
+1
+2
+$ cat "$FILENAME"
+3
+$
 ```
 
 Sometimes, it can be ambiguous where a variable name ends and subsequent text
@@ -1169,7 +1185,7 @@ begins. In those situations, you can make it clear by enclosing the name in
 curly braces:
 
 ```
-$ $COMMAND -l ${DIRECTORY}file3
+$ "$COMMAND" -l "${DIRECTORY}file3"
 -rw-rw----. 1 thebb01 ta50isdt 20 Sep  8 00:24 /comp/50ISDT/examples/file-zoo/file3
 $ 
 ```
@@ -1241,9 +1257,6 @@ $
 However, the reverse is not true: a shell variable is not part of the
 environment automatically, but you can add it using `export` (and remove it
 using `export -n`):
-
-<!-- TODO: Mention why quoting variable substitutions is good practice, and
-quote all examples -->
 
 ```
 $ FOOBAR=somevalue
@@ -1324,13 +1337,7 @@ it returns false, the exit code is one. This is different from C, where true is
 one, but matches the POSIX convention of returning zero on success.
 
 To test if a string is the empty string `""`--if it has length zero--use `test
--z "$STRING"`. You might wonder why we've quoted `$STRING` in this example.
-Take a moment to think about what might go wrong if it were left unquoted, then
-check this footnote[^variable-quoting] for the answer!
-
-[^variable-quoting]: If you thought "because it might be a string with spaces
-    and that would expand into multiple arguments to `test`", you are right!
-    Quoting ensures everything in STRING is a single argument to `test`.
+-z "$STRING"`.
 
 ```
 $ test -z ""
