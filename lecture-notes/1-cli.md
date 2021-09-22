@@ -1728,3 +1728,566 @@ JOB CONTROL section of `man bash`.
     to a file. *Tip:* the special file `/dev/null` will discard any data
     written to it and so can be a redirection target for output you don't care
     about.
+
+## Lecture 4
+
+### Command substitution
+Last lecture, you saw how the shell will substitute a variable name, like
+`$FOOBAR`, with that variable's value when you use it as part of a command.
+Another similar feature, *command substitution*, lets you include a program's
+standard output as part of a command. To do so, put the command you want to run
+inside the parentheses in `$()`[^backtick-substitution]. For example:
+
+```
+$ echo "The last word in the dictionary is $(tail -n 1 /usr/share/dict/words)."
+The last word in the dictionary is ZZZ.
+$ 
+```
+
+Here, we asked the shell to run `tail`, which extracted the last line of
+`/usr/share/dict/words`[^words-file], and substituted its output directly into
+a string that then got passed to `echo` for printing.
+
+Like variable substitutions, command substitutions can and should be put inside
+double quotes but don't work inside single quotes. The risk of using an
+unquoted command substitution is the same: if the command's standard output
+contains spaces, it will be treated as multiple words by the shell unless
+quoted.
+
+You can use all the syntax you've learned so far inside a command substitution,
+just as if you were writing a standalone command. For example, we can pass the
+output of last week's whole shell pipeline to `head`:
+
+```
+$ head "$(find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l | head -n -1 | sort -rn | head -n 1 | cut -d' ' -f2)"
+/*
+   +----------------------------------------------------------------------+
+   | Zend Engine                                                          |
+   +----------------------------------------------------------------------+
+   | Copyright (c) 1998-2013 Zend Technologies Ltd. (http://www.zend.com) |
+   +----------------------------------------------------------------------+
+   | This source file is subject to version 2.00 of the Zend license,     |
+   | that is bundled with this package in the file LICENSE, and is        |
+   | available through the world-wide-web at the following url:           |
+   | http://www.zend.com/license/2_00.txt.                                |
+$ 
+```
+
+[^backtick-substitution]: An alternate way to do the same thing is to put the
+    command name between backticks (``` `` ```). You may see this style in old
+    shell scripts, but it's rarely used in new scripts because it's not
+    nestable.
+
+[^words-file]: `/usr/share/dict/words` comes with most Linux distributions and
+    holds a list of commonly-used English words. It's used by some programs for
+    spell checking, so onomatopoeias like "ZZZ" are included.
+
+### Glob patterns
+We spoke about patterns briefly in Lecture 2 when describing arguments for
+tools like `grep` and `sed`. Those tools incorporate extremely powerful (and
+confusing) regular expression languages that allow you to express a huge
+variety of different patterns. What we have not discussed yet is the shell's
+own less-powerful (and less-confusing) pattern language.
+
+The piece of this language you'll see used most often is the `*` character. If
+you include it in a word, the shell will interpret that word as a file path
+where the `*` represents any set of zero or more characters. Such a pattern is
+known as a *wildcard* or *glob*, and, if any files match it, the shell will
+substitute it with *all* of them:
+
+```
+$ cd /comp/50ISDT/examples/file-zoo/
+$ ls
+directory1  file1  file1-link  file2  file3  missing-link
+$ echo *
+directory1 file1 file1-link file2 file3 missing-link
+$ echo file*
+file1 file1-link file2 file3
+$ 
+```
+
+You can see that `echo *` behaves much the same as ls with no arguments, as it
+matches all files in the current directory. (`*`, like ls, doesn't match files
+beginning with `.` by default.)
+
+Unlike variable and command substitutions, `*` does not work inside either
+single or double quotes. However, you don't need to worry about quoting it, as
+it will correctly handle the expansions of paths containing spaces even when
+unquoted:
+
+```
+$ ls -l directory1/hello*
+-rw-rw-r--. 1 thebb01 ta50isdt 2 Sep  8 00:43 directory1/hello
+-rw-rw-r--. 1 thebb01 ta50isdt 2 Sep  8 00:43 directory1/hello world
+$ 
+```
+
+Globs behave somewhat unexpectedly when they don't match anything: instead of
+expanding to an empty string as you might expect, they remain completely
+unchanged! You should be careful of this behavior when writing scripts.
+The`shopt -s nullglob` or `shopt -s failglob` commands make the behavior more
+consistent; consider using one of these in conjunction with `set -euo pipefail`
+(see below) when writing glob-heavy scripts:
+
+```
+$ echo foobar*
+foobar*
+$ shopt -s nullglob
+$ echo foobar*
+
+$ shopt -s failglob
+$ echo foobar*
+-bash: no match: foobar*
+$ echo "foobar*" # Quotes still prevent processing
+foobar*
+$ 
+```
+
+### Shell scripts (and when not to use them!)
+As we've hinted, typing commands at a prompt isn't the only way to use Bash.
+You may sometimes find yourself in a situation where you frequently rerun the
+same sequence of commands, perhaps with minor variations. Or perhaps you want
+to let others run those commands without having to remember them or understand
+exactly how they work. This is where *shell scripts* come in.
+
+A shell script is a text file containing commands. When you ask the shell to
+run a script, it interprets and executes each line in sequence, just as if
+you'd typed the lines one after another at a prompt. You've already seen shell
+variables, and we'll learn about a number of other shell features today--like
+conditionals, loops, and functions--that give shell scripts a similar level of
+expressiveness to normal programming languages like C, C++, or Python.
+
+Before we talk about those features, though, a word of warning: although you
+can in theory solve any programming problem with a shell script, that doesn't
+mean you *should*. The shell lacks a number of features, like data types and
+variable scoping, that are crucial to writing scalable and maintainable
+programs, and as such any shell script that grows past a few tens of lines
+quickly becomes incomprehensible. Shell scripts work best as lightweight "glue"
+between other software that already exists.
+
+If you find yourself wanting to do any of the following things in a shell
+script, there's a good chance that your problem has outgrown the capabilities
+of the shell. In these cases, you should move at least part of your solution
+into its own program written in some other language:
+
+#### Non-textual I/O
+Not all software deals with text. If you need to process structured data that's
+kept in a binary format (i.e. not something you can process using tools like
+`cut` and `grep`), pick another language. If you have input or output that
+can't be represented as text (e.g. audio or image data), pick another language.
+
+#### External libraries
+Shell scripts excel at interacting with command-line programs. Pipelines,
+redirection, and argument substitution make shell scripts the easiest way to
+solve problems in terms of programs that already exist. But if you need to
+interact with a piece of software that *isn't* exposed through a command-line
+utility--for example, a database like PostgreSQL or MariaDB[^db-clis]--pick
+another language.
+
+[^db-clis]: Both these databases do actually come with command-line tools, but
+    those tools are designed for administrators to interactively configure and
+    debug the database and don't provide a means for efficiently running
+    queries and returning data in a format easily usable by scripts.
+
+#### Graphics
+Graphical user interface (GUI) libraries like Qt and GTK provide bindings for
+languages like C, C++, and Python that allow you to build complex visual
+interfaces with buttons, lists, tables, and images. These libraries, like the
+databases mentioned above, are not directly accessible via shell scripts. In
+general, if your program needs to use the mouse, pick another language.
+
+*Tip:* If you need to work with images, videos, or other binary data, pick a
+language with a good binary data library. People often reach for C or C++ in
+these cases, but languages like Python and Erlang provide just as good (and
+sometimes better) tooling! People use both format-specific libraries (such as
+libjpg, for working with JPGs) and format-agnostic libraries (like Python's
+`struct` module or Erlang's binary pattern matching).
+
+#### Data structures
+Even if your data is textual, you should probably pick another language if you
+need to store and later query that data as opposed to processing it all in one
+pass like a pipeline does. Because shell variables aren't typed, you can't
+build any of the data structures you might have learned about in CS 15 in a
+shell script. The best you can do is organize your data as files on disk.
+Languages like Python and Ruby, on the other hand, likely have the data
+structures you need built-in. And if they don't, you can build those
+structures.
+
+#### Complex logic
+If you need to do math, nest conditionals more than a couple levels deep, or
+express any logic more complex than a few `if` statements, pick a different
+language. The shell is fine for simple string and numeric comparisons, but
+larger boolean expressions get tricky fast. There's a reason that compile-time
+type checking, run-time type errors, and the like exist in other programming
+languages: they help people catch bugs. We'll talk more in depth about this in
+our last module.
+
+If you find yourself writing a bunch of logic in Bash, stop. Think hard about
+the problem you're trying to solve. Does a command-line tool exist that can
+solve that problem for you? If so, run it from your script instead of
+implementing the logic yourself. If not, consider writing such a command-line
+tool in something like C++ or Python for your script to run.
+
+### Creating and running scripts
+Let's make a first shell script. Open up your editor and type the following
+into a file. Say, `myscript.sh`:
+
+```bash
+echo "Hello, world!"
+echo "I am in a script and I am being run by $USER."
+```
+
+Save it. If you try and run it like a program you compiled in your CS courses
+-- by running `./myscript.sh` -- you will get the following error:
+
+```
+bash: ./myscript.sh: Permission denied
+```
+
+This is because you don't have execute (`x`) permission on the file, which you
+can verify with `ls -l`. If you would like to execute the script without
+execute permission, you will have to explicitly run the program using another
+program that has execute permission... like a shell. Try running `bash
+myscript.sh`.
+
+If you add execute permissions (`chmod +x myscript.sh`), you will be able to
+run your script using `./myscript.sh`. But what shell is running this file? We
+will find out more about this later (or read ahead to the `#!`
+section).[^shell-complication]
+
+[^shell-complication]: As it turns out, if you run your executable script with
+    `./myscript.sh` and there is no shebang, the kernel will refuse to execute
+    it. However, your shell (Bash, Zsh, whichever) can choose to execute it if
+    the kernel refuses. Bash and Zsh both make a guess if the file is a shell
+    script and attempt to execute it with either Bash or Zsh, respectively. So
+    it's a one- and sometimes two-step dance.
+
+#### Comment your code
+Bash scripts, as we mentioned, are harder to write and read than programs in
+other programming languages. Make sure to comment on the intent of any
+particularly tricky areas. Comments begin with the `#` character and continue
+until the end of the line.
+
+```bash
+# I am a comment
+echo "foo" # I am another comment
+```
+
+### Control flow in the shell
+So, you've chosen to use Bash to solve your problem; after you pass this class,
+we'll trust your judgement. Let's learn the missing pieces of shell syntax
+needed to write programs! Most of these will be familiar from CS 11, so we'll
+focus more on "how" than on "why" for each.
+
+In this section, we'll try to stick to syntax that's part of POSIX, so that
+your programs don't depend on Bash specifically. Bash does actually have some
+non-POSIX features that address a few of the limitations we mentioned in the
+last section, but those features aren't nearly enough to make it competitive
+with a language like Python. As such, we believe that all our advice above
+still stands and that, if you find yourself reaching for a Bash-specific
+feature, you probably shouldn't be using a shell script in the first place.
+
+#### if
+
+The basic structure for `if` statements in Bash is as follows:
+
+```bash
+if CONDITION; then
+  CONSEQUENT
+elif OTHER-CONDITION; then
+  OTHER-CONSEQUENT
+else
+  ALTERNATIVE
+fi
+```
+
+As with other programming languages, the `elif` (else if) and `else` components
+are optional. So the minimal `if` statement would look like:
+
+```bash
+if CONDITION; then
+  CONSEQUENT
+fi
+```
+
+Any command can be a condition, and its exit code will determine As we talked
+about earlier, you can use programs like `test` for your conditions. For
+example, to check if two strings are equal, you can use:
+
+```bash
+if test "$LEFT" = "$RIGHT"; then
+  echo "they are the same"
+fi
+```
+
+POSIX also provides a more natural-looking way of doing conditionals in your
+program. POSIX defines `test` to be equivalent to `[`, so you can instead
+write:
+
+```bash
+if [ "$LEFT" = "$RIGHT" ]; then
+  echo "they are the same"
+fi
+```
+
+Note that the spaces around the braces `[` and `]` are required, just as they
+are for any command--`[` is just a regular command with an unusual name:
+
+```
+$ ls -l /bin/\[
+-rwxr-xr-x 1 root root 59736 Sep  5  2019 '/bin/['
+$ 
+```
+
+(Though it is often implemented as a shell built-in, too.)
+
+#### Loops
+Because a programming language wouldn't be complete without a friendly loop,
+Bash includes not one but several looping constructs. In this section, we will
+present `while`, `for`, and `until`. These can be used like other programming
+languages' loop constructs, but they can also be used in conjunction with
+pipelines.
+
+Let us begin with the `while `loop. The basic structure for `while` in Bash is
+as follows:
+
+```bash
+while CONDITION; do
+  LOOP-BODY
+done
+```
+
+All of the same kinds of conditions you might use with `if` work with `while`,
+too.
+
+For example, to count up to four from zero, you can do:
+
+```bash
+i=0
+while [ "$i" -lt 5 ]; do
+  echo "$i"
+  i="$(($i+1))"
+done
+```
+
+The `$(($i+1))` is yet another type of expansion, called an *arithmetic
+expansion*. The shell will evaluate whatever's between the set of double
+parentheses as a mathematical expression and substitute the result. We won't
+cover this in detail, as you should in general avoid arithmetic in shell
+scripts, instead delegating to other commands when possible. For example, a
+command called `seq` can replace our whole loop:
+
+```bash
+seq 0 4
+```
+
+These scripts are equivalent. In fact, `seq` is even more flexible, allowing
+you to format the numbers, choose a separator, and pad with leading zeroes. It
+also supports an arbitrary increment. Go check out the manual page for more
+information.
+
+Now, onto `for` loops. Unlike in C, POSIX `for` loops do not have the `for
+(INIT; CONDITION; POST)` structure. They are instead based on iterating over
+sequences and are of the form:
+
+```bash
+for VAR in SEQUENCE; do
+  LOOP-BODY
+end
+```
+
+Let's take a look at an example:
+
+```bash
+for i in $(seq 99 -1 1); do
+    echo "$i bottles of beer on the wall..."
+done
+```
+
+Note that in this case the command substitution is **not quoted** because we
+want to treat every separate line from `seq` as a different input to the for
+loop.
+
+In this case, the sequence is a newline-separated list of numbers counting down
+from 99 to 1. The `for` loop binds each number to the variable `$i` for use in
+the body, and we sing a little song.
+
+Last, POSIX specifies a funny little loop called `until`. This is an inverted
+`while` loop, so instead of using the negation operator `!` to write something
+like:
+
+```bash
+while ! CONDITION; do
+  LOOP-BODY
+done
+```
+
+we can instead use:
+
+```bash
+until CONDITION; do
+  LOOP-BODY
+done
+```
+
+This is intended to remove visual clutter. The course staff has not often seen
+it used in real-world shell scripts, however.
+
+You can also [pipe to
+loops](https://unix.stackexchange.com/questions/7011/how-to-loop-over-the-lines-of-a-file/580545#580545),
+but that is outside the scope of this course's material and definitely falls
+into a "more advanced shell scripting" course.
+
+#### Defining functions
+It may be the case that you require a level of abstraction in your shell
+scripts that is somewhere between 1) writing a whole other shell script to call
+from your main script and 2) copy/pasting lines of code. For this, Bash allows
+you to define functions of your own. The syntax is rather terse:
+
+```bash
+FN-NAME () {
+  FN-BODY
+}
+```
+
+There are no static types. There are no argument declarations. Despite this,
+functions can read arguments from the special shell variables `$0` to `$N`,
+where `N` is a [rather large
+number](https://stackoverflow.com/a/22747030/569183). For argument indices
+larger than 9, however, you must use curly braces, like `${10}`.
+
+Here is a function to write a greeting to the person specified:
+
+```bash
+greet() {
+    echo "Welcome to CS 50ISDT, $1!"
+}
+```
+
+Function invocations look like normal command invocations -- unlike other
+programming languages, parentheses are not required:
+
+```bash
+greet "max"
+# => Welcome to CS 50ISDT, max!
+```
+
+Now that you are an expert shell script programmer (TM), you may find it
+educational to take a look at some of the shell scripts on your system and
+figure out what they do. To do that, we can list all of the available shell
+scripts and pick randomly:
+
+```
+$ grep -lrF '#!/bin/sh' /usr/bin > scripts.txt
+<you may see some permissions errors>
+$ vim $(sort -R scripts.txt | head -n 1)
+<vim opens>
+$
+```
+
+How long is the script? Is it well-commented? Does it follow the shell best
+practices we outline here?
+
+### Error handling (`set -euo pipefail` is your friend)
+Error handling in shell scripts is somewhat fraught. Normally in a programming
+language when there is an error, you find out right away -- or it is explicitly
+squashed. For example, in C, your program might segfault. Or, if you are
+luckier, it might print an error message and `exit()`. Or in C++, Python, and
+other programming languages that support it, it might raise an exception.
+
+In Bash, by default, things just kind of go... sideways. Exit codes are the
+only method of error reporting, and you have two standard options: zero and
+non-zero. But a non-zero error code does not necessarily meant that a command
+has *failed*, and that the error should be propagated up the call stack.
+
+Consider the case of searching for a string with `grep`. If a match is found,
+`grep` will exit with 0. If a match is not found, `grep` will exit with 1. You
+probably don't want your shell script crashing if a match is not found, so the
+shell surfaces that exit code for use in conditions. And that's it.
+
+Unfortunately, the same happens for commands that really truly have an error,
+like reading from a file that does not exist. If the entirety of your shell
+pipeline, for example, relies on reading from a file called `contact-list`, and
+that does not exist, the shell will happily continue trying to execute the rest
+of your shell script anyway--often with unexpected results.
+
+Fortunately, there is a *magic incantation* you can put at the top of your
+shell scripts: `set -euo pipefail`. This magic incantation is not actually
+magic, but instructs your shell to enter a particular mode. We'll go over it
+piece by piece.
+
+First, `set -e` exits the shell immediately if a command exists with a non-zero
+exit code. This helps avoid the aforementioned fiasco.
+
+Second, `set -u` changes the default behavior of reading undefined variables.
+By default, reading from an undefined variable returns the empty string, but
+with `set -u`, this is treated as an error. This enforces some amount of rigor
+for ensuring your variables are defined.
+
+Third, `set -o pipefail` causes pipelines to exit early if an intermediate
+command fails. The exit code of the whole pipeline is set to the exit code of
+the failed command. This helps `set -e` work in more cases; otherwise, a broken
+pipeline would not cause the entire shell script to exit early.
+
+All of these put together produce: `set -euo pipefail`.[^setx]
+
+[^setx]: There is another helpful option, `set -x`, that prints out every
+    command before it exits, including from invoked functions. This is useful
+    for debugging, or if you feel particularly nosy.
+
+We have listed one common incantation to ease your shell script debugging, but
+we have certainly not listed all of the available options to `set`. There are
+more options; check out the manual page.
+
+These options are useful both for you, the novice shell programmer, and for
+professionals. Recently, the video game launcher Steam had [a shell script
+bug](https://www.theregister.com/2015/01/17/scary_code_of_the_week_steam_cleans_linux_pcs/)
+that destroyed data in rare cases.
+
+### `#!` lines and how the kernel interprets them
+As we mentioned earlier, file extensions have little meaning on a Linux system.
+Linux reads, writes, and executes files of every extension identically;
+extensions, when present, only offer a hint to human readers about what's
+inside.
+
+This makes file types seem unknowable. So how does anyone get anything done if
+every file is completely opaque?
+
+As it turns out, not all is lost, and files are not as opaque as they seem.
+There is a notion of "magic numbers" (see `man magic`) that file formats can
+use to identify themselves to external viewers. For example, the magic number
+for executable files on Linux (ELF) is hex `7f 45 4c 46`, or `7f` followed by
+"ELF". This allows utilities like `file` (`man file`) to figure out if a file
+is an ELF binary or not, from looking at the first couple of bytes[^kind-of].
+
+[^kind-of]: This is still just a guess, but it is a more educated guess. You
+    could very well decide to write those bytes into a file and use them for
+    some other purpose -- bytes are bytes are bytes are bytes, after all. But
+    it is a *convention* to use these bytes to denote an ELF binary.
+
+There is another kind of magic number, hex 23 21 ("#!", pronounced any number
+of ways, but commonly "shebang" or "hash bang"), that denotes that a file is a
+script. It *does not* mean that the file is necessarily a *shell* script, but
+instead allows the programmer to specify an arbitrary interpreter for that
+particular file.
+
+For example, if you execute a file with `./myscript`, and it begins with
+`#!/bin/bash`, that means that the file should be treated as a Bash script and
+executed using `/bin/bash`. It is executed as if you manually typed `/bin/bash
+./myscript`. If a file starts with `#!/usr/bin/python`, the file should be
+treated as a Python script and executed using the specified Python interpreter.
+
+The [Linux kernel reads the shebang](
+https://github.com/torvalds/linux/blob/d4d016caa4b85b9aa98d7ec8c84e928621a614bc/fs/binfmt_script.c#L34)
+and the interpreter. Then, it runs the interpreter with the file as an
+argument. Magic.
+
+You may be wondering: but what do Bash and Python do about the line with the
+funny `#` character? Why isn't that a syntax error? For both of those
+languages, `#` denotes the beginning of a comment, which is ignored.
+
+### Shellcheck
+You may find [Shellcheck](https://www.shellcheck.net/) helpful. It statically
+analyzes your shell scripts for potential bugs and lets you know about the
+problems. We will talk more about tools like this in the fourth module,
+Correctness.
