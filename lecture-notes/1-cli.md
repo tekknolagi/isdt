@@ -1430,7 +1430,7 @@ $ echo $?
 $ ls dir1
 file1
 $ mkdir dir1 && touch dir1/file2
-mkdir: cannot create directory ‘dir1’: File exists
+mkdir: cannot create directory 'dir1': File exists
 $ echo $?
 1
 $ ls dir1
