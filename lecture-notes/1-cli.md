@@ -2093,7 +2093,7 @@ sequences and are of the form:
 ```bash
 for VAR in SEQUENCE; do
   LOOP-BODY
-end
+done
 ```
 
 Let's take a look at an example:
