@@ -46,7 +46,7 @@ syllabus for an example) with each:
 4. The website for this course, among other things, lives in our directory at
    `/comp/50ISDT/`. Take a look around! What's the password?
 5. How can you make `cat` number each line in a file? (Answer this question
-   without using your browser, please!)
+   without referencing the internet, please!)
 6. Files inside the special filesystem `/dev/` are used to communicate with the
    Linux kernel. Choose a file that looks interesting inside `/dev/` and tell
    us what it's for. You are free to use Google or any other internet or
