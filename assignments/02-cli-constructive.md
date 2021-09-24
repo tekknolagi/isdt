@@ -151,3 +151,96 @@ Please submit your two files, `whats-new.sh` and `myls.c`, with `provide
 comp50isdt cli-constructive whats-new.sh myls.c`. You must be logged into the
 homework server to use Provide.
 
+## Just for fun...
+**At this point, you are done with the assignment. You need not read anything
+past this point if you don't want to.** However, if you're looking for a
+challenge, or if you want to learn some tricks involving syscalls and shared
+libraries in Linux, feel free to take a stab at the following. Expect to do a
+lot of Googling here, as we have not taken care to define every term we use.
+
+### Step 1: use `LD_PRELOAD` to intercept `opendir`
+`opendir()` and `readdir()` are not themselves syscalls; instead, they're
+functions in the C standard library that invoke syscalls. When you run myls, it
+loads the implementations of those functions from a *shared object* containing
+the C standard library. (This shared object is generally located at
+`/usr/lib/libc.so.6` on GNU/Linux systems.)
+
+In this exercise, you'll use a fun feature of the GNU dynamic loader (whose job
+it is to load shared objects at runtime) to *replace* the system's
+implementation of `opendir()` with one you write yourself. To do this, you'll
+set an environment variable named `LD_PRELOAD` to the path of a shared object
+you write yourself in C.
+
+When `LD_PRELOAD` is set, the loader looks in that library first for *any*
+library function your program uses. So, by setting it to a library you write
+containing a function named `opendir`, you can have your own code run when myls
+(or any other program!) calls `opendir()`.
+
+Here's how to compile a shared library that contains functions from a source
+file named `shim.c` and run myls with that library preloaded:
+
+```
+$ clang -shared -fpic shim.c -o shim.so
+$ LD_PRELOAD="$(pwd)/shim.so" ./myls
+<...>
+$ 
+```
+
+Please note that the `$(pwd)/` is *essential*, as `LD_PRELOAD` does not allow
+relative paths.
+
+Try creating a shim with an `opendir` implementation that first prints to the
+terminal its `name` argument and then calls the real libc version of `opendir`,
+returning its result so that programs like myls still get what they asked for.
+Calling the real version of `opendir()` is a bit tricky, since the name
+`opendir()` now refers to your shim. You can get around this using a function
+called `dlsym` (see `man dlsym`).
+
+When you run myls with this shim, you should see the path of the directory
+you're listing printed out before the rest of its output. This is your shim's
+code running when myls initially calls `opendir()`!
+
+### Step 2: cover your tracks
+Spoiler alert: David Knifehands did *not* kill Alexander Henshawe. But you've
+just heard that he's been framed by the real murderer, and the authorities are
+after him! You have to save Dave by hiding the evidence before he's caught by
+Mike Bauer & co, our eagle-eyed sysadmins. Mike will go spelunking through the
+directory tree (using system ls, not myls), looking for clues like a murder
+weapon.
+
+For inexplicable reasons, Mike will load your shim when he runs `ls`. In order
+to interfere with his investigation, you must use your new `LD_PRELOAD` skills
+for good. This time, instead of just logging a function call, you'll alter the
+results!
+
+Change your shim to intercept `readdir()` instead of `opendir()`, then see if
+you can write an implementation of `readdir()` that skips returning any
+directory entries that contain the word "trapdoor". That is, if ls (or myls)
+would normally produce[^different-layout]:
+
+```
+carpet
+trapdoor
+another-trapdoor-wow
+table
+```
+
+Instead, it should now produce:
+
+```
+carpet
+table
+```
+
+Good luck!
+
+[^different-layout]: This example has a slightly different directory listing
+    than the actual directories from the murder mystery, but it is only meant
+    to be illustrative.
+
+### Step 3: try it with other binaries
+What happens when you run `find`, `tree`, `grep -r`, or some other command that
+does directory traversals? Does your shim work? How do you know?
+
+For example, try `LD_PRELOAD="$(pwd)/shim.so" tree
+/comp/50ISDT/murder-mystery/`.
