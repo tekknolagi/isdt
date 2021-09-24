@@ -127,6 +127,14 @@ program directly using syscalls. Specifically, you'll probably want to use
     pages are for library calls (C functions). There is also a section for
     POSIX specifications, section 3p.
 
+These functions can return a whole host of different errors in different
+conditions. If any of them returns a value that signals an error (check the man
+page for each one), you should print a helpful error message and exit
+immediately with a nonzero exit code.[^perror]
+
+[^perror]: We won't require you to use it, but you may find the `perror`
+    function (`man 3 perror`) helpful.
+
 You can start with the following skeleton, or you can write your own:
 
 ```c
