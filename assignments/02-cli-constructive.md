@@ -47,9 +47,9 @@ have been added to a directory since its most recent snapshot.
 
 Your script, named `whats-new.sh`, should take as its only argument a path to a
 directory to find new files in. If the argument is missing or does not point to
-a directory with snapshots, your script should print an error message and exit
-with a nonzero exit status. (The `exit` command immediately exits a shell
-script and takes the exit status as an argument.)
+a directory that has been snapshotted, your script should print an error
+message and exit with a nonzero exit status. (The `exit` command immediately
+exits a shell script and takes the exit status as an argument.)
 
 If the argument is valid, your script should compare the contents of the
 directory with the contents of the most recent snapshot. We define the *most
