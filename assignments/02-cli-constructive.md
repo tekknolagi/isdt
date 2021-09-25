@@ -6,7 +6,7 @@
 ## `whats-new.sh`: finding newly-added files on the homework server
 The server that Tufts uses to host home directories has a special feature to
 help prevent data loss: in every directory, the server adds a hidden, read-only
-directory named `.snapshot`. Inside `.snapshot` is a set of directories with
+directory named `.snapshot/`. Inside `.snapshot/` is a set of directories with
 names like `daily.2021-09-22_0010`. Each of these directories holds a copy of
 the contents of the original directory from a certain point in time.  Take a
 moment to SSH to the server and see for yourself!
@@ -18,12 +18,12 @@ that happen more frequently are also deleted more aggressively, meaning that
 the granularity of snapshots goes down the further you go back.
 
 Note that, to prevent overwhelming tools that recursively traverse a directory
-tree, the `.snapshot` directory only shows up in listings (`ls -a`) in your
+tree, the `.snapshot/` directory only shows up in listings (`ls -a`) in your
 top-level home directory. However, it is also present in every subdirectory if
 you specifically ask for it:
 
 ```
-$ ls -a Documents/  # No .snapshot listed!
+$ ls -a Documents/  # No .snapshot/ listed!
 .  ..  do-not-read  top-secret-file
 $ ls Documents/.snapshot/
 daily.2021-09-19_0010             every_four_hours.2021-09-23_1205
@@ -38,10 +38,10 @@ $
 ```
 
 This is not a standard feature of Linux or POSIX--it's specific to the network
-servers that Tufts uses. Nevertheless, `.snapshot` can be very useful when you
+servers that Tufts uses. Nevertheless, `.snapshot/` can be very useful when you
 accidentally remove or overwrite an important file and want to get the old
 version back. (In the next module, we'll learn about version control systems,
-which are like `.snapshot` but supercharged.) In this part of the assignment,
+which are like `.snapshot/` but supercharged.) In this part of the assignment,
 you'll write a shell script that automates the process of finding what files
 have been added to a directory since its most recent snapshot.
 
@@ -61,7 +61,7 @@ that are directly contained within it.
 In other words, you do not need to show new hidden files (ones that start with
 `.`), nor do you need to recurse into subdirectories. You may do either of
 these if you so choose, however. (If you do decide to handle hidden files, try
-to not list `.snapshot` itself as a new file!)
+to not list `.snapshot/` itself as a new file!)
 
 Your output should take the form of a list of new files, one per line. These
 should be valid paths relative to the given directory (so either `file1` or
