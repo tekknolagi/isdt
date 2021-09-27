@@ -3,6 +3,17 @@
 
 # Homework 2: CLI, Constructive
 
+## What counts as a "file"?
+Both pieces of this assignment ask you to print a list of files. The word
+"file" is often used to refer specifically to a *regular file*, which is the
+"normal" kind of file that holds data and shows up in `ls` with a type of `-`.
+However, the strict POSIX definition of "file" encompasses not only regular
+files but also directories, symlinks, devices, and every other thing that can
+go inside a directory. For this assignment, we are referring to the POSIX
+definition whenever we say "file." Your implementations of `whats-new.sh` and
+`myls.c` should consider directories, symlinks, and all other types of file
+when producing their output.
+
 ## `whats-new.sh`: finding newly-added files on the homework server
 The server that Tufts uses to host home directories has a special feature to
 help prevent data loss: in every directory, the server adds a hidden, read-only
@@ -55,8 +66,8 @@ If the argument is valid, your script should compare the contents of the
 directory with the contents of the most recent snapshot. We define the *most
 recent snapshot* as the one with the highest timestamp in its name, regardless
 of whether it's `daily`, `weekly`, or something else. We define the *contents*
-of a directory as all the non-hidden files (including directories and links)
-that are directly contained within it.
+of a directory as all the non-hidden files (see note above) that are directly
+contained within it.
 
 In other words, you do not need to show new hidden files (ones that start with
 `.`), nor do you need to recurse into subdirectories. You may do either of
@@ -103,10 +114,10 @@ running on a POSIX system. Nearly all C library functions have their own man
 pages; don't be afraid to use them!
 
 Your program, `myls.c`, should take as its only argument a path to a directory
-and print the name of each file inside that directory, one per line. You may or
-may not include files starting with `.` at your discretion. If your program is
-run without a directory name or the given name is not a directory, your program
-should print an error and return a nonzero exit code.
+and print the name of each file (see note above) inside that directory, one per
+line. You may or may not include files starting with `.` at your discretion. If
+your program is run without a directory name or the given name is not a
+directory, your program should print an error and return a nonzero exit code.
 
 Internally, GNU's implementation of `ls` calls the `readdir()` function from
 libc. `readdir()` behaves as a transparent wrapper around the `readdir`
