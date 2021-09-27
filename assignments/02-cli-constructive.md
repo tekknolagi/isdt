@@ -3,7 +3,7 @@
 
 # Homework 2: CLI, Constructive
 
-## What counts as a "file"?
+## Note: what counts as a "file"?
 Both pieces of this assignment ask you to print a list of files. The word
 "file" is often used to refer specifically to a *regular file*, which is the
 "normal" kind of file that holds data and shows up in `ls` with a type of `-`.
