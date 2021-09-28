@@ -55,6 +55,8 @@ syllabus for an example) with each:
    files. Although file extensions (like `.txt` and `.jpg`) have no intrinsic
    meaning on Linux, many configuration files in `/etc/` have them anyway.
 
+   <!-- TODO: We should clarify if "files" here includes directories. -->
+
    Write a shell pipeline that prints the top ten most frequently occurring
    extensions of files inside `/etc/`, taking the "extension" to be the part of
    a file's name that occurs after the final `.` character. Your count should
