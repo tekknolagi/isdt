@@ -1955,6 +1955,8 @@ run your script using `./myscript.sh`. But what shell is running this file? We
 will find out more about this later (or read ahead to the `#!`
 section).[^shell-complication]
 
+<!-- TODO: Mention that Windows line endings will stop scripts from working -->
+
 [^shell-complication]: As it turns out, if you run your executable script with
     `./myscript.sh` and there is no shebang, the kernel will refuse to execute
     it. However, your shell (Bash, Zsh, whichever) can choose to execute it if
