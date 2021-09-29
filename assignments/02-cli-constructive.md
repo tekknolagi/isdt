@@ -74,10 +74,11 @@ In other words, you do not need to show new hidden files (ones that start with
 these if you so choose, however. (If you do decide to handle hidden files, try
 to not list `.snapshot/` itself as a new file!)
 
-Your output should take the form of a list of new files, one per line. These
-should be valid paths relative to the given directory (so either `file1` or
-`./file1` is acceptable). You may find the `comm` utility useful in generating
-this list; see `man comm`.
+Your output should be a list of files that are present in the directory but not
+in the snapshot, one per line. In other words, print out the files that have
+been added since the snapshot was taken. These should be valid paths relative
+to the given directory (so either `file1` or `./file1` is acceptable). You may
+find the `comm` utility useful in generating this list; see `man comm`.
 
 Please include a `#!` line at the beginning of your script that indicates it
 should be executed with either `/bin/sh` or `/bin/bash`. (`/bin/sh` points to
