@@ -46,7 +46,7 @@ Hebb](https://tchebb.me/)
 **Teaching Assistants:** Dana Estra, Lexi Galantino, David Gantt  
 
 **Office Hours:** Mondays 6:00p-7:15p ET, Wednesdays 8:00p-9:15p ET; extra
-hours to be announced on Piazza  
+hours to be announced on Piazza  (access via Canvas)
 **Discussion board:** [Piazza](https://piazza.com/tufts/fall2021/cs50isdt)  
 
 **Prerequisites:** CS 15 or permission of instructor  
