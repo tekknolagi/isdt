@@ -2138,6 +2138,27 @@ loops](https://unix.stackexchange.com/questions/7011/how-to-loop-over-the-lines-
 but that is outside the scope of this course's material and definitely falls
 into a "more advanced shell scripting" course.
 
+#### Referring to script arguments
+Scripts can read arguments from the special shell variables `$0` to `$N`, where
+`N` is a [rather large number](https://stackoverflow.com/a/22747030/569183).
+For argument indices larger than 9, however, you must use curly braces, like
+`${10}`.
+
+For example, the following script:
+
+```bash
+# myscript.sh
+echo "$1, world!"
+```
+
+can will print out "Hello, world!" when run like so:
+
+```
+$ bash myscript.sh Hello
+Hello, world!
+$
+```
+
 #### Defining functions
 It may be the case that you require a level of abstraction in your shell
 scripts that is somewhere between 1) writing a whole other shell script to call
