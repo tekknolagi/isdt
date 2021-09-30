@@ -2314,3 +2314,325 @@ You may find [Shellcheck](https://www.shellcheck.net/) helpful. It statically
 analyzes your shell scripts for potential bugs and lets you know about the
 problems. We will talk more about tools like this in the fourth module,
 Correctness.
+
+## Lecture 5
+
+**Note: these lecture notes are incomplete and will be updated soon**
+
+### The POSIX programming interface
+
+So far in this module, we've shown you how to use the POSIX shell and utilities
+to work with files, build pipelines, and run programs from the command line. As
+we mentioned last lecture, though, there are many problems that the shell isn't
+well-suited to solving. When you encounter one of these problems, you may
+decide to solve it by writing your own tool in a language like C, C++ or
+Python. But what if you need to run a program from your tool? Or list a
+directory? Or create a symlink? While you now know how to do these things from
+the command line, you may not know how to do them from programs you write.
+
+In this lecture, we'll show you a set of POSIX APIs that tools like ls, cat,
+and the shell itself use under the hood, and we'll show you how to use those
+APIs in your own programs to interact with POSIX concepts like files, streams,
+and processes. We'll also talk about how those APIs are exposed in various
+higher-level programming languages.
+
+The volume of POSIX we mentioned in Lecture 1 is titled "Shell & Utilities,"
+and it specifies much of the command-line interface you've just seen. This
+lecture, we'll concern ourselves with a different volume, titled "[System
+Interfaces][posix-si]." This volume defines a set of *system calls* (a.k.a.
+*syscalls*) that a POSIX-compliant operating system kernel must provide to
+programs running on top of that kernel.
+
+[posix-si]: https://pubs.opengroup.org/onlinepubs/9699919799.2018edition/functions/V2_chap02.html#tag_15_01
+
+### What is a kernel?
+
+An *operating system kernel* (*kernel* for short) is a piece of software,
+generally written in C, that's loaded into memory at all times your computer is
+running. The job of a kernel is to mediate access to shared hardware resources,
+including processor (CPU) cores, memory, disks, network interfaces, and other
+peripherals like keyboards and mice. Every modern operating system has a
+kernel, and it's the first thing that runs when the operating system starts.
+
+The defining feature of a kernel is that it runs in *kernel mode*, which is a
+generic term[^cpu-architectures] for a processor state that allows access to
+pieces of the hardware that normal programs (which are said to run in *user
+mode*, also known as *userspace*) can't interact with directly.
+
+For example, code running in kernel mode is allowed to configure the Memory
+Management Unit (MMU), a translation layer inside the processor that can reject
+or rewrite any memory access the processor makes. Whenever the kernel passes
+control to a userspace program, it first configures the MMU to hide any memory
+regions that belong to other programs, to hardware[^mmio], or to the kernel
+itself. Since the program runs in user mode, it's stuck with this MMU
+configuration and has no way to read or write the hidden memory regions.
+
+This is one example of how the kernel uses its special privileges to ensure
+that a single buggy or malicious program can't take the entire system down.
+Another example, which you've already worked with extensively, is the
+filesystem. Files and directories are a creation of the kernel, designed to
+impose structure and ownership on the billions of identical bytes that make up
+a hard drive. By using those bytes to represent a tree of distinct objects,
+each with its own name, attributes, and permissions, the kernel allows the disk
+to be shared between programs with no risk of unwanted interference.
+
+All the programs you've used, like the shell and utilities, are userspace
+programs. But that doesn't mean you haven't interacted with the kernel. Every
+time one of those programs accesses a file, prints output, reads input, sets up
+a pipe, or executes another program, the kernel is what performs that
+operation. And the list doesn't stop there.
+
+[^cpu-architectures]: Each processor *architecture* has its own terminology for
+    execution states like kernel and user mode. AMD64, the architecture that
+    processors from Intel and AMD implement, calls kernel mode "protection ring
+    0" and user mode "protection ring 3." ARMv8, the architecture that
+    processors from Qualcomm, Samsung, Apple, and many others implement, calls
+    kernel mode "EL1" and user mode "EL0." (Both these architectures also have
+    extra, even-more-privileged modes that can be used to run a *hypervisor*. A
+    hypervisor is a kernel that mediates hardware access between other kernels
+    instead of between userspace applications. This is how virtual machines
+    work.)
+
+[^mmio]: Devices like disk controllers, GPUs, and network cards are generally
+    accessed by reading and writing to special address ranges, separate from
+    the ones that correspond to RAM. The MMU lets a kernel wall these address
+    ranges off from userspace programs in exactly the same way it walls off
+    forbidden areas of RAM.
+
+### System calls
+
+A program asks the kernel to do these things by making a system call. The exact
+mechanism by which a syscall happens depends on your computer's processor
+architecture, but the effect is always the same: the syscall causes the
+processor to switch from user mode to kernel mode and run a piece of the kernel
+known as the *syscall handler*. The syscall handler has access to a set of
+parameters passed by the program, the first of which it uses to determine which
+syscall to run and to find the C function in the kernel that implements that
+syscall. Any arguments to the function are set from the other userspace
+parameters. Once the syscall implementation returns, the handler saves its
+return value somewhere the program can see, switches back to user mode, and
+resumes the program.
+
+Syscalls in many ways resemble C function calls: they take arguments, return a
+value, and invoke a specific piece of functionality. But, unlike functions,
+syscalls are part of the kernel: they run in kernel mode, can see the kernel's
+memory, can access hardware, and are implemented by the kernel, not by the
+program that calls them.
+
+Because syscalls are part of the kernel, they adhere to the kernel's security
+and synchronization guarantees. For example, the `open` syscall defined by
+POSIX (which we'll dive into with an example shortly) validates that the
+program calling it has permission to access the file it's asking for. If not,
+it returns a failure code[^kernel-exploit]. TODO: add some sentences
+
+[^kernel-exploit]: If you manage to find a way to alter the kernel's code or
+    data either before it gets booted or while it's running, you could remove
+    this permission check, at which point the syscall would happily read the
+    contents of *any* file for you, regardless of whether your process has
+    permission. Because of this, kernel bugs that allow programs to run code in
+    kernel mode are some of the most severe security vulnerabilities that can
+    exist.
+
+As we mentioned, POSIX specifies a set of syscalls that compliant kernels must
+implement. Examples of such kernels are Linux, XNU (macOS's kernel), and BSD.
+Software written to run on one of these kernels can usually be compiled to run
+on a different one with minimal code changes[^homebrew]. That's only if the
+software restricts itself to POSIX syscalls, though: software that relies on
+kernel-specific syscalls (or proprietary userspace libraries) isn't so easy to
+port[^graphics-support].
+
+This interface is also what Microsoft implemented when they built the first
+version of [Windows Subsystem for
+Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux). Although the
+current version, WSL2, runs a Linux kernel in a virtual machine, the first
+version exposed POSIX syscalls straight from the Windows kernel (which is named
+NT), letting it run Linux applications natively.
+
+[^graphics-support]: For example, nearly every modern kernel provides a set of
+    syscalls to draw arbitrary pixels to the screen. Generally, these syscalls
+    are paired with complex graphics and windowing libraries in userspace that
+    let programs present a GUI. But POSIX predates graphical interfaces,
+    meaning there's no standardization of this functionality across POSIX
+    operating systems. TODO ... If you want to write a cross-platform graphical
+    application, you should use a library like [Qt](https://www.qt.io/) or
+    [GTK](https://www.gtk.org).
+
+[^homebrew]: [Homebrew](https://brew.sh/) is a project that takes advantage of
+    this fact to make a number of tools that were originally written for Linux
+    available on macOS.  Example: what does it take to read a file?  It's easy
+    to talk in the abstract about what a kernel does,
+
+We'll illustrate this point with an example. The `cat` utility uses three
+syscalls: one to open the file it's given, one to read from that file, and one
+to write the contents to standard out. Let's focus on the first two of these,
+as the filesystem abstraction is one of the core interfaces a kernel provides.
+Let's talk about some of the things your kernel has to do to complete those two
+syscalls, and why those things couldn't be done by `cat` itself:
+
+Firstly, the kernel needs to figure out where the file being read is stored.
+Every file on Linux lives somewhere under `/`, but that does *not* mean that
+every file lives on the same piece of hardware. The filesystem you see on Linux
+can be split across an arbitrary number of physical storage devices, each of
+which is *mounted* at a particular location. (You can run `mount` to see all
+active mounts on a system.) To figure out where to look for a certain file,
+your computer has to split its path into a mount and a path within that mount.
+
+Once it's found the mount, your computer needs to look up what *filesystem*
+that mount uses. This is a different meaning of "filesystem" than before: here,
+we're using it to refer to a scheme for representing a hierarchy of files,
+along with metadata like permissions, in a format suitable for the storage
+device that holds those files. Most filesystems expect a storage device that
+holds a huge linear array of bytes, like a hard drive or SSD (Linux calls these
+"disks"). Examples of filesystems that Linux supports are ext4, FAT, and btrfs.
+Each uses different data structures to represent a file tree.
+
+Your computer then has to traverse the filesystem's data structures to figure
+out exactly which bytes on the disk hold pieces of the file we're `cat`ting.
+But to read those data structures--and the file itself--it needs to know how to
+read data from the disk. This differs based on the specific disk in use. Most
+modern hard drives use a bus called SATA for data transfer, while many SSDs use
+a different bus called NVMe. Flash memory chips on phones use a bus called
+eMMC, except newer ones which use one called UFS. *Bus standards* like these
+specify how data is transferred over one or more physical wires, and there are
+dozens of them. But even knowing a disk's bus isn't enough to read from it, as
+your computer also needs to know which specific instructions or memory regions
+control that bus, and these differ from system to system.
+
+All in all, there are thousands of possible combinations of filesystems, disk
+buses, and bus controllers that a computer might be using, and that's just to
+read a file. Once we add on the extra step of printing `cat`'s output to a
+screen, which involves GPUs, framebuffer devices, and video interfaces, the
+combinations are easily in the millions.
+
+Surely `cat` cannot directly be responsible for this entire chain of
+operations? If it were, that would mean that any programmer who wanted to read
+a file would have to reimplement those operations by reading tens of thousands
+of pages of filesystem specifications and (often confidential) hardware
+documentation. Computing as we know it would be impossible.
+
+Luckily, you as a software engineer don't have to worry about doing any of
+these things on Linux. That's because it's the job of a *kernel* like Linux to
+do nearly everything we've just described for you. Linux exposes a set of
+operations, known as *syscalls*, which programs like cat use to directly
+manipulate abstractions like files. In this case, cat uses the `open()` syscall
+to locate a file and then the `read()` syscall to read data from that file.
+
+Let's take a look at a minimal version of `cat` in C that does not do any error
+checking. We won't use syscalls directly, but instead use a suite of C
+functions specified by POSIX that wrap syscalls. The functions are close enough
+to making an actual syscall that the difference is not worth talking about at
+length.
+
+This program has three parts: first, it opens a file using `open()`. This
+syscall gives you a *file descriptor* -- just a number -- that the kernel can
+use to refer to the file for the duration of your program.
+
+Second, we have a loop. This loop reads chunks from the input file specified by
+the user into an array and then writes those chunks to stdout. C comes with a
+constant called `STDOUT_FILENO` so that the kernel can refer to stdout.
+
+Third, we close the file using `close()`.
+
+```c
+int main(int argc, char *argv[]) {
+  if (argc != 2) return 1;
+  const char *filename = argv[1];
+  int file = open(filename, O_RDONLY);
+  int nread;
+  char buffer[100];
+  while (1) {
+    nread = read(file, buffer, sizeof buffer);
+    if (nread <= 0) break;
+    write(STDOUT_FILENO, buffer, nread);
+  }
+  close(file);
+  return 0;
+}
+```
+
+A fuller version of this program would check for errors when applicable. For
+example, what if the filename the user provided does not correspond to a real
+file? Or you don't have permission to read it? You can read the manual pages to
+learn how these functions surface errors and how to handle them.
+
+### The kernel's responsibilities
+
+* files
+* directories
+* executing things
+* stdin/stdout/stderr
+* pipes
+* processes
+* /dev/ as filesystem
+
+### How a program interacts with the operating system
+
+* syscalls
+* special file accesses (a la /dev/)
+
+### Viewing syscalls with `strace`
+
+It's all well and good to speak in abstract about what system calls do, but
+it's another to see them happen right in front of you. Let's take another look
+at the implementation of `cat` from above:
+
+```c
+int main(int argc, char *argv[]) {
+  if (argc != 2) {
+    return 1;
+  }
+  const char *filename = argv[1];
+  int file = open(filename, O_RDONLY);
+  int nread;
+  char buffer[100];
+  while (1) {
+    nread = read(file, buffer, sizeof buffer);
+    if (nread <= 0) {
+      break;
+    }
+
+    write(STDOUT_FILENO, buffer, nread);
+  }
+  return 0;
+}
+```
+
+We can compile it using `gcc cat.c -o cat` and run it with `./cat somefile`.
+We're telling you that it uses the syscalls `open`, `read`, and `write` to do
+its job, but how can you verify that is what's actually happening?
+
+Thankfully, there is a tool called `strace` that will tell you what syscalls a
+program is making *as it is running*. Let's use it to see what syscalls are
+actually happening. You'll see a lot of output that is not immediately relevant
+to the code above, but occurs when the program is starting up. We have omitted
+that from the snippet:
+
+```
+cedar% strace ./cat somefile
+<other syscalls from process start>
+openat(AT_FDCWD, "somefile", O_RDONLY)  = 3
+read(3, "hello\nworld\nfoo\nbar\n", 100) = 20
+write(1, "hello\nworld\nfoo\nbar\n", 20hello
+world
+foo
+bar
+) = 20
+read(3, "", 100)                    	= 0
+exit_group(0)                       	= ?
++++ exited with 0 +++
+$
+```
+
+Lo! Your program calls `openat`, `read`, and `write`.
+
+strace is a powerful tool for understanding what software is doing. The course
+staff has used it to figure out why a program is hanging -- for example, maybe
+something went wrong with a file read, and `strace` shows it waiting for a
+`read()` to finish.
+
+Some engineers at large tech firms agree that it is useful, but warn that it
+greatly slows down the program it is running. Brendan Gregg, for example,
+[wrote an
+article](https://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html)
+about how slow it can get. For large production workloads, you may want to
+reach for a newer tool like bpftrace.
