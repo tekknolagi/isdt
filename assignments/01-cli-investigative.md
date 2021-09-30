@@ -24,11 +24,11 @@ shell you're using.
 
 ## CaLIsthenics: what's on the homework server?
 
-Many software engineers use the command-line in their day-to-day lives. The
+Many software engineers use the command line in their day-to-day lives. The
 whole "command-line experience" is composed of a bunch of programs, working
 together, to help you solve problems.
 
-Since we're going to be using the command-line frequently in this course,
+Since we're going to be using the command line frequently in this course,
 developing muscle memory is going to be important. Building an intuition for
 what commands to use when will come in handy.
 

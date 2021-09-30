@@ -575,7 +575,7 @@ long listing format. Certain flags require an argument (to the flag!); for
 example, in `gcc -o filename`, `filename` indicates to `-o` where the output
 file should go.
 
-Because command-line users usually value brevity, flags are often written as
+Because command line users usually value brevity, flags are often written as
 just a single (sometimes cryptic) letter or number. Flags like these are by
 convention prefixed with a single dash (`-`) and can often be coalesced
 together behind that dash if you want to specify multiple. For example, a pair
