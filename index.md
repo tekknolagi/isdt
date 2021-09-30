@@ -125,6 +125,11 @@ from examples you find online, given that either 1) you cite your source, or 2)
 the snippet is something that couldn't reasonably be implemented any other way
 (e.g. a call to a Linux API function that we have asked you to use).
 
+To cite your source, leave a reference to it that is enough for the reader to
+easily find the resource. If the source is a webpage, give the full URL. If the
+source is a print book, give the title, author, and edition. Use your common
+sense here.
+
 As a rule of thumb, it's okay to look for resources to answer specific
 questions that come up while you are working on an assignment, but it's not
 okay to look for resources to avoid having to work on the assignment at all.

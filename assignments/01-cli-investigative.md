@@ -48,9 +48,10 @@ syllabus for an example) with each:
 5. How can you make `cat` number each line in a file? (Answer this question
    without referencing the internet, please!)
 6. Files inside the special filesystem `/dev/` are used to communicate with the
-   Linux kernel. Choose a file that looks interesting inside `/dev/` and tell
-   us what it's for. You are free to use Google or any other internet or
-   printed resource, but cite your source.
+   Linux kernel. Choose a file that looks interesting inside `/dev/` (but not
+   one that we have already talked about in class already) and tell us what
+   it's for. You are free to use Google or any other internet or printed
+   resource, but cite your source.
 7. `/etc/` is a standard directory on Linux that contains system configuration
    files. Although file extensions (like `.txt` and `.jpg`) have no intrinsic
    meaning on Linux, many configuration files in `/etc/` have them anyway.
