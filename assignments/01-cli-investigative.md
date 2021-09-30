@@ -40,6 +40,7 @@ syllabus for an example) with each:
 
 1. When you log into the homework server, what directory are you in?
 2. How many files are in your current directory? How many directories?
+   <!-- TODO: Clarify if we want recursive count or not -->
 3. Give a **relative** path that you can use to refer to this course's
    directory, which lives at `/comp/50ISDT/`, while in your home directory.
    Remember that relative paths cannot start with a slash.
