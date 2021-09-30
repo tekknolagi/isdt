@@ -2636,3 +2636,154 @@ greatly slows down the program it is running. Brendan Gregg, for example,
 article](https://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html)
 about how slow it can get. For large production workloads, you may want to
 reach for a newer tool like bpftrace.
+
+## Lecture 6
+
+**Note: these lecture notes are incomplete and will be updated soon**
+
+### Pádraig Brady
+
+Slides [here](https://www.pixelbeat.org/talks/unix_history/coreutils-history.pdf)
+
+### Where can you find command lines?
+
+* General-purpose operating systems
+  * Shells for POSIX operating systems
+  * Shells for Windows
+  * Not much else worth mentioning (Fuschia?)
+* Special-purpose tools
+  * Debuggers: GDB, LLDB
+  * Programming languages: Python, Ruby REPLs
+  * Controlling daemons: bluetoothctl, pacmd
+* Recovery/rescue environments
+  * Linux recovery shell (POSIX-compliant, but minimal set of tools)
+  * GRUB
+  * U-Boot
+* Appliances
+  * Routers/switches
+
+Most command lines have nowhere near the feature set of a POSIX shell and are
+limited to running individual commands with arguments.
+
+Skills won't transfer to any of these, but it's a good bet that typing "help"
+at an unfamiliar command line will give you some information.
+
+### Alternative shells on Linux
+
+Z shell (zsh) is another shell, similar to Bash. It is almost 100% compatible
+syntax with Bash and differs mostly in configuration for interactive features.
+It provides simpler theming and configuration support than Bash does.
+
+Fish is a shell that is *not* POSIX compliant. Its goal is extreme user
+friendliness at the cost of compatibility. It comes with colors, a very helpful
+default prompt, fancy auto completion, and more shell built-ins.
+
+Oil is a new shell written by Andy Chu whose first focus is compatibility with
+Bash and second focus is building a new, better language out of the lessons
+learned. Remember all the shell gotchas? Oil is trying to fix them. It works
+not only on text, but on JSON objects, too.
+
+PowerShell, originally designed for Windows, also runs on Linux and macOS. It
+is a completely different language and works not just on text, but on .NET (a
+runtime by MS) objects.
+
+### Why can these shells run on Linux, BSD, and macOS but not on Windows?
+
+With the exception of PowerShell, these shells will not easily run on Windows.
+It's not because Windows is fundamentally deficient as an operating system, or
+because the programmers turned their noses up at Windows in particular, but
+because the shells are written for an API called POSIX.
+
+We've talked about POSIX before, in particular as a specification for shell
+behavior and C function behavior. Because Linux, the BSDs, and macOS all
+provide these POSIX APIs, the shells can run on them with minimal -- if any --
+changes.
+
+Windows, unfortunately, does not provide this set of APIs specified by POSIX.
+For example, there is no `readdir` function; Windows provides its own API. This
+means that in order to get the shells running on Windows, one of two things
+would have to happen.
+
+The first option is to rewrite each shell to target the Windows APIs. This is a
+hard sell to the developers, since they mostly do not run Windows. Also, it
+would be hard to port the exact behavior expected of the shell given the
+completely different underlying API.
+
+The second option is to provide a POSIX (or POSIX-esque) environment on Windows
+and then target that. This is what projects like Windows Subsystem for Linux
+(WSL) and Cygwin do. While WSL provides a Linux-compatible Application Binary
+Interface (ABI), Cygwin provides a POSIX-compatible *source-level* API.
+
+WSL1 and WSL2 do this differently; WSL1 provides a shim layer while WSL2 runs a
+real lightweight Linux VM.
+
+### How does using the shell on macOS differ from Linux?
+
+Mainly, different directory structure. Directory layout is mostly not specified
+by POSIX and can be vastly different between different OSes.
+
+MacOS puts everything in directories with much friendlier names, like
+`/Users/`, `/Library/`, `/Volumes/`, etc. Application config files can be found
+in `~/Library/Application Support/` (per-user) or `/Library/Application
+Support/` (system-wide).
+
+### The Windows command line (DOS shell, PowerShell) and graphical shell
+
+Take a look at cmd.exe and [Windows
+commands](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands).
+
+Take a look at [PowerShell](https://docs.microsoft.com/en-us/powershell/).
+
+PowerShell is in many ways a much more advanced shell than the POSIX shell.
+After all, it was designed from the ground up circa 2002, while Bash has its
+roots in the original Bourne shell, which first shipped 23 years earlier in
+1979. PowerShell commands (called *cmdlets*) receive and output structured data
+rather than simple text, meaning it can process types of data that are hard to
+represent or delineate as text.
+
+```
+PS> (ls | Sort-Object -Descending -Property LastWriteTime)[0].name
+Documents
+PS> 
+```
+
+### Is there anything about the Windows kernel that makes it less suited to a command line interface? Anything about the Linux kernel that makes it less suited to a graphical interface?
+
+No! That’s just how the userspaces evolved. Windows has evolved from DOS, which
+was entirely command-line based. Only "recently" did it get a graphical
+interface (3.1). And even today, power users use PowerShell reasonably heavily
+on Windows, as .NET objects are first-class citizens and .NET is
+well-integrated into Windows.
+
+### Running POSIX environments on Windows with Cygwin and WSL
+
+As we briefly mentioned above, it's possible to run software that expects to be
+operated in a POSIX environment on Windows. It requires an intermediate layer,
+either at compile time (Cygwin) or at runtime (WSL), but it can be done.
+
+### Running Windows apps on Linux and macOS with WINE
+
+Given the broad interest for programs that target POSIX on Windows, you might
+wonder if there is a demand (and solution) for doing the reverse. There is, and
+it is called WINE! WINE is similar to WSL1 in that it translates Windows API
+calls into POSIX calls. Unlike WSL1, though, WINE is a fully userspace
+compatibility layer This allows you to run full Windows applications, including
+graphical applications, unmodified, on Linux and macOS.
+
+### Lesson: APIs are APIs
+
+It does not matter what system you are running as long as the system provides
+the expected set of APIs. This is the beauty of implementation vs interface;
+you need not concern yourself with the implementation as long as you can use
+its interface.
+
+This is why it's possible to run programs that target POSIX nearly unmodified
+on WSL, and why it is hard to port scripts to shells like Fish. This is why
+people who create operating systems and programming languages focus so much on
+backwards compatibility.
+
+This applies not only to operating systems and low-level tooling but also to
+programming at large: you will face very similar challenges switching your
+cloud hosting provider as porting your code between Windows and POSIX.
+
+<!-- TODO: insert a demo of two cats: fopen and Windoes API -->
