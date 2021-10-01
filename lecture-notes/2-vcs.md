@@ -49,7 +49,7 @@ countless incremental changes. As such, its interface has warts and
 inconsistencies that take some time to get used to. We'll try to point these
 out as we encounter them; if you're ever in doubt, man pages are your friend!
 
-[^github] Git won the source control wars thanks in no small part to GitHub, a
+[^github]: Git won the source control wars thanks in no small part to GitHub, a
     company that provides free centralized hosting of Git repositories. When
     GitHub launched in 2008, many found it to provide a user experience and
     feature set superior to more well-established competitors like SourceForge.
