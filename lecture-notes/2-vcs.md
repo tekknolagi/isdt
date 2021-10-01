@@ -363,7 +363,7 @@ defaults to showing our current commit:
 ```
 $ git show
 commit 22210506499fe9e37086d3a5ff1fb8f400facd83 (HEAD -> main)
-Author: Max Bernstein <max@bernsteinbear.com>
+Author: Max Bernstein <max@thebiscuitsons.net>
 Date:   Tue Sep 28 20:14:42 2021 -0700
 
     My message
@@ -389,8 +389,8 @@ descriptions on the fly for your benefit.[^git-stores-trees]
     ```
     $ git cat-file commit 22210506499fe9e37086d3a5ff1fb8f400facd83
     tree 8a2f7e211356a8551e2e2eed121d2a643208ac6a
-    author Max Bernstein <max@bernsteinbear.com> 1632885282 -0700
-    committer Max Bernstein <max@bernsteinbear.com> 1632885282 -0700
+    author Max Bernstein <max@thebiscuitsons.net> 1632885282 -0700
+    committer Max Bernstein <max@thebiscuitsons.net> 1632885282 -0700
     
     My message
     $
