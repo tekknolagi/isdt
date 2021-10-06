@@ -417,3 +417,10 @@ commits; the general write-add-commit flow; that all Git objects are stored in
 
 To learn more about a Git subcommand like `git show`, you can use `man
 git-<subcommand>`, like `man git-show`.
+
+## Lecture 2
+
+In this lecture, we demoed a number of common Git commands. See the
+[slides](2-vcs-l2-slides.pdf) for an overview of these commands. Note that the
+examples in the slides reference the example Git repository at
+`/comp/50ISDT/examples/git-zoo/`.
