@@ -91,3 +91,9 @@ easier to clone and use the CLI.
    favorite language or tool.
    1. What was the last modification to the Git extension (`extensions/git`)?
       Please provide the commit's date and commit message.
+
+## Submitting your work
+
+Please submit your one file, `answers.txt`, with `provide comp50isdt
+vcs-investigative answers.txt`. You must be logged into the homework server to
+use Provide.
