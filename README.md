@@ -15,8 +15,8 @@ ahead and file something.
 ## How to build locally
 
 1. Install `rbenv` and `ruby-build`
-  1. `mkdir -p "$(rbenv root)"/plugins`
-  1. `git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build`
+   1. `mkdir -p "$(rbenv root)"/plugins`
+   1. `git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build`
 1. `rbenv install 2.7.0`
 1. `bundle install`
 1. `bundle exec jekyll serve --watch`
