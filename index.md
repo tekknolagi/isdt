@@ -199,4 +199,4 @@ course:
 * Berkeley's [EECS201](https://www.eecs.umich.edu/courses/eecs201/)
 * Berkeley's [CS9E](https://www2.eecs.berkeley.edu/Courses/CS9E/)
 
-<div id="elephant"><img src="jumbo.png" alt="Jumbo on a laptop" /></div>
+<div id="elephant"><img src="assets/images/jumbo.png" alt="Jumbo on a laptop" /></div>
