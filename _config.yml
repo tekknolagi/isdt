@@ -7,3 +7,8 @@ google_analytics: UA-26440738-1
 url: 'https://bernsteinbear.com'
 baseurl: /isdt
 permalink: pretty
+exclude:
+  - README.md
+  - LICENSE
+  - Gemfile
+  - Gemfile.lock
