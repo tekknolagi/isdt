@@ -24,7 +24,7 @@ at that answer ("show your work"/"cite your sources"):
 1. What date did Jim get interested in baking? Please give the full author
    date.
 1. How many grocery trips have there been?
-1. How many committers are there? Who are they?
+1. How many people have authored commits in the repository? Who are they?
 1. Who went and bought carrots? In what commit?
 1. Which branch did Bridget use to submit her tips?
 1. Who took the cookie from the cookie jar?
