@@ -79,9 +79,10 @@ have `clang-format` installed if so).
    was an accident--he always creates his commits using `git commit -a`, and so
    he didn't notice that one of them included a local change meant for
    debugging. Since you've already pushed his changes to the public, it's too
-   late to amend them. **Create a new commit on `main` that restores
-   `main-tests.sh` back to how it was before Dr. Garbarini's change. Tell us
-   how you did so.**
+   late to amend them. **Create a new commit on `main` that brings back the
+   test that Dr. Garbarini got rid of. Mention the hash of the commit that
+   introduced the bug in its commit message.** Make sure not to undo any other,
+   intentional changes that happened in the meantime!
 1. Alessia is a disgruntled user of your open source project. She opened
    [an issue](04-vcs-constructive-issue.txt) maligning the project and its
    esteemed maintainers. Make an appropriately cool and collected comment on
