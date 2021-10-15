@@ -60,13 +60,12 @@ have `clang-format` installed if so).
    possible to do this without manually copying any files or code--if you find
    yourself re-entering things, there's probably a better way.
 1. Massimo has been working on fixing a nasty bug for quite some time, and he
-   finally posted his changes to the `fix-parsing-bug` branch right before
-   leaving. Unlike Dr. Garbarini, his commits are masterfully documented, and
-   you want to add them to `main` as-is. But you notice that the commit titled
-   "Fix parsing of left hand side" has some formatting errors. You can run
-   `clang-format -i` to automatically fix those errors, but you want to include
-   the fix as part of the original commit instead of putting it in a separate
-   one.
+   finally posted his changes to the `fix-parsing-bug` branch. Unlike Dr.
+   Garbarini, his commits are masterfully documented, and you want to add them
+   to `main` as-is. But you notice that the commit titled "Fix parsing of left
+   hand side" has some formatting errors. You can run `clang-format -i` to
+   automatically fix those errors, but you want to include the fix as part of
+   the original commit instead of putting it in a separate one.
    1. **Change the `fix-parsing-bug` branch to point to an updated version of
       the same set of commits (with matching commit messages, titles, and
       diffs) with fixed formatting in the problematic change. Tell us how you
