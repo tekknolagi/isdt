@@ -24,12 +24,13 @@ server, but you are also free to work on a personal computer (make sure you
 have `clang-format` installed if so).
 
 1. A number of the following questions ask you to tell us what commands you
-   used. Start out by making a place to put your answers! **Create a new branch
-   with no history (meaning the first commit you make to it will be parentless)
-   named `answers` by running `git checkout --orphan answers`.** As you answer
-   our questions, update a file called `answers.txt` in that branch. You may
-   commit your answers either one-by-one or all at once, but make sure you've
-   committed them before you submit!
+   used. Put your answers in the `answers.txt` file in the `answers` branch.
+   **Create a local `answers` branch based on the initial one by running `git
+   checkout -b answers origin/answers`.** (Since this is such a common
+   operation, you can also use the shorthand `git checkout answers` to do the
+   same thing.) As you answer our questions, make commits to that branch. You
+   may commit your answers either one-by-one or all at once, but make sure
+   you've committed them by the time you submit!
 1. A user named Gianna opened a GitHub issue pointing out that the project has
    no LICENSE file, meaning she doesn't know if she's allowed to use the
    software in the way she wants. You did some research and found that the [MIT
