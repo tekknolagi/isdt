@@ -76,10 +76,10 @@ personal computer (make sure you have `clang-format` installed if so).
    late to amend them. **Create a new commit on `main` that restores
    `main-tests.sh` back to how it was before Dr. Garbarini's change. Tell us
    how you did so.**
-1. Alessia is a disgruntled user of your open source project. She opened [an
-   issue](04-vcs-constructive-issue.txt) maligning the project and its esteemed
-   maintainers. Make an appropriately cool and collected comment on the issue
-   before the discussion gets too spicy.
+1. Alessia is a disgruntled user of your open source project. She opened
+   [an issue](04-vcs-constructive-issue.txt) maligning the project and its
+   esteemed maintainers. Make an appropriately cool and collected comment on
+   the issue before the discussion gets too spicy.
 
 ## Submitting your work
 
