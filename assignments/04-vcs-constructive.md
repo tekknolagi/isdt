@@ -18,9 +18,10 @@ instructions on how to submit your answers to such questions.
 
 Expect to make good use of `git reflog` in this assignment as you make errors.
 
-Start by cloning the initial repository from `/comp/50ISDT/vcs2-constructive`.
-We suggest you work on the homework server, but you are also free to work on a
-personal computer (make sure you have `clang-format` installed if so).
+Start by cloning the initial repository from
+`/comp/50ISDT/vcs2-constructive.git`. We suggest you work on the homework
+server, but you are also free to work on a personal computer (make sure you
+have `clang-format` installed if so).
 
 1. A number of the following questions ask you to tell us what commands you
    used. Start out by making a place to put your answers! **Create a new branch
