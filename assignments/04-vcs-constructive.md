@@ -55,10 +55,10 @@ have `clang-format` installed if so).
    full of commits with titles like "doc" and no further description. You
    decide that it's best to add all his changes to `main` as a single commit to
    cut down on the noise. **Create a new commit on `main` consisting of all the
-   changes from `logan-branch` since it diverged from `main`. Tell us how you
-   did so.** Note that it is possible to do this without manually copying any
-   files or code--if you find yourself re-entering things, there's probably a
-   better way.
+   changes from `garbarini-branch` since it diverged from `main`. Tell us how
+   you did so.** You may have to resolve merge conflicts. Note that it is
+   possible to do this without manually copying any files or code--if you find
+   yourself re-entering things, there's probably a better way.
 1. Massimo has been working on fixing a nasty bug for quite some time, and he
    finally posted his changes to the `fix-parsing-bug` branch right before
    leaving. Unlike Dr. Garbarini, his commits are masterfully documented, and
@@ -67,15 +67,15 @@ have `clang-format` installed if so).
    `clang-format -i` to automatically fix those errors, but you want to include
    the fix as part of the original commit instead of putting it in a separate
    one.
-   1. **Change the `fix-some-bug` branch to point to an updated version of the
-      same set of commits (with matching commit messages, titles, and diffs)
-      with fixed formatting in the problematic change. Tell us how you did
-      so.**
+   1. **Change the `fix-parsing-bug` branch to point to an updated version of
+      the same set of commits (with matching commit messages, titles, and
+      diffs) with fixed formatting in the problematic change. Tell us how you
+      did so.**
    1. **Now that the commits are ready, add them to `main` by rebasing them.**
       This is different from merging, like you did with Gianna's branch: in
       this case, you should make no new merge commits.
 1. Uh oh! You just noticed that Dr. Garbarini's branch included a commit that
-   deleted some tests from `main-tests.sh`. You ask him why and learn that it
+   commented out a test from `main-tests.sh`. You ask him why and learn that it
    was an accident--he always creates his commits using `git commit -a`, and so
    he didn't notice that one of them included a local change meant for
    debugging. Since you've already pushed his changes to the public, it's too
