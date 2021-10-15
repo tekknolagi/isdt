@@ -18,6 +18,10 @@ instructions on how to submit your answers to such questions.
 
 Expect to make good use of `git reflog` in this assignment as you make errors.
 
+**NOTE: We've realized that some of the later questions are likely more
+challenging than we intended. We may revise these questions, so we suggest that
+you don't proceed past Question 3 until we've sorted things out.**
+
 Start by cloning the initial repository from
 `/comp/50ISDT/vcs2-constructive.git`. We suggest you work on the homework
 server, but you are also free to work on a personal computer (make sure you
