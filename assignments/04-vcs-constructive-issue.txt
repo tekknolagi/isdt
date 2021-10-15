@@ -1,0 +1,14 @@
+Title: Why can't you rewrite this project in another language?
+
+Comment:
+  I have to use this software every day but it is so brittle. I have to make
+  sure all of my numbers are properly formatted because your software does not
+  handle edge cases in string to number conversions properly! The code quality
+  is trash. Come on, `strtol`, really? You should re-write this project in Go
+  or Rust, which have better error handling support and better standard
+  libraries.
+
+  It's really not that hard. Maybe 10 hours of work. It would make everything
+  better. The fact that you haven't done this yet indicates extreme laziness on
+  the part of the maintainers. I might just have to fork the project and do it
+  myself.
