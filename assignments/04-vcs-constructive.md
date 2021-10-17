@@ -18,10 +18,6 @@ instructions on how to submit your answers to such questions.
 
 Expect to make good use of `git reflog` in this assignment as you make errors.
 
-**NOTE: We've realized that some of the later questions are likely more
-challenging than we intended. We may revise these questions, so we suggest that
-you don't proceed past Question 3 until we've sorted things out.**
-
 Start by cloning the initial repository from
 `/comp/50ISDT/vcs2-constructive.git`. We suggest you work on the homework
 server, but you are also free to work on a personal computer (make sure you
@@ -59,14 +55,15 @@ have `clang-format` installed if so).
    you did so.** You may have to resolve merge conflicts. Note that it is
    possible to do this without manually copying any files or code--if you find
    yourself re-entering things, there's probably a better way.
-1. Massimo has been working on fixing a nasty bug for quite some time, and he
-   finally posted his changes to the `fix-parsing-bug` branch. Unlike Dr.
-   Garbarini, his commits are masterfully documented, and you want to add them
-   to `main` as-is. But you notice that the commit titled "Fix parsing of left
-   hand side" has some formatting errors. You can run `clang-format -i` to
-   automatically fix those errors, but you want to include the fix as part of
-   the original commit instead of putting it in a separate one.
-   1. **Change the `fix-parsing-bug` branch to point to an updated version of
+1. Massimo, a regular contributor, has been working on adding a new feature for
+   quite some time, and he finally posted his changes to the
+   `add-new-operators` branch. Unlike Dr.  Garbarini, his commits are
+   masterfully documented, and you want to add them to `main` as is. But you
+   notice that the commit titled "Support modulo operator" has some formatting
+   errors. You can run `clang-format -i` to automatically fix those errors, but
+   you want to include the fix as part of the original commit instead of
+   putting it in a separate one.
+   1. **Change the `add-new-operators` branch to point to an updated version of
       the same set of commits (with matching commit messages, titles, and
       diffs) with fixed formatting in the problematic change. Tell us how you
       did so.**
@@ -74,14 +71,13 @@ have `clang-format` installed if so).
       This is different from merging, like you did with Gianna's branch: in
       this case, you should make no new merge commits.
 1. Uh oh! You just noticed that Dr. Garbarini's branch included a commit that
-   commented out a test from `main-tests.sh`. You ask him why and learn that it
-   was an accident--he always creates his commits using `git commit -a`, and so
-   he didn't notice that one of them included a local change meant for
-   debugging. Since you've already pushed his changes to the public, it's too
-   late to amend them. **Create a new commit on `main` that brings back the
-   test that Dr. Garbarini got rid of. Mention the hash of the commit that
-   introduced the bug in its commit message.** Make sure not to undo any other,
-   intentional changes that happened in the meantime!
+   removed several lines from `Makefile`. You ask him why and learn that it was
+   an accident--he always creates his commits using `git commit -a`, and so he
+   didn't notice that he'd inadvertently deleted some code. Since you've
+   already pushed his changes to the public, it's too late to amend them.
+   **Create a new commit on `main` that restores `Makefile` back to how it was
+   before Dr. Garbarini's change. Tell us how you did so. Mention the hash of
+   the commit (on `main`) that removed the lines in your commit message.**
 1. Alessia is a disgruntled user of your open source project. She opened
    [an issue](04-vcs-constructive-issue.txt) maligning the project and its
    esteemed maintainers. Make an appropriately cool and collected comment on
