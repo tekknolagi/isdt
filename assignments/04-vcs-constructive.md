@@ -52,9 +52,13 @@ have `clang-format` installed if so).
    decide that it's best to add all his changes to `main` as a single commit to
    cut down on the noise. **Create a new commit on `main` consisting of all the
    changes from `garbarini-branch` since it diverged from `main`. Tell us how
-   you did so.** You may have to resolve merge conflicts. Note that it is
-   possible to do this without manually copying any files or code--if you find
-   yourself re-entering things, there's probably a better way.
+   you did so.** Note that it is possible to do this without manually copying
+   any files or code--if you find yourself re-entering things, there's probably
+   a better way.
+   1. You will encounter some merge conflicts during this question. **Please
+      resolve those conflicts so that the intent of each conflicting change is
+      preserved.** This will require you to read the changes and understand
+      what they do.
 1. Massimo, a regular contributor, has been working on adding a new feature for
    quite some time, and he finally posted his changes to the
    `add-new-operators` branch. Unlike Dr.  Garbarini, his commits are
