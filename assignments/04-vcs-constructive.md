@@ -82,10 +82,11 @@ have `clang-format` installed if so).
    **Create a new commit on `main` that restores `Makefile` back to how it was
    before Dr. Garbarini's change. Tell us how you did so. Mention the hash of
    the commit (on `main`) that removed the lines in your commit message.**
-1. Alessia is a disgruntled user of your open source project. She opened [an
-   issue](04-vcs-constructive-issue.txt) maligning the project and its esteemed
-   maintainers. Write an appropriately cool and collected response before the
-   discussion gets too spicy, and put that response in `answers.txt`.
+1. Alessia is a disgruntled user of your open source project. She opened
+   [an issue](04-vcs-constructive-issue.txt) maligning the project and its
+   esteemed maintainers. Write an appropriately cool and collected response
+   before the discussion gets too spicy, and put that response in
+   `answers.txt`.
 
 ## Submitting your work
 
