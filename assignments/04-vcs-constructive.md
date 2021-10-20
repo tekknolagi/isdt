@@ -43,7 +43,7 @@ have `clang-format` installed if so).
    you to review the changes in `gianna-increase-int-size` and add them to the
    `main` branch if possible. You review the changes and they look great--no
    revision needed! **Create a merge commit on `main` that merges the tip of
-   `gianna-increase-int-size` with the previous tip of `main`.**
+   `gianna-increase-int-size` with the tip of `main`.**
 1. You receive another pull request, this one from a person named Dr.
    Garbarini. You don't know him, but the changes look reasonable to you.
    Unfortunately, Garbarini doesn't seem to care about making his commit
