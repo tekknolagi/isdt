@@ -70,9 +70,9 @@ Piazza.
 |  2     | *Sep 14*<br />[CLI 2: Quoting, common tools, and permissions](lecture-notes/1-cli/#lecture-2)<br/>[Homework 1](assignments/01-cli-investigative/) out | *Sep 16*<br />[CLI 3: Advanced shell features](lecture-notes/1-cli/#lecture-3) |
 |  3     | *Sep 21*<br />[CLI 4: The shell as a programming language](lecture-notes/1-cli/#lecture-4) | *Sep 23*<br />[CLI 5: Behind the scenes](lecture-notes/1-cli/#lecture-5)<br />Homework 1 due; [Homework 2 out](assignments/02-cli-constructive/) |
 |  4     | *Sep 28*<br />[CLI 6: Linux and POSIX](lecture-notes/1-cli/#lecture-6) | *Sep 30*<br />[VCS 1: Intro to version control](lecture-notes/2-vcs/#lecture-1)<br /> Homework 2 due (extended to 11:59pm on Oct 2) |
-|  5     | *Oct 5*<br />[VCS 2: Common Git commands](lecture-notes/2-vcs/#lecture-2) | *Oct 7*<br />VCS 3: Collaboration with Git<br />[Homework 3 out](assignments/03-vcs-investigative/) |
-|  6     | *Oct 12*<br />VCS 4: Git internals | *Oct 14*<br />VCS 5: Git internals, continued<br />Homework 3 due; [Homework 4 out](assignments/04-vcs-constructive/) |
-|  7     | *Oct 19*<br />VCS 6: Survey of alternative and related tools | *Oct 21*<br />BLD 1: Intro to build systems<br /> Homework 4 due (extended to 11:59pm on Oct 23) |
+|  5     | *Oct 5*<br />[VCS 2: Git operations](lecture-notes/2-vcs-slides-l2-l4.pdf) | *Oct 7*<br />VCS 3: Git operations, continued <br />[Homework 3 out](assignments/03-vcs-investigative/) |
+|  6     | *Oct 12*<br />VCS 4: Git operations, continued | *Oct 14*<br />[VCS 5: Collaboration with Git](lecture-notes/2-vcs-slides-l5.pdf)<br />Homework 3 due; [Homework 4 out](assignments/04-vcs-constructive/) |
+|  7     | *Oct 19*<br />[VCS 6: Survey of alternative and related tools](lecture-notes/2-vcs-slides-l6.pdf) | *Oct 21*<br />BLD 1: Intro to build systems<br /> Homework 4 due (extended to 11:59pm on Oct 23) |
 |  8     | *Oct 26*<br />BLD 2: Intro to Make | *Oct 28*<br />BLD 3: The Make language<br />Homework 5 out |
 |  9     | *Nov 2*<br />BLD 4: Large projects using Make | *Nov 4*<br />BLD 5: Compilation and linking<br />Homework 5 due; Homework 6 out |
 | 10     | *Nov 9*<br />BLD 6: Other build systems and meta-tools | *Nov 11*<br />*Veterans' Day; no class* |
