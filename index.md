@@ -59,10 +59,10 @@ hours to be announced on Piazza (access via Canvas)
 
 ## Schedule
 
-*Note:* We will publish notes for each lecture after it happens, but the lecture
-recordings will not be available to students. If you require access to 
-recordings for your accommodations, please contact us using a private post on
-Piazza.
+*Note:* We will publish notes or slides for each lecture after it happens, but
+the lecture recordings will not be available to students. If you require access
+to recordings for your accommodations, please contact us using a private post
+on Piazza.
 
 | Week   | Tuesday | Thursday |
 | ----   | ------- | -------- |
