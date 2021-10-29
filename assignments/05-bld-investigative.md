@@ -58,3 +58,11 @@ as appropriate):
 1. Line 62 looks different from most other lines. It starts with `.PHONY` and
    lists a number of targets. What is the purpose of this line? What could
    happen if it were not present?
+
+## Submitting your work
+
+You should write your answers in a file, `answers.txt`, split into two
+sections.
+
+Please submit with `provide comp50isdt bld-investigative answers.txt`. You must
+be logged into the homework server to use Provide.
