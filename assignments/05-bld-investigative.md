@@ -61,8 +61,7 @@ as appropriate):
 
 ## Submitting your work
 
-You should write your answers in a file, `answers.txt`, split into two
-sections.
+You should write your answers in a file, `answers.txt`.
 
 Please submit with `provide comp50isdt bld-investigative answers.txt`. You must
 be logged into the homework server to use Provide.
