@@ -11,7 +11,8 @@ The project in question, called *jvm*, has gotten to the point where manually
 rebuilding every file by hand is frustrating and error-prone. To make its
 developers' lives easier, you'll write a Makefile to build it automatically.
 
-Start by cloning your own personal copy of the project, which we've
+Start by [accepting the assignment](https://classroom.github.com/a/ippLUPPr) on
+GitHub Classroom. Then clone your own personal copy of the project, which we've
 pre-populated for you using GitHub Classroom, from
 `git@github.com:cs50isdt/hw6-{yourgithubusername}`. (The URL should closely
 resemble that of your VCS Constructive repository.) This is also where you'll
