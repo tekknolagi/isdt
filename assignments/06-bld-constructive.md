@@ -135,7 +135,7 @@ HelloWorld and the interpreter with `make java tests/HelloWorld.class`, then
 run HelloWorld with `./java -cp tests HelloWorld`! (Note how you must provide
 the directory and class name separately instead of as a single path.)
 
-## Step 4: classy tests
+### Step 4: classy tests
 
 Makefiles can do more than just compile code; since recipes can consist of
 arbitrary commands, developers often create special rules to perform common
