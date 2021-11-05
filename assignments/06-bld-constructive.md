@@ -1,7 +1,6 @@
 # Homework 6: BLD, Constructive
 
-## Build me up, Scotty
-
+## Build me up, buttercup
 
 In this assignment, you'll be adding a build system to an existing software
 project written in C. The project is based on a real open-source project, but
