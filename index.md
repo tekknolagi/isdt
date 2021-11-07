@@ -45,7 +45,7 @@ tools for ensuring that your software meets quality standards.
 Hebb](https://tchebb.me/)  
 **Teaching Assistants:** Dana Estra, Lexi Galantino, David Gantt  
 
-**Office Hours:** Mondays 6:00p-7:15p ET, Wednesdays 8:00p-9:15p ET; extra
+**Office Hours:** Mondays 6:00p-7:15p ET, Tuesdays 2:15p-3:30p ET, Wednesdays 8:00p-9:15p ET; extra
 hours to be announced on Piazza (access via Canvas)  
 **Discussion board:** [Piazza](https://piazza.com/tufts/fall2021/cs50isdt)  
 
