@@ -1,0 +1,137 @@
+---
+---
+
+# Lecture Notes: Correctness
+
+## Lecture 1
+
+### Module overview
+Welcome to the final module! So far, you have spent a great deal of time
+learning about concrete tools to help you build software. In this module, we
+will look first at some philosophical tools--ways of thinking--and then one
+sample concrete tool, [UTest](https://github.com/sheredom/utest.h).
+
+This module will be discussion-based.
+
+### What does it mean for software to be correct?
+Possible meanings for software correctness (as discussed in class):
+
+* It does what I want it to
+* It follows the specification
+* It doesn't crash
+* I wrote a proof about it
+* The PR/diff/CL was reviewed and accepted by my coworkers
+* ...
+* It doesn't have any bugs
+
+Some [interesting reading](https://tildesites.bowdoin.edu/~allen/courses/cs260/readings/ch12.pdf)
+that we won't assign.
+
+### What is a bug?
+Wikipedia has a fine definition.
+
+> A software bug is an error, flaw or fault in a computer program or system
+> that causes it to produce an incorrect or unexpected result, or to behave in
+> unintended ways.
+
+The interesting parts of this definition are "unexpected results" or
+"unintended behaviors". These hint at, but do not explicitly call out, the
+existence of a specification for the behavior of a given program. This
+specification need not be a three-hundred page tome handed down from management
+for a software engineering team to implement. It may be less formal, like a
+homework assignment, or even just a vague notion in your mind of what you want
+your program to do. If your program deviates from this specification, it has a
+bug.
+
+You might ask why software correctness matters at all. In what will later be
+described as a crime against Nature, we taught rocks to think and forced them
+to run our programs. All those rocks can do are move and compute numbers. So
+who really cares if a program doesn't precisely conform to its specification
+and the numbers are wrong? Well...
+
+### Why are bugs bad?
+A cop-out answer is that the professor of your computer science course has told
+you that buggy code will cause you to lose points. For a couple years of your
+life, this will suffice.
+
+More broadly, though, software is supposed to help people, and it can’t help
+people if it doesn’t perform the way it’s supposed to. Billions of people rely
+on software every day for everything from critical infrastructure to medical
+equipment to silly games. If there's a one in a million chance that your cancer
+radiation therapy machine[^therac25] has a bug that kills you--well, you might
+care. Or if the facial recognition software the state employs has a bug that
+lands you in a prison cell, you might care.
+
+[^therac25]: The Therac-25 radiation therapy machine is a case study often used
+    in engineering ethics courses. Due to a race condition, the machine
+    occasionally dosed people with hundreds of times the radiation they should
+    have received, injuring several people and killing several people.
+
+On a less serious note, bugs can lead to revenue loss, or wasting people's
+time. For personal projects, bugs might be inconsequential, like Bob Ross's
+happy little accidents. You won't always be writing code for small projects,
+though.
+
+### How do we minimize the number of bugs in software?
+Different classes of bugs can be mitigated or outright prevented with different
+software practices.
+
+For example, *segmentation faults* and *memory corruption*, which you may have
+experienced while writing C++ code, result from a class of bug that is very
+unlikely to happen in other programming languages like Python or Java. These
+higher-level languages have different *memory models* that outright preclude
+these kinds of memory bugs.
+
+Another class of bug, *logic errors*, are easy to introduce when writing
+complex code with lots of edge cases like string processing algorithms. Higher
+level languages often provide more library functions than lower level ones, and
+such functions often provide battle-tested implementations of such algorithms.
+Library functions are frequently more correct than a from-scratch
+implementation because they have been written and revised by many people.
+
+Other logic errors are preventable by employing *mathematical proofs*. Tools
+like [Coq](https://coq.inria.fr/) and [Isabelle](https://isabelle.in.tum.de/)
+make it possible for programmers to write proofs about properties of the
+systems they are building and have them automatically checked. Coq can then
+generate a program for you that has been proven correct[^specification-errors].
+
+[^specification-errors]: Formal verification is sometimes cited as a way to
+    eliminate bugs altogether. After all, if your program has been
+    mathematically proven to be correct, and if we have defined "correct" to
+    mean "no bugs," it by definition cannot have bugs. But there's a flaw in
+    this reasoning: proofs like those generated by Coq and Isabelle only prove
+    that a program confirms to a specification that you--the person using
+    them--provide. For example, if you write a program that returns the number
+    4, and you tell Coq that your program ought to return 4, there's a pretty
+    good chance it can prove it "correct." But if this specification is itself
+    inaccurate--the customer wanted the program to return the number 2, for
+    example--or incomplete, the proof is worthless.
+
+When proving a program correct is impossible or intractable, it's almost always
+possible to fall back on *testing*. Tests manually exercise your code with some
+inputs and check the results against a set of known-correct answers. A good
+test suite on a software project is often a mark of high attention to detail
+and a reasonable proxy for correctness. Tests also have one advantage over
+proofs: since they exercise the code in a real environment, they validate the
+environment as well as the code. For example, if you accidentally rely on
+undefined behavior from your code and then upgrade your compiler to one that
+produces a different result, your test suite will let you know. As Donald Knuth
+once said, "Beware of bugs in the above code; I have only proved it correct,
+not tried it."
+
+Lastly, software development practices can help. For a multi-person software
+project, having a required code review step in the development process can help
+catch bugs and otherwise raise the bar. People reviewing code may notice edge
+cases that the original author did not think of, request that the author write
+tests for those edge cases, and improve the quality of the proposed code
+change.
+
+In this module, we're going to focus primarily on writing tests as a means for
+ensuring software correctness. Tests are not the only way to make your software
+more correct, but they are the easiest to immediately apply and reason about.
+
+### "Best practices"
+While we intend for everything we teach to be helpful, our advice won't always
+apply in every situation. Use your best judgement. Read
+[this tweet](https://twitter.com/garybernhardt/status/1433474928024735748) by
+Gary Bernhardt.
