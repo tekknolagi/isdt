@@ -155,11 +155,18 @@ will be guilty of plagiarism and the extra consequences that entails.
 
 ## Grading
 
-You will be evaluated 100% on homework assignments. Your final grade will be
-the average (mean) of your individual grades for each of the 8 assignments. We
-may decide to adjust (i.e. curve) the grades of any individual assignment if we
-deem it necessary, and in that case the curved value is what will go into the
-average. A curve will never decrease your grade for an assignment.
+You will be evaluated 100% on homework assignments. Your final percentage grade
+will be the average (mean) of your individual grades for each of the 8
+assignments. We may decide to adjust (i.e. curve) the grades of any individual
+assignment if we deem it necessary, and in that case the curved value is what
+will go into the average. A curve will never decrease your grade for an
+assignment.
+
+Your final letter grade will be computed from your final percentage grade using
+the cutoffs outlined [here](https://math.tufts.edu/resources/grading-schemes).
+(We know that's a math department page, but their scheme closely matches that
+which most students expect, and the computer science department doesn't have a
+recommended set of cutoffs documented anywhere.)
 
 Often on homework assignments we will ask you questions as part of an
 "investigative" assignment. The purpose of these questions is to guide you
