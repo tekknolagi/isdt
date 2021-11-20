@@ -30,13 +30,13 @@ there is no single correct conclusion.
 4. Look at the test names. Can you figure out what each test is testing? Take a
    look at the `orderAdd` test as an arbitrary example of a broader pattern in
    `tests.c`.
-   a. We discussed some conventions for naming tests in lecture. With respect
+   1. We discussed some conventions for naming tests in lecture. With respect
       to those conventions, what's wrong with the name `orderAdd`?
-   b. Propose a better name for `orderAdd`.
+   2. Propose a better name for `orderAdd`.
 5. Now, take a look at the `varAssignment` test in the same file.
-   a. Do you think this test is a good *unit* test? Which properties of a unit
+   1. Do you think this test is a good *unit* test? Which properties of a unit
       test does it have, and which ones does it lack?
-   b. What would you change to make this test a better unit test?
+   2. What would you change to make this test a better unit test?
 6. Which "testing best practices" (below) does this project do well? Which have
    room for improvement? Cite examples of the good and bad practices you
    mention.
@@ -47,9 +47,9 @@ there is no single correct conclusion.
    take many forms, ranging from a formal document spanning hundreds of pages
    (like the ANSI C language standard) to a set of intentions that live only
    inside the original author's head.
-   a. Do any written descriptions (i.e. specifications) of SuperCalc's behavior
+   1. Do any written descriptions (i.e. specifications) of SuperCalc's behavior
       exist in the repository? If so, where are they?
-   b. Give an example of a piece of SuperCalc's behavior that is not part of
+   2. Give an example of a piece of SuperCalc's behavior that is not part of
       any textual specification. (By "textual specification," we mean any
       written description of how the code behaves that's separate from the code
       itself.) Justify your answer.
