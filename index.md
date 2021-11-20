@@ -76,7 +76,7 @@ on Piazza.
 |  8     | *Oct 26*<br />[BLD 2: Intro to Make](lecture-notes/3-bld/#lecture-2) ([slides](lecture-notes/3-bld-slides-l2.pdf)) | *Oct 28*<br />[BLD 3: The Make language](lecture-notes/3-bld-slides-l3.pdf)<br />[Homework 5 out](assignments/05-bld-investigative/) |
 |  9     | *Nov 2*<br />[BLD 4: Compilation and linking + large-scale Make](lecture-notes/3-bld-slides-l4.pdf) | *Nov 4*<br />[BLD 5: The great wide world](lecture-notes/3-bld-slides-l5.pdf)<br />Homework 5 due; [Homework 6 out](assignments/06-bld-constructive/) |
 | 10     | *Nov 9*<br />[BLD 6: The great wide world, continued](lecture-notes/3-bld-slides-l6.pdf) | *Nov 11*<br />*Veterans' Day; no class* |
-| 11     | *Nov 16*<br />[COR 1: Intro to software correctness](lecture-notes/4-cor/#lecture-1) ([slides](lecture-notes/4-cor-slides-l1.pdf))<br />Homework 6 due | *Nov 18*<br />COR 2: Philosophy of software testing<br />[Homework 7 out](assignments/07-cor-investigative/) |
+| 11     | *Nov 16*<br />[COR 1: Intro to software correctness](lecture-notes/4-cor/#lecture-1) ([slides](lecture-notes/4-cor-slides-l1.pdf))<br />Homework 6 due | *Nov 18*<br />[COR 2: Philosophy of software testing](lecture-notes/4-cor/#lecture-2) ([slides](lecture-notes/4-cor-slides-l2.pdf))<br />[Homework 7 out](assignments/07-cor-investigative/) |
 | 12     | *Nov 23*<br />COR 3: Writing unit tests | *Nov 25*<br />*Thanksgiving; no class* |
 | 13     | *Nov 30*<br />COR 4: Testing interactions of complex systems<br />Homework 7 due; Homework 8 out | *Dec 2*<br />COR 5: Continuous integration |
 | 14     | *Dec 7*<br />COR 6: Other methods for ensuring software correctness<br /> Homework 8 due | *Dec 9*<br />TBD |
