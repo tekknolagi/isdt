@@ -5,7 +5,7 @@
 ## Fantastic calculators and where to find them
 
 For this assignment, you will be looking at the open-source project
-[SuperCalc](https://github.com/C0deH4cker/SuperCalc/), a command-line
+[SuperCalc](https://github.com/cs50isdt/SuperCalc), a command-line
 calculator that can evaluate a wide range of mathematical expressions.
 Specifically, you will be exploring its source code to answer some questions
 about its automated tests.
