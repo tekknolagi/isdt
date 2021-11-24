@@ -427,3 +427,107 @@ Additionally, this violates the "round trips" maxim above.
 If they have never failed, it's entirely possible that you are testing the
 wrong function, or not running your tests, or something somewhere is very, very
 broken.
+
+## Lecture 4
+The function we wrote above is fairly straightforward to test. If you wanted
+to, it is not difficult to enumerate the entire space of inputs for `isEven`
+and check their results. On a modern computer, this would take no more than a
+second. So what makes software difficult to test? And, implicitly, should we
+factor software to be easier to test?
+
+In the previous lecture, we alluded to parts of this difficulty with the
+testing maxims: test small units of code; avoid round trips; avoid state. Let's
+break those down.
+
+### Test small units of code
+With any luck, you will have been advised to write code with single-purpose,
+easily-understandable, composable units. While there is always some discourse
+about how big functions should be and where to divide them, it's easier to test
+smaller chunks than bigger chunks. Consider the case of coverage-based testing
+from before: the more conditionals you have to reason about, the harder your
+test cases get. If your function has multiple conditional early returns, some
+large `if` statements, and a loop, you're in for a rough time.
+
+Consider also the case where you have a "compound" function that does two
+things. Maybe `void setAgeAndHeight(int age, int height)`. It's not clear how
+to test this function -- do you write one test that tests two of its behaviors?
+Write two tests, each testing one behavior? What about the complex behavior
+space for valid and invalid inputs? It would be easier to test if it were split
+into two functions that could be tested independently: `void setAge(int age)`
+and `void setHeight(int height)`. Then it is reasonably straightforward to
+write:
+
+```c
+TEST(PeopleSoft, SetAgeSetsAge) {
+  Person person;
+  person.setAge(50);
+  EXPECT_EQ(person.age(), 50);
+}
+
+TEST(PeopleSoft, SetHeightSetsHeight) {
+  Person person;
+  person.setHeight(70);
+  EXPECT_EQ(person.height(), 70);
+}
+```
+
+And, as before, if you have a test failure in the future, the failing test
+should clearly point to the function that broke.
+
+### Avoid round trips
+Often it is tempting to test the internals of a bit of code indirectly by
+calling it via another function. Maybe this is because the top-level function
+requires fewer parameters, or less state setup, or neatly packages up its
+results--whatever the reason may be, try to resist this temptation. If at all
+possible, call the function directly by name.
+
+As an example, we can look at the unfortunate `setAgeAndHeight` function from
+earlier. Pretend it is implemented as follows:
+
+```c
+void setAgeAndHeight(int age, int height) {
+  setAge(age);
+  setHeight(height);
+}
+```
+
+Instead of testing `setAge` by calling `setAgeAndHeight` and then reading the
+age in the test, call `setAge` directly! This can be tricky when writing
+private methods. There are several ways around this, of which we recommend two.
+The first is to make the method public. This is not always an option; some
+methods should stay private. The second, which is not always available either,
+is to use the language-specific feature that exposes private methods to tests.
+C++, for example, has `friend` declarations.
+
+We don't mean to discourage you from writing *integration tests*--tests that
+run a whole suite of software as one unit to ensure that it works together--but
+instead encourage you to keep your unit tests unit-y.
+
+### Avoid state
+* I/O
+* Randomness
+* Filesystem / network
+
+void computeAndPrintResult()
+
+That function does not return anything and only produces its output as an I/O
+side effect. It would be easier to test if it were split into two functions
+`int computeResult()` and `void printResult(int)`.
+
+### Parting thoughts
+When you change your software, do you run the tests of everybody who uses your
+software?
+
+There is a programming language called Rust and software tooling for Rust
+programmers to publish package their software into units called *crates*. With
+every release of the Rust compiler, the Rust team runs the compiler on every
+crate to check for regressions.
+
+Software engineers who write programming language infrastructure at large
+companies (Clang at Google and Facebook, Go at Google, HHVM at Facebook, etc)
+are not doing so in a vacuum; most of the time, they have an internal customer
+that uses their compiler or language runtime. These teams tend to also test
+their releases against their customers' tests.
+
+What do you do if you find breaking behavior surfaced by a large integration
+test written by your client?
