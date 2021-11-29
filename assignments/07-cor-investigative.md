@@ -62,7 +62,8 @@ The following is an incomplete list of best practices for writing tests.
 * Avoid "round trips" through layers of software
 * Avoid stateful computation in the functions being tested
 * Avoid state in the test harness (writing to disk, database, etc)
-* The test should be able to detect if it passed or failed automatically
+* The test harness should be able to automatically detect if the test passed or
+  failed (instead of, for example, manually checking for correct output)
 * Tests should be repeatable (deterministic; non-flaky)
 * Tests should be named descriptively (name of system, scenario, expected
   result)
