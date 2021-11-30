@@ -429,6 +429,7 @@ wrong function, or not running your tests, or something somewhere is very, very
 broken.
 
 ## Lecture 4
+
 The function we wrote above is fairly straightforward to test. If you wanted
 to, it is not difficult to enumerate the entire space of inputs for `isEven`
 and check their results. On a modern computer, this would take no more than a
@@ -440,6 +441,7 @@ testing maxims: test small units of code; avoid round trips; avoid state. Let's
 break those down.
 
 ### Test small units of code
+
 With any luck, you will have been advised to write code with single-purpose,
 easily-understandable, composable units. While there is always some discourse
 about how big functions should be and where to divide them, it's easier to test
@@ -475,6 +477,7 @@ And, as before, if you have a test failure in the future, the failing test
 should clearly point to the function that broke.
 
 ### Avoid round trips
+
 Often it is tempting to test the internals of a bit of code indirectly by
 calling it via another function. Maybe this is because the top-level function
 requires fewer parameters, or less state setup, or neatly packages up its
@@ -503,25 +506,33 @@ We don't mean to discourage you from writing *integration tests*--tests that
 run a whole suite of software as one unit to ensure that it works together--but
 instead encourage you to keep your unit tests unit-y.
 
-### Avoid state
+* Avoid state
 * I/O
 * Randomness
 * Filesystem / network
 
-void computeAndPrintResult()
+`void computeAndPrintResult()`
 
 That function does not return anything and only produces its output as an I/O
 side effect. It would be easier to test if it were split into two functions
 `int computeResult()` and `void printResult(int)`.
 
+(API surface is I/O heavy and not mockable; software is fundamentally
+nondeterministic; etc)
+
+Factor software for testability. Test from within, and optionally from without.
+
 ### Parting thoughts
+
 When you change your software, do you run the tests of everybody who uses your
 software?
 
 There is a programming language called Rust and software tooling for Rust
 programmers to publish package their software into units called *crates*. With
-every release of the Rust compiler, the Rust team runs the compiler on every
-crate to check for regressions.
+every release of the Rust compiler, the Rust team runs the compiler on many
+crates to check for regressions[^crater].
+
+[^crater]: https://github.com/rust-lang/crater
 
 Software engineers who write programming language infrastructure at large
 companies (Clang at Google and Facebook, Go at Google, HHVM at Facebook, etc)
