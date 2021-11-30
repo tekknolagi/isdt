@@ -122,7 +122,7 @@ server), to perform this compilation.
 **Add a pattern rule to your Makefile that can compile any given `.java` file
 inside `tests/` into a matching `.class` file.** (The `.class` files must also
 reside in `tests/` and have an identical name save for the changed extension).
-In you recipe for this rule, please use [automatic
+In your recipe for this rule, please use [automatic
 variables](https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html#Automatic-Variables)
 wherever possible. The rule should build only the given `.class` file, and it
 should rebuild that file if the source changes. **Update your `clean` rule as
