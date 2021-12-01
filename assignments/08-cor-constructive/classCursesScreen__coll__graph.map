@@ -1,0 +1,4 @@
+<map id="CursesScreen" name="CursesScreen">
+<area shape="rect" id="node1" title="ncurses&#45;based implementation of Screen using a WINDOW." alt="" coords="5,80,111,107"/>
+<area shape="rect" id="node2" href="$classScreen.html" title="Represents the abstract notion of a character&#45;addressable writable screen." alt="" coords="27,5,89,32"/>
+</map>
