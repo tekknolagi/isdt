@@ -78,7 +78,7 @@ on Piazza.
 | 10     | *Nov 9*<br />[BLD 6: The great wide world, continued](lecture-notes/3-bld-slides-l6.pdf) | *Nov 11*<br />*Veterans' Day; no class* |
 | 11     | *Nov 16*<br />[COR 1: Intro to software correctness](lecture-notes/4-cor/#lecture-1) ([slides](lecture-notes/4-cor-slides-l1.pdf))<br />Homework 6 due | *Nov 18*<br />[COR 2: Philosophy of software testing](lecture-notes/4-cor/#lecture-2) ([slides](lecture-notes/4-cor-slides-l2.pdf))<br />[Homework 7 out](assignments/07-cor-investigative/) |
 | 12     | *Nov 23*<br />[COR 3: Writing unit tests](lecture-notes/4-cor/#lecture-3) ([slides](lecture-notes/4-cor-slides-l3.pdf)) | *Nov 25*<br />*Thanksgiving; no class* |
-| 13     | *Nov 30*<br />COR 4: Testing interactions of complex systems<br />Homework 7 due; Homework 8 out | *Dec 2*<br />COR 5: Continuous integration |
+| 13     | *Nov 30*<br />[COR 4: Testing strategies and dependency injection](lecture-notes/4-cor/#lecture-4) ([slides](lecture-notes/4-cor-slides-l4.pdf))<br />Homework 7 due; Homework 8 out | *Dec 2*<br />COR 5: Continuous integration |
 | 14     | *Dec 7*<br />COR 6: Other methods for ensuring software correctness<br /> Homework 8 due | *Dec 9*<br />TBD |
 | 15     | *Dec 14*<br />*No class* | *Dec 16*<br />*No class* |
 
