@@ -104,13 +104,20 @@ Step 1: Write tests, tests, and more tests</h2>
 </div><!-- fragment --><p>All the tests in a file should be part of the same <em>test case</em>, meaning the first argument to each UTEST macro (<code>SampleTestSuite</code>, in this example) should match. It's conventional to name the test case after the class being tested, for example <code>TankTests</code> or <code>FishTests</code>.</p>
 <p>You should expect to write many tests for each class. Although the code is relatively simple, there's still a lot that could go wrong, and we'll be running your tests to make sure they catch a variety of issues (see next section). The files you provide will likely contain several hundred lines of code in total, although some of this will be <code>UTEST()</code> macros and setup code that's common to multiple tests.</p>
 <h1><a class="anchor" id="autotoc_md6"></a>
+Notes</h1>
+<p>To compare write tests for functions returning <code>std::string</code>, you must compare the underlying C string using <code>EXPECT_STREQ</code> or <code>ASSERT_STREQ</code>. This is a limitation (for now! Max is working on submitting a patch) of the underlying UTest library.</p>
+<div class="fragment"><div class="line">UTEST(SampleTestSuite, StringEquality) {</div>
+<div class="line">  std::string my_string(<span class="stringliteral">&quot;hello, world&quot;</span>);</div>
+<div class="line">  EXPECT_STREQ(my_string.c_str(), <span class="stringliteral">&quot;hello, world&quot;</span>);</div>
+<div class="line">}</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md7"></a>
 Grading</h1>
 <p>Once you submit your tests, we will run them against a variety of broken implementations that we (the course staff) have come up with. These implementations are not specifically designed to thwart unit tests; we came up with them before seeing your submissions, and all the errors they introduce might reasonably be made in the real world (so none of them fail only when the screen width is exactly 54, for example). We are keeping these implementations a secret, so the only way you'll catch a majority of them is if you write comprehensive tests for the behavior our API documentation guarantees.</p>
 <p>50% of your grade for this assignment will be based purely on these automated test results, although we reserve the right to curve up this portion of the grade for everyone if it's lower than we expect. The other 50% of your grade will be based on subjective evaluation of the code quality and adherence to <a href="https://bernsteinbear.com/isdt/assignments/07-cor-investigative/">best practices</a> of the tests you write.</p>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Submitting your work</h1>
 <p>Please submit with <code>provide comp50isdt cor-constructive *-test.cpp</code>. You must be logged into the homework server to use Provide.</p>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Building this documentation yourself</h1>
 <ol type="1">
 <li><code>mkdir -p build/</code></li>
