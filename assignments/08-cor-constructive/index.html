@@ -105,7 +105,7 @@ Step 1: Write tests, tests, and more tests</h2>
 <p>You should expect to write many tests for each class. Although the code is relatively simple, there's still a lot that could go wrong, and we'll be running your tests to make sure they catch a variety of issues (see next section). The files you provide will likely contain several hundred lines of code in total, although some of this will be <code>UTEST()</code> macros and setup code that's common to multiple tests.</p>
 <h1><a class="anchor" id="autotoc_md6"></a>
 Notes</h1>
-<p>To compare write tests for functions returning <code>std::string</code>, you must compare the underlying C string using <code>EXPECT_STREQ</code> or <code>ASSERT_STREQ</code>. This is a limitation (for now! Max is working on submitting a patch) of the underlying UTest library.</p>
+<p>To write tests for functions returning <code>std::string</code>, you must compare the underlying C string (by calling <code>.c_str()</code>) using <code>EXPECT_STREQ</code> or <code>ASSERT_STREQ</code>. This is a limitation (for now! Max is working on submitting a patch) of the underlying UTest library.</p>
 <div class="fragment"><div class="line">UTEST(SampleTestSuite, StringEquality) {</div>
 <div class="line">  std::string my_string(<span class="stringliteral">&quot;hello, world&quot;</span>);</div>
 <div class="line">  EXPECT_STREQ(my_string.c_str(), <span class="stringliteral">&quot;hello, world&quot;</span>);</div>
