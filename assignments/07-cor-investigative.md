@@ -26,7 +26,7 @@ there is no single correct conclusion.
    mixture of the two, or some kind of hybrid? Explain your reasoning.
 3. Build SuperCalc using the instructions in its README.md and try out some of
    the examples from there. Once you've become familiar with what it can do, go
-   back to the tests and name one piece of functionality that has no test.
+   back to the tests and name one piece of functionality that is not tested.
 4. Look at the test names. Can you figure out what each test is testing? Take a
    look at the `orderAdd` test as an arbitrary example of a broader pattern in
    `tests.c`.
