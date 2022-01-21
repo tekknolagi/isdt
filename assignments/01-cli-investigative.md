@@ -39,8 +39,9 @@ your work" (see [Grading](https://www.cs.tufts.edu/comp/50ISDT/#grading) on the
 syllabus for an example) with each:
 
 1. When you log into the homework server, what directory are you in?
-2. How many files are in your current directory? How many directories?
-   <!-- TODO: Clarify if we want recursive count or not -->
+2. How many files are directly inside your current directory? How many
+   directories? Don't count files and directories that are inside
+   subdirectories.
 3. Give a **relative** path that you can use to refer to this course's
    directory, which lives at `/comp/50ISDT/`, while in your home directory.
    Remember that relative paths cannot start with a slash.
@@ -57,14 +58,14 @@ syllabus for an example) with each:
    files. Although file extensions (like `.txt` and `.jpg`) have no intrinsic
    meaning on Linux, many configuration files in `/etc/` have them anyway.
 
-   <!-- TODO: We should clarify if "files" here includes directories. -->
-
    Write a shell pipeline that prints the top ten most frequently occurring
    extensions of files inside `/etc/`, taking the "extension" to be the part of
    a file's name that occurs after the final `.` character. Your count should
    include files in subdirectories, except those you don't have permission to
-   see. You may include or omit files that have no extension from the count at
-   your discretion.
+   see. Your count should not include the names of subdirectories themselves.
+   (e.g. `/etc/sysctl.d/` should not count as a `.d` extension.) You may
+   include or omit files that have no extension from the count at your
+   discretion.
 
    Your output should contain ten lines (unless there are fewer than ten unique
    extensions inside `/etc/`). Each line should include the extension (with or
