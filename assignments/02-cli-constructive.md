@@ -123,6 +123,8 @@ directory, your program should print an error and return a nonzero exit code.
 
 Internally, GNU's implementation of `ls` calls the `readdir()` function from
 libc. `readdir()` behaves as a transparent wrapper around the `readdir`
+<!-- TODO(tom): make explanation of readdir and its relationship to syscalls
+more accurate -->
 syscall[^getdents]. Read the man pages for `opendir` (`man 3p
 opendir`[^sections]), `readdir` (`man 3p readdir`), and `closedir` (`man 3p
 closedir`) to get an idea for how you might write your program. Although these
