@@ -8,9 +8,9 @@
 
 # Home
 
-This is the course website for the inaugural (Fall 2021) semester of *CS 50:
-Introduction to Software Development Tooling* at Tufts University. This site
-holds the authoritative syllabus, as well as lecture notes and assignments.
+This is the course website for *CS 50: Introduction to Software Development
+Tooling* at Tufts University. This site holds the authoritative syllabus, as
+well as lecture notes and assignments.
 
 *Note:* The course staff reserves the right to change this page at any time
 without notice. The [change history][site-commits] is public.
@@ -43,44 +43,23 @@ tools for ensuring that your software meets quality standards.
 
 **Instructors:** [Max Bernstein](https://bernsteinbear.com) and [Tom
 Hebb](https://tchebb.me/)  
-**Teaching Assistants:** Dana Estra, Lexi Galantino, David Gantt  
+**Teaching Assistants:** TBD
 
-**Office Hours:** Mondays 6:00p-7:15p ET, Tuesdays 2:15p-3:30p ET, Wednesdays 8:00p-9:15p ET; extra
-hours to be announced on Piazza (access via Canvas)  
-**Discussion board:** [Piazza](https://piazza.com/tufts/fall2021/cs50isdt)  
+**Office Hours:** TBD; extra hours to be announced on Piazza (access via
+Canvas)  
+**Discussion board:** Piazza
 
 **Prerequisites:** CS 15 or permission of instructor  
 **Equipment:** A computer with SSH access to the Tufts homework server  
 **Textbook:** none  
 
-**Lectures:** Tuesday and Thursday 7:30p-8:45p ET via Zoom (access via Canvas)  
+**Lectures:** TBD via Zoom (access via Canvas)  
 **Assignments:** 8 assignments (2 per module), to be submitted with `provide`  
 **Exams:** none  
 
 ## Schedule
 
-*Note:* We will publish notes or slides for each lecture after it happens, but
-the lecture recordings will not be available to students. If you require access
-to recordings for your accommodations, please contact us using a private post
-on Piazza.
-
-| Week   | Tuesday | Thursday |
-| ----   | ------- | -------- |
-|  1     | *Sep 7*<br />*No class* | *Sep 9*<br />Course Administrivia &amp; [CLI 1: Intro to Linux and the shell](lecture-notes/1-cli/#lecture-1) |
-|  2     | *Sep 14*<br />[CLI 2: Quoting, common tools, and permissions](lecture-notes/1-cli/#lecture-2)<br/>[Homework 1](assignments/01-cli-investigative/) out | *Sep 16*<br />[CLI 3: Advanced shell features](lecture-notes/1-cli/#lecture-3) |
-|  3     | *Sep 21*<br />[CLI 4: The shell as a programming language](lecture-notes/1-cli/#lecture-4) | *Sep 23*<br />[CLI 5: Behind the scenes](lecture-notes/1-cli/#lecture-5)<br />Homework 1 due; [Homework 2 out](assignments/02-cli-constructive/) |
-|  4     | *Sep 28*<br />[CLI 6: Linux and POSIX](lecture-notes/1-cli/#lecture-6) | *Sep 30*<br />[VCS 1: Intro to version control](lecture-notes/2-vcs/#lecture-1)<br /> Homework 2 due (extended to 11:59pm on Oct 2) |
-|  5     | *Oct 5*<br />[VCS 2: Git operations](lecture-notes/2-vcs-slides-l2-l4.pdf) | *Oct 7*<br />VCS 3: Git operations, continued <br />[Homework 3 out](assignments/03-vcs-investigative/) |
-|  6     | *Oct 12*<br />VCS 4: Git operations, continued | *Oct 14*<br />[VCS 5: Collaboration with Git](lecture-notes/2-vcs-slides-l5.pdf)<br />Homework 3 due; [Homework 4 out](assignments/04-vcs-constructive/) |
-|  7     | *Oct 19*<br />[VCS 6: Survey of alternative and related tools](lecture-notes/2-vcs-slides-l6.pdf) | *Oct 21*<br />[BLD 1: Intro to build systems](lecture-notes/3-bld/#lecture-1) ([slides](lecture-notes/3-bld-slides-l1.pdf))<br /> Homework 4 due (extended to 11:59pm on Oct 23) |
-|  8     | *Oct 26*<br />[BLD 2: Intro to Make](lecture-notes/3-bld/#lecture-2) ([slides](lecture-notes/3-bld-slides-l2.pdf)) | *Oct 28*<br />[BLD 3: The Make language](lecture-notes/3-bld-slides-l3.pdf)<br />[Homework 5 out](assignments/05-bld-investigative/) |
-|  9     | *Nov 2*<br />[BLD 4: Compilation and linking + large-scale Make](lecture-notes/3-bld-slides-l4.pdf) | *Nov 4*<br />[BLD 5: The great wide world](lecture-notes/3-bld-slides-l5.pdf)<br />Homework 5 due; [Homework 6 out](assignments/06-bld-constructive/) |
-| 10     | *Nov 9*<br />[BLD 6: The great wide world, continued](lecture-notes/3-bld-slides-l6.pdf) | *Nov 11*<br />*Veterans' Day; no class* |
-| 11     | *Nov 16*<br />[COR 1: Intro to software correctness](lecture-notes/4-cor/#lecture-1) ([slides](lecture-notes/4-cor-slides-l1.pdf))<br />Homework 6 due | *Nov 18*<br />[COR 2: Philosophy of software testing](lecture-notes/4-cor/#lecture-2) ([slides](lecture-notes/4-cor-slides-l2.pdf))<br />[Homework 7 out](assignments/07-cor-investigative/) |
-| 12     | *Nov 23*<br />[COR 3: Writing unit tests](lecture-notes/4-cor/#lecture-3) ([slides](lecture-notes/4-cor-slides-l3.pdf)) | *Nov 25*<br />*Thanksgiving; no class* |
-| 13     | *Nov 30*<br />[COR 4: Testing strategies and dependency injection](lecture-notes/4-cor/#lecture-4) ([slides](lecture-notes/4-cor-slides-l4.pdf))<br />Homework 7 due; [Homework 8 out](assignments/08-cor-constructive/) | *Dec 2*<br />[COR 5: Continuous integration](lecture-notes/4-cor-slides-l5.pdf) |
-| 14     | *Dec 7*<br />[COR 6: Other methods for ensuring software correctness](lecture-notes/4-cor-slides-l6.pdf)<br /> Homework 8 due | *Dec 9*<br />TBD |
-| 15     | *Dec 14*<br />*No class* | *Dec 16*<br />*No class* |
+To be updated next semester...
 
 ## Course philosophy
 
