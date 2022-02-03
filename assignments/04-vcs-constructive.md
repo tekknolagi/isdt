@@ -1,4 +1,5 @@
 ---
+layout: spec
 ---
 # Homework 4: VCS, Constructive
 

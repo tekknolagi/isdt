@@ -1,11 +1,12 @@
 ---
+layout: spec
 ---
 
 # Lecture Notes: Correctness
 
-## Lecture 1
+# Lecture 1
 
-### Module overview
+## Module overview
 Welcome to the final module! So far, you have spent a great deal of time
 learning about concrete tools to help you build software. In this module, we
 will look first at some philosophical tools--ways of thinking--and then one
@@ -13,7 +14,7 @@ sample concrete tool, [UTest](https://github.com/sheredom/utest.h).
 
 This module will be discussion-based.
 
-### What does it mean for software to be correct?
+## What does it mean for software to be correct?
 Possible meanings for software correctness (as discussed in class):
 
 * It does what I want it to
@@ -27,7 +28,7 @@ Possible meanings for software correctness (as discussed in class):
 Some [interesting reading](https://tildesites.bowdoin.edu/~allen/courses/cs260/readings/ch12.pdf)
 that we won't assign.
 
-### What is a bug?
+## What is a bug?
 Wikipedia has a fine definition.
 
 > A software bug is an error, flaw or fault in a computer program or system
@@ -49,7 +50,7 @@ to run our programs. All those rocks can do are move and compute numbers. So
 who really cares if a program doesn't precisely conform to its specification
 and the numbers are wrong? Well...
 
-### Why are bugs bad?
+## Why are bugs bad?
 A cop-out answer is that the professor of your computer science course has told
 you that buggy code will cause you to lose points. For a couple years of your
 life, this will suffice.
@@ -72,7 +73,7 @@ time. For personal projects, bugs might be inconsequential, like Bob Ross's
 happy little accidents. You won't always be writing code for small projects,
 though.
 
-### How do we minimize the number of bugs in software?
+## How do we minimize the number of bugs in software?
 Different classes of bugs can be mitigated or outright prevented with different
 software practices.
 
@@ -130,13 +131,13 @@ In this module, we're going to focus primarily on writing tests as a means for
 ensuring software correctness. Tests are not the only way to make your software
 more correct, but they are the easiest to immediately apply and reason about.
 
-### "Best practices"
+## "Best practices"
 While we intend for everything we teach to be helpful, our advice won't always
 apply in every situation. Use your best judgement. Read
 [this tweet](https://twitter.com/garybernhardt/status/1433474928024735748) by
 Gary Bernhardt.
 
-## Lecture 2
+# Lecture 2
 
 Even simple software has edge cases. In CS 15, for example, one assignment
 involves writing a `delete` function to remove an element from a binary search
@@ -159,7 +160,7 @@ practices to untangle this huge mess of code. Writing tests is helpful, yes,
 but there are some other auxiliary practices that can help make your tests even
 more effective.
 
-### Automated tests
+## Automated tests
 
 If you, the programmer, have to run tests manually after every change you make,
 you will probably not run them very often. And, worse, if the test suite takes
@@ -174,7 +175,7 @@ tests. Having a green checkmark per change is a good signal to you, the
 programmer, and your colleagues, that you have not broken anything, and also
 pass your new tests.
 
-### Invariant of the green main branch
+## Invariant of the green main branch
 
 There's a bit of an implicit assumption that makes automated tests useful:
 expecting the main branch to be passing tests ("green"). If you maintain the
@@ -214,7 +215,7 @@ that the linearization of concurrent landing commits still passes tests.
 Land-time tests build and run the project before every commit to the main
 branch.
 
-### The real world and pebbles in a stream
+## The real world and pebbles in a stream
 
 As much as some people might wish, you are not writing code in a spherical
 vacuum fixed in time. Even if you manage to write perfect bug-free code, which
@@ -250,12 +251,12 @@ Facebook hardware failure
 [paper 1](https://research.fb.com/wp-content/uploads/2020/03/Optimizing-Interrupt-Handling-Performance-for-Memory-Failures-in-Large-Scale-Data-Centers.pdf)
 and [paper 2](https://arxiv.org/pdf/2102.11245.pdf)
 
-## Lecture 3
+# Lecture 3
 
 In this lecture, we will explore a method for writing useful tests for
 software.
 
-### Where to start
+## Where to start
 
 Start with the specification: what should the function do? Test what is
 specified. Imagine a function `isEven` that must return `true` if the number
@@ -330,7 +331,7 @@ specification, and tested in the unit tests. In this case, appropriate tests
 might ensure that the code raises an exception, or that it returns some
 sentinel value.
 
-### Other things to test
+## Other things to test
 
 When testing a function, there are two main approaches: blackbox testing, and
 whitebox testing.
@@ -367,7 +368,7 @@ where a code path just isn't that interesting or error-prone; writing tests for
 such paths purely to improve your coverage metric can waste time and hide the
 few tests that actually matter among lots that don't.
 
-### Naming tests
+## Naming tests
 
 You may notice that the unit tests for the `isEven` function have very verbose
 names. This is not because the course staff are enthusiastic Java
@@ -385,7 +386,7 @@ If only part of the `isEven` function breaks, it would be nice to know at a
 glance *which* part broke. `IsEvenWithOddNumberReturnsFalse` failed? Well. Now
 you know what to take a look at.
 
-### Which functions to test
+## Which functions to test
 
 Write tests for code you write. Sometimes when writing tests for a function *f*
 that calls another function *g*, it is tempting to write tests that directly or
@@ -404,7 +405,7 @@ is imperative these API functions be well-tested. You will likely also write
 smaller building blocks--internal functions, classes, or other services. Test
 these, too.
 
-### Maxims
+## Maxims
 
 **Test small units of code as directly as possible.** Ideally, your functions
 should be small and have simple lives. And ideally tests should call the
@@ -428,7 +429,7 @@ If they have never failed, it's entirely possible that you are testing the
 wrong function, or not running your tests, or something somewhere is very, very
 broken.
 
-## Lecture 4
+# Lecture 4
 
 The function we wrote above is fairly straightforward to test. If you wanted
 to, it is not difficult to enumerate the entire space of inputs for `isEven`
@@ -440,7 +441,7 @@ In the previous lecture, we alluded to parts of this difficulty with the
 testing maxims: test small units of code; avoid round trips; avoid state. Let's
 break those down.
 
-### Test small units of code
+## Test small units of code
 
 With any luck, you will have been advised to write code with single-purpose,
 easily-understandable, composable units. While there is always some discourse
@@ -476,7 +477,7 @@ TEST(PeopleSoft, SetHeightSetsHeight) {
 And, as before, if you have a test failure in the future, the failing test
 should clearly point to the function that broke.
 
-### Avoid round trips
+## Avoid round trips
 
 Often it is tempting to test the internals of a bit of code indirectly by
 calling it via another function. Maybe this is because the top-level function
@@ -522,7 +523,7 @@ nondeterministic; etc)
 
 Factor software for testability. Test from within, and optionally from without.
 
-### Parting thoughts
+## Parting thoughts
 
 When you change your software, do you run the tests of everybody who uses your
 software?
