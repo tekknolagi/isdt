@@ -1944,11 +1944,13 @@ into a file. Say, `myscript.sh`:
 echo "Hello, world!"
 echo "I am in a script and I am being run by $USER."
 ```
+{: data-title="myscript.sh" }
 
 Save it. If you try and run it like a program you compiled in your CS courses
 -- by running `./myscript.sh` -- you will get the following error:
 
-```
+```console
+$ ./myscript.sh
 bash: ./myscript.sh: Permission denied
 ```
 
@@ -2160,6 +2162,7 @@ For example, the following script:
 # myscript.sh
 echo "$1, world!"
 ```
+{: data-title="myscript.sh" }
 
 can will print out "Hello, world!" when run like so:
 

@@ -206,6 +206,7 @@ mybinary: main.c
 	gcc main.c
 	mv a.out mybinary
 ```
+{: data-highlight="1" }
 
 Now Make will look at the <dfn><abbr title="modification time">m-time</abbr></dfn>
 of both `main.c` and `mybinary`. If `main.c` is newer, it will rebuild

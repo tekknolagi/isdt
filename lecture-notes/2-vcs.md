@@ -285,6 +285,7 @@ $ tree .git
 
 $
 ```
+{: data-highlight="11-13" }
 
 Git has created its first object, stored as the file
 `.git/objects/d0/3e2425cf1c82616e12cb430c69aaa6cc08ff84`. As you'll soon see,
