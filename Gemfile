@@ -3,17 +3,7 @@ source 'https://rubygems.org'
 
 group :jekyll_plugins do
   gem 'github-pages'
-  gem 'jekyll-remote-theme'
+  # Jekyll requires webrick, but it is no longer bundled with Ruby 3
+  # https://github.com/jekyll/jekyll/issues/8523
   gem 'webrick'
-  gem 'jekyll-seo-tag'
-  gem 'jekyll-remote-theme'
-  gem 'jekyll-github-metadata'
-
-  # The following plugins are enabled on GitHub Pages without a _config.yml.
-  gem 'jekyll-optional-front-matter'
-  gem 'jekyll-readme-index'
-  gem 'jekyll-relative-links'
-  gem 'jekyll-default-layout'
-  gem 'kramdown-parser-gfm'
-  gem 'jemoji'
 end
