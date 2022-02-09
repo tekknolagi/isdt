@@ -41,7 +41,7 @@ them at your own peril.
    compile-time[^compile-time-vs-run-time] dependencies between the
    executable(s), the `.o` files, and the source (`.c` and `.h`) files. Your
    answer to the previous question will be useful here. Do not use wildcards or
-   globs--each file should be its own node in the graph.
+   globs---each file should be its own node in the graph.
    1. You may hand draw this on paper or use a free online service like
       [Excalidraw](https://excalidraw.com/) to draw it digitally.
    1. We recommend that you organize the graph with the executable(s)
@@ -164,5 +164,5 @@ be phony, as it needs to run even if a file called `test` exists on disk.
 To submit, commit your changes to the `main` branch of your repository and push
 that branch back to GitHub (see the cloning instructions). If you do this
 correctly, you'll see your changes in the GitHub UI. This is a good opportunity
-to exercise your Git skills from last module--you're free to make your changes
+to exercise your Git skills from last module---you're free to make your changes
 using as many commits as you want!
