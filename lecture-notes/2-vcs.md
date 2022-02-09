@@ -89,13 +89,14 @@ computer as it is to a project on GitHub with thousands of contributors.
 
 ### Repositories and commits
 Before you can use Git to keep track of a directory, you have to create a
-repository in that directory. A repository tracks a single project or group of
-related files. A repository must be rooted in a directory, and it generally
-keeps track of everything inside that directory: you can't easily use Git to
-track a single file that's in the same directory as lots of other, unrelated
-files. 
+*repository* at that directory. A repository tracks a single project or group
+of related files. It must be rooted at a directory, and it generally keeps
+track of everything inside that directory, including subdirectories and their
+contents. You can't make multiple repositories at the same directory, so you'll
+want to create a separate directory for each of your projects---even those
+which consist of only a single file.
 
-When you create a repository in a directory, Git creates a directory named
+When you create a repository at a directory, Git creates a directory named
 `.git/` (note the dot, which prevents it from showing up in `ls`) in that
 directory. `.git/` is what distinguishes a Git repository from a normal,
 untracked directory. It's where Git stores metadata about old versions of your
@@ -106,9 +107,10 @@ Apart from `.git/`, a Git repository looks and acts just like any other
 directory: you can create and edit files using whatever tools you like, move
 and copy them with `mv` and `cp`, search them with `grep`, and so
 on[^check-out]. But, once you've made a change, you can ask Git to record that
-change. If you decide you don't like the change, you can ask Git to restore a
-file to an earlier version. If you can't remember what you did last, you can
-ask Git to show you all the changes a file has undergone. And much more.
+change. If you decide you don't like the change, you can ask Git to restore the
+affected file(s) to an earlier version. If you can't remember what you did
+last, you can ask Git to show you all the changes a file has undergone. And
+much more.
 
 [^check-out]: Some older version control systems required you to manually
     "check out" a file before working on it, then manually "check it in" once
@@ -123,12 +125,12 @@ hood, it represents old versions of your files, as well as changes to those
 files, using numerous *objects*, stored as binary files inside `.git/`. These
 files are managed by Git, and you shouldn't modify them directly.
 
-There are several types of object, but the only one you'll generally work with
-is called a *commit*. A commit represents the state of a repository at some
-point in time: it holds a list of files, the contents of those files, the date
-at which it was created, who created it, and a user-provided description of
-what changed since the previous commit, which it also stores a reference to.
-We'll talk more about commits shortly.
+There are several types of object, but the only one you'll generally interact
+directly with is called a *commit*. A commit represents the state of a
+repository at some point in time: it holds a list of files, the contents of
+those files, the date at which it was created, who created it, and a
+user-provided description of what changed since the previous commit, which it
+also stores a reference to. We'll talk more about commits shortly.
 
 ### Creating a repository
 There are two main ways to make a repository, both of which use the Git
@@ -139,15 +141,15 @@ you can navigate there and run `git init` to create a `.git/` directory
 alongside your existing files.
 
 Once you have a repository, you can run all sorts of other Git subcommands.
-Each subcommand is basically its own command--they just all happen to be
+Each subcommand is basically its own command---they just all happen to be
 implemented inside a single program, `git`. Each subcommand has its own man
 page, whose name is prefixed with `git-`. For example, `man git-init`.
 
-Let's try out the `git status` subcommand on a new repository! `git status`
-tells you what Git thinks the current state of things is. It shows you a
-helpful English description of what's going on, as well as some suggested
-things to do next. In this case, it helpfully suggests that you make and
-*track* some files:
+Try out the `git status` subcommand! `git status` tells you what Git thinks the
+current state of things is. It shows you a helpful description of what's going
+on, as well as some suggested things to do next. When you run it in a new
+repository, it helpfully suggests that you make and *track* some
+files:
 
 ```
 $ git status
@@ -171,7 +173,7 @@ the scenes in `.git/`! Although you shouldn't directly interact with `.git/`,
 knowing how Git represents files and commits internally will make you a more
 effective Git user, especially when things go wrong.
 
-Let's start by taking a look at `.git/` in a new, empty repository. It has 9
+Start by taking a look at `.git/` in your new, empty repository. It has 8
 directories and 16 files, but we'll focus on just a few:
 
 ```
@@ -205,15 +207,15 @@ with no commits, no objects exist yet.
 Git won't let you make a commit unless something in your repository has
 changed[^empty-commit]. So make a change by adding a new file:
 
-[^empty-commit]: Well, technically, you can use `--allow-empty`, but the
-    occasions you'll want to are few and far between.
+[^empty-commit]: You can override this behavior with the `--allow-empty` flag,
+    but the occasions you'll want to are few and far between.
 
 ```
-$ echo 'file contents' > myfile
+$ echo 'file contents' >myfile
 $ 
 ```
 
-Now, `git status` has more to tell you:
+Now, `git status` has more to tell us:
 
 ```
 $ git status
@@ -238,13 +240,14 @@ untracked file named `myfile`. From Git's point of view, untracked files don't
 exist: it will tell you about them in `git status`, but it won't include them
 in commits, meaning it won't track their history.
 
-To verify this, take a look at the `.git/` directory again and observe nothing
-has changed: no new objects are present, nor have any of the files--`config`,
-`description`, `HEAD`, or `info/exclude`--been altered.
+To verify this, take a look at the `.git/` directory again and observe that
+nothing has changed: no new objects are present, nor have any of the
+files---`config`, `description`, `HEAD`, or `info/exclude`---been altered.
 
-To track an untracked file, you can use the *git add* subcommand:
+To track an untracked file, use the *git add* subcommand:
 
 ```
+$ git add myfile
 $ git status
 On branch main
 
@@ -257,8 +260,7 @@ Changes to be committed:
 $
 ```
 
-This has now changed your `.git/` directory! Take a look. You should see
-something like this:
+After running this, you'll finally see a change in your `.git/` directory!
 
 ```
 $ tree .git
@@ -301,7 +303,7 @@ purposes.
     most implementations, including Git's, a *cryptographic hash function* like
     [SHA-1](https://en.wikipedia.org/wiki/SHA-1) is used to produce a
     fixed-length hash derived entirely from the variable-length contents of a
-    file--no filename involved. Such schemes assume that every hash value
+    file---no filename involved. Such schemes assume that every hash value
     corresponds to exactly one file. Unfortunately, this assumption can never
     be entirely true because hash functions attempt to represent a
     potentially-infinite piece of data as a mere 40-byte hash. As such, there
@@ -330,9 +332,9 @@ $
 ```
 
 Cool! It's the contents of our file. This file is in what's called the *staging
-area* -- tracked by Git, but not yet associated with any one commit. Let's
-commit it. The following command by default opens up your editor -- depending
-on the environment variable `$EDITOR`, this could be Nano, Vim, Emacs, or
+area*---tracked by Git, but not yet associated with any one commit. Let's
+commit it. The following command by default opens up your editor---depending on
+the environment variable `$EDITOR`, this could be Nano, Vim, Emacs, or
 something else entirely.
 
 ```
@@ -357,7 +359,7 @@ This is the point where your output might look different; the Git hashes
 objects based on their contents, and Git includes the date and author name in
 the commit. We will talk more about hashing later.
 
-Let's take a look at the commit object `2221050` by running `git show`--which
+Let's take a look at the commit object `2221050` by running `git show`---which
 defaults to showing our current commit:
 
 ```
