@@ -3,8 +3,8 @@
 # Homework 5: BLD, Investigative
 
 For this assignment, you'll explore the Makefile of scdoc. scdoc is an
-open-source project used to generate man pages--which have a notoriously ugly
-formatting language--from a more friendly, Markdown-like language. The scdoc
+open-source project used to generate man pages---which have a notoriously ugly
+formatting language---from a more friendly, Markdown-like language. The scdoc
 source repository is located
 [here](https://git.sr.ht/~sircmpwn/scdoc)[^different-forge]. You can click
 "tree" to see a web listing of the repository's files, or you can clone it and
@@ -18,7 +18,7 @@ questions.
     uses, the repository itself is still plain Git. That means you can clone
     it, make local commits, and even push your own copy (or fork) to a
     different hosting provider! This illustrates the distributed nature of
-    Git--your local clone contains the entire repository and all metadata
+    Git---your local clone contains the entire repository and all metadata
     needed to reconstruct it elsewhere.
 
 Open up the

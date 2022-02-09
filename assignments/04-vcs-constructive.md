@@ -41,7 +41,7 @@ have `clang-format` installed if so).
 1. Encouraged by your prompt addition of a license, Gianna has done some work
    to adapt the project to her needs. She has sent you a pull request, asking
    you to review the changes in `gianna-increase-int-size` and add them to the
-   `main` branch if possible. You review the changes and they look great--no
+   `main` branch if possible. You review the changes and they look great---no
    revision needed! **Create a merge commit on `main` that merges the tip of
    `gianna-increase-int-size` with the tip of `main`.**
 1. You receive another pull request, this one from a person named Dr.
@@ -53,8 +53,8 @@ have `clang-format` installed if so).
    cut down on the noise. **Create a new commit on `main` consisting of all the
    changes from `garbarini-branch` since it diverged from `main`. Tell us how
    you did so.** Note that it is possible to do this without manually copying
-   any files or code--if you find yourself re-entering things, there's probably
-   a better way.
+   any files or code---if you find yourself re-entering things, there's
+   probably a better way.
    1. You will encounter some merge conflicts during this question. **Please
       resolve those conflicts so that the intent of each conflicting change is
       preserved.** This will require you to read the changes and understand
@@ -76,7 +76,7 @@ have `clang-format` installed if so).
       this case, you should make no new merge commits.
 1. Uh oh! You just noticed that Dr. Garbarini's branch included a commit that
    removed several lines from `Makefile`. You ask him why and learn that it was
-   an accident--he always creates his commits using `git commit -a`, and so he
+   an accident---he always creates his commits using `git commit -a`, and so he
    didn't notice that he'd inadvertently deleted some code. Since you've
    already pushed his changes to the public, it's too late to amend them.
    **Create a new commit on `main` that restores `Makefile` back to how it was

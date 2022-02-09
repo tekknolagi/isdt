@@ -22,11 +22,11 @@ names like `daily.2021-09-22_0010`. Each of these directories holds a copy of
 the contents of the original directory from a certain point in time.  Take a
 moment to SSH to the server and see for yourself!
 
-The first piece of each snapshot's name--`daily`, in this example--represents
+The first piece of each snapshot's name---`daily`, in this example---represents
 the frequency at which those snapshots are taken. The second
-part--`2021-09-22_0010`--is the date and time at which it was taken. Snapshots
-that happen more frequently are also deleted more aggressively, meaning that
-the granularity of snapshots goes down the further you go back.
+part---`2021-09-22_0010`---is the date and time at which it was taken.
+Snapshots that happen more frequently are also deleted more aggressively,
+meaning that the granularity of snapshots goes down the further you go back.
 
 Note that, to prevent overwhelming tools that recursively traverse a directory
 tree, the `.snapshot/` directory only shows up in listings (`ls -a`) in your
@@ -48,7 +48,7 @@ every_four_hours.2021-09-23_0805
 $ 
 ```
 
-This is not a standard feature of Linux or POSIX--it's specific to the network
+This is not a standard feature of Linux or POSIX---it's specific to the network
 servers that Tufts uses. Nevertheless, `.snapshot/` can be very useful when you
 accidentally remove or overwrite an important file and want to get the old
 version back. (In the next module, we'll learn about version control systems,

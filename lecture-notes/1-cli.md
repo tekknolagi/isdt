@@ -60,7 +60,7 @@ defines UNIX-like operating systems, and both Linux[^linux-posix] and macOS
 follow it. [Part of POSIX][posix-scl] defines what syntax and commands a shell
 needs to support. Most of the shell features we cover in this course are part
 of POSIX, meaning they won't apply just to Bash but to any POSIX shell you
-encounter--for example, *zsh*, which is macOS's default shell and a popular
+encounter---for example, *zsh*, which is macOS's default shell and a popular
 alternative to Bash on Linux.
 
 Bash does have some nice quality-of-life features that go beyond what POSIX
@@ -148,8 +148,8 @@ Each of these pieces of information serves a purpose: the hostname and username
 together tell you where you're executing the command. Accidentally running a
 command on the wrong computer (for example, if you forget you've run `ssh`) or
 as the wrong user (if you forgot you've run `su` or `sudo`) can be
-catastrophic--imagine accidentally rebooting a server that dozens of people are
-using instead of your local workstation--and so nearly every shell prompt you
+catastrophic---imagine accidentally rebooting a server that dozens of people are
+using instead of your local workstation---and so nearly every shell prompt you
 see will include this information prominently. The history event number is
 useful when using advanced shell features that let you reference and edit old
 commands, which we'll cover in a future lecture.
@@ -296,13 +296,13 @@ Name parsing is the same for every command, but argument parsing is anything
 but. Because a command's arguments are interpreted by that command and not by
 the shell, every command you use will accept different arguments and assign
 those arguments different meanings. Some of these meanings are easy to
-guess--for example, `ls` can take as an argument a file path to list; if you
+guess---for example, `ls` can take as an argument a file path to list; if you
 don't give it one, it lists your working directory. But many aren't, and in
 those cases you'll need to find them out some other way.
 
 This is where *man pages* come in. Short for "manual page", a man page holds
 documentation for a command that's accessible directly from the command
-line--no Google needed! To access a man page, run the `man` command and give it
+line---no Google needed! To access a man page, run the `man` command and give it
 the command you want to learn about as an argument (for example, `man ls`).
 This will open up a full-screen view of the man page, which you can navigate
 with the arrow or <kbd>PgUp</kbd>/<kbd>PgDn</kbd> keys and leave by pressing
@@ -314,7 +314,7 @@ common conventions for arguments.
     taking control of the terminal and running to completion (optionally
     printing output or reading input in the process), and then the shell
     printing a new prompt is known as a *read-eval-print loop*, or a *REPL* for
-    short. Some programming languages also have REPLs--modes where you can
+    short. Some programming languages also have REPLs---modes where you can
     enter one statement at a time instead of running a whole file at once.
     REPLs are common for interpreted languages like Python and Ruby and much
     less common for compiled languages like C and C++.
@@ -348,8 +348,8 @@ $
 ```
 
 The path `/h/utln01/`[^trailing-slash] refers to a directory called `utln01`, inside a directory
-called `h`, inside the root directory `/`. This style of path--relative to the
-root--is called an *absolute path* and always starts with a slash. The other
+called `h`, inside the root directory `/`. This style of path---relative to the
+root---is called an *absolute path* and always starts with a slash. The other
 type of path you'll encounter is called a *relative path* and never starts with
 a slash. Relative paths are interpreted relative to your working directory and
 so can mean different things at different times:
@@ -433,7 +433,7 @@ special home directory shorthand `~` can be suppressed by putting the `~`
 inside single quotes. This isn't the only piece of processing that quotes
 prevent: many shell features are triggered by command names or arguments that
 include special characters. Often you'll want those characters to be taken
-literally instead, though--especially if you don't even know that the feature
+literally instead, though---especially if you don't even know that the feature
 in question exists! This is where quotes come in.
 
 Any piece of a Bash command that's enclosed in single quotes will be preserved
@@ -594,7 +594,7 @@ prints the number of words in `myfile`. But the authors also taught `wc` to
 count other things, and they exposed that functionality using flags. `wc -c`,
 for example, will count characters, while `wc -l` will count lines. `wc -w` is
 another way to ask for the default behavior of counting words. The authors also
-added long-form variants--`--bytes`, `--lines`, and `--words`, respectively. In
+added long-form variants---`--bytes`, `--lines`, and `--words`, respectively. In
 general, short-form flags are handy at the command line, but long-form ones are
 better for shell scripts (which we'll talk about later) and documentation
 because they better convey meaning.
@@ -741,7 +741,7 @@ Searching files by their contents is all well and good but it's also useful to
 search for files by their attributes. To find a file by name, you can run `find
 myfolder -name filename`. The filename can also be a pattern with `find`'s
 limited pattern support. For example, you can find files whose names end in
-"ed" by running `find -name "*ed"`. `find` supports many other predicates--you
+"ed" by running `find -name "*ed"`. `find` supports many other predicates---you
 should read the man page to get some ideas.
 
 `find` also supports a limited number of operations on the files it finds, such
@@ -780,7 +780,7 @@ man pages for more information.
 
 #### `sort`
 To sort a file or stream's lines, use `sort`. The default behavior is to sort
-lexicographically--in alphabetical order--so it will not sort numbers as you
+lexicographically---in alphabetical order---so it will not sort numbers as you
 expect. For that, you want `sort --numeric-sort`, or `sort -n`. It also can
 reverse the sorting order with `--reverse`/`-r`.
 
@@ -817,11 +817,11 @@ package managers and install scripts to write to and you to read from.
 
 #### `ln`
 Create a *symbolic link* to a file, when used with the `--symbolic`/`-s` flag.
-The syntax is the same as `cp`--`ln source destination`--but instead of copying
-a file, it creates a special kind of file at the destination that forwards all
-accesses to the source. Symbolic links can be created to both files and
-directories, and you can generally treat the link just as you would the
-original file when using it in commands. `ln` with no flags creates *hard
+The syntax is the same as `cp`---`ln source destination`---but instead of
+copying a file, it creates a special kind of file at the destination that
+forwards all accesses to the source. Symbolic links can be created to both
+files and directories, and you can generally treat the link just as you would
+the original file when using it in commands. `ln` with no flags creates *hard
 links*, which are a different and lesser-used type of link that we won't
 discuss in this course.
 
@@ -855,10 +855,10 @@ See also the POSIX utility `type`.
 
 #### `top` and `htop`
 `top` and `htop` are interactive commands. Instead of running in a
-pipeline--consuming input from stdin and printing to stdout--they are meant to
-be used directly by the user. `top` prints live statistics about running
+pipeline---consuming input from stdin and printing to stdout---they are meant
+to be used directly by the user. `top` prints live statistics about running
 programs, and is helpful for getting an overview of the pressures on your
-system--memory, CPU, etc. `htop` is a colorful variant with some more
+system---memory, CPU, etc. `htop` is a colorful variant with some more
 information about individual CPU cores and graphs.
 
 These tools read from `/proc`, which is a virtual filesystem with information
@@ -867,7 +867,7 @@ about processes pretending to be files.
 #### `tmux`
 `tmux` is another interactive program. It stands for "terminal multiplexer",
 which is a fancy way of saying that it allows you to run multiple programs in
-the same terminal--kind of like in The Matrix. It is very useful for systems
+the same terminal---kind of like in The Matrix. It is very useful for systems
 administrators to see live updating commands like `top`, some kind of live log,
 and maybe also have an editor running, all at once.
 
@@ -984,8 +984,8 @@ the third specifies what everyone else is allowed to do.
 That's a lot of information, so dig into it bit by bit. Let's first talk about
 owners and groups. Every file in Linux has as its owner exactly one user on the
 system. New files are owned by whoever runs the program that creates them
-(except in the case of setuid--see the footnote above). A file's owner can't be
-changed once it's been set, not even by that owner (with one exception,
+(except in the case of setuid---see the footnote above). A file's owner can't
+be changed once it's been set, not even by that owner (with one exception,
 described below). `ls -l` shows a file's owner in the third field: the files in
 our example are owned by thebb01 and root, respectively. If you own a file, the
 first group of `rwx` bits tells you how you can access it.
@@ -1065,8 +1065,8 @@ needed. Note that the root *account* has no special relation to the root
     was named the [Filesystem Hierarchy Standard
     (FHS)](https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html), and it
     defines the paths where different kinds of system artifacts should live.
-    Most Linux distributions--and programs written for Linux--at least loosely
-    respect FHS. (For a fun distro that doesn't, check out
+    Most Linux distributions---and programs written for Linux---at least
+    loosely respect FHS. (For a fun distro that doesn't, check out
     [NixOS](https://nixos.org/).)
 
 [^etc-shadow]: See `man 5 shadow` and `man 5 passwd` for more information on
@@ -1331,7 +1331,7 @@ it's running. For those who've written C++ programs, this is where `cin` gets
 its data from. Many of the commands we've already shown, like `cat` and `grep`,
 will default to reading from stdin if no filename is given as an argument.
 
-There are also three ways a program can send output to the shell--*standard
+There are also three ways a program can send output to the shell---*standard
 out* (a.k.a. *stdout*), *standard error* (a.k.a. *stderr*), and its *exit
 code*. stdout and stderr are both text streams that programs can write to while
 they're running (`cout` and `cerr` in C++), and the contents of both are
@@ -1386,8 +1386,8 @@ boolean result.) If the predicate returns true, the exit code is zero, and if
 it returns false, the exit code is one. This is different from C, where true is
 one, but matches the POSIX convention of returning zero on success.
 
-To test if a string is the empty string `""`--if it has length zero--use `test
--z "$STRING"`.
+To test if a string is the empty string `""`---if it has length zero---use
+`test -z "$STRING"`.
 
 ```
 $ test -z ""
@@ -1399,7 +1399,7 @@ $ echo $?
 $ 
 ```
 
-To test if a string is not the empty string--if it has nonzero length--use
+To test if a string is not the empty string---if it has nonzero length---use
 `test -n "$STRING"`:
 
 ```
@@ -1496,8 +1496,8 @@ and they'll be run left-to-right.
 #### Pipelines
 The next operator we'll discuss is one of the hallmarks of POSIX shells. It's
 the foundation upon which the [UNIX
-Philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)--to write small
-programs that do one thing well--is built. This operator is known as the
+Philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)---to write small
+programs that do one thing well---is built. This operator is known as the
 *pipe*, and it's denoted with a vertical bar (`|`).
 
 When you separate two commands with `|`, the shell connects stdout of the first
@@ -1576,7 +1576,7 @@ We've made some progress! Now every filename is preceded by its line count.
 (Note that this command may take a while to run, since `wc` has to read
 thousands of files.)
 
-Wait a minute, though--what's this `4233248 total` line? That's not a file
+Wait a minute, though---what's this `4233248 total` line? That's not a file
 ending in `.h`! As it turns out, `wc` prints a total line count at the end of
 its output, and there's no flag to disable it. Such an inconvenience is no
 match for the power of pipelines though: we can use `head -n -1` (note: `-1`,
@@ -1903,8 +1903,8 @@ exactly how they work. This is where *shell scripts* come in.
 A shell script is a text file containing commands. When you ask the shell to
 run a script, it interprets and executes each line in sequence, just as if
 you'd typed the lines one after another at a prompt. You've already seen shell
-variables, and we'll learn about a number of other shell features today--like
-conditionals, loops, and functions--that give shell scripts a similar level of
+variables, and we'll learn about a number of other shell features today---like
+conditionals, loops, and functions---that give shell scripts a similar level of
 expressiveness to normal programming languages like C, C++, or Python.
 
 Before we talk about those features, though, a word of warning: although you
@@ -1931,7 +1931,7 @@ Shell scripts excel at interacting with command-line programs. Pipelines,
 redirection, and argument substitution make shell scripts the easiest way to
 solve problems in terms of programs that already exist. But if you need to
 interact with a piece of software that *isn't* exposed through a command-line
-utility--for example, a database like PostgreSQL or MariaDB[^db-clis]--pick
+utility---for example, a database like PostgreSQL or MariaDB[^db-clis]---pick
 another language.
 
 [^db-clis]: Both these databases do actually come with command-line tools, but
@@ -1987,8 +1987,8 @@ echo "Hello, world!"
 echo "I am in a script and I am being run by $USER."
 ```
 
-Save it. If you try and run it like a program you compiled in your CS courses
--- by running `./myscript.sh` -- you will get the following error:
+Save it. If you try and run it like a program you compiled in your CS
+courses---by running `./myscript.sh`---you will get the following error:
 
 ```
 bash: ./myscript.sh: Permission denied
@@ -2088,7 +2088,7 @@ fi
 ```
 
 Note that the spaces around the braces `[` and `]` are required, just as they
-are for any command--`[` is just a regular command with an unusual name:
+are for any command---`[` is just a regular command with an unusual name:
 
 ```
 $ ls -l /bin/\[
@@ -2242,7 +2242,7 @@ greet() {
 }
 ```
 
-Function invocations look like normal command invocations -- unlike other
+Function invocations look like normal command invocations---unlike other
 programming languages, parentheses are not required:
 
 ```bash
@@ -2268,7 +2268,7 @@ practices we outline here?
 
 ### Error handling (`set -euo pipefail` is your friend)
 Error handling in shell scripts is somewhat fraught. Normally in a programming
-language when there is an error, you find out right away -- or it is explicitly
+language when there is an error, you find out right away---or it is explicitly
 squashed. For example, in C, your program might segfault. Or, if you are
 luckier, it might print an error message and `exit()`. Or in C++, Python, and
 other programming languages that support it, it might raise an exception.
@@ -2287,7 +2287,7 @@ Unfortunately, the same happens for commands that really truly have an error,
 like reading from a file that does not exist. If the entirety of your shell
 pipeline, for example, relies on reading from a file called `contact-list`, and
 that does not exist, the shell will happily continue trying to execute the rest
-of your shell script anyway--often with unexpected results.
+of your shell script anyway---often with unexpected results.
 
 Fortunately, there is a *magic incantation* you can put at the top of your
 shell scripts: `set -euo pipefail`. This magic incantation is not actually
@@ -2340,7 +2340,7 @@ is an ELF binary or not, from looking at the first couple of bytes[^kind-of].
 
 [^kind-of]: This is still just a guess, but it is a more educated guess. You
     could very well decide to write those bytes into a file and use them for
-    some other purpose -- bytes are bytes are bytes are bytes, after all. But
+    some other purpose---bytes are bytes are bytes are bytes, after all. But
     it is a *convention* to use these bytes to denote an ELF binary.
 
 There is another kind of magic number, hex 23 21 ("#!", pronounced any number
@@ -2544,15 +2544,15 @@ Each uses different data structures to represent a file tree.
 
 Your computer then has to traverse the filesystem's data structures to figure
 out exactly which bytes on the disk hold pieces of the file we're `cat`ting.
-But to read those data structures--and the file itself--it needs to know how to
-read data from the disk. This differs based on the specific disk in use. Most
-modern hard drives use a bus called SATA for data transfer, while many SSDs use
-a different bus called NVMe. Flash memory chips on phones use a bus called
-eMMC, except newer ones which use one called UFS. *Bus standards* like these
-specify how data is transferred over one or more physical wires, and there are
-dozens of them. But even knowing a disk's bus isn't enough to read from it, as
-your computer also needs to know which specific instructions or memory regions
-control that bus, and these differ from system to system.
+But to read those data structures---and the file itself---it needs to know how
+to read data from the disk. This differs based on the specific disk in use.
+Most modern hard drives use a bus called SATA for data transfer, while many
+SSDs use a different bus called NVMe. Flash memory chips on phones use a bus
+called eMMC, except newer ones which use one called UFS. *Bus standards* like
+these specify how data is transferred over one or more physical wires, and
+there are dozens of them. But even knowing a disk's bus isn't enough to read
+from it, as your computer also needs to know which specific instructions or
+memory regions control that bus, and these differ from system to system.
 
 All in all, there are thousands of possible combinations of filesystems, disk
 buses, and bus controllers that a computer might be using, and that's just to
@@ -2580,8 +2580,8 @@ to making an actual syscall that the difference is not worth talking about at
 length.
 
 This program has three parts: first, it opens a file using `open()`. This
-syscall gives you a *file descriptor* -- just a number -- that the kernel can
-use to refer to the file for the duration of your program.
+syscall gives you a *file descriptor*---just a number---that the kernel can use
+to refer to the file for the duration of your program.
 
 Second, we have a loop. This loop reads chunks from the input file specified by
 the user into an array and then writes those chunks to stdout. C comes with a
@@ -2684,7 +2684,7 @@ $
 Lo! Your program calls `openat`, `read`, and `write`.
 
 strace is a powerful tool for understanding what software is doing. The course
-staff has used it to figure out why a program is hanging -- for example, maybe
+staff has used it to figure out why a program is hanging---for example, maybe
 something went wrong with a file read, and `strace` shows it waiting for a
 `read()` to finish.
 
@@ -2754,8 +2754,8 @@ because the shells are written for an API called POSIX.
 
 We've talked about POSIX before, in particular as a specification for shell
 behavior and C function behavior. Because Linux, the BSDs, and macOS all
-provide these POSIX APIs, the shells can run on them with minimal -- if any --
-changes.
+provide these POSIX APIs, the shells can run on them with minimal---if
+any---changes.
 
 Windows, unfortunately, does not provide this set of APIs specified by POSIX.
 For example, there is no `readdir` function; Windows provides its own API. This

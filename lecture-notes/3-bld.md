@@ -10,7 +10,7 @@
 Welcome to module three! You now know how to use Git to keep track of your code
 and share it with others, but code isn't very useful unless you can run it! In
 this module, you'll learn about *build systems*, a type of tool that automates
-the process of *building* code--that is, converting it into a form that can be
+the process of *building* code---that is, converting it into a form that can be
 run and/or distributed[^build-process]. You can think of build systems as
 supercharged shell scripts: like shell scripts, their purpose is to encapsulate
 a complex and intricate sequence of steps within a single command that's easy
@@ -20,7 +20,7 @@ Build systems differ from the shell in a key conceptual way, though: when you
 run a script, you tell the shell exactly what commands to run and in what
 order. But when you run a build, you tell the build system only what results
 you want and let it decide what commands are needed to produce those results.
-This may seem like a matter of semantics (and to some degree it is--a complex
+This may seem like a matter of semantics (and to some degree it is---a complex
 enough shell script could in theory do exactly what a build system does), but
 it has a huge real-world effect on how efficiently you can work.
 
@@ -47,11 +47,11 @@ knows haven't changed!
 
 ### What problem do build systems solve?
 
-Compiling software is an error-prone and slow process. Writing `g++` every time
--- whether that be typing it out manually, using the up arrow keys to go
-through your search history, or using <kbd>Ctrl</kbd>-<kbd>r</kbd> -- is not
-the way to go. Build systems automate this process: they let you write the
-command (or series of commands) once, name this process, and then use that name
+Compiling software is an error-prone and slow process. Writing `g++` every
+time---whether that be typing it out manually, using the up arrow keys to go
+through your search history, or using <kbd>Ctrl</kbd>-<kbd>r</kbd>---is not the
+way to go. Build systems automate this process: they let you write the command
+(or series of commands) once, name this process, and then use that name
 thereafter. Then you get to check in your build configuration to source control
 that your teammates may use it too.
 
@@ -80,7 +80,7 @@ tool does it for you.
 Build systems do this by assembling a *dependency graph* of all the different
 components of your software project. When you describe that "`fileA` uses
 features from `fileB`", the build system infers that any time `fileB` is
-modified, all the users of it -- direct and indirect -- must be re-built. Like
+modified, all the users of it---direct and indirect---must be re-built. Like
 Git, build systems tend not to watch the filesystem. Instead, they divine what
 the state of the project is with every command.
 
@@ -96,7 +96,7 @@ make building software easier. You could, for example, write an elaborate shell
 script that functions as the build system for a given project. Shell scripting
 is a generic solution because it's not wed to any particular project language.
 You could use it to build your C, C++, Rust, etc project. This is the sort of
-"null example" of a build system because -- as you found out -- writing shell
+"null example" of a build system because---as you found out---writing shell
 scripts is hard and you would be hard-pressed to solve a lot of your problems
 other than repetitive typing.
 
@@ -113,8 +113,8 @@ understand how the Rust compiler works. There is a lot of value in the fact
 that the Rust ecosystem has unified around one build system and project
 description language, TOML[^network-effect]. The same can be said for
 JavaScript with NPM/Yarn, Python with pip/setuptools, Go with `go build`, and
-Haskell with Cabal and Stack -- though unfortunately there is an ecosystem
-split between the two tools.
+Haskell with Cabal and Stack---though unfortunately there is an ecosystem split
+between the two tools.
 
 [^network-effect]: See [Metcalfe's law](https://en.wikipedia.org/wiki/Metcalfe%27s_law) for more info.
 
@@ -141,7 +141,7 @@ which is very thorough and helpful.
 *Targets* are the core of a Makefile. They are the results you need to
 eventually build; the names of the files on disk you want to see by the end of
 the build process[^phony]. In the example below, a Makefile has a target called
-`mybinary` -- the name preceding the colon (`:`).
+`mybinary`---the name preceding the colon (`:`).
 
 [^phony]: Not always; sometimes there are "phony" targets that are names for
     batches of recipes and do not produce files.
@@ -154,8 +154,8 @@ mybinary:
 
 It also has *recipes* to build that target: `gcc main.c`. The recipes section
 consists of a list of shell commands that are run in
-succession[^different-shells] to build the target. In this case, the two recipes
--- `gcc main.c` and `mv a.out mybinary` will run one after another.
+succession[^different-shells] to build the target. In this case, the two
+recipes---`gcc main.c` and `mv a.out mybinary`---will run one after another.
 
 [^different-shells]: They are run in different shell processes, so state like
     variables and working directory do not persist between commands (`cd` won't
@@ -316,7 +316,7 @@ You might get fancy and add some features to compare m-times in your shell
 script. Maybe you add a function called `build_if_newer` and get 60% of the
 functionality of Make. This will work. But now you have to reason about an
 ever-growing shell script and if it perfectly implements your ideal build
-semantics. And Make will do it better still -- Make already has built-in
+semantics. And Make will do it better still---Make already has built-in
 parallelism. Does your shell script?
 
 Make has been around a long time and its performance and correctness are
