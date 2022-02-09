@@ -2587,6 +2587,7 @@ constant called `STDOUT_FILENO` so that the kernel can refer to stdout.
 
 Third, we close the file using `close()`.
 
+<!-- TODO(max): Add error handling -->
 ```c
 int main(int argc, char *argv[]) {
   if (argc != 2) return 1;
@@ -2630,6 +2631,7 @@ It's all well and good to speak in abstract about what system calls do, but
 it's another to see them happen right in front of you. Let's take another look
 at the implementation of `cat` from above:
 
+<!-- TODO(max): Add error handling -->
 ```c
 int main(int argc, char *argv[]) {
   if (argc != 2) {
@@ -2850,6 +2852,7 @@ The first one uses POSIX functions and syscalls. These functions and syscalls
 are available on all BSD and Unix-like machines---systems that conform to
 POSIX.
 
+<!-- TODO(max): Add error handling -->
 ```c
 #include <fcntl.h>
 #include <unistd.h>
@@ -2879,6 +2882,7 @@ int main(int argc, char *argv[]) {
 The second one uses Windows-specific APIs. These functions are only available
 on Windows.
 
+<!-- TODO(max): Add error handling -->
 ```c
 #include <windows.h>
 
@@ -2908,6 +2912,7 @@ The third one uses functions guaranteed to exist by the C programming language
 standard. That means all platforms, POSIX and Windows, that support C will be
 able to run this C program. This is powerful!
 
+<!-- TODO(max): Add error handling -->
 ```c
 #include <stdio.h>
 
