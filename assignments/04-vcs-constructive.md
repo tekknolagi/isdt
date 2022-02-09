@@ -88,6 +88,16 @@ have `clang-format` installed if so).
    before the discussion gets too spicy, and put that response in
    `answers.txt`.
 
+   We have some recommended reading about open source maintainership. There is
+   not one definitive experience or truth about the role. You should read about
+   it and come to your own conclusions about conduct.
+
+   * [The burden of an Open Source maintainer](https://www.jeffgeerling.com/blog/2022/burden-open-source-maintainer)
+   * [What it feels like to be an open-source maintainer](https://nolanlawson.com/2017/03/05/what-it-feels-like-to-be-an-open-source-maintainer/)
+   * [What you're saying when you tell people to send in patches](https://utcc.utoronto.ca/~cks/space/blog/tech/SendPatchesMeaning)
+   * [Reviewing a Pull Request](https://jekyllrb.com/docs/maintaining/reviewing-a-pull-request/)
+   * [Some notes below](#notes-on-being-an-open-source-maintainer)
+
 ## Submitting your work
 
 To submit, first join our [GitHub Classroom
@@ -98,3 +108,26 @@ the "vcs-constructive" assignment. Add this repository as a remote to the local
 repository where you've been working, then push your `main` and `answers`
 branches to that remote. If you do this correctly, you'll see both branches
 shown in GitHub's web UI.
+
+## Notes on being an open source maintainer
+
+The basic idea is: software is made by people. Be kind to them. Build an
+inclusive community.
+
+Adding a [code of conduct](https://opensource.guide/code-of-conduct/) to your
+project is a step in the right direction. Pick one you like. It will codify the
+way you would like contributors to interact. In some circumstances, you may
+have to "tap the sign" and remind people to be respectful.
+
+You may get angry issues or pull requests sometimes. There are several
+approaches to handling this.
+
+* You could point to your code of conduct and close the issue/PR.
+* You could respond in a businesslike fashion. In one particularly famous
+  example, the developers [ignore the
+  tone](https://jira.mongodb.org/browse/PYTHON-532) and the original angry
+  person calms down and apologizes.
+* You could respond with your own tirade, which might also violate your code of
+  conduct.
+* You could ignore it until it becomes an ember burning in the back of your
+  mind, eventually causing you to write a blog post about maintainer burnout.
