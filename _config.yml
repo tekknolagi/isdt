@@ -3,9 +3,9 @@ description: >
   Learn the command line, version control, build systems, and correctness in
   Tufts' CS 50ISDT.
 google_analytics: UA-26440738-1
-url: "https://bernsteinbear.com"
+url: 'https://bernsteinbear.com'
 baseurl: /isdt
-favicon: /favicon.ico # TODO: verify
+favicon: /favicon.ico
 permalink: pretty
 exclude:
   - README.md
