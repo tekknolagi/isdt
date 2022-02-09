@@ -622,6 +622,8 @@ appears to hang forever, it's probably waiting for you to type something. You
 can get back to the prompt by pressing <kbd>Ctrl-c</kbd>. We'll talk about more
 powerful ways to make use of this mode later in this module.
 
+<!-- TODO: add `touch` -->
+
 #### `ls`
 Although many of our examples have already used `ls`, they've thus far shown
 only its default behavior, which is to print the name of each file in the
