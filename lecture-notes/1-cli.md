@@ -2509,7 +2509,7 @@ NT), letting it run Linux applications natively.
     are paired with complex graphics and windowing libraries in userspace that
     let programs present a GUI. But POSIX predates graphical interfaces,
     meaning there's no standardization of this functionality across POSIX
-    operating systems. <-- TODO(tom) ... --> If you want to write a
+    operating systems. <!-- TODO(tom) ... --> If you want to write a
     cross-platform graphical application, you should use a library like
     [Qt](https://www.qt.io/) or [GTK](https://www.gtk.org).
 
