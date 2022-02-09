@@ -722,11 +722,17 @@ could search `grep "myfunction(.*)"`, which would look for a call to
 "myfunction" with any number of characters between parentheses. This is called
 a regular expression search.
 
-<!-- TODO: Link to more info on regexes -->
-
 Sometimes you might want to find all the lines that do *not* contain a pattern,
 because the pattern is very frequent. In this case you can do `grep -v
 "pattern" file`, where `-v` stands for "invert".
+
+> NOTE: Grep uses a more limited set of regular expressions than people
+> normally refer to when they say "regular expression". Read more about this on
+> the [GNU manual][gnu-manual] and this nicely written [DigitalOcean
+> tutorial][digitalocean-tutorial].
+
+[gnu-manual]: https://www.gnu.org/software/findutils/manual/html_node/find_html/grep-regular-expression-syntax.html
+[digitalocean-tutorial]: https://www.digitalocean.com/community/tutorials/using-grep-regular-expressions-to-search-for-text-patterns-in-linux
 
 #### `find`
 Searching files by their contents is all well and good but it's also useful to
@@ -872,8 +878,50 @@ bindings.
 
 See also the `screen` command, which is similar.
 
-<!-- TODO: Talk about `less` -->
-<!-- TODO: talk about `uniq` -->
+#### `less`
+`less` is a pager. Its job is to display its input inside a viewer that you can
+scroll around and search in. It is useful for large streams that you don't want
+to dump to your terminal, such as a large files, or noisy programs.
+
+For live-updating streams, you can use `less +F`. Note that unlike most other
+programs, this option (a sub-command of `less`) is given with `+`, not `-`.
+
+#### `uniq`
+`uniq` filters repeated lines in its input. If you have adjacent lines in a
+file and they are the same, `uniq` will make sure that only one of them remains
+in the output.
+
+A common failure with `uniq` is piping unsorted input with duplicates. `uniq`
+may not work on this input! Consider:
+
+`uniq` will turn:
+
+```
+A
+B
+B
+C
+```
+
+into:
+
+```
+A
+B
+C
+```
+
+but leave the following unchanged:
+
+```
+B
+A
+B
+C
+```
+
+In order to remove the duplicate line from the last example, pipe your input
+through `sort` first.
 
 #### `vi`
 `vi` is a POSIX-specified text editor that is available on almost every system
@@ -1955,7 +2003,12 @@ run your script using `./myscript.sh`. But what shell is running this file? We
 will find out more about this later (or read ahead to the `#!`
 section).[^shell-complication]
 
-<!-- TODO: Mention that Windows line endings will stop scripts from working -->
+> NOTE: We have had reports of strange shell script behavior from students
+> writing their programs on Windows in an editor like Sublime Text. If you are
+> on Windows, your best bet is probably to write your program in an editor on
+> the homework server itself, like `nano`, `vim`, or `emacs`.
+>
+> This is due to the way Windows vs Unix line endings.
 
 [^shell-complication]: As it turns out, if you run your executable script with
     `./myscript.sh` and there is no shebang, the kernel will refuse to execute
@@ -2423,7 +2476,8 @@ Because syscalls are part of the kernel, they adhere to the kernel's security
 and synchronization guarantees. For example, the `open` syscall defined by
 POSIX (which we'll dive into with an example shortly) validates that the
 program calling it has permission to access the file it's asking for. If not,
-it returns a failure code[^kernel-exploit]. TODO: add some sentences
+it returns a failure code[^kernel-exploit]. <!-- TODO(tom): add some sentences
+-->
 
 [^kernel-exploit]: If you manage to find a way to alter the kernel's code or
     data either before it gets booted or while it's running, you could remove
@@ -2453,9 +2507,9 @@ NT), letting it run Linux applications natively.
     are paired with complex graphics and windowing libraries in userspace that
     let programs present a GUI. But POSIX predates graphical interfaces,
     meaning there's no standardization of this functionality across POSIX
-    operating systems. TODO ... If you want to write a cross-platform graphical
-    application, you should use a library like [Qt](https://www.qt.io/) or
-    [GTK](https://www.gtk.org).
+    operating systems. <-- TODO(tom) ... --> If you want to write a
+    cross-platform graphical application, you should use a library like
+    [Qt](https://www.qt.io/) or [GTK](https://www.gtk.org).
 
 [^homebrew]: [Homebrew](https://brew.sh/) is a project that takes advantage of
     this fact to make a number of tools that were originally written for Linux
@@ -2786,4 +2840,93 @@ This applies not only to operating systems and low-level tooling but also to
 programming at large: you will face very similar challenges switching your
 cloud hosting provider as porting your code between Windows and POSIX.
 
-<!-- TODO: insert a demo of two cats: fopen and Windoes API -->
+Below are some sample implementations of `cat`. None of them have good error
+checking because they are just to highlight the different APIs. **This is not
+a good thing. Do not copy and paste without adding error checking.**
+
+#### Using POSIX syscalls
+
+The first one uses POSIX functions and syscalls. These functions and syscalls
+are available on all BSD and Unix-like machines---systems that conform to
+POSIX.
+
+```c
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[]) {
+  if (argc != 2) {
+    return 1;
+  }
+  const char *filename = argv[1];
+  int file = open(filename, O_RDONLY);
+  int nread;
+  char buffer[100];
+  while (1) {
+    nread = read(file, buffer, sizeof buffer);
+    if (nread <= 0) {
+      break;
+    }
+
+    write(STDOUT_FILENO, buffer, nread);
+  }
+  return 0;
+}
+```
+
+#### Windows APIs
+
+The second one uses Windows-specific APIs. These functions are only available
+on Windows.
+
+```c
+#include <windows.h>
+
+int main(int argc, char *argv[]) {
+  if (argc != 2) {
+    return 1;
+  }
+  char buffer[100];
+  HANDLE f = CreateFileA(argv[1], GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+  HANDLE stdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+  while (1) {
+    DWORD bytes_read = 0;
+    ReadFile(f, buffer, sizeof buffer, &bytes_read, NULL);
+    if (bytes_read <= 0) {
+      break;
+    }
+
+    WriteFile(stdout, buffer, bytes_read, NULL, NULL);
+  }
+}
+```
+
+#### Using `fopen`
+
+The third one uses functions guaranteed to exist by the C programming language
+standard. That means all platforms, POSIX and Windows, that support C will be
+able to run this C program. This is powerful!
+
+```c
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+  if (argc != 2) {
+    return 1;
+  }
+  const char *filename = argv[1];
+  FILE* file = fopen(filename, "r");
+  int nread;
+  char buffer[100];
+  while (1) {
+    nread = fread(buffer, /*size=*/1, /*nmemb=*/sizeof buffer, file);
+    if (nread <= 0) {
+      break;
+    }
+
+    fwrite(buffer, /*size=*/1, /*nmemb=*/nread, stdout);
+  }
+  return 0;
+}
+```
