@@ -166,7 +166,7 @@ global Git configuration and your version of Git. Recent versions of Git have
 moved away from the old default branch name of "master" in favor of "main".
 We'll talk more about branches later.)
 
-### Creating a commit
+### Staging files
 Let's follow Git's advice and track some files, which is the first step to
 creating a commit. While we do so, let's also look at what's going on behind
 the scenes in `.git/`! Although you shouldn't directly interact with `.git/`,
@@ -231,11 +231,11 @@ nothing added to commit but untracked files present (use "git add" to track)
 $
 ```
 
-Git doesn't magically watch as you make changes to a repository. In fact, Git
-only does anything when you type `git`: unlike sync services such as Dropbox,
-Git doesn't run in the background. When you run `git status`, you're asking Git
-to take notice of all the changes you've made since your last commit and print
-a summary of them. In the snippet above, Git noticed that you have a new and
+Git doesn't magically watch as you make changes to a repository. Unlike sync
+services such as Dropbox, which continuously run in the background, Git only
+does stuff when you ask it to. When you run `git status`, you're asking Git to
+take notice of all the changes you've made since your last commit and print a
+summary of them. In the snippet above, Git noticed that you have a new and
 untracked file named `myfile`. From Git's point of view, untracked files don't
 exist: it will tell you about them in `git status`, but it won't include them
 in commits, meaning it won't track their history.
@@ -288,42 +288,53 @@ $
 ```
 
 Git has created its first object, stored as the file
-`.git/objects/d0/3e2425cf1c82616e12cb430c69aaa6cc08ff84`. As you'll soon see,
-this object represents the contents of `myfile` as of when you ran `git add`.
-Every Git object is identified by a *hash*, which is a long (in Git's case, 40
-characters) string of letters and numbers that uniquely represent the
-*contents* of that object[^content-addressing]. This latter point is important:
-if two objects have exactly the same contents, they are guaranteed to also have
-the same hash, meaning that they are the same object for all intents and
-purposes.
+`.git/objects/d0/3e2425cf1c82616e12cb430c69aaa6cc08ff84`[^storage-limit]. As
+you'll soon see, this object represents the contents of `myfile` as of when you
+ran `git add`.  Every Git object is identified by a *hash*, which is a long (in
+Git's case, 40 characters) string of letters and numbers that uniquely
+represent the *contents* of that object[^content-addressing]. This latter point
+is important: if two objects have exactly the same contents, they are
+guaranteed to also have the same hash, meaning that they are the same object
+for all intents and purposes.
+
+[^storage-limit]: You may wonder why the first two digits of the object's hash,
+    `d0`, are used as a directory name inside `.git/objects/`. This is because
+    some (mostly older) filesystems fail or slow down when a single directory
+    holds too many files. To prevent the `.git/objects/` directory from
+    directly containing tens or hundreds of thousands of files, Git splits the
+    objects into subdirectories based on how their hashes happen to start.
 
 [^content-addressing]: The strategy of naming objects based on their contents
     is known as [content-addressable
-    storage](https://en.wikipedia.org/wiki/Content-addressable_storage). In
-    most implementations, including Git's, a *cryptographic hash function* like
-    [SHA-1](https://en.wikipedia.org/wiki/SHA-1) is used to produce a
-    fixed-length hash derived entirely from the variable-length contents of a
-    file---no filename involved. Such schemes assume that every hash value
-    corresponds to exactly one file. Unfortunately, this assumption can never
-    be entirely true because hash functions attempt to represent a
-    potentially-infinite piece of data as a mere 40-byte hash. As such, there
-    must be multiple files that produce the same hash, also known as
-    collisions.  (This is called the pigeonhole principle.) The good news is
-    that cryptographic hash functions are explicitly designed by very smart
-    number theorists to make collisions hard to find, either intentionally or
-    by accident. The bad news is that there are some very smart engineers who
-    work on [breaking hash
-    functions](https://elie.net/talk/how-we-created-the-first-sha1-collision-and-what-it-means-for-hash-security/).
+    storage](https://en.wikipedia.org/wiki/Content-addressable_storage).  Most
+    implementations, including Git, use a *cryptographic hash function* like
+    [SHA-1](https://en.wikipedia.org/wiki/SHA-1) to derive a fixed-length hash
+    from the variable-length contents of a file. The hash depends only on the
+    file's contents---not on its filename or anything else.
 
-We now have this mysterious thing in the `objects` subdirectory. At this point,
-you should have the same file names. What is in that file, though? It's a
-binary file (check it out with `file .git/objects/...`) but it's owned by Git
-so we can take a look with `git show`. To do that, concatenate the directory
-name (`d0`) with the filename `(e324...`)[^storage-limit]:
+    Such schemes assume that every hash uniquely identifies the data used to
+    calculate it. Unfortunately, this assumption is never true in all cases:
+    because hash functions convert a potentially-infinite data stream into a
+    fixed-length hash (40 bytes for SHA-1), there always exist multiple data
+    streams that "collide" and produce the same hash. (This happens in any
+    situation where a function has fewer possible outputs than possible inputs
+    and is known as the [pigeonhole
+    principle](https://en.wikipedia.org/wiki/Pigeonhole_principle).)
 
-[^storage-limit]: Because of a limit to the number of files in a directory, Git
-    breaks up long hash filenames. If every hashed object were in the top-level
-    directory, we could end up with a huge number of files in `.git/objects/`.
+    The good news is that cryptographic hash functions like SHA-1 are
+    explicitly designed by very smart number theorists so that collisions are
+    hard to find, either intentionally or by accident. The bad news is that
+    there are some very smart engineers who spend their time trying to outsmart
+    the number theorists and find efficient ways to [produce
+    collisions](https://elie.net/talk/how-we-created-the-first-sha1-collision-and-what-it-means-for-hash-security/).
+
+So what's in this object? If you try to read the file directly, using `cat` for
+example, you'll see that it contains binary data that can't be meaningfully
+interpreted as text[^file-command]. But luckily, since the file is part of
+Git's object store, we can use the `git show` subcommand to decode it:
+
+[^file-command]: Tip: the `file` command tries to guess what kind of data a
+    file holds. Try it out on the object!
 
 ```
 $ git show d03e2425cf1c82616e12cb430c69aaa6cc08ff84
@@ -331,11 +342,16 @@ file contents
 $ 
 ```
 
-Cool! It's the contents of our file. This file is in what's called the *staging
-area*---tracked by Git, but not yet associated with any one commit. Let's
-commit it. The following command by default opens up your editor---depending on
-the environment variable `$EDITOR`, this could be Nano, Vim, Emacs, or
-something else entirely.
+Cool! It's the contents of your file. The file is now in what's called the
+*staging area*---tracked by Git, but not yet associated with a commit. Each
+commit you make records the contents of the staging area, so the next commit
+you make will include your file.
+
+## Creating a commit
+To make a commit, run `git commit`. By default, `git commit` opens a text
+editor for you to write your commit message and waits until you save and close
+the message to make the commit. (The specific editor used depends on the
+`$EDITOR` environment variable and often defaults to Vim or Vi.)
 
 ```
 $ git commit
