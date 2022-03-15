@@ -86,7 +86,7 @@ have `clang-format` installed if so).
    [an issue](04-vcs-constructive-issue.txt) maligning the project and its
    esteemed maintainers. Write an appropriately cool and collected response
    before the discussion gets too spicy, and put that response in
-   `answers.txt`.
+   `answers.txt`. Make sure to treat Alessia firmly but with respect.
 
    We have some recommended reading about open source maintainership. There is
    not one definitive experience or truth about the role. You should read about
