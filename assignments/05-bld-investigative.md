@@ -34,23 +34,27 @@ as appropriate):
 1. The command on line 30 of the Makefile, used to link the final `scdoc`
    binary, includes a number of Make variable expansions (the words starting
    with `$`).
+   1. What is an automatic variable? How does the visible behavior of automatic
+      variables differ from that of other kinds of variables? Please provide at
+      least two examples.
    1. Which of the variables used in the command on line 30 are automatic
-      variables? What is the meaning of each of them?
-   1. How do automatic variables differ from other variables? 
+      variables? For each one, what is the meaning?
    1. The Makefile does not explicitly define some variables it uses, such as
-      `LDFLAGS`. Where do their values come from?
+      `LDFLAGS`. What three places can these values come from?
    1. What does the entire line expand to when Make runs it? Explain where the
       value of each variable came from. Assume that no variables are overridden
       by the outside environment.
 1. If you run `make scdoc` from a clean directory (i.e. after initial checkout
    or running "make clean"), you will see 10 commands that get run. Please do
    this and tell us the commands. Annotate each command with the line number of
-   the rule that it belongs to.
+   the Makefile that generated the command. Many of these will share a line
+   number---that's okay.
 1. Are any additional commands run by `make scdoc` beyond the ones you
    annotated in the previous question? If so, what are they and why were they
    not included in the output?
-1. What does Make do when you run `make .build/main.o`? Do not assume anything
-   about the state of the `.build/` directory.
+1. Pretend you are the Make program. What does Make do when you run `make
+   .build/main.o`? Be specific and do not assume anything about the state of
+   the `.build/` directory.
 1. The `install` rule copies the resulting binary and documentation to various
    special system directories so that you can use the program from anywhere on
    your system. To do this, it runs the `install` command. What does the
