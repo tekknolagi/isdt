@@ -167,6 +167,10 @@ moved away from the old default branch name of "master" in favor of "main".
 We'll talk more about branches later.)
 
 ### Staging files
+TODO: Elaborate on what it means conceptually to track a file before diving
+into the technical details. Introduction to staging area 1-2 paragraphs,
+maybe merging the current contents of the next one in.
+
 Let's follow Git's advice and track some files, which is the first step to
 creating a commit. While we do so, let's also look at what's going on behind
 the scenes in `.git/`! Although you shouldn't directly interact with `.git/`,
@@ -428,6 +432,9 @@ descriptions on the fly for your benefit.[^git-stores-trees]
 Feel free to take a look at the `.git/` directory again and see what the
 objects are. You should be able to inspect any of them by using `git show`.
 
+TODO: One-paragraph enumeration of types of objects (commits, blobs, trees) and
+how they reference each other.
+
 ### Summary
 So what did we learn? We learned that Git repositories contain files and
 commits; the general write-add-commit flow; that all Git objects are stored in
@@ -435,6 +442,46 @@ commits; the general write-add-commit flow; that all Git objects are stored in
 
 To learn more about a Git subcommand like `git show`, you can use `man
 git-<subcommand>`, like `man git-show`.
+
+## Lecture 2
+
+### Branches
+
+TODO: "What is a branch?" paragraph. A convenient name you can use to reference
+a specific variant of your code or set of changes you're working on.
+
+TODO: Examples of what branches might be used for. Classify into long-lived
+branches and development/feature branches. Also mention remote branches here,
+but don't dive into them yet.
+
+TODO: The concept of main/trunk/master as the main place where you commit new
+code and the one long-lived branch you can rely on virtually every project to
+have. Discussion of other long-lived branches you might encounter, like release
+branches that live for a fixed period and only take bug fixes from master.
+Real-world examples of where these are used (e.g. Firefox, Linux) and where a
+"main-only" model works instead (e.g. websites).
+
+TODO: Instructions on creating local branches. Demonstration of branching off
+points earlier in the history.
+
+TODO: Using "git checkout" to switch branches. Discussion of how checkout is
+a very overloaded command, and how to identify this particular mode of it. Also
+maybe mention "git checkout -b" to create+checkout a branch in one go.
+
+### Referencing commits
+
+TODO: Talk about refs and how branches are just one type of ref. Explain
+`.git/refs/` directory and how different types of refs live in different
+subdirectories (which are sometimes inferred for ease of use). Namedrop
+`man gitrevisions`.
+
+TODO: Talk about how either hashes or ref names can be used to refer to a
+commit. Hashes are immutable, while refs may change. Say that either method
+can be used in nearly every place you see us using one of them.
+
+### Exploring a repository's history
+
+TODO: `git log` example. Talk about `--graph`.
 
 ## Subsequent lectures
 
