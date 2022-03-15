@@ -120,13 +120,15 @@ way you would like contributors to interact. In some circumstances, you may
 have to "tap the sign" and remind people to be respectful.
 
 You may get angry issues or pull requests sometimes. There are several
-approaches to handling this.
+approaches to handling this. We have included a non-exhaustive list below:
 
 * You could point to your code of conduct and close the issue/PR.
 * You could respond in a businesslike fashion. In one particularly famous
   example, the developers [ignore the
   tone](https://jira.mongodb.org/browse/PYTHON-532) and the original angry
   person calms down and apologizes.
+* You could welcome Alessia's fork or encourage her to contribute her fix to
+  your project.
 * You could respond with your own tirade, which might also violate your code of
   conduct.
 * You could ignore it until it becomes an ember burning in the back of your
