@@ -46,7 +46,7 @@ Features:
     * I don't care what the Makefile says because it's wrong
   * Environment-provided
     * I want to allow the user's environment to set some defaults
-* Rules
+* Complex rules
   * Pattern rules
     * I want to build all my .o without repeating myself
   * Implicit rules
