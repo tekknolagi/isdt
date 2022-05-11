@@ -69,7 +69,7 @@ Features:
 * Include
   *
 
-Outline:
+Outline as we have it now, directly ripped from the slides:
 
 * Intro to build systems
   * What problems do build systems solve
