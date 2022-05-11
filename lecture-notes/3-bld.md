@@ -3,6 +3,103 @@
 
 # Lecture Notes: Build Systems
 
+## Outline
+
+Idea: introduce a program. Have the students write a shell script (or
+one-liner) to compile it. Complicate the program or add an additional
+constraint (e.g. re-build as little as possible). Have them write a shell
+script or Makefile. Repeat.
+
+* Intro to build systems
+  * What problems do build systems solve
+  * What does a build system provide
+    * Consistency
+    * Convenience
+    * Efficiency
+  * How do you use a build system
+  * What kinds of build systems exist
+  * Why not use shell scripts
+  * Make
+    * Pros and cons
+    * Why we will focus on Make
+    * Demo of Makefile
+* Hands on with Make
+  * Anatomy of a Makefile
+  * Anatomy of a Make rule
+  * Simple demo (shell script equivalent)
+  * Add dependencies
+  * Cover -j, -f, -s
+  * Split compilation (.o)
+  * .PHONY
+  * Last notes about Make vs shell
+* The Make language
+  * Recipes and how they interact with the shell
+  * Two phases of Make
+  * Variables
+  * Automatic variables
+  * Simple vs recursive expansion
+  * Functions
+  * Variables are all text
+  * Pattern rules
+* The Make language (cont'd)
+  * Implicit rules
+    * Example implicit rule
+    * Variables used in implicit rules (like CFLAGS)
+    * Pitfalls
+  * Silencing commands with @
+  * More on variables
+    * ?= and ?+ assignment
+    * Overrides and the environment
+    * .DEFAULT_GOAL
+  * Compilation and linking internals
+    * What is compilation
+    * What is linking
+    * What is loading
+    * Why `gcc *.c` does not scale
+    * Back to separate compilation and separate steps
+  * Building large projects with Make
+    * Small, self-contained modules
+    * Recursive Make
+      * Adjacent dependencies suck
+      * Case study: Linux kernel
+    * Make includes
+      * Paths relative to top-level directory
+      * Case study: AOSP
+* The great wide world (part 1)
+  * Out of tree builds
+  * Reproducible builds
+  * Limitations of make
+  * Types of build system (redux)
+  * Build systems vs build runners
+  * Language-agnostic
+    * Make
+    * Ninja
+    * Rake
+    * Tup
+* The great wide world (part 2)
+  * Build rule generators
+    * Autotools
+    * CMake
+    * Meson
+    * Soong
+  * Multi-language
+    * Autotools
+    * CMake
+    * Meson
+    * Bazel
+    * (Buck??)
+    * Others
+  * Language-specific
+    * Pip
+    * setuptools/distutils
+    * poetry
+    * cargo
+    * Web things
+  * Package manager / build system continuum
+  * Build systems that also manage packages
+  * How to choose a build system
+  * Hermetic environments
+
 ## Lecture 1
 
 ### Module overview
