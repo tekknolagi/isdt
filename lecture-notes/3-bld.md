@@ -10,6 +10,39 @@ one-liner) to compile it. Complicate the program or add an additional
 constraint (e.g. re-build as little as possible). Have them write a shell
 script or Makefile. Repeat.
 
+Features:
+
+* Split compilation (.o) and linking (separate from Make)
+* Run a shell command
+* Run multiple shell commands
+* Name your groups of shell commands
+* Dependencies
+* Targets that are not real files (.PHONY)
+* Compute things in parallel (-j)
+* Split compilation (.o) and linking (with Make)
+* Variables
+  * Normal user-defined
+  * Implicit variables
+  * Simple expansion
+  * Recursive expansion
+  * ?=
+  * +=
+  * Overrides
+  * Environment-provided
+* Functions
+  * Built-in
+  * User-defined
+* Rules
+  * Pattern rules
+  * Implicit rules
+  * Variables in implicit rules
+* Silencing commands (@)
+* .DEFAULT_GOAL
+* Recursive make
+* Include
+
+Outline:
+
 * Intro to build systems
   * What problems do build systems solve
   * What does a build system provide
@@ -48,7 +81,7 @@ script or Makefile. Repeat.
     * Pitfalls
   * Silencing commands with @
   * More on variables
-    * ?= and ?+ assignment
+    * ?= and += assignment
     * Overrides and the environment
     * .DEFAULT_GOAL
   * Compilation and linking internals
