@@ -10,10 +10,11 @@ one-liner) to compile it. Complicate the program or add an additional
 constraint (e.g. re-build as little as possible). Have them write a shell
 script or Makefile. Repeat.
 
-Features:
-
 * Split compilation (.o) and linking (separate from Make)
   * My `gcc *.c` is not scaling
+
+Features:
+
 * Run a shell command
   * My command is long and complex
 * Run multiple shell commands in a row
