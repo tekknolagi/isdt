@@ -13,33 +13,60 @@ script or Makefile. Repeat.
 Features:
 
 * Split compilation (.o) and linking (separate from Make)
+  * My `gcc *.c` is not scaling
 * Run a shell command
-* Run multiple shell commands
+  * My command is long and complex
+* Run multiple shell commands in a row
+  *
 * Name your groups of shell commands
+  * I don't want 500 small shell scripts in my source directory
 * Dependencies
+  * When I run `make thing` it doesn't get rebuilt even though I changed the
+    source files
 * Targets that are not real files (.PHONY)
-* Compute things in parallel (-j)
+  * When I touch the file `all`, `make all` no longer runs
 * Split compilation (.o) and linking (with Make)
+  * I made changes in one .c file and everything got rebuilt
+* Compute things in parallel (-j)
+  * I have 64 cores and I am doing all the work on one of them
 * Variables
   * Normal user-defined
+    * There is a common bit of text in my rules
   * Implicit variables
+    * I want to use the system C compiler or something
   * Simple expansion
+    *
   * Recursive expansion
+    *
   * ?=
+    * I want to give a default value
   * +=
+    * I want to append to an existing value
   * Overrides
+    * I don't care what the Makefile says because it's wrong
   * Environment-provided
-* Functions
-  * Built-in
-  * User-defined
+    * I want to allow the user's environment to set some defaults
 * Rules
   * Pattern rules
+    * I want to build all my .o without repeating myself
   * Implicit rules
+    * I want Make to build all my .o for me
   * Variables in implicit rules
+    * I want to specify the linker flags in Make's implicit .o rule
+* Functions
+  * Built-in
+    * `subst` or something
+  * User-defined
+    * I have rules that all vary by one small thing (e.g. combinations of
+      tests)
 * Silencing commands (@)
+  * I don't want to see `echo` in my output, just the thing being echoed
 * .DEFAULT_GOAL
+  * I think `all` is a silly name or want to re-order the rules
 * Recursive make
+  * I have an enormous project with self-contained components
 * Include
+  *
 
 Outline:
 
