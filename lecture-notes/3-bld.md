@@ -306,6 +306,26 @@ In addition, since you are working on C and C++ projects in the undergraduate
 program at Tufts, Make is particularly useful. It comes with purpose-built
 shortcuts that make building C projects easier.
 
+### Split compilation and why it matters
+
+Until now, you probably ran some variant of `g++ *.cpp` to build your school
+projects. Maybe you even added `-o myprogram` to name the binary. That is a
+perfectly valid approach to building small programs; it will work, and work
+pretty quickly.
+
+At some point, however, your programs will not be so small. They will be
+comprised of multiple files[^multi-lang]. They may depend on other software
+packages, either written by you or by other people. This is when `g++ *.cpp`
+breaks down.
+
+[^multi-lang]: Possibly even written in multiple programming languages!
+
+Every time you run `g++ *.cpp`, the compiler 
+
+Fortunately for us, most programming environments, including C and C++, have a
+notion of *split compilation*.
+
+<!--
 ## Lecture 2
 
 See the [Make
@@ -499,3 +519,4 @@ Make has been around a long time and its performance and correctness are
 well understood. Its interface is well understood, too; people who know Make
 are at home in most other projects that use Make. Not so for a custom shell
 script.
+-->
