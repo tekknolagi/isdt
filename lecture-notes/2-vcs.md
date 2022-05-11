@@ -479,7 +479,7 @@ TODO: Can copy some of this from Piazza post:
 
 TODO: Talk about how, in practice, you often make multiple changes at a time
 before thinking about committing. Adding at the file level (or worse, at the
-repo level with `git add .` almost always includes more than you want, plus it
+repo level with `git add .`) almost always includes more than you want, plus it
 doesn't let you double-check your changes.
 
 TODO: Example of `git add -p` to stage specific hunks that have changed.
@@ -487,17 +487,13 @@ Demonstrate committing multiple changes separately with good messages.
 
 ### How Git helps you
 
-TODO: `git log` is nice, but is seeing the history of your changes really worth
-all the effort of splitting up your changes?
+TODO: `git log` is nice, but do you really care that much about simply viewing
+your old commit messages?
 
 #### Seeing what's changed
 
 TODO: Using `git diff` to view changes relative to the last commit or any
 arbitrary commit before that.
-
-#### Saving changes for later
-
-TODO: Using `git stash` to put away and restore changes that you're working on.
 
 #### Undoing mistakes
 
@@ -505,14 +501,26 @@ TODO: Using `git revert` to undo an old change.
 
 #### Going back in time
 
-TODO: Using `git checkout`/`git restore` to switch to the tree of an older
-commit (mode 1) or restore a file to an older version (mode 2). Mention that
-mode 1 can also switch between branches, but don't elaborate yet.
+TODO: Using `git restore` to restore a file to an older version. Mention that
+`git checkout` did  this in older version of git, but that wasn't its primary
+purpose.
+
+#### Saving changes for later
+
+TODO: Using `git stash` to put away and restore changes that you're working on.
+
+#### Seeing who changed a line (`git blame`)
+
+TODO: Introduction to `git blame`. General workflow of `git blame`, `git show`
+`git log <rev>^ --`, and repeat until you've found what you want.
 
 #### Finding bugs
 
 TODO: Using `git bisect` to figure out what change broke your program. Only one
 or two paragraphs---we don't want to overwhelm them.
+
+TODO: In lecture, let's include an impressive demo to hook them on the
+possibilities of Git.
 
 ## Lecture 3
 
@@ -524,8 +532,7 @@ TODO: "What is a branch?" paragraph. A convenient name you can use to reference
 a specific variant of your code or set of changes you're working on.
 
 TODO: Examples of what branches might be used for. Classify into long-lived
-branches and development/feature branches. Also mention remote branches here,
-but don't dive into them yet.
+branches and development/feature branches.
 
 TODO: The concept of main/trunk/master as the main place where you commit new
 code and the one long-lived branch you can rely on virtually every project to
@@ -539,18 +546,23 @@ points earlier in the history.
 
 TODO: Using "git checkout" to switch branches. Discussion of how checkout is
 a very overloaded command, and how to identify this particular mode of it. Also
-maybe mention "git checkout -b" to create+checkout a branch in one go.
+maybe mention "git checkout -b" to create+checkout a branch in one go. Mention
+that you can checkout a commit hash as well.
 
 ### Referencing commits
 
 TODO: Talk about refs and how branches are just one type of ref. Explain
 `.git/refs/` directory and how different types of refs live in different
-subdirectories (which are sometimes inferred for ease of use). Namedrop
-`man gitrevisions`.
+subdirectories (which are sometimes inferred for ease of use).
+
+TODO: `HEAD` as a special ref pointing to your current checkout.
 
 TODO: Talk about how either hashes or ref names can be used to refer to a
 commit. Hashes are immutable, while refs may change. Say that either method
 can be used in nearly every place you see us using one of them.
+
+TODO: There are operators that let you "move around" from a ref. For example,
+`^` gets a ref's parent commit. Namedrop `man gitrevisions`.
 
 ### Exploring multiple branches
 
@@ -578,11 +590,6 @@ TODO: Talk about interactive rebasing for squashing/prettifying.
 
 ### Odds and ends
 
-#### Seeing who changed a line (`git blame`)
-
-TODO: Introduction to `git blame`. General workflow of `git blame`, `git show`
-`git log <rev>^ --`, and repeat until you've found what you want.
-
 #### Ignoring generated files (`.gitignore`)
 
 #### Seeing a ref's history (`git reflog`)
@@ -596,8 +603,10 @@ CONTENTS: Collaboration with Git
 TODO: What's a remote? Example of `git remote add` and `git remote -v`. Talk
 about different remote protocols.
 
-TODO: Can either fetch from or push to a remote. `git pull` is a shortcut for
-fetch+merge but can be unintuitive.
+TODO: Can either `git fetch` from or `git push` to a remote. These update
+*remote-tracking branches*, which can then be used to update your local
+branches via `git merge --ff-only` or `git rebase`. Mention `git pull` is a
+shortcut for fetch+merge but can be unintuitive.
 
 ### `git clone` for making a local copy of a remote repo
 
@@ -626,6 +635,8 @@ Talk about mailing lists, GitHub model, Phabricator model.
 
 TODO: Take content from my GitHub comment here:
   https://github.com/tekknolagi/isdt/pull/15#issuecomment-920592835
+
+TODO: Examples of prominent projects that use various models.
 
 ### Git forges
 
