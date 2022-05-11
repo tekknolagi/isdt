@@ -435,6 +435,8 @@ objects are. You should be able to inspect any of them by using `git show`.
 TODO: One-paragraph enumeration of types of objects (commits, blobs, trees) and
 how they reference each other.
 
+TODO: Example of `git log` to see all our commits.
+
 ### Summary
 So what did we learn? We learned that Git repositories contain files and
 commits; the general write-add-commit flow; that all Git objects are stored in
@@ -444,6 +446,77 @@ To learn more about a Git subcommand like `git show`, you can use `man
 git-<subcommand>`, like `man git-show`.
 
 ## Lecture 2
+
+CONTENTS: Git for solo development
+
+### A basic Git workflow
+
+TODO: Git has lots more subcommands, but the ones from last lecture are enough
+to create and maintain a repo that only you work on. But when should you run
+those commands, and how will they help you as a developer?
+
+TODO: Each commit should represent a logical change in your code, for example a
+single bug fix or new feature. (But mention that during early, intense
+development of a project, basically everyone relaxes this rule.) Commit
+messages are there for others and for future you to be able to understand when
+and why a certain change was made. Don't ignore them!
+
+TODO: New example with the commands used last lecture, but leave out the
+`.git/` stuff and instead show multiple iterations of `git add` and `git
+commit` with realistic changes and commit messages.
+
+TODO: Talk about why we split the commits as we did. Why it's neither useful to
+have "one commit per line changed" nor "one commit per major version": want
+the commit history to describe the programmer's thought process, but not in so
+much detail that it becomes a chore to navigate.
+
+#### Writing good commit messages
+
+TODO: Can copy some of this from Piazza post:
+  https://piazza.com/class/ksgzikxm4082z8?cid=123
+
+#### Staging files partially (`git add -p`)
+
+TODO: Talk about how, in practice, you often make multiple changes at a time
+before thinking about committing. Adding at the file level (or worse, at the
+repo level with `git add .` almost always includes more than you want, plus it
+doesn't let you double-check your changes.
+
+TODO: Example of `git add -p` to stage specific hunks that have changed.
+Demonstrate committing multiple changes separately with good messages.
+
+### How Git helps you
+
+TODO: `git log` is nice, but is seeing the history of your changes really worth
+all the effort of splitting up your changes?
+
+#### Seeing what's changed
+
+TODO: Using `git diff` to view changes relative to the last commit or any
+arbitrary commit before that.
+
+#### Saving changes for later
+
+TODO: Using `git stash` to put away and restore changes that you're working on.
+
+#### Undoing mistakes
+
+TODO: Using `git revert` to undo an old change.
+
+#### Going back in time
+
+TODO: Using `git checkout`/`git restore` to switch to the tree of an older
+commit (mode 1) or restore a file to an older version (mode 2). Mention that
+mode 1 can also switch between branches, but don't elaborate yet.
+
+#### Finding bugs
+
+TODO: Using `git bisect` to figure out what change broke your program. Only one
+or two paragraphs---we don't want to overwhelm them.
+
+## Lecture 3
+
+CONTENTS: More complex workflows
 
 ### Branches
 
@@ -479,15 +552,90 @@ TODO: Talk about how either hashes or ref names can be used to refer to a
 commit. Hashes are immutable, while refs may change. Say that either method
 can be used in nearly every place you see us using one of them.
 
-### Exploring a repository's history
+### Exploring multiple branches
 
-TODO: `git log` example. Talk about `--graph`.
+TODO: `git log --graph`. example Demonstrate logging different branches and
+logging from a given commit hash (to build on previous section).
 
-## Subsequent lectures
+### Moving commits between branches
 
-Unfortunately, we have not been able to write lecture notes at the pace we
-expected. No notes currently exist for lectures 2-6. We sincerely apologize for
-this. We have made slide decks available for these lectures instead, which you
-can access from the calendar on the main page. Note that the examples in the
-slides reference the example Git repository at
-`/comp/50ISDT/examples/git-zoo/`.
+TODO: Make sure this section is clear on the three ways to integrate changes:
+fast-forwarding, merging, and rebasing.
+
+TODO: `git merge` for pulling in an entire history wholesale without rewriting
+it. Talk about fast-forward merges.
+
+TODO: `git cherry-pick` for "replaying" a specific commit from one branch on top
+of another.
+
+TODO: `git rebase` for doing lots of charry-picks in a row automatically.
+
+### Rewriting history
+
+TODO: This can mostly come from our existing slide.
+
+TODO: Talk about interactive rebasing for squashing/prettifying.
+
+### Odds and ends
+
+#### Seeing who changed a line (`git blame`)
+
+TODO: Introduction to `git blame`. General workflow of `git blame`, `git show`
+`git log <rev>^ --`, and repeat until you've found what you want.
+
+#### Ignoring generated files (`.gitignore`)
+
+#### Seeing a ref's history (`git reflog`)
+
+## Lecture 4
+
+CONTENTS: Collaboration with Git
+
+### Sharing branches with others
+
+TODO: What's a remote? Example of `git remote add` and `git remote -v`. Talk
+about different remote protocols.
+
+TODO: Can either fetch from or push to a remote. `git pull` is a shortcut for
+fetch+merge but can be unintuitive.
+
+### `git clone` for making a local copy of a remote repo
+
+### Tracking branches
+
+TODO: Ugh, I still don't understand the full semantics of these. Figure it out
+and write it down.
+
+## Lecture 5
+
+CONTENTS: Collaboration in practice
+
+### Common development models
+
+TODO: Single "upstream" copy of the repo that's the source of truth.
+Maintainers merge changes to it and many "downstreams" maintain changes based
+on it.
+
+### Merge/pull requests and patches
+
+TODO: Git has no built-in way to propose a change. So lots of solutions for
+proposing and reviewing changes before they're merged upstream have emerged.
+Talk about mailing lists, GitHub model, Phabricator model.
+
+### Integrating changes: merging vs squashing vs rebasing
+
+TODO: Take content from my GitHub comment here:
+  https://github.com/tekknolagi/isdt/pull/15#issuecomment-920592835
+
+### Git forges
+
+TODO: Copy from slides. Hosting services and the functionality they provide.
+
+### Aside: bare repositories
+
+TODO: Hosting your own upstream means letting people push to any branch, plus
+you don't need a working copy. How to achieve that with bare repos.
+
+## Lecture 6
+
+TODO: Copy in survey stuff from slides
