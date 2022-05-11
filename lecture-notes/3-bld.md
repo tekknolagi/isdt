@@ -10,64 +10,82 @@ one-liner) to compile it. Complicate the program or add an additional
 constraint (e.g. re-build as little as possible). Have them write a shell
 script or Makefile. Repeat.
 
-* Split compilation (.o) and linking (separate from Make)
+Outline:
+
+* Intro to build systems
+  * What problems do build systems solve
+  * What does a build system provide
+    * Consistency
+    * Convenience
+    * Efficiency
+  * How do you use a build system
+  * What kinds of build systems exist
+  * Why not use shell scripts
+  * Make
+    * Pros and cons
+    * Why we will focus on Make
+    * Demo of Makefile
   * My `gcc *.c` is not scaling
-
-Features:
-
-* Run a shell command
-  * My command is long and complex
-* Run multiple shell commands in a row
-  *
-* Name your groups of shell commands
-  * I don't want 500 small shell scripts in my source directory
-* Dependencies
-  * When I run `make thing` it doesn't get rebuilt even though I changed the
-    source files
-* Targets that are not real files (.PHONY)
-  * When I touch the file `all`, `make all` no longer runs
-* Split compilation (.o) and linking (with Make)
-  * I made changes in one .c file and everything got rebuilt
-* Compute things in parallel (-j)
-  * I have 64 cores and I am doing all the work on one of them
-* Variables
-  * Normal user-defined
-    * There is a common bit of text in my rules
-  * Implicit variables
-    * I want to use the system C compiler or something
-  * Simple expansion
+    * Split compilation (.o) and linking (separate from Make)
+* Make
+  * Run a shell command
+    * My command is long and complex
+  * Run multiple shell commands in a row
     *
-  * Recursive expansion
+  * Name your groups of shell commands
+    * I don't want 500 small shell scripts in my source directory
+  * Dependencies
+    * When I run `make thing` it doesn't get rebuilt even though I changed the
+      source files
+  * Targets that are not real files (.PHONY)
+    * When I touch the file `all`, `make all` no longer runs
+  * Split compilation (.o) and linking (with Make)
+    * I made changes in one .c file and everything got rebuilt
+  * Compute things in parallel (-j)
+    * I have 64 cores and I am doing all the work on one of them
+* Make
+  * Variables
+    * Normal user-defined
+      * There is a common bit of text in my rules
+    * Implicit variables
+      * I want to use the system C compiler or something
+    * Simple expansion
+      *
+    * Recursive expansion
+      *
+    * ?=
+      * I want to give a default value
+    * +=
+      * I want to append to an existing value
+    * Overrides
+      * I don't care what the Makefile says because it's wrong
+    * Environment-provided
+      * I want to allow the user's environment to set some defaults
+* Make
+  * Complex rules
+    * Pattern rules
+      * I want to build all my .o without repeating myself
+    * Implicit rules
+      * I want Make to build all my .o for me
+    * Variables in implicit rules
+      * I want to specify the linker flags in Make's implicit .o rule
+* Make
+  * Functions
+    * Built-in
+      * `subst` or something
+    * User-defined
+      * I have rules that all vary by one small thing (e.g. combinations of
+        tests)
+  * Silencing commands (@)
+    * I don't want to see `echo` in my output, just the thing being echoed
+  * .DEFAULT_GOAL
+    * I think `all` is a silly name or want to re-order the rules
+* The great wide world part 1
+  * Recursive make
+    * I have an enormous project with self-contained components
+  * Include
     *
-  * ?=
-    * I want to give a default value
-  * +=
-    * I want to append to an existing value
-  * Overrides
-    * I don't care what the Makefile says because it's wrong
-  * Environment-provided
-    * I want to allow the user's environment to set some defaults
-* Complex rules
-  * Pattern rules
-    * I want to build all my .o without repeating myself
-  * Implicit rules
-    * I want Make to build all my .o for me
-  * Variables in implicit rules
-    * I want to specify the linker flags in Make's implicit .o rule
-* Functions
-  * Built-in
-    * `subst` or something
-  * User-defined
-    * I have rules that all vary by one small thing (e.g. combinations of
-      tests)
-* Silencing commands (@)
-  * I don't want to see `echo` in my output, just the thing being echoed
-* .DEFAULT_GOAL
-  * I think `all` is a silly name or want to re-order the rules
-* Recursive make
-  * I have an enormous project with self-contained components
-* Include
-  *
+* The great wide world part 2
 
 Outline as we have it now, directly ripped from the slides:
 
