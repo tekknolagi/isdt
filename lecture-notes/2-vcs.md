@@ -1,11 +1,12 @@
 ---
+layout: spec
 ---
 
 # Lecture Notes: Version Control Systems
 
-## Lecture 1
+# Lecture 1
 
-### Module overview
+## Module overview
 Welcome to the second module of the course! This module is all about *version
 control* systems. Version control (also known as *VCS* or *source control*)
 tools record how your code has changed over time. Version control adds another
@@ -57,7 +58,7 @@ out as we encounter them; if you're ever in doubt, man pages are your friend!
     mature VCS like Subversion instead chose Git so they could be on GitHub.
     However, make no mistake: GitHub and Git are *not* the same.
 
-### Git is not GitHub
+## Git is not GitHub
 Before diving into Git, we'd like to take a moment to clear up a common
 misconception among new Git users: *sites like GitHub, GitLab, Bitbucket, and
 sourcehut are not part of Git and are not required to use Git*. These sites are
@@ -87,7 +88,7 @@ computer as it is to a project on GitHub with thousands of contributors.
     distributed. Older source control systems (like Subversion, Perforce, and
     CVS) do require a central server by contrast.
 
-### Repositories and commits
+## Repositories and commits
 Before you can use Git to keep track of a directory, you have to create a
 *repository* at that directory. A repository tracks a single project or group
 of related files. It must be rooted at a directory, and it generally keeps
@@ -132,7 +133,7 @@ those files, the date at which it was created, who created it, and a
 user-provided description of what changed since the previous commit, which it
 also stores a reference to. We'll talk more about commits shortly.
 
-### Creating a repository
+## Creating a repository
 There are two main ways to make a repository, both of which use the Git
 *subcommand* `git init`. If you want to make a new, empty repository, run `git
 init myrepo` to make a directory called `myrepo/` with a `.git/` directory
@@ -151,7 +152,7 @@ on, as well as some suggested things to do next. When you run it in a new
 repository, it helpfully suggests that you make and *track* some
 files:
 
-```
+```console
 $ git status
 On branch main
 
@@ -166,7 +167,7 @@ global Git configuration and your version of Git. Recent versions of Git have
 moved away from the old default branch name of "master" in favor of "main".
 We'll talk more about branches later.)
 
-### Creating a commit
+## Creating a commit
 Let's follow Git's advice and track some files, which is the first step to
 creating a commit. While we do so, let's also look at what's going on behind
 the scenes in `.git/`! Although you shouldn't directly interact with `.git/`,
@@ -176,7 +177,7 @@ effective Git user, especially when things go wrong.
 Start by taking a look at `.git/` in your new, empty repository. It has 8
 directories and 16 files, but we'll focus on just a few:
 
-```
+```console
 $ tree .git/
 .git/
 ├── branches
@@ -210,14 +211,14 @@ changed[^empty-commit]. So make a change by adding a new file:
 [^empty-commit]: You can override this behavior with the `--allow-empty` flag,
     but the occasions you'll want to are few and far between.
 
-```
+```console
 $ echo 'file contents' >myfile
 $ 
 ```
 
 Now, `git status` has more to tell us:
 
-```
+```console
 $ git status
 On branch main
 
@@ -246,7 +247,7 @@ files---`config`, `description`, `HEAD`, or `info/exclude`---been altered.
 
 To track an untracked file, use the *git add* subcommand:
 
-```
+```console
 $ git add myfile
 $ git status
 On branch main
@@ -262,7 +263,7 @@ $
 
 After running this, you'll finally see a change in your `.git/` directory!
 
-```
+```console
 $ tree .git
 .git
 ├── branches
@@ -286,6 +287,7 @@ $ tree .git
 
 $
 ```
+{: data-highlight="11-13" }
 
 Git has created its first object, stored as the file
 `.git/objects/d0/3e2425cf1c82616e12cb430c69aaa6cc08ff84`. As you'll soon see,
@@ -325,7 +327,7 @@ name (`d0`) with the filename `(e324...`)[^storage-limit]:
     breaks up long hash filenames. If every hashed object were in the top-level
     directory, we could end up with a huge number of files in `.git/objects/`.
 
-```
+```console
 $ git show d03e2425cf1c82616e12cb430c69aaa6cc08ff84
 file contents
 $ 
@@ -337,7 +339,7 @@ commit it. The following command by default opens up your editor---depending on
 the environment variable `$EDITOR`, this could be Nano, Vim, Emacs, or
 something else entirely.
 
-```
+```console
 $ git commit
 <editor opens>
 <save and quit>
@@ -362,7 +364,7 @@ the commit. We will talk more about hashing later.
 Let's take a look at the commit object `2221050` by running `git show`---which
 defaults to showing our current commit:
 
-```
+```console
 $ git show
 commit 22210506499fe9e37086d3a5ff1fb8f400facd83 (HEAD -> main)
 Author: Max Bernstein <max@thebiscuitsons.net>
@@ -388,7 +390,7 @@ descriptions on the fly for your benefit.[^git-stores-trees]
 
 [^git-stores-trees]: To verify this, look at the output of `git cat-file`:
     
-    ```
+    ```console
     $ git cat-file commit 22210506499fe9e37086d3a5ff1fb8f400facd83
     tree 8a2f7e211356a8551e2e2eed121d2a643208ac6a
     author Max Bernstein <max@thebiscuitsons.net> 1632885282 -0700
@@ -401,7 +403,7 @@ descriptions on the fly for your benefit.[^git-stores-trees]
     This shows a *tree* called `8a2f7e211356a8551e2e2eed121d2a643208ac6a`
     associated with the commit. And what is that tree?
     
-    ```
+    ```console
     $ git ls-tree 8a2f7e211356a8551e2e2eed121d2a643208ac6a
     100644 blob d03e2425cf1c82616e12cb430c69aaa6cc08ff84    myfile
     $
@@ -412,7 +414,7 @@ descriptions on the fly for your benefit.[^git-stores-trees]
 Feel free to take a look at the `.git/` directory again and see what the
 objects are. You should be able to inspect any of them by using `git show`.
 
-### Summary
+## Summary
 So what did we learn? We learned that Git repositories contain files and
 commits; the general write-add-commit flow; that all Git objects are stored in
 `.git/objects/`; that any object can be inspected with `git show`. 
@@ -420,7 +422,7 @@ commits; the general write-add-commit flow; that all Git objects are stored in
 To learn more about a Git subcommand like `git show`, you can use `man
 git-<subcommand>`, like `man git-show`.
 
-## Subsequent lectures
+# Subsequent lectures
 
 Unfortunately, we have not been able to write lecture notes at the pace we
 expected. No notes currently exist for lectures 2-6. We sincerely apologize for

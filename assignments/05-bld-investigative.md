@@ -1,4 +1,5 @@
 ---
+layout: spec
 ---
 # Homework 5: BLD, Investigative
 

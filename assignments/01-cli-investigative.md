@@ -1,14 +1,15 @@
 ---
+layout: spec
 ---
 
 # Homework 1: CLI, Investigative
 
 ## Important: use Bash!
-
+<div class="primer-spec-callout danger" markdown="1">
 For this and all future assignments, please make sure you are using Bash as
 your shell, as that's what this course will focus on for the reasons described
 in [lecture](../lecture-notes/1-cli.html). The Tufts CS department's default
-shell for new users is tcsh, so unless you've asked to have yours
+shell for new users is `tcsh`, so unless you've asked to have yours
 changed[^change-shell], you'll need to run `bash -l` *each time you connect to
 the server prior to working on coursework*. Your prompt won't look any
 different after running this command, but you can run `echo $0` to check which
@@ -21,6 +22,7 @@ shell you're using.
     database of students and staff, which only the department administrators
     can modify. To change your default shell to bash, write an email to
     [staff@eecs.tufts.edu](mailto:staff@eecs.tufts.edu).
+</div>
 
 ## CaLIsthenics: what's on the homework server?
 
@@ -73,10 +75,12 @@ syllabus for an example) with each:
    extension. We do not care about whitespace, field order, or whether each
    line includes extra fields beyond these two.
 
+   <div class="primer-spec-callout info" markdown="1">
    *Hint:* `\.[^/.]*$` is a regular expression that matches a literal dot
    (`.`), followed by any number of characters that are not a dot or a forward
    slash, followed by the end of a line. In other words, it matches the
    extension of files from line(s) containing file paths.
+   </div>
 
    This is not a trivial problem. Expect to have several different commands in
    your pipeline. Please ask for help early if you are struggling.

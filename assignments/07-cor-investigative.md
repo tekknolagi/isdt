@@ -1,4 +1,5 @@
 ---
+layout: spec
 ---
 # Homework 7: COR, Investigative
 

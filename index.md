@@ -1,6 +1,21 @@
 ---
+layout: spec
+disableSidebar: true
 ---
 
+<style>
+  .navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 !important;
+  }
+
+  .navbar li {
+      display: inline;
+      padding-right: 16px;
+      font-size: 20px;
+  }
+</style>
 <ul class="navbar">
   <li><a href="#administrivia">Administrivia</a></li>
   <li><a href="#schedule">Schedule</a></li>
@@ -210,4 +225,14 @@ course:
 * Berkeley's [EECS201](https://www.eecs.umich.edu/courses/eecs201/)
 * Berkeley's [CS9E](https://www2.eecs.berkeley.edu/Courses/CS9E/)
 
-<div id="elephant"><img src="assets/images/jumbo.png" alt="Jumbo on a laptop" /></div>
+<style>
+  div#elephant img {
+    width: 100px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+  }
+</style>
+<div id="elephant">
+  <img src="assets/images/jumbo.png" alt="Jumbo on a laptop" />
+</div>
