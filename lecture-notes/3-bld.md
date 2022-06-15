@@ -37,6 +37,8 @@ Outline:
   * Dependencies
     * When I run `make thing` it doesn't get rebuilt even though I changed the
       source files
+    * But Max, why do I have to do this by hand?
+      [Well...](http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/)
   * Targets that are not real files (.PHONY)
     * When I touch the file `all`, `make all` no longer runs
   * Split compilation (.o) and linking (with Make)
@@ -181,33 +183,13 @@ Outline as we have it now, directly ripped from the slides:
 
 ## Lecture 1
 
-### Module overview
+## Module overview
 
 Welcome to module three! You now know how to use Git to keep track of your code
 and share it with others, but code isn't very useful unless you can run it! In
 this module, you'll learn about *build systems*, a type of tool that automates
 the process of *building* code---that is, converting it into a form that can be
-run and/or distributed[^build-process]. You can think of build systems as
-supercharged shell scripts: like shell scripts, their purpose is to encapsulate
-a complex and intricate sequence of steps within a single command that's easy
-to remember and is guaranteed to produce the same result each time it's run.
-
-Build systems differ from the shell in a key conceptual way, though: when you
-run a script, you tell the shell exactly what commands to run and in what
-order. But when you run a build, you tell the build system only what results
-you want and let it decide what commands are needed to produce those results.
-This may seem like a matter of semantics (and to some degree it is---a complex
-enough shell script could in theory do exactly what a build system does), but
-it has a huge real-world effect on how efficiently you can work.
-
-To illustrate, consider a complex project like the Linux kernel or Google
-Chrome, both of which number in the millions of lines of code. If you were to
-build such a project using a script that simply compiled every source file,
-you'd have to wait hours to test even the tiniest change, even if that change
-didn't touch 99% of the source files! With a build system, those hours become
-seconds because the system knows the purpose of each file it produces and how
-those files flow into each other. As a result, it can simply skip steps it
-knows haven't changed!
+run and/or distributed[^build-process].
 
 [^build-process]: If you're used to C++, this probably brings to mind compiling
     your code with `g++`, `clang++`, or the like. And for C++ and other
@@ -221,7 +203,7 @@ knows haven't changed!
     language to reduce its size. All these things can be part of a build, and
     with a build system you can ensure they happen perfectly, every time.
 
-### What problem do build systems solve?
+## What problem do build systems solve?
 
 Compiling software is an error-prone and slow process. Writing `g++` every
 time---whether that be typing it out manually, using the up arrow keys to go
@@ -245,7 +227,18 @@ able to get away with re-typing the same command and building everything each
 time for CS 11, this might not be the case in a larger project. This could be
 the difference between a twelve-hour build and a two-minute build.
 
-### How does do they solve it?
+In short, build systems provide consistency, efficiency, and convenience when
+building large software projects.
+
+## Structure of this module
+
+We are going to slowly build up a small project and run into some annoying
+issues as we build it. For every problem we run into, we will address its
+corresponding solution with Make. This way you will get introduced to the
+features in context. Maybe you will even hit some of these problems when
+writing Makefiles in the future and remember this module fondly.
+
+## How do they solve it?
 
 Build systems tend to operate around once core principle: specify end results
 and what their component parts are and then let the tooling do the repetitive
@@ -265,7 +258,7 @@ they were last modified. Some build systems use content hashing, like Git does,
 to only rebuild when the contents of the file change. (The implication here,
 which is important, is that m-time might change even if the content does not.)
 
-### Build systems can be closely tied to specific languages, or general task runners
+## Build systems can be closely tied to specific languages, or general task runners
 
 "Build systems" is a generic term that refers to any piece of software used to
 make building software easier. You could, for example, write an elaborate shell
@@ -294,7 +287,33 @@ between the two tools.
 
 [^network-effect]: See [Metcalfe's law](https://en.wikipedia.org/wiki/Metcalfe%27s_law) for more info.
 
-### Why will we focus on Make in this class?
+TODO(max): Is this the best place for the following 3 paragraphs?
+
+--
+You can think of build systems as supercharged shell scripts: like shell
+scripts, their purpose is to encapsulate a complex and intricate sequence of
+steps within a single command that's easy to remember and is guaranteed to
+produce the same result each time it's run.
+
+Build systems differ from the shell in a key conceptual way, though: when you
+run a script, you tell the shell exactly what commands to run and in what
+order. But when you run a build, you tell the build system only what results
+you want and let it decide what commands are needed to produce those results.
+This may seem like a matter of semantics (and to some degree it is---a complex
+enough shell script could in theory do exactly what a build system does), but
+it has a huge real-world effect on how efficiently you can work.
+
+To illustrate, consider a complex project like the Linux kernel or Google
+Chrome, both of which number in the millions of lines of code. If you were to
+build such a project using a script that simply compiled every source file,
+you'd have to wait hours to test even the tiniest change, even if that change
+didn't touch 99% of the source files! With a build system, those hours become
+seconds because the system knows the purpose of each file it produces and how
+those files flow into each other. As a result, it can simply skip steps it
+knows haven't changed!
+--
+
+## Why will we focus on Make in this class?
 
 We will focus on Make in this class. Make is a general-purpose build system:
 while it was designed to build C projects, it has no problem building C++,
@@ -306,7 +325,7 @@ In addition, since you are working on C and C++ projects in the undergraduate
 program at Tufts, Make is particularly useful. It comes with purpose-built
 shortcuts that make building C projects easier.
 
-### Split compilation and why it matters
+## Split compilation and why it matters
 
 Until now, you probably ran some variant of `g++ *.cpp` to build your school
 projects. Maybe you even added `-o myprogram` to name the binary. That is a
@@ -320,10 +339,29 @@ breaks down.
 
 [^multi-lang]: Possibly even written in multiple programming languages!
 
-Every time you run `g++ *.cpp`, the compiler 
+Every time you run `g++ *.cpp`, the compiler reads every single file anew and
+runs hundreds of compilation steps to transform those files from text into
+machine code ("compiled"). All of the machine code files ("object files") are
+then woven together ("linked"). Most compilers were not designed with
+compilation speed in mind and your program is probably monotonically growing in
+size and complexity, which means that over time your compilation command will
+take longer and longer. Fortunately for us, most programming environments,
+including C and C++, have a notion of *split compilation*.
 
-Fortunately for us, most programming environments, including C and C++, have a
-notion of *split compilation*.
+Since the C++ compiler already does this two-step compile/link tango
+internally, it also provides a way for you, the programmer, to run each step
+manually. You can run, for example, `gcc -c *.cpp && gcc *.o`. This isn't very
+helpful on its own: you still will compile and link *everything*, even if only
+one file changes. But what if you only recompiled the files that changed? You
+would still have to link, but that's a massive improvement: `gcc -c
+mychangedfile.cpp && gcc *.o`. Manually tracking what files have changed is
+tricky, so build systems do this for you.
+
+In short: only re-build what changed.
+
+# Lecture 2
+
+
 
 <!--
 ## Lecture 2
