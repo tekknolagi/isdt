@@ -126,7 +126,7 @@ files, using numerous *objects*, stored as binary files inside `.git/`. These
 files are managed by Git, and you shouldn't modify them directly.
 
 There are several types of object, but the only one you'll generally interact
-directly with is called a *commit*. A commit represents the state of a
+with directly is called a *commit*. A commit represents the state of a
 repository at some point in time: it holds a list of files, the contents of
 those files, the date at which it was created, who created it, and a
 user-provided description of what changed since the previous commit, which it
@@ -146,10 +146,9 @@ implemented inside a single program, `git`. Each subcommand has its own man
 page, whose name is prefixed with `git-`. For example, `man git-init`.
 
 Try out the `git status` subcommand! `git status` tells you what Git thinks the
-current state of things is. It shows you a helpful description of what's going
-on, as well as some suggested things to do next. When you run it in a new
-repository, it helpfully suggests that you make and *track* some
-files:
+current state of things is. It shows you a description of what's going on, as
+well as some suggested things to do next. When you run it in a new repository,
+it helpfully suggests that you make and *track* some files:
 
 ```
 $ git status
@@ -167,15 +166,22 @@ moved away from the old default branch name of "master" in favor of "main".
 We'll talk more about branches later.)
 
 ### Staging files
-TODO: Elaborate on what it means conceptually to track a file before diving
-into the technical details. Introduction to staging area 1-2 paragraphs,
-maybe merging the current contents of the next one in.
+Tracking a file means asking Git to add it to the *staging area*, also known as
+the *index*. The staging area is part of a Git repository that keeps track of
+which changes from the working tree are ready to be committed. When you create
+a new commit, its contents are taken from the staging area.
 
-Let's follow Git's advice and track some files, which is the first step to
-creating a commit. While we do so, let's also look at what's going on behind
-the scenes in `.git/`! Although you shouldn't directly interact with `.git/`,
-knowing how Git represents files and commits internally will make you a more
-effective Git user, especially when things go wrong.
+Many other version control systems don't have a staging area---commits are
+created directly from the changes you make in the working tree. This is a
+simpler model, but it can make it harder to work on multiple changes
+simultaneously. Programmers disagree on whether the benefits of a staging area
+warrant the extra complexity and steeper learning curve.
+
+The subcommand you'll use most often to work with Git's staging area is `git
+add`. Let's use it to track a file! While we do so, let's also look at what's
+going on behind the scenes in `.git/`! Although you shouldn't directly interact
+with `.git/`, knowing how Git represents files and commits internally will make
+you a more effective Git user, especially when things go wrong.
 
 Start by taking a look at `.git/` in your new, empty repository. It has 8
 directories and 16 files, but we'll focus on just a few:
@@ -248,7 +254,8 @@ To verify this, take a look at the `.git/` directory again and observe that
 nothing has changed: no new objects are present, nor have any of the
 files---`config`, `description`, `HEAD`, or `info/exclude`---been altered.
 
-To track an untracked file, use the *git add* subcommand:
+To tell Git that the file exists and you plan to commit it, add it to the
+staging area with `git add`:
 
 ```
 $ git add myfile
@@ -294,7 +301,7 @@ $
 Git has created its first object, stored as the file
 `.git/objects/d0/3e2425cf1c82616e12cb430c69aaa6cc08ff84`[^storage-limit]. As
 you'll soon see, this object represents the contents of `myfile` as of when you
-ran `git add`.  Every Git object is identified by a *hash*, which is a long (in
+ran `git add`. Every Git object is identified by a *hash*, which is a long (in
 Git's case, 40 characters) string of letters and numbers that uniquely
 represent the *contents* of that object[^content-addressing]. This latter point
 is important: if two objects have exactly the same contents, they are
@@ -346,10 +353,10 @@ file contents
 $ 
 ```
 
-Cool! It's the contents of your file. The file is now in what's called the
-*staging area*---tracked by Git, but not yet associated with a commit. Each
-commit you make records the contents of the staging area, so the next commit
-you make will include your file.
+Cool! It's the contents of your file. The file is now in the staging
+area---tracked by Git, but not yet associated with a commit. Each commit you
+make records the contents of the staging area, so the next commit you make will
+include your file.
 
 ## Creating a commit
 To make a commit, run `git commit`. By default, `git commit` opens a text
@@ -368,19 +375,23 @@ $
 ```
 
 Now you can consider your file well and truly version controlled. Not only is
-it tracked by Git, but a version of it has also been checked in.
+it tracked by Git, but its contents have been recorded into your project's
+history as part of a commit.
 
-Git has printed us a summary of the commit object it has just created: it is on
-branch `main`; it is the first commit on the branch (the "root commit"); it has
-the hash `2221050`; the commit message is "My message"; it modified some files,
-including a summary of the changes.
+Git has printed us a summary of the commit object it created: the commit is on
+branch `main`, it's the first commit on that branch (the "root commit"), its
+hash starts with `2221050` (the rest is omitted for brevity), its commit
+message is "My message", and it contains one new file compared to its parent
+(which, in this case, does not exist and so has no files).
 
-This is the point where your output might look different; the Git hashes
-objects based on their contents, and Git includes the date and author name in
-the commit. We will talk more about hashing later.
+This is the point where your output will look different: like all Git objects,
+commits are assigned hashes based on their contents, and a commit's contents
+include the name and email of its author as well as its creation date. Since
+these will be different for you, your commit will have a different hash than
+ours even though its file tree and message are identical.
 
-Let's take a look at the commit object `2221050` by running `git show`---which
-defaults to showing our current commit:
+Let's take a look at the commit object by running `git show`---which when given
+no arguments shows the current commit:
 
 ```
 $ git show
@@ -400,11 +411,11 @@ index 0000000..d03e242
 $
 ```
 
-This tells us some metadata about the commit object: the ID; the author; the
+This tells us some metadata about the commit object: the hash; the author; the
 date; the message; what files changed. While `git show` is showing us a *diff*
 of the file, it's important to note that Git stores *whole files* with every
-commit, not changes. The output to `git show` computes these change
-descriptions on the fly for your benefit.[^git-stores-trees]
+commit, not changes. `git show` computes the diff between a commit and its
+parent on the fly for your benefit.[^git-stores-trees]
 
 [^git-stores-trees]: To verify this, look at the output of `git cat-file`:
     
@@ -432,8 +443,15 @@ descriptions on the fly for your benefit.[^git-stores-trees]
 Feel free to take a look at the `.git/` directory again and see what the
 objects are. You should be able to inspect any of them by using `git show`.
 
-TODO: One-paragraph enumeration of types of objects (commits, blobs, trees) and
-how they reference each other.
+If you inspect the `.git/` directory again, you'll see that Git has created
+another new object in addition to the commit. This is a *tree* object, and it's
+the only type of Git object we haven't discussed yet. Tree objects are
+analogous to directories: they're the bridge between blob objects, which
+represent a single file's contents, and commit objects, which hold the metadata
+of a commit. Each tree object holds a list of filenames, each one referencing
+either a blob object or another tree object. By following these references, Git
+can reconstruct the complete set of files and directories that the tree
+contains. Each commit references a single tree object.
 
 TODO: Example of `git log` to see all our commits.
 
@@ -450,6 +468,41 @@ git-<subcommand>`, like `man git-show`.
 CONTENTS: Git for solo development
 
 ### A basic Git workflow
+Let's step back from the nitty-gritty of Git's internals and talk about how you
+as a developer can use Git to make your life easier. Although Git has a truly
+dizzying number of different subcommands, you've already seen most of the ones
+you'll use frequently! `git add` and `git commit`, run repeatedly as you make
+changes to your code, let you build your repository's commit history.
+
+When things go awry or you come back to the project after a while away, you'll
+use other subcommands to work with that history (and you'll be grateful for
+them!). And when you want to collaborate with others, you'll use even more. All
+those subcommands operate on the commit history, though: if you don't make good
+commits regularly, they won't be able to help you.
+
+What is a "good" commit? In short, it's one that 1) **represents a single
+conceptual change to your code** and 2) **describes why you made that change
+clearly and concisely**. Let's discuss these two properties in detail:
+
+Firstly, you should make each commit as small as you can while keeping it
+self-contained. For code, "self-contained" means that a commit leaves the
+code in at least as good a state as it found it (e.g. it doesn't break
+things and rely on a subsequent commit to fix them) and expresses a complete
+idea (e.g. it doesn't add a comment without also adding the code that comment
+goes with).
+
+There are several reasons to follow this guideline: for one, Git allows you to
+move, delete, and/or reorder commits. These operations only make sense if each
+commit can stand on its own[^bisect]. If a commit breaks your build unless the
+subsequent one is also present, any such operation will have to treat both as a
+single unit and so they might as well have just been one to begin with.
+
+[^bisect]: Another subcommand, `git bisect`, takes this to the extreme: it
+    attempts to find where a bug was introduced by testing your code at
+    arbitrary points along its commit history. If your commits aren't self-
+    contained, it's practically impossible to use `git bisect` because commits
+    are constantly breaking and fixing things.
+
 
 TODO: Git has lots more subcommands, but the ones from last lecture are enough
 to create and maintain a repo that only you work on. But when should you run
