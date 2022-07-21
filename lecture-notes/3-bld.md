@@ -373,13 +373,13 @@ homework, or in packaging a JavaScript application into a bundle, or something
 else entirely. To do this, you will probably kick off a command like `gcc
 main.cpp`. Nice! You compiled your program. The command is short and sweet.
 
-Eventually you will accrue more files and you will have to start running `gcc
-mylib1.cpp mylib2.cpp main.cpp`, which is a lot more effort to type every time.
-While you could grin and bear it, you'll probably use <kbd>Ctrl-r</kbd> to
-search your shell history whenever you want to compile. Eventually you will
-share this command with your eager friend who joins you in working on this
-project and eventually check it into the project as a *shell script*. Now you
-both can run `./build`! Smart.
+Eventually you accrue more files and you have to start running `gcc mylib1.cpp
+mylib2.cpp main.cpp`, which is a lot more effort to type every time. While you
+could grin and bear it, you'll probably use <kbd>Ctrl-r</kbd> to search your
+shell history whenever you want to compile. Eventually you will share this
+command with your eager friend who joins you in working on this project and
+eventually check it into the project as a *shell script*. Now you both can run
+`./build`! Smart.
 
 Eventually you want to add another command that deletes all of the build
 artifacts from the folder, so you write another shell script: `./clean`. It
