@@ -379,9 +379,29 @@ While you could grin and bear it, you'll probably use <kbd>Ctrl-r</kbd> to
 search your shell history whenever you want to compile. Eventually you will
 share this command with your eager friend who joins you in working on this
 project and eventually check it into the project as a *shell script*. Now you
-can run `./build`! Smart.
+both can run `./build`! Smart.
 
+Eventually you want to add another command that deletes all of the build
+artifacts from the folder, so you write another shell script: `./clean`. It
+bothers you a little bit that `./build` and `./clean` have to share some
+data---the names of the binaries built---but for now you hard-code them into
+each script.
 
+Because you are a thoughtful engineer, you also write some tests. We'll talk
+more later about how best to do that, but these tests exercise lots of features
+in the software you wrote. They print "SUCCESS" if you haven't broken something
+and "FAILURE" if you have. You make a new shell script `./test` that runs the
+many tests for you. You think a minute and notice that it doesn't make sense
+without a compiled final product, so you prepend `./build` to the top of the
+testing script.
+
+It is at this point that your friend starts to complain about all of the small
+shell scripts littering the directory. "It's so confusing with all these files
+laying around," they say, "can we put them into one shell script?" You think
+about it and concede, grumbling a little bit about argument processing in
+shell. Eventually you end up with a simple system that enabls you to do `./run
+build`, `./run test`, and `./run clean`. Your build, clean, and test functions
+even get to share binary names now.
 
   * Run a shell command
     * My command is long and complex
