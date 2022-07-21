@@ -403,17 +403,39 @@ shell. Eventually you end up with a simple system that enabls you to do `./run
 build`, `./run test`, and `./run clean`. Your build, clean, and test functions
 even get to share binary names now.
 
-  * Run a shell command
-    * My command is long and complex
-  * Run multiple shell commands in a row
-    *
-  * Name your groups of shell commands
-    * I don't want 500 small shell scripts in my source directory
-  * Dependencies
-    * When I run `make thing` it doesn't get rebuilt even though I changed the
-      source files
-    * But Max, why do I have to do this by hand?
-      [Well...](http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/)
+After some months, your project has grown and running `./build` takes a few
+seconds. A few seconds! That's not so bad for a one-off build, but for a
+developer who is continuously writing code and tests and using the
+edit-compile-test cycle to check their work, a few seconds can get very
+frustrating very quickly. It's also a little silly how much work you are doing:
+even if you only change one little string in some random `.cpp` file, the
+entire project gets compiled anew into a binary! So much wasted time.
+
+You hear about this fancy "build system" called Make that can get around this
+needless work and install it on your computer. After some puzzling, you manage
+to turn your three shell functions into three Make targets. Running `make
+build` seems to build your software, and then running `make build` again does
+nothing. Wonderful. You relax a little but something in the back of your mind
+is trying to get your attention. You go on a walk to try and help it percolate
+to the front.
+
+It hits you like a lightning bolt as you're gazing absentmindedly into the
+trees. You jog back home. Carefully, you edit one of your source
+files---`printf("Hello!\n")` in main.cpp---and run `make build` again. Make
+does not rebuild your project. After some further reading, you understand that
+Make *does* help you avoid work, but you have to tell it about the dependencies
+between your files. There's no magic; it can't know that
+`AmazingApplication.exe` needs `main.cpp` to function because all of the steps
+in your Makefile are generic shell commands. You add the dependencies and run
+`make build`... it rebuilds. With some trepidation, you run `make build` again
+and... it does not build. Nice.[^auto-dep]
+
+[^auto-dep]: You don't *have* to do this, really. You can likely have your
+    compiler---for truly, it does know this dependency information about your
+    programs---spit out a Makefile for you. See [this
+    link](http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/)
+    for more.
+
   * Targets that are not real files (.PHONY)
     * When I touch the file `all`, `make all` no longer runs
   * Split compilation (.o) and linking (with Make)
