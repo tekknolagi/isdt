@@ -205,13 +205,17 @@ run and/or distributed[^build-process].
 
 ## What problem do build systems solve?
 
+<!-- TODO(max): What are we calling a build system? Be consistent. Be clear
+about what is similar and different between shell scripts and other build
+systems. Why not do everything in shell? -->
+
 Compiling software is an error-prone and slow process. Writing `g++` every
 time---whether that be typing it out manually, using the up arrow keys to go
 through your search history, or using <kbd>Ctrl</kbd>-<kbd>r</kbd>---is not the
 way to go. Build systems automate this process: they let you write the command
 (or series of commands) once, name this process, and then use that name
 thereafter. Then you get to check in your build configuration to source control
-that your teammates may use it too.
+that your teammates may use it too. But it's much more than a shell script.
 
 Not only is the typing slow, but the actual compilation step is slow as well.
 Compilers were designed to produce fast-running code, not to compile quickly.
