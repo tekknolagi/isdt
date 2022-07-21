@@ -361,6 +361,45 @@ In short: only re-build what changed.
 
 # Lecture 2
 
+To motivate build systems in an intuitive way, we will start off by introducing
+problems. Then, together, we'll build the simplest solution from scratch, and
+you'll get a feeling for the design of the existing tools.
+
+## How do I compile my program?
+
+You, the engineer, will at some point eventually need to compile your program.
+This might be in the form of a C++ program, like your computer science
+homework, or in packaging a JavaScript application into a bundle, or something
+else entirely. To do this, you will probably kick off a command like `gcc
+main.cpp`. Nice! You compiled your program. The command is short and sweet.
+
+Eventually you will accrue more files and you will have to start running `gcc
+mylib1.cpp mylib2.cpp main.cpp`, which is a lot more effort to type every time.
+While you could grin and bear it, you'll probably use <kbd>Ctrl-r</kbd> to
+search your shell history whenever you want to compile. Eventually you will
+share this command with your eager friend who joins you in working on this
+project and eventually check it into the project as a *shell script*. Now you
+can run `./build`! Smart.
+
+
+
+  * Run a shell command
+    * My command is long and complex
+  * Run multiple shell commands in a row
+    *
+  * Name your groups of shell commands
+    * I don't want 500 small shell scripts in my source directory
+  * Dependencies
+    * When I run `make thing` it doesn't get rebuilt even though I changed the
+      source files
+    * But Max, why do I have to do this by hand?
+      [Well...](http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/)
+  * Targets that are not real files (.PHONY)
+    * When I touch the file `all`, `make all` no longer runs
+  * Split compilation (.o) and linking (with Make)
+    * I made changes in one .c file and everything got rebuilt
+  * Compute things in parallel (-j)
+    * I have 64 cores and I am doing all the work on one of them
 
 
 <!--
