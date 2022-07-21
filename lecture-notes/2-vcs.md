@@ -167,9 +167,12 @@ We'll talk more about branches later.)
 
 ### Staging files
 Tracking a file means asking Git to add it to the *staging area*, also known as
-the *index*. The staging area is part of a Git repository that keeps track of
-which changes from the working tree are ready to be committed. When you create
-a new commit, its contents are taken from the staging area.
+the *index*. The staging area is part of a Git repository that records which
+changes from the working tree are ready to be committed. When you create a new
+commit, its contents are taken from the staging area.
+
+TODO: Add a diagram showing how changes flow from working tree to staging area
+to commits.
 
 Many other version control systems don't have a staging area---commits are
 created directly from the changes you make in the working tree. This is a
@@ -355,8 +358,8 @@ $
 
 Cool! It's the contents of your file. The file is now in the staging
 area---tracked by Git, but not yet associated with a commit. Each commit you
-make records the contents of the staging area, so the next commit you make will
-include your file.
+make records the contents of the staging area, so the next commit will include
+your file.
 
 ## Creating a commit
 To make a commit, run `git commit`. By default, `git commit` opens a text
@@ -389,6 +392,9 @@ commits are assigned hashes based on their contents, and a commit's contents
 include the name and email of its author as well as its creation date. Since
 these will be different for you, your commit will have a different hash than
 ours even though its file tree and message are identical.
+
+TODO: Side/foot note with command that specifies time, committer, and other
+data such that hash is identical.
 
 Let's take a look at the commit object by running `git show`---which when given
 no arguments shows the current commit:
@@ -453,6 +459,10 @@ either a blob object or another tree object. By following these references, Git
 can reconstruct the complete set of files and directories that the tree
 contains. Each commit references a single tree object.
 
+TODO: Diagram showing how a change to a single file propagates up the tree and
+eventually results in a different commit hash. (Or maybe just a tree hash?
+Since commits have different timestamps by nature.)
+
 TODO: Example of `git log` to see all our commits.
 
 ### Summary
@@ -471,8 +481,8 @@ CONTENTS: Git for solo development
 Let's step back from the nitty-gritty of Git's internals and talk about how you
 as a developer can use Git to make your life easier. Although Git has a truly
 dizzying number of different subcommands, you've already seen most of the ones
-you'll use frequently! `git add` and `git commit`, run repeatedly as you make
-changes to your code, let you build your repository's commit history.
+you'll use frequently! By running `git add` and `git commit` repeatedly as you
+make changes to your code, you build your repository's commit history.
 
 When things go awry or you come back to the project after a while away, you'll
 use other subcommands to work with that history (and you'll be grateful for
@@ -480,9 +490,12 @@ them!). And when you want to collaborate with others, you'll use even more. All
 those subcommands operate on the commit history, though: if you don't make good
 commits regularly, they won't be able to help you.
 
-What is a "good" commit? In short, it's one that 1) **represents a single
-conceptual change to your code** and 2) **describes why you made that change
-clearly and concisely**. Let's discuss these two properties in detail:
+What is a "good" commit? In short, it's one that
+
+1. **Represents a single conceptual change to your code**
+1. **Describes why you made that change clearly and concisely**
+
+Let's discuss these two properties in detail:
 
 Firstly, you should make each commit as small as you can while keeping it
 self-contained. For code, "self-contained" means that a commit leaves the
@@ -502,6 +515,9 @@ single unit and so they might as well have just been one to begin with.
     arbitrary points along its commit history. If your commits aren't self-
     contained, it's practically impossible to use `git bisect` because commits
     are constantly breaking and fixing things.
+
+    Ensuring each commit stands alone is also known as "keeping the `main`
+    branch green," and we'll talk about it more in the final module.
 
 
 TODO: Git has lots more subcommands, but the ones from last lecture are enough
@@ -555,7 +571,7 @@ TODO: Using `git revert` to undo an old change.
 #### Going back in time
 
 TODO: Using `git restore` to restore a file to an older version. Mention that
-`git checkout` did  this in older version of git, but that wasn't its primary
+`git checkout` did this in older version of git, but that wasn't its primary
 purpose.
 
 #### Saving changes for later
@@ -622,7 +638,7 @@ TODO: There are operators that let you "move around" from a ref. For example,
 TODO: `git log --graph`. example Demonstrate logging different branches and
 logging from a given commit hash (to build on previous section).
 
-### Moving commits between branches
+### Moving commits between branches ("So You Think You Can Branch?")
 
 TODO: Make sure this section is clear on the three ways to integrate changes:
 fast-forwarding, merging, and rebasing.
