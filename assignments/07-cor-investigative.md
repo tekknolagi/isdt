@@ -2,6 +2,7 @@
 ---
 # Homework 7: COR, Investigative
 
+<!-- A data structures assignment called "Fantastic BSTs..." would be awesome -->
 ## Fantastic calculators and where to find them
 
 For this assignment, you will be looking at the open-source project
