@@ -1,11 +1,12 @@
 ---
+layout: spec
 ---
 
 # Lecture Notes: Build Systems
 
-## Lecture 1
+# Lecture 1
 
-### Module overview
+## Module overview
 
 Welcome to module three! You now know how to use Git to keep track of your code
 and share it with others, but code isn't very useful unless you can run it! In
@@ -45,7 +46,7 @@ knows haven't changed!
     language to reduce its size. All these things can be part of a build, and
     with a build system you can ensure they happen perfectly, every time.
 
-### What problem do build systems solve?
+## What problem do build systems solve?
 
 Compiling software is an error-prone and slow process. Writing `g++` every
 time---whether that be typing it out manually, using the up arrow keys to go
@@ -69,7 +70,7 @@ able to get away with re-typing the same command and building everything each
 time for CS 11, this might not be the case in a larger project. This could be
 the difference between a twelve-hour build and a two-minute build.
 
-### How does do they solve it?
+## How does do they solve it?
 
 Build systems tend to operate around once core principle: specify end results
 and what their component parts are and then let the tooling do the repetitive
@@ -89,7 +90,7 @@ they were last modified. Some build systems use content hashing, like Git does,
 to only rebuild when the contents of the file change. (The implication here,
 which is important, is that m-time might change even if the content does not.)
 
-### Build systems can be closely tied to specific languages, or general task runners
+## Build systems can be closely tied to specific languages, or general task runners
 
 "Build systems" is a generic term that refers to any piece of software used to
 make building software easier. You could, for example, write an elaborate shell
@@ -118,7 +119,7 @@ between the two tools.
 
 [^network-effect]: See [Metcalfe's law](https://en.wikipedia.org/wiki/Metcalfe%27s_law) for more info.
 
-### Why will we focus on Make in this class?
+## Why will we focus on Make in this class?
 
 We will focus on Make in this class. Make is a general-purpose build system:
 while it was designed to build C projects, it has no problem building C++,
@@ -130,13 +131,13 @@ In addition, since you are working on C and C++ projects in the undergraduate
 program at Tufts, Make is particularly useful. It comes with purpose-built
 shortcuts that make building C projects easier.
 
-## Lecture 2
+# Lecture 2
 
 See the [Make
 documentation](https://www.gnu.org/software/make/manual/html_node/index.html)
 which is very thorough and helpful.
 
-### Targets and recipes
+## Targets and recipes
 
 *Targets* are the core of a Makefile. They are the results you need to
 eventually build; the names of the files on disk you want to see by the end of
@@ -146,10 +147,10 @@ the build process[^phony]. In the example below, a Makefile has a target called
 [^phony]: Not always; sometimes there are "phony" targets that are names for
     batches of recipes and do not produce files.
 
-```
+```make
 mybinary:
-    gcc main.c
-    mv a.out mybinary
+	gcc main.c
+	mv a.out mybinary
 ```
 
 It also has *recipes* to build that target: `gcc main.c`. The recipes section
@@ -165,14 +166,14 @@ This is a bit of a silly example since `gcc` has a `-o` option to specify the
 output filename, but there are certainly situations where multiple shell
 commands might be necessary.
 
-### Dependency relations
+## Dependency relations
 
 Let's look again at the Makefile from above:
 
-```
+```make
 mybinary:
-    gcc main.c
-    mv a.out mybinary
+	gcc main.c
+	mv a.out mybinary
 ```
 
 We can run this once with `make mybinary` and then we will have a `mybinary` on
@@ -180,7 +181,7 @@ disk. During the course of development, though, we will likely make a change to
 `main.c` and try to rebuild with `make mybinary`. Make will give an unhelpful
 response and do nothing:
 
-```
+```console
 $ make mybinary
 gcc main.c
 mv a.out mybinary
@@ -200,11 +201,12 @@ the programmer, have to specify the relationship manually.
 In order to instruct Make to rebuild `mybinary` when `main.c` is modified, add
 `main.c` as a *dependency* of `mybinary`:
 
-```
+```make
 mybinary: main.c
-    gcc main.c
-    mv a.out mybinary
+	gcc main.c
+	mv a.out mybinary
 ```
+{: data-highlight="1" }
 
 Now Make will look at the <dfn><abbr title="modification time">m-time</abbr></dfn>
 of both `main.c` and `mybinary`. If `main.c` is newer, it will rebuild
@@ -216,13 +218,13 @@ dependencies for `main.c`. Otherwise the binary and the header will be out of
 sync. For libraries use headers to specify interfaces, this is bad. At best,
 you might get a wrong answer. At worst, a crash or memory corruption.
 
-### Notes on split compilation (object files)
+## Notes on split compilation (object files)
 
 For languages like C that have a notion of split compilation, Make is even more
 useful. If you have, say, 10 C files that all need to be compiled together, it
 is possible to run:
 
-```
+```console
 $ gcc file0.c file1.c ... file9.c -o mybinary
 $
 ```
@@ -241,7 +243,7 @@ file* and then link those together:
     `include` mechanism is a textual copy&amp;paste process early in the
     compilation pipeline.
 
-```
+```console
 $ gcc -c file0.c file1.c ... file9.c
 $ gcc file0.o file1.o ... file9.o -o mybinary
 $
@@ -253,18 +255,18 @@ linking step, which together should be much faster than recompiling everything.
 It's hard to keep track of this manually, so we can write Make recipes to
 handle this for us:
 
-```
+```make
 mybinary: file0.o file1.o file2.o  # and so on
-    gcc file0.o file1.o file2.o -o mybinary
+	gcc file0.o file1.o file2.o -o mybinary
 
 file0.o: file0.c
-    gcc -c file0.c
+	gcc -c file0.c
 
 file1.o: file1.c
-    gcc -c file1.c
+	gcc -c file1.c
 
 file2.o: file2.c
-    gcc -c file2.c
+	gcc -c file2.c
 ```
 
 Now it is possible to modify any one C file and have the binary rebuilt
@@ -273,11 +275,11 @@ automatically with the least amount of steps.
 You will notice that all of this typing is getting cumbersome. We will talk
 about a solution to this repetition later!
 
-### The dependency graph
+## The dependency graph
 
 A DAG, just like Git uses!
 
-```
+<pre style="font-family: monospace" data-variant="legacy">
 ┌───────────────────┐      
 │mybinary           │      
 └┬────────┬────────┬┘      
@@ -287,9 +289,9 @@ A DAG, just like Git uses!
 ┌▽──────┐┌▽──────┐┌▽──────┐
 │file0.c││file1.c││file2.c│
 └───────┘└───────┘└───────┘
-```
+</pre>
 
-```
+```console
 $ cat Makefile
 mybinary: mybinary
 	touch mybinary
@@ -298,14 +300,14 @@ make: Circular mybinary <- mybinary dependency dropped.
 $
 ```
 
-### What happens when you type `make`
+## What happens when you type `make`
 
 * Make reads `Makefile`
 * determines target(s) to execute
 * builds DAG/topo sort
 * execute in order (potentially in parallel)
 
-### Why is a Makefile better than a shell script?
+## Why is a Makefile better than a shell script?
 
 Using your knowledge from module 1 (CLI), it would possible to compile your
 projects using a simple shell script that builds every file every time. This is

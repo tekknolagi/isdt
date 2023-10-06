@@ -1,3 +1,6 @@
+---
+layout: spec
+---
 # Homework 6: BLD, Constructive
 
 ## Build me up, buttercup

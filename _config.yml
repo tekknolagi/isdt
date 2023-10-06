@@ -2,13 +2,26 @@ title: Introduction to Software Development Tooling
 description: >
   Learn the command line, version control, build systems, and correctness in
   Tufts' CS 50ISDT.
-theme: jekyll-theme-primer
 google_analytics: UA-26440738-1
 url: 'https://bernsteinbear.com'
 baseurl: /isdt
+favicon: /favicon.ico
 permalink: pretty
 exclude:
   - README.md
   - LICENSE
   - Gemfile
   - Gemfile.lock
+
+# Configuration for Primer Spec
+# https://github.com/eecs485staff/primer-spec
+remote_theme: eecs485staff/primer-spec
+kramdown:
+  input: GFM
+plugins:
+  - jekyll-remote-theme
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-relative-links
+  - jekyll-default-layout
+  - jemoji

@@ -1,11 +1,12 @@
 ---
+layout: spec
 ---
 
 # Lecture Notes: Command Line
 
-## Lecture 1
+# Lecture 1
 
-### Module overview
+## Module overview
 In the first of our four modules, you'll learn to effectively use the Linux
 command line. You've all likely encountered a command line at some point, be it
 in the "Command Prompt" app on Windows, the "Terminal" app on macOS or Linux,
@@ -46,7 +47,7 @@ command line.
     wrong and will give you the freedom to go beyond the IDEs in cases where
     they can't do exactly what you need.
 
-#### Bash
+### Bash
 Every major OS has a shell (and some have multiple!), and they all provide the
 general functionality mentioned above. However, the specific syntax and
 commands available vary quite significantly. As such, we needed to pick a
@@ -89,7 +90,7 @@ syntax we cover will result in error messages or unexpected behavior.
     compliant in all the ways that matter. macOS, on the other hand, is
     officially certified since version 10.5.
 
-#### GNU + Linux
+### GNU + Linux
 As you'll see shortly, most of the command line's power comes from programs you
 run. Those programs are not part of the shell but are instead provided by your
 operating system. All POSIX operating systems (which are the only kind Bash
@@ -124,13 +125,14 @@ hierarchy) is not.
     derivatives have their own sets of POSIX tools, many of which are easily
     ported to run on Linux (and which are also the basis for macOS's tools).
 
-### Anatomy of a shell prompt
+## Anatomy of a shell prompt
 The first thing you see when you open a command line is what's known as a
 *prompt*. On the Tufts homework server, it looks like this:
 
 ```
 vm-hw09{utln01}31:
 ```
+{: data-variant="legacy" }
 
 The prompt is printed by the shell (which is Bash for all examples in this
 course) and serves both to inform you that the shell is ready to accept a new
@@ -166,6 +168,7 @@ writing these notes on, which runs Arch Linux:
 ```
 [thebb@stingray ~]$ 
 ```
+{: data-variant="legacy" }
 
 You can see that the username and hostname are still there, although now in
 reverse order and separated by an at sign. But the history event number is
@@ -189,7 +192,7 @@ historical reasons that have been lost to time.
     shell prompt unless we have a good reason otherwise. To learn more, look up
     the `PS1` and `PS2` shell variables.
 
-### Entering commands
+## Entering commands
 But the prompt isn't just a pretty thing to look at: it's also a rich interface
 for composing and editing commands. Have you ever wondered why you can use the
 left and right arrow keys to move the cursor around while typing a command but
@@ -222,6 +225,7 @@ Bash will show you a list of every option it knows about[^no-ls]:
 ```
 50/     50AIR/  50BIO/  50cog/  50CP/   50FCD/  50GD/   50IOT/  50ISDT/ 50NLP/  50PSS/  50SDT/  50WD/
 ```
+{: data-variant="legacy" }
 
 Now, add `IS` to your command so you have `ls /comp/50IS` and press
 <kbd>Tab</kbd> again. This time, Bash can see there's only one choice that
@@ -237,7 +241,7 @@ some other command-specific things as well. If ever in doubt, just try it!
     time you forget a file name! You can tab complete without losing what
     you've already typed.
 
-### Anatomy of a command
+## Anatomy of a command
 Now that you're a pro at typing in commands, let's talk about the things you
 can type! Although the shell provides the interface you use to enter and edit
 commands, it's not what implements the commands themselves (with a few
@@ -247,7 +251,7 @@ your computer. As such, most commands you'll run instruct the shell to execute
 some other program. Here are three examples of such commands, all of which run
 the program `/usr/bin/ls`.
 
-```
+```console
 $ ls
 file1    file2    file3
 $ /usr/bin/ls
@@ -286,7 +290,7 @@ are in these directories, you don't need to remember or type their full file
 paths[^path-security]. If you ever want to know what program a command runs,
 you can use the `which` command with the command name as an argument:
 
-```
+```console
 $ which ls
 /usr/bin/ls
 $ 
@@ -326,7 +330,7 @@ common conventions for arguments.
     to that directory and typed `ls` or `cat` would unknowingly invoke the
     attacker's program!
 
-### The Linux filesystem
+## The Linux filesystem
 Many of the examples so far have revolved around files and directories: the
 shell prompt shows your working directory, `ls` lists files in a directory, the
 shell runs programs stored in files, and so on. You're most likely already
@@ -341,7 +345,7 @@ called the root directory. The root directory is referred to by a single slash.
 directory trees exist with names like `C:\` and `D:\`.) When you run `pwd`, you
 see where your working directory lives under the root directory:
 
-```
+```console
 $ pwd
 /h/utln01
 $ 
@@ -354,7 +358,7 @@ type of path you'll encounter is called a *relative path* and never starts with
 a slash. Relative paths are interpreted relative to your working directory and
 so can mean different things at different times:
 
-```
+```console
 ~ $ cd /
 / $ ls /comp/50ISDT/examples/file-zoo/
 directory1  file1  file1-link  file2  file3  missing-link
@@ -397,7 +401,7 @@ quotes when passing them to shell commands. As you'll see next lecture, quotes
 (both single and double) suppress some of the shell's processing, including `~`
 expansion:
 
-```
+```console
 $ ls '/comp/50ISDT/examples/file-zoo'
 directory1  file1  file1-link  file2  file3  missing-link
 $ ls '/comp/50ISDT/examples/file-zoo/directory1/..'
@@ -425,9 +429,9 @@ $
     signal to these programs that you're talking about the current directory,
     you can use `.` as a path.
 
-## Lecture 2
+# Lecture 2
 
-### Quoting
+## Quoting
 We mentioned at the end of last lecture that the shell's expansion of the
 special home directory shorthand `~` can be suppressed by putting the `~`
 inside single quotes. This isn't the only piece of processing that quotes
@@ -445,7 +449,7 @@ word is `echo`. `echo` prints out all the argument values it receives separated
 by spaces, so it lets you clearly see which arguments the shell has
 proprocessed or expanded:
 
-```
+```console
 $ echo ~
 /h/utln01
 $ echo '~'
@@ -463,7 +467,7 @@ $
 
 Quotes can be used anywhere in a command, even in its name:
 
-```
+```console
 $ echo 'Hello, world!'
 Hello, world!
 $ 'ec'ho 'Hello, world!'
@@ -497,7 +501,7 @@ following it to be treated as if you'd enclosed it in single quotes. This is
 known as *escaping* that character. Since the backslash needs no closing
 delimiter, it can escape `'` (`\'`) and even itself (`\\`)!
 
-```
+```console
 $ echo \'
 '
 $ echo can\'t
@@ -518,7 +522,7 @@ you can use a backslash to include double quotes inside a double quoted
 string). (We'll go over the other pieces when we discuss variable and command
 substitution in a later lecture.)
 
-```
+```console
 $ echo "can't"
 can't
 $ echo "The last command printed \"can't\""
@@ -541,7 +545,7 @@ one named `hello world` (containing "3"). When viewing these files using the
 `cat` command (which prints the contents of one or more files), quotes make a
 big difference:
 
-```
+```console
 $ cd /comp/50ISDT/examples/file-zoo/directory1/
 $ ls
 hello  hello world  world
@@ -553,19 +557,21 @@ $ cat "hello world"
 $ 
 ```
 
-### Argument parsing and flags
+## Argument parsing and flags
 Besides the shell's preprocessing we've just discussed, there's no one set of
 rules about how arguments work: every program decides how to process its own
 arguments. However, there are some common conventions for arguments that the
 vast majority of commands follow. Knowing these conventions, which we discuss
 here, will help you interpret help text and man pages for many tools.
 
+<div class="primer-spec-callout" markdown="1">
 *As an aside:* There's a family of C library functions called getopt (`man 3
 getopt`) that many software packages use to parse arguments, which has
 solidified these conventions somewhat. Similar libraries, inspired by getopt,
 exist in other languages. For example, [Python's
 argparse](https://docs.python.org/3/library/argparse.html) and [Rust's
 clap](https://clap.rs/).
+</div>
 
 Part of these conventions are the notion of *flags*. Flags are optional
 arguments that, when provided, alter the behavior of a piece of software. Some
@@ -609,7 +615,7 @@ usual, your best bet is to look at the manual pages.
 Let's learn about some common commands to both apply our new knowledge of
 argument parsing and get acquainted with useful CLI tools.
 
-### Common commands
+## Common commands
 You'll find yourself using some tools more frequently than others. Here is a
 shortlist of tools you will likely use often, alongside their descriptions, and
 some common invocations. Refer to their man pages for more information.
@@ -624,7 +630,7 @@ powerful ways to make use of this mode later in this module.
 
 <!-- TODO: add `touch` -->
 
-#### `ls`
+### `ls`
 Although many of our examples have already used `ls`, they've thus far shown
 only its default behavior, which is to print the name of each file in the
 directory it's passed (or the working directory if run with no arguments). `ls`
@@ -636,7 +642,7 @@ the name of each file but also its type, link count, permissions, owner, group,
 size, and last modification date. Files are printed one per line in this mode
 to make room for the extra information:
 
-```
+```console
 $ ls -l
 drwxrwsr-x. 2 thebb01 ta50isdt 4096 Sep  8 00:41 directory1
 -rw-rw-r--. 1 thebb01 ta50isdt   11 Sep  8 00:16 file1
@@ -665,8 +671,7 @@ things to notice at for the moment are the following:
    removed. Linux allows modification dates to be changed arbitrarily (see `man
    touch`), so don't rely on this as a guarantee the file hasn't been altered!
  * The seventh field of each line is the name of the file, but for symbolic
-   links it additionally includes the name of the file the link points to after
-   ` -> `.
+   links it additionally includes the name of the file the link points to after `->`.
 
 Another common flag of `ls` is `--all`/`-a`, which causes it to show files
 whose names begin with a `.`. Although such files have no special meaning to
@@ -676,35 +681,35 @@ link](http://web.archive.org/web/20190211031031/https://plus.google.com/+RobPike
 but became a feature when people realized it could be used to hide things like
 configuration files that you don't normally care about.
 
-#### `mv`
+### `mv`
 Rename a file, or move it elsewhere in the filesystem with `mv source
 destination`. Overwrites the destination by default; be careful! If source and
 destination both exist and are different types, `mv` will complain. If the
 destination exists and is a directory, `mv` will instead put the source inside
 the destination directory.
 
-#### `cp`
+### `cp`
 Copy a file or copy multiple files into a directory. Overwrites the destination
 by default; be careful! `cp` will not copy directories without
 `--recursive`/`-r`.
 
-#### `mkdir`
+### `mkdir`
 Make a directory with the name specified, like `mkdir foo`. If you want to make
 nested directories in one command or avoid an error if the directory already
 exists, use `--parents`/`-p`.
 
-#### `rm`
+### `rm`
 Remove one or more files. Be careful! This deletion is irreversible. Specify
 the filenames to be deleted in a list: `rm file1 file2 file3` and so on. To
 remove directory contents recursively, use `--recursive`/`-r`. To avoid error
 messages when files and directories don't exist, use `--force`/`-f`.
 
-#### `cat`
+### `cat`
 Join files together and print to stdout. This is useful when sticking two files
 end-to-end (e.g. `cat fileA fileB` will print first `fileA` then `fileB` to
 stdout) or just showing the contents of one file.
 
-#### `grep`
+### `grep`
 While programming it is often useful to find where a word, phrase, or regular
 expression occurs in a file or folder. `grep` can do all of that.
 
@@ -728,15 +733,17 @@ Sometimes you might want to find all the lines that do *not* contain a pattern,
 because the pattern is very frequent. In this case you can do `grep -v
 "pattern" file`, where `-v` stands for "invert".
 
-> NOTE: Grep uses a more limited set of regular expressions than people
-> normally refer to when they say "regular expression". Read more about this on
-> the [GNU manual][gnu-manual] and this nicely written [DigitalOcean
-> tutorial][digitalocean-tutorial].
+<div class="primer-spec-callout info" markdown="1">
+NOTE: Grep uses a more limited set of regular expressions than people
+normally refer to when they say "regular expression". Read more about this on
+the [GNU manual][gnu-manual] and this nicely written [DigitalOcean
+tutorial][digitalocean-tutorial].
+</div>
 
 [gnu-manual]: https://www.gnu.org/software/findutils/manual/html_node/find_html/grep-regular-expression-syntax.html
 [digitalocean-tutorial]: https://www.digitalocean.com/community/tutorials/using-grep-regular-expressions-to-search-for-text-patterns-in-linux
 
-#### `find`
+### `find`
 Searching files by their contents is all well and good but it's also useful to
 search for files by their attributes. To find a file by name, you can run `find
 myfolder -name filename`. The filename can also be a pattern with `find`'s
@@ -756,7 +763,7 @@ own argument parser instead of using the more standard `getopt` library. The
 course staff is not sure what sequence of events led to them writing their own
 parser.
 
-#### `sed`
+### `sed`
 To replace text and text patterns in files and streams, use `sed`. For example,
 to replace the word "hello" with "goodbye" in a file `original.txt`, use `sed
 's/hello/goodbye/' original.txt`. This will print the output to `stdout`. To
@@ -769,7 +776,7 @@ Although the above usage is probably the majority of use, `sed` supports some
 regular expressions and other commands (other than `s`). Take a look at the
 COMMAND SYNOPSIS section of the `sed` manual pages for more information.
 
-#### `cut`
+### `cut`
 If the input data is separated logically into columns, it's possible to use
 `cut` to only print the selected columns. The data need not be space separated;
 it's possible to specify a delimiter.
@@ -778,7 +785,7 @@ For example, to print column 2 of a file with comma separated columns, use `cut
 -f2 -d',' myfile`. It's also possible to specify ranges of columns. Read the
 man pages for more information.
 
-#### `sort`
+### `sort`
 To sort a file or stream's lines, use `sort`. The default behavior is to sort
 lexicographically---in alphabetical order---so it will not sort numbers as you
 expect. For that, you want `sort --numeric-sort`, or `sort -n`. It also can
@@ -788,12 +795,12 @@ Depending on your system's implementation, there may be some other fun options,
 such as a stable sort, a merge of two already sorted lists (to be used in merge
 sort), or even sorting in parallel.
 
-#### `head`
+### `head`
 To keep only the first part of a file or stream, use `head`. It is useful for
 examining only the first line of a file, or the first ten lines, or any number
 of lines (`--lines=NUM`, `-nNUM`), really.
 
-#### `tail`
+### `tail`
 The opposite of `head`! To keep only the last part of a file or stream, use
 `tail`. It also takes `--lines`/`-n`, but has additional features, too: if the
 file is growing, or there is more information coming in the stream, you can use
@@ -802,7 +809,7 @@ file is growing, or there is more information coming in the stream, you can use
 Software engineers often use `tail -f` to observe a continually growing log
 file, maybe of a server, or a build process.
 
-#### `man`
+### `man`
 To help you make better use of your tools, package maintainers write manual
 pages for their software. To read a manual page for a particular piece of
 software, use `man PROGRAM`, like `man ls`. Some software is available in two
@@ -815,7 +822,7 @@ you can refer to them separately: `man 1 printf` for the coreutils command and
 Manual pages are available in a centralized place (like `/usr/share/man`) for
 package managers and install scripts to write to and you to read from.
 
-#### `ln`
+### `ln`
 Create a *symbolic link* to a file, when used with the `--symbolic`/`-s` flag.
 The syntax is the same as `cp`---`ln source destination`---but instead of
 copying a file, it creates a special kind of file at the destination that
@@ -825,7 +832,7 @@ the original file when using it in commands. `ln` with no flags creates *hard
 links*, which are a different and lesser-used type of link that we won't
 discuss in this course.
 
-#### `diff`
+### `diff`
 Sometimes you have two files and you don't know if they are different. Or
 perhaps you know that they are different and you don't know what is different
 about them. The `diff` command will print out a list of differences between two
@@ -837,13 +844,14 @@ LINEcCOL
 ---
 > RIGHT-FILE-LINE
 ```
+{: data-variant="legacy" }
 
 It also changes status code depending on the result: 0 if the same, 1 if
 different. This can be useful in shell scripts, so you can do things like `diff
 fileA fileB || echo "different"` or `diff fileA fileB && echo "same"`. We will
 have more about this coming up in our section on pipelines.
 
-#### `which`
+### `which`
 `which` helps find commands. If the command exists as a binary, it will tell
 the path. To find all the matching binaries, use `-a`.
 
@@ -853,7 +861,7 @@ unable to report on other built-ins and aliases.
 
 See also the POSIX utility `type`.
 
-#### `top` and `htop`
+### `top` and `htop`
 `top` and `htop` are interactive commands. Instead of running in a
 pipeline---consuming input from stdin and printing to stdout---they are meant
 to be used directly by the user. `top` prints live statistics about running
@@ -864,7 +872,7 @@ information about individual CPU cores and graphs.
 These tools read from `/proc`, which is a virtual filesystem with information
 about processes pretending to be files.
 
-#### `tmux`
+### `tmux`
 `tmux` is another interactive program. It stands for "terminal multiplexer",
 which is a fancy way of saying that it allows you to run multiple programs in
 the same terminal---kind of like in The Matrix. It is very useful for systems
@@ -925,7 +933,7 @@ C
 In order to remove the duplicate line from the last example, pipe your input
 through `sort` first.
 
-#### `vi`
+### `vi`
 `vi` is a POSIX-specified text editor that is available on almost every system
 you will use. Unlike text editors such as Notepad and Kate, Vi is a *modal*
 editor, meaning that when it is open it is in one of several modes: INSERT,
@@ -938,7 +946,7 @@ Most newer systems include Vim (Vi-iMproved), instead of plain Vi. Check out
 this [getting started guide](https://learnxinyminutes.com/docs/vim/) to read
 more. We won't get too deep into text editing in this course.
 
-### File ownership and permissions
+## File ownership and permissions
 Nearly every command we've just shown you manipulates files in some way: some
 read files, some create, delete or move them, and a few (like `sed` and `vi`)
 can write to them as well. So what's stopping you from using these commands to
@@ -947,7 +955,7 @@ confidential system file[^fhs] such as `/etc/shadow`, which holds the hashed
 passwords of users on most Linux systems[^etc-shadow]? Let's see what happens
 when we try!
 
-```
+```console
 $ cat /etc/shadow
 cat: /etc/shadow: Permission denied
 $ 
@@ -958,7 +966,7 @@ Unlike other files we've seen (e.g. `/comp/50ISDT/examples/file-zoo/file1`),
 the concept of file *permissions*. Let's take another look at some bits of `ls
 -l` that we glossed over earlier:
 
-```
+```console
 $ ls -l /comp/50ISDT/examples/file-zoo/file1 /etc/shadow
 -rw-rw-r--. 1 thebb01 ta50isdt   11 Sep  8 00:16 /comp/50ISDT/examples/file-zoo/file1
 ----------. 1 root    root     1195 Dec 20  2019 /etc/shadow
@@ -1024,7 +1032,7 @@ getfacl`, and `man setfacl`, and `man selinux` to learn about them on your own.
 We can now go back to our original listing (reproduced below) and make sense of
 it:
 
-```
+```console
 $ ls -l /comp/50ISDT/examples/file-zoo/file1 /etc/shadow
 -rw-rw-r--. 1 thebb01 ta50isdt   11 Sep  8 00:16 /comp/50ISDT/examples/file-zoo/file1
 ----------. 1 root    root     1195 Dec 20  2019 /etc/shadow
@@ -1093,7 +1101,7 @@ needed. Note that the root *account* has no special relation to the root
     *capabilities* (`man capabilities`), but it's generally still the case that
     programs run by root have every capability and others don't have any.
 
-## Lecture 3
+# Lecture 3
 Last lecture, we talked about argument parsing and some common tools that
 you'll likely encounter during your illustrious career in computing. This
 lecture, we'll talk about some shell syntax that lets you combine these and
@@ -1104,7 +1112,7 @@ For a fun bit of history, take a look at [this
 video](https://www.youtube.com/watch?v=tc4ROCJYbm0), which depicts some of the
 original authors of UNIX first introducing concepts we'll cover today.
 
-### More ways to find previous commands
+## More ways to find previous commands
 In our very first lecture, we showed you how you can use the up and down arrow
 keys to cycle through past commands. Although that's probably the most
 commonly-used history navigation shortcut, the shell has other features that
@@ -1156,7 +1164,7 @@ also happens with `!!`.
     you can add one by changing the `$PS1` shell variable. See the PROMPTING
     section of `man bash` for details.
 
-### Variables in the shell
+## Variables in the shell
 We now change focus from shell features that help you run simple commands at an
 interactive prompt to ones that let you express complex relations and
 interdependencies between commands. Although you can use these features
@@ -1171,7 +1179,7 @@ tradition, variable names are all uppercase, but this isn't enforced anywhere.)
 To create or change a variable, separate the name and desired value with an
 equals sign (`=`). You must **not** put spaces around the `=`:
 
-```
+```console
 $ FOOBAR=somevalue
 $ 
 ```
@@ -1179,7 +1187,7 @@ $
 To read a variable, prefix its name with a dollar sign (`$`) and use it in a
 command:
 
-```
+```console
 $ echo $FOOBAR
 somevalue
 $ 
@@ -1190,7 +1198,7 @@ The shell expands `$VARNAME` to the contents of VARNAME, just like it expands
 not inside single quotes, and the `$` can be escaped with a backslash just like
 any special character:
 
-```
+```console
 $ echo $FOOBAR
 somevalue
 $ echo "$FOOBAR"
@@ -1206,7 +1214,7 @@ Shell variables hold strings. The value you assign to a variable is substituted
 textually when you use that variable in a command. As such, you can put
 variable expansions nearly anywhere:
 
-```
+```console
 $ COMMAND=ls
 $ DIRECTORY=/comp/50ISDT/examples/file-zoo/
 $ "$COMMAND" "$DIRECTORY"
@@ -1219,7 +1227,7 @@ be used inside double quotes**. Consider what would happen if the variable
 contained a string with spaces! Well, we're right back to our old
 "hello"/"hello world"/"world" example from before:
 
-```
+```console
 $ cd /comp/50ISDT/examples/file-zoo/directory1/
 $ FILENAME="hello world"
 $ cat $FILENAME
@@ -1234,7 +1242,7 @@ Sometimes, it can be ambiguous where a variable name ends and subsequent text
 begins. In those situations, you can make it clear by enclosing the name in
 curly braces:
 
-```
+```console
 $ "$COMMAND" -l "${DIRECTORY}file3"
 -rw-rw----. 1 thebb01 ta50isdt 20 Sep  8 00:24 /comp/50ISDT/examples/file-zoo/file3
 $ 
@@ -1245,14 +1253,14 @@ Note that it's not an error to access a variable that doesn't exist, although
 next lecture we'll show you how to change that to make debugging scripts
 easier:
 
-```
+```console
 $ unset FOOBAR
 $ echo "$FOOBAR"
 
 $ 
 ```
 
-#### Environment variables
+### Environment variables
 The variables we created in the preceding example exist only within the shell.
 But Linux itself also has a concept of variables. These variables, called
 *environment variables*, provide another way of passing data to programs. Like
@@ -1265,7 +1273,7 @@ hold system or user configurations that many programs care about.
 To see the environment variables in your shell session (which will be inherited
 by any command you run), run `env`:
 
-```
+```console
 $ env
 HOSTNAME=vm-hw01
 SHELL=/bin/bash
@@ -1298,7 +1306,7 @@ It's no coincidence that `env` formats its output to look like shell variable
 assignments. **Every environment variable is accessible as a shell variable**,
 and you can read and modify them as such:
 
-```
+```console
 $ echo "I am $USER, my home is at $HOME, and this place is called $HOSTNAME"
 I am thebb01, my home is at /h/thebb01, and this place is called vm-hw01
 $ 
@@ -1308,7 +1316,7 @@ However, the reverse is not true: a shell variable is not part of the
 environment automatically, but you can add it using `export` (and remove it
 using `export -n`):
 
-```
+```console
 $ FOOBAR=somevalue
 $ env | grep FOOBAR
 $ export FOOBAR
@@ -1317,7 +1325,7 @@ FOOBAR=somevalue
 $ 
 ```
 
-### Chaining commands together
+## Chaining commands together
 Sometimes you'll find yourself with a problem that can't be exactly solved by
 any one program. Luckily, the shell offers a number of powerful operators that
 let you run multiple programs with a single command, connecting the inputs and
@@ -1342,7 +1350,7 @@ messages, such as those printed when a program doesn't have permission to
 access a file. In the following example, `cat` prints `Hello, world` to stdout
 and `cat: file3: Permission denied` to stderr:
 
-```
+```console
 $ cd /comp/50ISDT/examples/file-zoo/
 $ cat file2 file3
 Hello, world
@@ -1359,7 +1367,7 @@ you run interactively, as the text they print is usually enough to tell whether
 they succeeded or failed. However, the shell always keeps track of the last
 command's exit code. You can view it through the special shell variable `$?`:
 
-```
+```console
 $ cd /comp/50ISDT/examples/file-zoo/
 $ cat file2
 Hello, world
@@ -1378,7 +1386,7 @@ programs on your own to see what codes they return in different situations.
 
 <!-- TODO: Move this section to the next lecture -->
 
-#### `test`
+### `test`
 There is a command, `test`, dedicated to producing error codes for use in
 conditionals. It comes bundled with a bunch of different *predicates*. (A
 predicate is a function that takes an input or multiple inputs and produces a
@@ -1389,7 +1397,7 @@ one, but matches the POSIX convention of returning zero on success.
 To test if a string is the empty string `""`---if it has length zero---use
 `test -z "$STRING"`.
 
-```
+```console
 $ test -z ""
 $ echo $?
 0
@@ -1402,7 +1410,7 @@ $
 To test if a string is not the empty string---if it has nonzero length---use
 `test -n "$STRING"`:
 
-```
+```console
 $ test -n ""
 $ echo $?
 1
@@ -1416,7 +1424,7 @@ $
 equal, use `test "$LEFT" = "$RIGHT"`. Note that this uses *one* equals sign
 instead of the two you may be used to. To check inequality, use `!=`:
 
-```
+```console
 $ test "hello" = "hello"
 $ echo $?
 0
@@ -1431,7 +1439,7 @@ represent other types of data. To that end, `test` also provides predicates for
 numbers and files. For numbers, use `-lt` for "less than", `-ge` for "greater
 than or equal", and so on (see `help test` for a full listing):
 
-```
+```console
 $ test 5 -lt 7
 $ echo $?
 0
@@ -1445,7 +1453,7 @@ To test if a file or directory exists, use `test -e "$FILENAME"`. To test if it
 exists *and is a file*, use `test -f`. To test if it exists *and is a
 directory*, use `test -d`.
 
-#### Running programs sequentially
+### Running programs sequentially
 Now that we've seen how programs can communicate with the shell, we come to our
 first few shell operators for combining multiple commands into a single, larger
 command. The first of these operators is the semicolon (`;`). By separating two
@@ -1453,7 +1461,7 @@ commands with `;`, you tell the shell to run the first one followed by the
 second, just as if you'd put them each on their own line. We can use this
 operator to rewrite the last example more concisely:
 
-```
+```console
 $ cd /comp/50ISDT/examples/file-zoo/
 $ cat file2 ; echo $?
 Hello, world
@@ -1473,7 +1481,7 @@ operator, which runs the second command only if the first is successful (and
 returns success only if both are). Here, the failure of the second `mkdir`
 prevents `touch file2` from ever running:
 
-```
+```console
 $ mkdir dir1 && touch dir1/file1
 $ echo $?
 0
@@ -1493,7 +1501,7 @@ command only if the first fails and returns success if either succeeds. You can
 chain as many commands you want together using any of these three operators,
 and they'll be run left-to-right.
 
-#### Pipelines
+### Pipelines
 The next operator we'll discuss is one of the hallmarks of POSIX shells. It's
 the foundation upon which the [UNIX
 Philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)---to write small
@@ -1511,7 +1519,7 @@ for system headers like `stdio.h`.) We'll start with a command to find all the
 header files in the directory. We learned about `find` last lecture, so let's
 use that:
 
-```
+```console
 $ find /usr/include/ -type f -name '*.h'
 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlib.h
 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlibrgb.h
@@ -1559,7 +1567,7 @@ mode with its `-print0` flag.
 Adding this flag to our `find` invocation and piping into `wc` yields the
 following:
 
-```
+```console
 $ find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l
 92 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlib.h
 233 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlibrgb.h
@@ -1582,7 +1590,7 @@ its output, and there's no flag to disable it. Such an inconvenience is no
 match for the power of pipelines though: we can use `head -n -1` (note: `-1`,
 not `1`) to discard the last line of output from `wc`[^annoying-edge-case]:
 
-```
+```console
 $ find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l | head -n -1
 92 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlib.h
 233 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlibrgb.h
@@ -1607,7 +1615,7 @@ any utility to do this directly, but we have learned about `sort`, which can
 ensure that the biggest number is at one end of the list. Let's sort the list
 such that the biggest number is on top:
 
-```
+```console
 $ find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l | head -n -1 | sort -rn
 4233248 total
 40496 /usr/include/php/Zend/zend_vm_execute.h
@@ -1621,7 +1629,7 @@ $
 Now we have the line we care about at the very top, and all we have to do is
 get rid of all the other uninteresting lines. For that, let's again use `head`:
 
-```
+```console
 $ find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l | head -n -1 | sort -rn | head -n 1
 40496 /usr/include/php/Zend/zend_vm_execute.h
 $ 
@@ -1633,7 +1641,7 @@ filename using `cut -d' ' -f2`. The `-d` stands for `--delimiter`, which in our
 case is a space, and the `-f` stands for `--fields`, where we specify that we
 only want field number 2. (The fields are 1-indexed.)
 
-```
+```console
 $ find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l | head -n -1 | sort -rn | head -n 1 | cut -d' ' -f2
 /usr/include/php/Zend/zend_vm_execute.h
 $ 
@@ -1645,7 +1653,7 @@ of related questions, too. (What about the top 5 longest files? Top 10
 shortest? And so on.) Hopefully, this example illustrated some of the
 flexibility the pipe operator brings.
 
-### Redirection
+## Redirection
 One limitation of pipelines is that they write their final output to the
 terminal. In the case of our example above, that's fine because the output is
 just one file. But what if we wanted to save a report of how many lines were in
@@ -1659,7 +1667,7 @@ input redirection operator, copies a file's contents to stdin.
 
 Let's split our pipeline from above into two commands using redirection:
 
-```
+```console
 $ find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l >header-line-counts
 $ ls
 header-line-counts
@@ -1699,7 +1707,7 @@ doesn't contain error messages that might confuse a later tool. If you have
 reason to redirect stderr, you can do it with `2>`. (2 is the number POSIX
 assigns to stderr; 1 is stdout, so `1>` is the same as `>`.)
 
-### Job control
+## Job control
 One thing common to every command you've seen so far is that, once you run it,
 you can't run anything else until it finishes and the shell prints a new
 prompt. In fact, we told you that this was core to how shells work when we
@@ -1740,7 +1748,7 @@ the foreground with `fg` or tell it to continue as a background job with `bg`.
 To see a list of jobs that haven't finished yet, use the built in `jobs`
 command:
 
-```
+```console
 $ jobs
 [1]+  Running                 sleep 3 &
 $ 
@@ -1779,16 +1787,16 @@ JOB CONTROL section of `man bash`.
     written to it and so can be a redirection target for output you don't care
     about.
 
-## Lecture 4
+# Lecture 4
 
-### Command substitution
+## Command substitution
 Last lecture, you saw how the shell will substitute a variable name, like
 `$FOOBAR`, with that variable's value when you use it as part of a command.
 Another similar feature, *command substitution*, lets you include a program's
 standard output as part of a command. To do so, put the command you want to run
 inside the parentheses in `$()`[^backtick-substitution]. For example:
 
-```
+```console
 $ echo "The last word in the dictionary is $(tail -n 1 /usr/share/dict/words)."
 The last word in the dictionary is ZZZ.
 $ 
@@ -1808,7 +1816,7 @@ You can use all the syntax you've learned so far inside a command substitution,
 just as if you were writing a standalone command. For example, we can pass the
 output of last week's whole shell pipeline to `head`:
 
-```
+```console
 $ head "$(find /usr/include/ -type f -name '*.h' -print0 | wc --files0-from=- -l | head -n -1 | sort -rn | head -n 1 | cut -d' ' -f2)"
 /*
    +----------------------------------------------------------------------+
@@ -1832,7 +1840,7 @@ $
     holds a list of commonly-used English words. It's used by some programs for
     spell checking, so onomatopoeias like "ZZZ" are included.
 
-### Glob patterns
+## Glob patterns
 We spoke about patterns briefly in Lecture 2 when describing arguments for
 tools like `grep` and `sed`. Those tools incorporate extremely powerful (and
 confusing) regular expression languages that allow you to express a huge
@@ -1845,7 +1853,7 @@ where the `*` represents any set of zero or more characters. Such a pattern is
 known as a *wildcard* or *glob*, and, if any files match it, the shell will
 substitute it with *all* of them:
 
-```
+```console
 $ cd /comp/50ISDT/examples/file-zoo/
 $ ls
 directory1  file1  file1-link  file2  file3  missing-link
@@ -1865,7 +1873,7 @@ single or double quotes. However, you don't need to worry about quoting it, as
 it will correctly handle the expansions of paths containing spaces even when
 unquoted:
 
-```
+```console
 $ ls -l directory1/hello*
 -rw-rw-r--. 1 thebb01 ta50isdt 2 Sep  8 00:43 directory1/hello
 -rw-rw-r--. 1 thebb01 ta50isdt 2 Sep  8 00:43 directory1/hello world
@@ -1879,7 +1887,7 @@ The`shopt -s nullglob` or `shopt -s failglob` commands make the behavior more
 consistent; consider using one of these in conjunction with `set -euo pipefail`
 (see below) when writing glob-heavy scripts:
 
-```
+```console
 $ echo foobar*
 foobar*
 $ shopt -s nullglob
@@ -1893,7 +1901,7 @@ foobar*
 $ 
 ```
 
-### Shell scripts (and when not to use them!)
+## Shell scripts (and when not to use them!)
 As we've hinted, typing commands at a prompt isn't the only way to use Bash.
 You may sometimes find yourself in a situation where you frequently rerun the
 same sequence of commands, perhaps with minor variations. Or perhaps you want
@@ -1920,13 +1928,13 @@ script, there's a good chance that your problem has outgrown the capabilities
 of the shell. In these cases, you should move at least part of your solution
 into its own program written in some other language:
 
-#### Non-textual I/O
+### Non-textual I/O
 Not all software deals with text. If you need to process structured data that's
 kept in a binary format (i.e. not something you can process using tools like
 `cut` and `grep`), pick another language. If you have input or output that
 can't be represented as text (e.g. audio or image data), pick another language.
 
-#### External libraries
+### External libraries
 Shell scripts excel at interacting with command-line programs. Pipelines,
 redirection, and argument substitution make shell scripts the easiest way to
 solve problems in terms of programs that already exist. But if you need to
@@ -1939,21 +1947,23 @@ another language.
     debug the database and don't provide a means for efficiently running
     queries and returning data in a format easily usable by scripts.
 
-#### Graphics
+### Graphics
 Graphical user interface (GUI) libraries like Qt and GTK provide bindings for
 languages like C, C++, and Python that allow you to build complex visual
 interfaces with buttons, lists, tables, and images. These libraries, like the
 databases mentioned above, are not directly accessible via shell scripts. In
 general, if your program needs to use the mouse, pick another language.
 
+<div class="primer-spec-callout info" markdown="1">
 *Tip:* If you need to work with images, videos, or other binary data, pick a
 language with a good binary data library. People often reach for C or C++ in
 these cases, but languages like Python and Erlang provide just as good (and
 sometimes better) tooling! People use both format-specific libraries (such as
 libjpg, for working with JPGs) and format-agnostic libraries (like Python's
 `struct` module or Erlang's binary pattern matching).
+</div>
 
-#### Data structures
+### Data structures
 Even if your data is textual, you should probably pick another language if you
 need to store and later query that data as opposed to processing it all in one
 pass like a pipeline does. Because shell variables aren't typed, you can't
@@ -1963,7 +1973,7 @@ Languages like Python and Ruby, on the other hand, likely have the data
 structures you need built-in. And if they don't, you can build those
 structures.
 
-#### Complex logic
+### Complex logic
 If you need to do math, nest conditionals more than a couple levels deep, or
 express any logic more complex than a few `if` statements, pick a different
 language. The shell is fine for simple string and numeric comparisons, but
@@ -1978,7 +1988,7 @@ solve that problem for you? If so, run it from your script instead of
 implementing the logic yourself. If not, consider writing such a command-line
 tool in something like C++ or Python for your script to run.
 
-### Creating and running scripts
+## Creating and running scripts
 Let's make a first shell script. Open up your editor and type the following
 into a file. Say, `myscript.sh`:
 
@@ -1986,11 +1996,13 @@ into a file. Say, `myscript.sh`:
 echo "Hello, world!"
 echo "I am in a script and I am being run by $USER."
 ```
+{: data-title="myscript.sh" }
 
 Save it. If you try and run it like a program you compiled in your CS
 courses---by running `./myscript.sh`---you will get the following error:
 
-```
+```console
+$ ./myscript.sh
 bash: ./myscript.sh: Permission denied
 ```
 
@@ -2019,7 +2031,7 @@ section).[^shell-complication]
     script and attempt to execute it with either Bash or Zsh, respectively. So
     it's a one- and sometimes two-step dance.
 
-#### Comment your code
+### Comment your code
 Bash scripts, as we mentioned, are harder to write and read than programs in
 other programming languages. Make sure to comment on the intent of any
 particularly tricky areas. Comments begin with the `#` character and continue
@@ -2030,7 +2042,7 @@ until the end of the line.
 echo "foo" # I am another comment
 ```
 
-### Control flow in the shell
+## Control flow in the shell
 So, you've chosen to use Bash to solve your problem; after you pass this class,
 we'll trust your judgement. Let's learn the missing pieces of shell syntax
 needed to write programs! Most of these will be familiar from CS 11, so we'll
@@ -2044,7 +2056,7 @@ with a language like Python. As such, we believe that all our advice above
 still stands and that, if you find yourself reaching for a Bash-specific
 feature, you probably shouldn't be using a shell script in the first place.
 
-#### if
+### if
 
 The basic structure for `if` statements in Bash is as follows:
 
@@ -2090,7 +2102,7 @@ fi
 Note that the spaces around the braces `[` and `]` are required, just as they
 are for any command---`[` is just a regular command with an unusual name:
 
-```
+```console
 $ ls -l /bin/\[
 -rwxr-xr-x 1 root root 59736 Sep  5  2019 '/bin/['
 $ 
@@ -2098,7 +2110,7 @@ $
 
 (Though it is often implemented as a shell built-in, too.)
 
-#### Loops
+### Loops
 Because a programming language wouldn't be complete without a friendly loop,
 Bash includes not one but several looping constructs. In this section, we will
 present `while`, `for`, and `until`. These can be used like other programming
@@ -2195,7 +2207,7 @@ loops](https://unix.stackexchange.com/questions/7011/how-to-loop-over-the-lines-
 but that is outside the scope of this course's material and definitely falls
 into a "more advanced shell scripting" course.
 
-#### Referring to script arguments
+### Referring to script arguments
 Scripts can read arguments from the special shell variables `$0` to `$N`, where
 `N` is a [rather large number](https://stackoverflow.com/a/22747030/569183).
 For argument indices larger than 9, however, you must use curly braces, like
@@ -2207,16 +2219,17 @@ For example, the following script:
 # myscript.sh
 echo "$1, world!"
 ```
+{: data-title="myscript.sh" }
 
 can will print out "Hello, world!" when run like so:
 
-```
+```console
 $ bash myscript.sh Hello
 Hello, world!
 $
 ```
 
-#### Defining functions
+### Defining functions
 It may be the case that you require a level of abstraction in your shell
 scripts that is somewhere between 1) writing a whole other shell script to call
 from your main script and 2) copy/pasting lines of code. For this, Bash allows
@@ -2255,7 +2268,7 @@ educational to take a look at some of the shell scripts on your system and
 figure out what they do. To do that, we can list all of the available shell
 scripts and pick randomly:
 
-```
+```console
 $ grep -lrF '#!/bin/sh' /usr/bin > scripts.txt
 <you may see some permissions errors>
 $ vim $(sort -R scripts.txt | head -n 1)
@@ -2322,7 +2335,7 @@ professionals. Recently, the video game launcher Steam had [a shell script
 bug](https://www.theregister.com/2015/01/17/scary_code_of_the_week_steam_cleans_linux_pcs/)
 that destroyed data in rare cases.
 
-### `#!` lines and how the kernel interprets them
+## `#!` lines and how the kernel interprets them
 As we mentioned earlier, file extensions have little meaning on a Linux system.
 Linux reads, writes, and executes files of every extension identically;
 extensions, when present, only offer a hint to human readers about what's
@@ -2364,17 +2377,17 @@ You may be wondering: but what do Bash and Python do about the line with the
 funny `#` character? Why isn't that a syntax error? For both of those
 languages, `#` denotes the beginning of a comment, which is ignored.
 
-### Shellcheck
+## Shellcheck
 You may find [Shellcheck](https://www.shellcheck.net/) helpful. It statically
 analyzes your shell scripts for potential bugs and lets you know about the
 problems. We will talk more about tools like this in the fourth module,
 Correctness.
 
-## Lecture 5
+# Lecture 5
 
 **Note: these lecture notes are incomplete and will be updated soon**
 
-### The POSIX programming interface
+## The POSIX programming interface
 
 So far in this module, we've shown you how to use the POSIX shell and utilities
 to work with files, build pipelines, and run programs from the command line. As
@@ -2400,7 +2413,7 @@ programs running on top of that kernel.
 
 [posix-si]: https://pubs.opengroup.org/onlinepubs/9699919799.2018edition/functions/V2_chap02.html#tag_15_01
 
-### What is a kernel?
+## What is a kernel?
 
 An *operating system kernel* (*kernel* for short) is a piece of software,
 generally written in C, that's loaded into memory at all times your computer is
@@ -2454,7 +2467,7 @@ operation. And the list doesn't stop there.
     ranges off from userspace programs in exactly the same way it walls off
     forbidden areas of RAM.
 
-### System calls
+## System calls
 
 A program asks the kernel to do these things by making a system call. The exact
 mechanism by which a syscall happens depends on your computer's processor
@@ -2612,7 +2625,7 @@ example, what if the filename the user provided does not correspond to a real
 file? Or you don't have permission to read it? You can read the manual pages to
 learn how these functions surface errors and how to handle them.
 
-### The kernel's responsibilities
+## The kernel's responsibilities
 
 * files
 * directories
@@ -2622,12 +2635,12 @@ learn how these functions surface errors and how to handle them.
 * processes
 * /dev/ as filesystem
 
-### How a program interacts with the operating system
+## How a program interacts with the operating system
 
 * syscalls
 * special file accesses (a la /dev/)
 
-### Viewing syscalls with `strace`
+## Viewing syscalls with `strace`
 
 It's all well and good to speak in abstract about what system calls do, but
 it's another to see them happen right in front of you. Let's take another look
@@ -2665,8 +2678,8 @@ actually happening. You'll see a lot of output that is not immediately relevant
 to the code above, but occurs when the program is starting up. We have omitted
 that from the snippet:
 
-```
-cedar% strace ./cat somefile
+```console
+$ strace ./cat somefile
 <other syscalls from process start>
 openat(AT_FDCWD, "somefile", O_RDONLY)  = 3
 read(3, "hello\nworld\nfoo\nbar\n", 100) = 20
@@ -2695,15 +2708,15 @@ article](https://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.ht
 about how slow it can get. For large production workloads, you may want to
 reach for a newer tool like bpftrace.
 
-## Lecture 6
+# Lecture 6
 
 **Note: these lecture notes are incomplete and will be updated soon**
 
-### Pádraig Brady
+## Pádraig Brady
 
 Slides [here](https://www.pixelbeat.org/talks/unix_history/coreutils-history.pdf)
 
-### Where can you find command lines?
+## Where can you find command lines?
 
 * General-purpose operating systems
   * Shells for POSIX operating systems
@@ -2726,7 +2739,7 @@ limited to running individual commands with arguments.
 Skills won't transfer to any of these, but it's a good bet that typing "help"
 at an unfamiliar command line will give you some information.
 
-### Alternative shells on Linux
+## Alternative shells on Linux
 
 Z shell (zsh) is another shell, similar to Bash. It is almost 100% compatible
 syntax with Bash and differs mostly in configuration for interactive features.
@@ -2745,7 +2758,7 @@ PowerShell, originally designed for Windows, also runs on Linux and macOS. It
 is a completely different language and works not just on text, but on .NET (a
 runtime by MS) objects.
 
-### Why can these shells run on Linux, BSD, and macOS but not on Windows?
+## Why can these shells run on Linux, BSD, and macOS but not on Windows?
 
 With the exception of PowerShell, these shells will not easily run on Windows.
 It's not because Windows is fundamentally deficient as an operating system, or
@@ -2775,7 +2788,7 @@ Interface (ABI), Cygwin provides a POSIX-compatible *source-level* API.
 WSL1 and WSL2 do this differently; WSL1 provides a shim layer while WSL2 runs a
 real lightweight Linux VM.
 
-### How does using the shell on macOS differ from Linux?
+## How does using the shell on macOS differ from Linux?
 
 Mainly, different directory structure. Directory layout is mostly not specified
 by POSIX and can be vastly different between different OSes.
@@ -2785,7 +2798,7 @@ MacOS puts everything in directories with much friendlier names, like
 in `~/Library/Application Support/` (per-user) or `/Library/Application
 Support/` (system-wide).
 
-### The Windows command line (DOS shell, PowerShell) and graphical shell
+## The Windows command line (DOS shell, PowerShell) and graphical shell
 
 Take a look at cmd.exe and [Windows
 commands](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands).
@@ -2805,7 +2818,7 @@ Documents
 PS> 
 ```
 
-### Is there anything about the Windows kernel that makes it less suited to a command line interface? Anything about the Linux kernel that makes it less suited to a graphical interface?
+## Is there anything about the Windows kernel that makes it less suited to a command line interface? Anything about the Linux kernel that makes it less suited to a graphical interface?
 
 No! That’s just how the userspaces evolved. Windows has evolved from DOS, which
 was entirely command-line based. Only "recently" did it get a graphical
@@ -2813,13 +2826,13 @@ interface (3.1). And even today, power users use PowerShell reasonably heavily
 on Windows, as .NET objects are first-class citizens and .NET is
 well-integrated into Windows.
 
-### Running POSIX environments on Windows with Cygwin and WSL
+## Running POSIX environments on Windows with Cygwin and WSL
 
 As we briefly mentioned above, it's possible to run software that expects to be
 operated in a POSIX environment on Windows. It requires an intermediate layer,
 either at compile time (Cygwin) or at runtime (WSL), but it can be done.
 
-### Running Windows apps on Linux and macOS with WINE
+## Running Windows apps on Linux and macOS with WINE
 
 Given the broad interest for programs that target POSIX on Windows, you might
 wonder if there is a demand (and solution) for doing the reverse. There is, and
@@ -2828,7 +2841,7 @@ calls into POSIX calls. Unlike WSL1, though, WINE is a fully userspace
 compatibility layer This allows you to run full Windows applications, including
 graphical applications, unmodified, on Linux and macOS.
 
-### Lesson: APIs are APIs
+## Lesson: APIs are APIs
 
 It does not matter what system you are running as long as the system provides
 the expected set of APIs. This is the beauty of implementation vs interface;

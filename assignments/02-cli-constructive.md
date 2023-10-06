@@ -1,4 +1,5 @@
 ---
+layout: spec
 ---
 
 # Homework 2: CLI, Constructive
@@ -33,7 +34,7 @@ tree, the `.snapshot/` directory only shows up in listings (`ls -a`) in your
 top-level home directory. However, it is also present in every subdirectory if
 you specifically ask for it:
 
-```
+```console
 $ ls -a Documents/  # No .snapshot/ listed!
 .  ..  do-not-read  top-secret-file
 $ ls Documents/.snapshot/
@@ -175,11 +176,13 @@ comp50isdt cli-constructive whats-new.sh myls.c`. You must be logged into the
 homework server to use Provide.
 
 ## Just for fun...
+<div class="primer-spec-callout warning" markdown="1">
 **At this point, you are done with the assignment. You need not read anything
 past this point if you don't want to.** However, if you're looking for a
 challenge, or if you want to learn some tricks involving syscalls and shared
 libraries in Linux, feel free to take a stab at the following. Expect to do a
 lot of Googling here, as we have not taken care to define every term we use.
+</div>
 
 ### Step 1: use `LD_PRELOAD` to intercept `opendir`
 `opendir()` and `readdir()` are not themselves syscalls; instead, they're
