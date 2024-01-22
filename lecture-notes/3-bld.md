@@ -393,12 +393,32 @@ log.o: log.c log.h
 
 Because `LOG_TARGET` is recursively expanded, it is expanded at each use site
 in the Makefile: in `main`, in `main.o`, and in `log.o`. Every time it is
-expanded, the variable references inside it see the automatic variables local
-to that rule.
+expanded, the variable references inside it see the automatic variables (those
+funky-looking variables) local to that rule.
 
 Speaking of automatic variables...
 
 ### Automatic variables
+
+Similar to how C gives you `__FILE__` and `__LINE__` and `__func__`, Make also
+defines some variables for you within rules. These special variables are called
+*automatic variables* and help refer to different parts of the rule so you, the
+programmer, don't repeat yourself too much.
+
+There are many automatic variables, particuarly in the GNU implementation of
+Make, but you will probably see these three the most: `$@`, `$^`, and `$<`. In
+order:
+
+* `$@` refers to the name of the target. In our example above, this is used in
+  the `gcc` invocations to provide an output filename for the `-o` option. In
+  the `main` rule, `$@` expands to `main`, in the `main.o` rule it expands to
+  `main.o`, etc.
+* `$^` refers to the names of all of the prerequisites, separated by spaces. In
+  the `main` rule, for example, it refers to `main.o log.o`. It is used here to
+  provide the names of all of the object files to GCC so they can be linked
+  together. It is *not* used in the `.o` rules because generally you do not
+  pass `.h` files to the compiler (they are `include`d).
+* `$<` <!-- TODO -->
 
 ### Simple vs recursive expansion
 ### Functions
@@ -412,6 +432,7 @@ Speaking of automatic variables...
 ### Silencing commands
 ### ?= and += assignment
 ### Variables, overrides, and the environment
+### "multi-target" rules
 ### Implicit variables
 ### .DEFAULT_GOAL
 
