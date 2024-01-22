@@ -205,8 +205,8 @@ In order to instruct Make to rebuild `mybinary` when `main.c` is modified, add
 
 ```make
 mybinary: main.c
-    gcc main.c
-    mv a.out mybinary
+	gcc main.c
+	mv a.out mybinary
 ```
 
 Now Make will look at the <dfn><abbr title="modification time">m-time</abbr></dfn>
