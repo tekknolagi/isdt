@@ -14,7 +14,10 @@ the process of *building* code---that is, converting it into a form that can be
 run and/or distributed[^build-process]. You can think of build systems as
 supercharged shell scripts: like shell scripts, their purpose is to encapsulate
 a complex and intricate sequence of steps within a single command that's easy
-to remember and is guaranteed to produce the same result each time it's run.
+to remember and is guaranteed to produce the same result each time it's
+run[^reproducible-builds].
+
+[^reproducible-builds]: <!-- TODO -->
 
 Build systems differ from the shell in a key conceptual way, though: when you
 run a script, you tell the shell exactly what commands to run and in what
@@ -300,6 +303,8 @@ $
 
 ### What happens when you type `make`
 
+two phases <!-- TODO -->
+
 * Make reads `Makefile`
 * determines target(s) to execute
 * builds DAG/topo sort
@@ -323,3 +328,67 @@ Make has been around a long time and its performance and correctness are
 well understood. Its interface is well understood, too; people who know Make
 are at home in most other projects that use Make. Not so for a custom shell
 script.
+
+### Variables
+### Automatic variables
+
+### Simple vs recursive expansion
+### Functions
+
+### Make variables and functions are textual
+
+## Lecture 3
+
+### Pattern rules
+### Implicit rules
+### Silencing commands
+### ?= and += assignment
+### Variables, overrides, and the environment
+### Implicit variables
+### .DEFAULT_GOAL
+
+## Lecture 4
+
+### Compilation
+### Linking
+### Loading
+
+### Compiling everything does not scale
+### Split compilation and linking
+
+### Large projects with make
+#### Recursive make
+#### include directive
+
+## Lecture 5
+
+### Out-of-tree builds
+### Reproducible builds
+### Limitations of Make
+### Types of build system
+### Build system vs build runner vs task runner
+### Language-agnostic
+#### Make
+#### Ninja
+#### Rake
+#### Tup
+
+## Lecture 6
+
+### Multi-language
+#### GNU autotools
+#### CMake
+#### Meson
+#### Bazel, Buck
+### Language-specific
+#### Pip
+#### Setuptools/distutils
+#### Poetry
+#### Cargo
+### Web build systems
+### Build systems vs package managers
+### How to choose
+### Hermeticity
+### Hermetic environments
+### Entire OS images
+### Parting words
