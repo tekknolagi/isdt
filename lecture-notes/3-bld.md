@@ -358,7 +358,7 @@ log.o: log.c log.h
   gcc -c log.c
 .PHONY: clean
 clean:
-    rm -rf *.o $(EXE)
+  rm -rf *.o $(EXE)
 ```
 
 (While variables can normally have any name, the convention is to use
@@ -369,10 +369,34 @@ the right hand side happen when the variable is *used* (in the *target-update*
 phase for recipe usage). This structure allows complex templates to be stored
 in a variable and used with many different values.
 
-<!-- TODO: example of recursive expansion -->
-
 Expansions of both kinds of variables can occur anywhere, and use `$(VAR)`
 syntax.
+
+In the below example, we have a mix of simply and recursively expanded
+variables. `LOG_TARGET` is recursively expanded (note the `=`) and `CFLAGS` is
+simply expanded (note the `:=`).
+
+```make
+LOG_TARGET = @echo "Current target: $@" ; echo "Prerequisites: $^"
+CFLAGS := -Wall
+CFLAGS := $(CFLAGS) -Werror
+main: main.o log.o
+  $(LOG_TARGET)
+  gcc $(CFLAGS) $^ -o $@
+main.o: main.c log.h
+  $(LOG_TARGET)
+  gcc $(CFLAGS) -c $< -o $@
+log.o: log.c log.h
+  $(LOG_TARGET)
+  gcc $(CFLAGS) -c $< -o $@
+```
+
+Because `LOG_TARGET` is recursively expanded, it is expanded at each use site
+in the Makefile: in `main`, in `main.o`, and in `log.o`. Every time it is
+expanded, the variable references inside it see the automatic variables local
+to that rule.
+
+Speaking of automatic variables...
 
 ### Automatic variables
 
