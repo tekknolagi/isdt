@@ -330,6 +330,50 @@ are at home in most other projects that use Make. Not so for a custom shell
 script.
 
 ### Variables
+
+Up until now we have written rules and filenames and commands as constants in
+the Makefile. This means that if you ever had to reference a file `foo.c` more
+than once in the Makefile, you would have to copy around the text. Fortunately,
+like other programming languages, Make provides variables.
+
+User-defined variables come in two forms in Make: *simply expanded* variables
+use `NAME := val` syntax and *recursively expanded* variables use `NAME = val`
+syntax. You will likely not want to use recursively expanded variables much, if
+at all, as they have different semantics than in other programming languages:
+
+**Simply expanded** means that variable references and function calls on the
+right hand side happen when the variable is *defined* (in the *read-in* phase).
+
+In the below example, we have a simply expanded variable `EXE` that can be used
+throughout the Makefile to refer to the desired executable name. This allows
+for a single point of truth.
+
+```make
+EXE := main
+$(EXE): main.o log.o
+  gcc main.o log.o -o $(EXE)
+main.o: main.c log.h
+  gcc -c main.c
+log.o: log.c log.h
+  gcc -c log.c
+.PHONY: clean
+clean:
+    rm -rf *.o $(EXE)
+```
+
+(While variables can normally have any name, the convention is to use
+upper-case characters.)
+
+**Recursively expanded** means that variable references and function calls on
+the right hand side happen when the variable is *used* (in the *target-update*
+phase for recipe usage). This structure allows complex templates to be stored
+in a variable and used with many different values.
+
+<!-- TODO: example of recursive expansion -->
+
+Expansions of both kinds of variables can occur anywhere, and use `$(VAR)`
+syntax.
+
 ### Automatic variables
 
 ### Simple vs recursive expansion
