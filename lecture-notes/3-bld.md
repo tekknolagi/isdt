@@ -149,10 +149,10 @@ the build process[^phony]. In the example below, a Makefile has a target called
 [^phony]: Not always; sometimes there are "phony" targets that are names for
     batches of recipes and do not produce files.
 
-```
+```make
 mybinary:
-    gcc main.c
-    mv a.out mybinary
+	gcc main.c
+	mv a.out mybinary
 ```
 
 It also has *recipes* to build that target: `gcc main.c`. The recipes section
@@ -172,10 +172,10 @@ commands might be necessary.
 
 Let's look again at the Makefile from above:
 
-```
+```make
 mybinary:
-    gcc main.c
-    mv a.out mybinary
+	gcc main.c
+	mv a.out mybinary
 ```
 
 We can run this once with `make mybinary` and then we will have a `mybinary` on
@@ -183,7 +183,7 @@ disk. During the course of development, though, we will likely make a change to
 `main.c` and try to rebuild with `make mybinary`. Make will give an unhelpful
 response and do nothing:
 
-```
+```console
 $ make mybinary
 gcc main.c
 mv a.out mybinary
@@ -203,7 +203,7 @@ the programmer, have to specify the relationship manually.
 In order to instruct Make to rebuild `mybinary` when `main.c` is modified, add
 `main.c` as a *dependency* of `mybinary`:
 
-```
+```make
 mybinary: main.c
     gcc main.c
     mv a.out mybinary
@@ -225,7 +225,7 @@ For languages like C that have a notion of split compilation, Make is even more
 useful. If you have, say, 10 C files that all need to be compiled together, it
 is possible to run:
 
-```
+```console
 $ gcc file0.c file1.c ... file9.c -o mybinary
 $
 ```
@@ -244,7 +244,7 @@ file* and then link those together:
     `include` mechanism is a textual copy&amp;paste process early in the
     compilation pipeline.
 
-```
+```console
 $ gcc -c file0.c file1.c ... file9.c
 $ gcc file0.o file1.o ... file9.o -o mybinary
 $
@@ -256,18 +256,18 @@ linking step, which together should be much faster than recompiling everything.
 It's hard to keep track of this manually, so we can write Make recipes to
 handle this for us:
 
-```
+```make
 mybinary: file0.o file1.o file2.o  # and so on
-    gcc file0.o file1.o file2.o -o mybinary
+	gcc file0.o file1.o file2.o -o mybinary
 
 file0.o: file0.c
-    gcc -c file0.c
+	gcc -c file0.c
 
 file1.o: file1.c
-    gcc -c file1.c
+	gcc -c file1.c
 
 file2.o: file2.c
-    gcc -c file2.c
+	gcc -c file2.c
 ```
 
 Now it is possible to modify any one C file and have the binary rebuilt
@@ -292,7 +292,7 @@ A DAG, just like Git uses!
 └───────┘└───────┘└───────┘
 ```
 
-```
+```console
 $ cat Makefile
 mybinary: mybinary
 	touch mybinary
