@@ -351,14 +351,14 @@ for a single point of truth.
 ```make
 EXE := main
 $(EXE): main.o log.o
-  gcc main.o log.o -o $(EXE)
+	gcc main.o log.o -o $(EXE)
 main.o: main.c log.h
-  gcc -c main.c
+	gcc -c main.c
 log.o: log.c log.h
-  gcc -c log.c
+	gcc -c log.c
 .PHONY: clean
 clean:
-  rm -rf *.o $(EXE)
+	rm -rf *.o $(EXE)
 ```
 
 (While variables can normally have any name, the convention is to use
@@ -377,18 +377,18 @@ variables. `LOG_TARGET` is recursively expanded (note the `=`) and `CFLAGS` is
 simply expanded (note the `:=`).
 
 ```make
-LOG_TARGET = @echo "Current target: $@" ; echo "Prerequisites: $^"
+LOG_TARGET = echo "Current target: $@" ; echo "Prerequisites: $^"
 CFLAGS := -Wall
 CFLAGS := $(CFLAGS) -Werror
 main: main.o log.o
-  $(LOG_TARGET)
-  gcc $(CFLAGS) $^ -o $@
+	$(LOG_TARGET)
+	gcc $(CFLAGS) $^ -o $@
 main.o: main.c log.h
-  $(LOG_TARGET)
-  gcc $(CFLAGS) -c $< -o $@
+	$(LOG_TARGET)
+	gcc $(CFLAGS) -c $< -o $@
 log.o: log.c log.h
-  $(LOG_TARGET)
-  gcc $(CFLAGS) -c $< -o $@
+	$(LOG_TARGET)
+	gcc $(CFLAGS) -c $< -o $@
 ```
 
 Because `LOG_TARGET` is recursively expanded, it is expanded at each use site
