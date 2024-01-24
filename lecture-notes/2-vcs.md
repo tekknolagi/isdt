@@ -519,25 +519,46 @@ single unit and so they might as well have just been one to begin with.
     Ensuring each commit stands alone is also known as "keeping the `main`
     branch green," and we'll talk about it more in the final module.
 
-Conversely, if you get in the habit of bundling multiple independent changes into a single commit, Git also becomes less useful. Subcommands such as `git revert`---which undoes a commit's changes---work best when commits are as granular as possible. In fact, Git makes it almost impossible to work with historical changes more granular than a commit.
+Conversely, if you get in the habit of bundling multiple independent changes
+into a single commit, Git also becomes less useful. Subcommands such as `git
+revert`---which undoes a commit's changes---work best when commits are as
+granular as possible. In fact, Git makes it almost impossible to work with
+historical changes more granular than a commit.
 
-As you gain experience with Git, you'll learn how much granularity works best for you---everyone's workflow is different, and one developer's sweet spot might feel frustratingly verbose to another. Even for a single developer, the sweet spot often shifts as a project matures: early commits that add lots of code are almost universally less granular than later ones that fix bugs or maintain existing code. Our only goal is to ensure that your preferences guide Git and not the other way around.
+As you gain experience with Git, you'll learn how much granularity works best
+for you---everyone's workflow is different, and one developer's sweet spot
+might feel frustratingly verbose to another. Even for a single developer, the
+sweet spot often shifts as a project matures: early commits that add lots of
+code are almost universally less granular than later ones that fix bugs or
+maintain existing code. Our only goal is to ensure that your preferences guide
+Git and not the other way around.
 
-Secondly, good commits explain the changes they contain. This may sound simple---and self-contained commits certainly make it simpler---but even so, there's an art to writing good commit messages that can take some time to master.
+Secondly, good commits explain the changes they contain. This may sound
+simple---and self-contained commits certainly make it simpler---but even so,
+there's an art to writing good commit messages that can take some time to
+master.
 
-A bad commit message might clearly *describe* exactly what the commit does and yet fail to *explain* the commit. The difference between the two is subtle but important: it's the difference between
+A bad commit message might clearly *describe* exactly what the commit does and
+yet fail to *explain* the commit. The difference between the two is subtle but
+important: it's the difference between
 
 > Use `.equals()` instead of `==` for strings
 >
-> Replace uses of `a == b`, when a and b are strings, with `a.equals(b)` in modules foo, bar, and baz.
+> Replace uses of `a == b`, when a and b are strings, with `a.equals(b)` in
+> modules foo, bar, and baz.
 
 and
 
 > Fix false-negative string comparisons
 >
-> It turns out that `==` in Java returns false if the two sides aren't the same object, even if they represent the same thing. This has been causing certain comparisons of identical strings to fail, resulting in intermittent failed logins attempts as well as other issues. Fix the problem by calling `.equals()` instead.
+> It turns out that `==` in Java compares pointers instead of object contents.
+> This has been causing some strings to compare unequal to other strings with
+> identical contents, resulting in intermittent failed logins attempts as well
+> as other issues. Fix the problem by calling `.equals()` instead.
 
-Even though the second message says less about *what* the commit does, it says far more about *why*. Messages like that make it far easier for future maintainers (you included!) to get into your head.
+Even though the second message says less about *what* the commit does, it says
+far more about *why*. Messages like that make it far easier for future
+maintainers (you included!) to get into your head.
 
 TODO: New example with the commands used last lecture, but leave out the
 `.git/` stuff and instead show multiple iterations of `git add` and `git
@@ -557,7 +578,8 @@ guidelines][kernel-commits], since that project is where Git originated.
 
 [kernel-commits]: TODO
 
-Firstly, each commit begins with a single line summarizing its contents in an imperative style (e.g. "Fix xyz" instead of "Fixed xyz"). Secondly, ...
+Firstly, each commit begins with a single line summarizing its contents in an
+imperative style (e.g. "Fix xyz" instead of "Fixed xyz"). Secondly, ...
 
 TODO: Can copy some of this from here:
   https://piazza.com/class/ksgzikxm4082z8?cid=123
