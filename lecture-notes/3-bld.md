@@ -687,6 +687,8 @@ In short, environment variables (e.g. `export CFLAGS=-g ; make hello`):
 
 #### Variable overrides
 
+<!-- TODO -->
+
 In short, variable overrides (e.g. `make CFLAGS=-g hello`):
 
 * *Not* an environment variable: value passed as an argument to `make` directly
