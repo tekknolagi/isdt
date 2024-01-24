@@ -12,3 +12,4 @@ exclude:
   - LICENSE
   - Gemfile
   - Gemfile.lock
+  - vendor

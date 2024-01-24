@@ -483,7 +483,7 @@ empty:=
 space:= $(empty) $(empty)
 foo:= a b c
 bar:= $(subst $(space),$(comma),$(foo))
-# bar is now ‘a,b,c’.
+# bar is now 'a,b,c'.
 ```
 
 We will leave you to marinate with that one.
