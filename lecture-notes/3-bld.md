@@ -588,7 +588,41 @@ So they may not be the best for you and your team.
 
 ### Silencing commands
 
-Build output can be noisy.
+Build output can be noisy. When you run a command anywhere in a Makefile, Make
+prints the command (not its output---the command itself) before running it.
+This can be useful for debugging, but sometimes the command's only purpose is
+to print something else (e.g. `echo`). In this case, it's not helpful. To
+prevent the command from being printed, preface its line in your recipe with `@`.
+
+Without silencing:
+
+```make
+.PHONY: mytarget
+mytarget:
+	echo "hello"
+```
+
+```console
+$ make mytarget
+echo "hello"
+hello
+$ 
+```
+
+With silencing:
+
+```make
+$ cat Makefile
+.PHONY: mytarget
+mytarget:
+	@echo "hello"
+```
+
+```console
+$ make mytarget
+hello
+$ 
+```
 
 ### ?= and += assignment
 ### Variables, overrides, and the environment
