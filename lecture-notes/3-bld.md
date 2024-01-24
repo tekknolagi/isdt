@@ -418,12 +418,75 @@ order:
   provide the names of all of the object files to GCC so they can be linked
   together. It is *not* used in the `.o` rules because generally you do not
   pass `.h` files to the compiler (they are `include`d).
-* `$<` <!-- TODO -->
+* `$<` refers to the name of the first prerequisite. You can infer from this
+  that generally people write C Makefiles in a way that makes this variable
+  useful:
+	```make
+	main.o: main.c main.h
+		gcc -c $<
+	```
+  Both `main.c` and `main.h` are prerequisites for `main.o`, but because
+  `main.c` is listed as the first prerequisite, it can be referred to by `$<`
+  in the build recipe.
 
-### Simple vs recursive expansion
+See [the GNU Make
+documentation](https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html)
+for more automatic variables.
+
 ### Functions
 
+Make has [many built-in
+*functions*](https://www.gnu.org/software/make/manual/html_node/index.html#toc-Functions-for-Transforming-Text),
+which allow you to process text directly from within Make.
+
+Here is a little snippet that showcases `word`, `subst`, `patsubst`, and
+`filter`:
+
+```make
+# world
+x := $(word 2,hello world)
+# hi world
+x := $(subst hello,hi,hello world)
+# src/foo.c src/bar.c
+objs := bld/foo.o bld/bar.o
+x := $(patsubst bld/%.o,src/%.c,$(objs))
+# foo.c bar.c
+srcs := foo.c bar.c bar.h
+x := $(filter %.c,$(srcs))
+```
+
+You'll usually use functions when specifying variables, targets, or
+prerequisites: inside a recipe itself, it's almost always better to use the
+shell to do any text processing you need. <!-- TODO: add a footnote explaining
+why -->
+
+Function invocations take one or more comma-separated arguments, which is what
+distinguishes them from variable expansions. They otherwise have identical
+`$()` syntax.
+
+Functions are are (in general) evaluated the same way as variables are
+expanded---at the time they're used in a rule or a `:=` assignment.
+
 ### Make variables and functions are textual
+
+From reading about variable expansions and function expansions and the various
+phases of everything, you may have gotten the feeling that, similar to the C
+preprocessor and shell, everything is textual. You would be correct.
+
+Like the shell, Make has no concept of data types. Everything is text, and
+Make's minimal escaping and tolerance for spaces can lead to some pretty odd
+constructs. The following is taken verbatim from the GNU Make manual:
+
+```make
+comma:= ,
+empty:=
+space:= $(empty) $(empty)
+foo:= a b c
+bar:= $(subst $(space),$(comma),$(foo))
+# bar is now ‘a,b,c’.
+```
+
+We will leave you to marinate with that one.
 
 ## Lecture 3
 
