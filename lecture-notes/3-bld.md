@@ -652,6 +652,48 @@ customize the execution of the Makefile without editing it. Speaking of
 which...
 
 ### Variables, overrides, and the environment
+
+#### Environment variables
+
+You learned about environment variables in the command-line module. They are a
+great way to pass around snippets of data between programs. As such, they are
+commonly used in Make. Make even *imports all environment variables* as Make
+variables. For example, if you have the following Makefile:
+
+```make
+.PHONY: all
+VAR:=$(HELLO)
+all:
+	echo $(VAR)
+```
+
+And then define an environment variable `HELLO` while running Make:
+
+```console
+$ HELLO=world make
+echo world
+world
+$
+```
+
+you can use `HELLO` as a Make variable.
+
+In short, environment variables (e.g. `export CFLAGS=-g ; make hello`):
+
+* Tells the shell to run make with `CFLAGS` set in the environment
+* Make imports all environment variables as Make variables
+* However, assignments in the Makefile override environment variables! `=` and
+  `:=` replace them entirely, while `+=` appends to them
+
+#### Variable overrides
+
+In short, variable overrides (e.g. `make CFLAGS=-g hello`):
+
+* *Not* an environment variable: value passed as an argument to `make` directly
+* Sets the given Make variable to the given value
+* Causes *all* assignments in Makefile to that variable (`=`, `:=`, and `+=`)
+  to be ignored
+
 ### "multi-target" rules
 ### Implicit variables
 ### .DEFAULT_GOAL
