@@ -530,6 +530,20 @@ Because they are built-in, they support limited customization. If the implicit
 rule makes use of variables (such as `CC`, `CFLAGS`, and `LDFLAGS`), then you
 can customize execution by defining those variables.
 
+```console
+$ cat Makefile
+CFLAGS := -g
+hello: hello.o world.o
+$ make hello
+cc -g -c -o hello.o hello.c  # from implicit rule for compiling C
+cc -g -c -o world.o world.c  # from implicit rule for compiling C
+cc hello.o world.o -o hello  # from implicit rule for linking C
+rm -f hello.o  # by default, Make doesn't keep intermediate
+               # files between two pattern rules
+rm -f world.o
+$ 
+```
+
 Dependencies can be altered by writing a rule definition with no recipe. For
 example, the implicit `.c` to `.o` rule only has the `.c` file as a dependency:
 
@@ -561,7 +575,21 @@ Because `hello` shares a stem with `hello.o`, the rule will match. Also note
 that all of the other `.o` files are not the target of any rule! They use the
 implicit `%.o: %.c` pattern rule.
 
+#### Pitfalls
+
+It's not all fun and rainbows. Implicit rules are convenient, and you should
+use them if you want, but remember the following:
+
+* Header files not automatic prerequisites (but you can add them yourself, as
+  above)
+* Implicit rules are not explicit, which some people and projects value
+
+So they may not be the best for you and your team.
+
 ### Silencing commands
+
+Build output can be noisy.
+
 ### ?= and += assignment
 ### Variables, overrides, and the environment
 ### "multi-target" rules
