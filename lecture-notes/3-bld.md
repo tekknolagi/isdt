@@ -490,7 +490,31 @@ We will leave you to marinate with that one.
 
 ## Lecture 3
 
+You've learned about variables and some built-in functions. With just that, you
+can write quite a reasonable Makefile for a little project. But you will soon
+find yourself wanting features like the following.
+
 ### Pattern rules
+
+Similar to the patterns you saw in `patsubst`, rules can have patterns. To
+specify a pattern rule, use `%` somewhere in the target name. For example:
+
+```make
+%.o: %.c %.h
+	gcc -c $< -o $@
+```
+
+In this rule, the `%` matches any (non-empty) text before `.o` and is called
+the *stem*. This means it will match any target like `a.o`, `foo.o`, etc. When
+it matches, Make substitutes the stem (`a` or `foo`) in the `%` in the
+prerequisites as well.
+
+<!-- TODO(tom): clarify whether multi-target pattern rules are different from
+normal "multi-target" rules. they seem different?? -->
+
+In these pattern rules, automatic variables do not only remain convenient; they
+are also a necessity.
+
 ### Implicit rules
 ### Silencing commands
 ### ?= and += assignment
