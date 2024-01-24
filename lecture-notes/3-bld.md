@@ -281,9 +281,9 @@ about a solution to this repetition later!
 A DAG, just like Git uses!
 
 ```
-┌───────────────────┐      
-│mybinary           │      
-└┬────────┬────────┬┘      
+┌───────────────────┐
+│mybinary           │
+└┬────────┬────────┬┘
 ┌▽──────┐┌▽──────┐┌▽──────┐
 │file0.o││file1.o││file2.o│
 └┬──────┘└┬──────┘└┬──────┘
@@ -543,7 +543,7 @@ cc hello.o world.o -o hello  # from implicit rule for linking C
 rm -f hello.o  # by default, Make doesn't keep intermediate
                # files between two pattern rules
 rm -f world.o
-$ 
+$
 ```
 
 Dependencies can be altered by writing a rule definition with no recipe. For
@@ -609,7 +609,7 @@ mytarget:
 $ make mytarget
 echo "hello"
 hello
-$ 
+$
 ```
 
 With silencing:
@@ -624,7 +624,7 @@ mytarget:
 ```console
 $ make mytarget
 hello
-$ 
+$
 ```
 
 ### `?=` and `+=` assignment
