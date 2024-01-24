@@ -341,6 +341,8 @@ use `NAME := val` syntax and *recursively expanded* variables use `NAME = val`
 syntax. You will likely not want to use recursively expanded variables much, if
 at all, as they have different semantics than in other programming languages:
 
+<!-- TODO(max): What about ::= ??? -->
+
 **Simply expanded** means that variable references and function calls on the
 right hand side happen when the variable is *defined* (in the *read-in* phase).
 
@@ -626,6 +628,29 @@ $
 ```
 
 ### ?= and += assignment
+
+We already saw `=` (recursively expanded) and `:=` (simply expanded)
+assignments for variables. Now we are going to look at `?=` and `+=`.
+
+**`?=` assignment**:
+
+* Only sets the variable if it hasn't been defined yet
+* Doesn't override variables that have been defined, *even if they're empty*
+* Is always recursively-expanded
+
+**`+=` assignment**:
+
+* Appends the given text to the end of an existing variable
+* If not yet defined, is recursively-expanded; otherwise, is expanded as
+  specified by the previous definition
+
+The `+=` assignment is useful for building up lists of things in a Makefile.
+That's pretty much only what we've seen it used for.
+
+The `?=` assignment is excellent for allowing the person running `make` to
+customize the execution of the Makefile without editing it. Speaking of
+which...
+
 ### Variables, overrides, and the environment
 ### "multi-target" rules
 ### Implicit variables
