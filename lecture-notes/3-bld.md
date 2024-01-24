@@ -516,6 +516,51 @@ In these pattern rules, automatic variables do not only remain convenient; they
 are also a necessity.
 
 ### Implicit rules
+
+If you have ever had `foo.c` sitting around and no Makefile yet, but
+accidentally run `make`, you may have noticed Make... still do something? This
+is because of *implicit rules*. These "implicit rules" are automatically
+present any time you run `make` even if you don't have a Makefile at all!
+
+Make already knows how to compile C, C++, Fortran, and many other languages:
+inside Make are built-in pattern rules for common file extensions (e.g. `.c`,
+`.cpp`, `.o`).
+
+Because they are built-in, they support limited customization. If the implicit
+rule makes use of variables (such as `CC`, `CFLAGS`, and `LDFLAGS`), then you
+can customize execution by defining those variables.
+
+Dependencies can be altered by writing a rule definition with no recipe. For
+example, the implicit `.c` to `.o` rule only has the `.c` file as a dependency:
+
+```make
+%.o: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c
+```
+
+If you have any header files that are dependencies for a given object file, you
+probably want them included. To include the dependencies you want without
+rewriting the whole thing, skip the recipe portion of the rule; the implicit
+recipe will be used.
+
+```make
+hello.o: hello.c world.h
+	# still going to do $(CC) etc
+```
+
+Note that if you are, for example, adding more `.o` dependencies to a big C
+binary and still planning on using the implicit rule, you must make sure that
+the target matches at least one of the `.o` dependencies or the rule won't
+match:
+
+```make
+hello: hello.o world.o foo.o bar.o
+```
+
+Because `hello` shares a stem with `hello.o`, the rule will match. Also note
+that all of the other `.o` files are not the target of any rule! They use the
+implicit `%.o: %.c` pattern rule.
+
 ### Silencing commands
 ### ?= and += assignment
 ### Variables, overrides, and the environment
