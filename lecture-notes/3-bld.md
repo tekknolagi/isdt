@@ -303,7 +303,7 @@ $
 
 ### What happens when you type `make`
 
-two phases <!-- TODO -->
+two phases: read-in and target-update <!-- TODO -->
 
 * Make reads `Makefile`
 * determines target(s) to execute
