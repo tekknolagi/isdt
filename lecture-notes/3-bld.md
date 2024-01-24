@@ -627,7 +627,7 @@ hello
 $ 
 ```
 
-### ?= and += assignment
+### `?=` and `+=` assignment
 
 We already saw `=` (recursively expanded) and `:=` (simply expanded)
 assignments for variables. Now we are going to look at `?=` and `+=`.
