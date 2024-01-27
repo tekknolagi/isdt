@@ -771,6 +771,22 @@ wackycc
 $
 ```
 
+or by an assignment:
+
+```make
+.PHONY: all
+CC:=rainbowcc
+all:
+	echo $(CC)
+```
+
+```console
+$ make
+echo rainbowcc
+rainbowcc
+$
+```
+
 ### "multi-target" rules
 ### .DEFAULT_GOAL
 
