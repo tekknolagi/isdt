@@ -361,7 +361,7 @@ area---tracked by Git, but not yet associated with a commit. Each commit you
 make records the contents of the staging area, so the next commit will include
 your file.
 
-## Creating a commit
+### Creating a commit
 To make a commit, run `git commit`. By default, `git commit` opens a text
 editor for you to write your commit message and waits until you save and close
 the message to make the commit. (The specific editor used depends on the
@@ -571,11 +571,11 @@ are the basics of that style:
 1. Every commit message begins with a title on its own line, followed optionally
    by a blank line and a longer description. This expectation is baked into Git
    itself, and as such nearly everyone agrees on it.
-2. The title is 50 characters or less and written in an imperative style (e.g.
+1. The title is 50 characters or less and written in an imperative style (e.g.
    "Fix foobar" instead of "Fixed foobar" or just "Foobar"). The length limit is
    not typically enforced strictly, but it helps keep titles readable at a
    glance.
-3. The body is line-wrapped at 72 characters and organized into paragraphs.
+1. The body is line-wrapped at 72 characters and organized into paragraphs.
    References to other commits in the body take the form `commit 123456789abc
    ("Fix foobar")`, where `123456789abc` is the first 12 characters of the other
    commit's hash and "Fix foobar" is its title.
