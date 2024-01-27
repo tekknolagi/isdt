@@ -790,6 +790,85 @@ $
 ### "multi-target" rules
 ### .DEFAULT_GOAL
 
+Until now, we have been using this `.PHONY` target `all` and haven't talked
+about it one bit. You may have wondered to yourself what it does. Does it run
+all the targets? Is it just the name of one target? You may have wondered if it
+was a quirk of this course, convention, or perhaps even hard-coded into Make
+itself. Let's take a look and see if we can figure it out.
+
+If we write a Makefile with one target named `all`:
+
+```make
+.PHONY: all
+all:
+	echo Hello from all
+```
+
+and run `make`:
+
+```console
+$ make
+echo Hello from all
+Hello from all
+$
+```
+
+As you might have expected, it runs the `all` target. Okay, let's try adding
+another target and see if that runs too:
+
+```make
+.PHONY: all something
+all:
+	echo Hello from all
+
+something:
+	echo Hello from something
+```
+
+and run `make`:
+
+```console
+$ make
+echo Hello from all
+Hello from all
+$
+```
+
+So it seems as though it really is the name of a target. What happens if we
+re-order the targets:
+
+```make
+.PHONY: all something
+all:
+	echo Hello from all
+
+something:
+	echo Hello from something
+```
+
+and run `make`?
+
+```console
+$ make
+echo Hello from something
+Hello from something
+$
+```
+
+So maybe actually the name doesn't matter at all. It kind of looks like Make is
+actually just running the first target in the file... and that's exactly right!
+The target `all` is just convention, and not in any way hard-coded into Make.
+And it's also convention to put it first in the Makefile as a default. But you
+could choose to do whatever you want.
+
+If you don't want to put `all` first or for some reason have other constraints
+on the organization of your Makefile, you can even tell GNU Make (and only GNU
+Make) to use a different target by default by setting the `.DEFAULT_GOAL`
+variable. If you do that, the target order does not matter.
+
+<!-- TODO(max): .DEFAULT_GOAL is re-assignable... what are the semantics?
+...why? -->
+
 ## Lecture 4
 
 ### Compilation
