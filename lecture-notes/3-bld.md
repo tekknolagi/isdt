@@ -666,14 +666,13 @@ variables. For example, if you have the following Makefile:
 .PHONY: all
 VAR:=$(HELLO)
 all:
-	echo $(VAR)
+	@echo $(VAR)
 ```
 
 And then define an environment variable `HELLO` while running Make:
 
 ```console
 $ HELLO=world make
-echo world
 world
 $
 ```
@@ -682,7 +681,8 @@ you can use `HELLO` as a Make variable.
 
 In short, when using environment variables in commands such as `export CFLAGS=-g ; make hello`:
 
-* The shell runs make with `CFLAGS` set in the environment
+* The shell runs make with the variables (in this case, `CFLAGS`) set in the
+  environment
 * Make imports all environment variables as Make variables
 * However, assignments in the Makefile override environment variables! `=` and
   `:=` replace them entirely, while `+=` appends to them
@@ -693,12 +693,11 @@ So, for example, the following Makefile overrides the environment variable:
 .PHONY: all
 HELLO:=Max
 all:
-	echo $(HELLO)
+	@echo $(HELLO)
 ```
 
 ```console
 $ HELLO=Tom make
-echo Max
 Max
 $
 ```
@@ -733,12 +732,11 @@ the override:
 .PHONY: all
 HELLO:=Max
 all:
-	echo $(HELLO)
+	@echo $(HELLO)
 ```
 
 ```console
 $ make HELLO=Tom
-echo Max
 Max
 $
 ```
@@ -761,12 +759,11 @@ So, for example, the following Makefile's (default, implicit) `CC` value of
 ```make
 .PHONY: all
 all:
-	echo $(CC)
+	@echo $(CC)
 ```
 
 ```console
 $ CC=wackycc make
-echo wackycc
 wackycc
 $
 ```
@@ -777,12 +774,11 @@ or by an assignment:
 .PHONY: all
 CC:=rainbowcc
 all:
-	echo $(CC)
+	@echo $(CC)
 ```
 
 ```console
 $ make
-echo rainbowcc
 rainbowcc
 $
 ```
