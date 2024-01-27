@@ -497,12 +497,12 @@ What is a "good" commit? In short, it's one that
 
 Let's discuss these two properties in detail:
 
-Firstly, you should make each commit as small as you can while keeping it
-self-contained. For code, "self-contained" means that a commit leaves the
-code in at least as good a state as it found it (e.g. it doesn't break
-things and rely on a subsequent commit to fix them) and expresses a complete
-idea (e.g. it doesn't add a comment without also adding the code that comment
-goes with).
+#### One commit per change
+You should make each commit as small as you can while keeping it self-contained.
+For code, "self-contained" means that a commit leaves the code in at least as
+good a state as it found it (e.g. it doesn't break things and rely on a
+subsequent commit to fix them) and expresses a complete idea (e.g. it doesn't
+add a comment without also adding the code that comment goes with).
 
 There are several reasons to follow this guideline: for one, Git allows you to
 move, delete, and/or reorder commits. These operations only make sense if each
@@ -526,17 +526,17 @@ granular as possible. In fact, Git makes it almost impossible to work with
 historical changes more granular than a commit.
 
 As you gain experience with Git, you'll learn how much granularity works best
-for you---everyone's workflow is different, and one developer's sweet spot
-might feel frustratingly verbose to another. Even for a single developer, the
-sweet spot often shifts as a project matures: early commits that add lots of
-code are almost universally less granular than later ones that fix bugs or
-maintain existing code. Our only goal is to ensure that your preferences guide
-Git and not the other way around.
+for you---everyone's workflow is different, and one developer's sweet spot might
+feel frustratingly verbose to another. Even for a single developer, the sweet
+spot often shifts as a project matures: early commits that add lots of code are
+almost universally less granular than later ones that fix bugs or maintain
+existing code. Regardless of your preference, it ought to guide Git---not the
+other way around.
 
-Secondly, good commits explain the changes they contain. This may sound
-simple---and self-contained commits certainly make it simpler---but even so,
-there's an art to writing good commit messages that can take some time to
-master.
+#### Thoughtful commit messages
+Good commits explain the changes they contain. This may sound simple---and
+self-contained commits certainly make it simpler---but even so, there's an art
+to writing good commit messages that can take some time to master.
 
 A bad commit message might clearly *describe* exactly what the commit does and
 yet fail to *explain* the commit. The difference between the two is subtle but
@@ -558,32 +558,36 @@ and
 
 Even though the second message says less about *what* the commit does, it says
 far more about *why*. Messages like that make it far easier for future
-maintainers (you included!) to get into your head.
+maintainers (you included!) to understand the commit's intent.
+
+Beyond their substance, the commit messages above adhere to some stylistic
+conventions that are common (but not universal) among projects that use Git.
+Those conventions are strongly influenced by the [Linux kernel's commit
+guidelines][kernel-commits], since that project is where Git originated. Here
+are the basics of that style:
+
+[kernel-commits]: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-your-changes
+
+1. Every commit message begins with a title on its own line, followed optionally
+   by a blank line and a longer description. This expectation is baked into Git
+   itself, and as such nearly everyone agrees on it.
+2. The title is 50 characters or less and written in an imperative style (e.g.
+   "Fix foobar" instead of "Fixed foobar" or just "Foobar"). The length limit is
+   not typically enforced strictly, but it helps keep titles readable at a
+   glance.
+3. The body is line-wrapped at 72 characters and organized into paragraphs.
+   References to other commits in the body take the form `commit 123456789abc
+   ("Fix foobar")`, where `123456789abc` is the first 12 characters of the other
+   commit's hash and "Fix foobar" is its title.
+
+Not everyone likes these particular conventions, and many projects set their own
+commit message style. Nonetheness, most projects agree that consistent styling
+across commits is a good thing, as it makes commit histories easier to read and
+makes collaboration easier.
 
 TODO: New example with the commands used last lecture, but leave out the
 `.git/` stuff and instead show multiple iterations of `git add` and `git
 commit` with realistic changes and commit messages.
-
-TODO: Talk about why we split the commits as we did. Why it's neither useful to
-have "one commit per line changed" nor "one commit per major version": want
-the commit history to describe the programmer's thought process, but not in so
-much detail that it becomes a chore to navigate.
-
-#### Writing good commit messages
-
-Beyond their substance, the commit messages above adhere to some stylistic
-conventions that you should also adhere to in your own commits. Many of these
-conventions originate from the [Linux kernel's commit
-guidelines][kernel-commits], since that project is where Git originated.
-
-[kernel-commits]: TODO
-
-Firstly, each commit begins with a single line summarizing its contents in an
-imperative style (e.g. "Fix xyz" instead of "Fixed xyz"). Secondly, ...
-
-TODO: Can copy some of this from here:
-  https://piazza.com/class/ksgzikxm4082z8?cid=123
-  https://cbea.ms/git-commit/
 
 #### Staging files partially (`git add -p`)
 
