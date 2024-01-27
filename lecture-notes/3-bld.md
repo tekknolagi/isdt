@@ -698,6 +698,10 @@ inside a Makefile and finding all places where a variable is initialized.
 Instead, you can decide once and for all what the value should be when invoking
 `make`.
 
+Imagine using someone else's Makefile where they have hard-coded `CC:=gcc` at
+the top. No need to edit; run `make CC=clang` and enjoy using your compiler of
+choice.
+
 In short, when using variable overrides in commands such as `make CFLAGS=-g hello`:
 
 * The shell does *not* use an environment variable: the shell passes the string
