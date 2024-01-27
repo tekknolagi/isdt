@@ -886,11 +886,11 @@ reference.
 
 The last---but certainly not least---way of doing things is to dive right in
 and read through the code. This is especially necessary if the documentation
-apepars incorrect or is completely missing. It may be especially challenging if
+appears incorrect or is completely missing. It may be especially challenging if
 the project uses a... unique code style or is written in a language you are
-unfamiliar with. But you will likely read a good deal of code in your
-lifetime, so learning to both skim and thoroughly read code is a skill that
-will help you.
+unfamiliar with. But you will likely read a good deal of code in your lifetime,
+so learning to both skim and thoroughly read code is a skill that will help
+you.
 
 ## Lecture 4
 
