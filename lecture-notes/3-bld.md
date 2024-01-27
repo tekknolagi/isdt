@@ -687,6 +687,22 @@ In short, when using environment variables in commands such as `export CFLAGS=-g
 * However, assignments in the Makefile override environment variables! `=` and
   `:=` replace them entirely, while `+=` appends to them
 
+So, for example, the following Makefile overrides the environment variable:
+
+```make
+.PHONY: all
+HELLO:=Max
+all:
+	echo $(HELLO)
+```
+
+```console
+$ HELLO=Tom make
+echo Max
+Max
+$
+```
+
 #### Variable overrides
 
 Variable overrides are different. While environment variables allow for
@@ -710,8 +726,52 @@ In short, when using variable overrides in commands such as `make CFLAGS=-g hell
 * Causes *all* assignments in Makefile to that variable (`=`, `:=`, and `+=`)
   to be ignored
 
-### "multi-target" rules
+So, for example, the following Makefile's `HELLO` value is ignored in favor of
+the override:
+
+```make
+.PHONY: all
+HELLO:=Max
+all:
+	echo $(HELLO)
+```
+
+```console
+$ make HELLO=Tom
+echo Max
+Max
+$
+```
+
 ### Implicit variables
+
+Some variables used by implicit rules, like `CC` (the C compiler) have default
+values (`CC`, for example, defaults to `"cc"`). While they exist for use
+primarily in implicit rules, they also have values all throughout the Makefile;
+use them as you see fit.
+
+They are different than "normal" variables in two ways:
+
+* These default values have lower precedence than environment variables
+* Can be overridden by the environment or an assignment in your Makefile
+
+So, for example, the following Makefile's (default, implicit) `CC` value of
+`"cc"` is ignored in favor of the environment variable:
+
+```make
+.PHONY: all
+all:
+	echo $(CC)
+```
+
+```console
+$ CC=wackycc make
+echo wackycc
+wackycc
+$
+```
+
+### "multi-target" rules
 ### .DEFAULT_GOAL
 
 ## Lecture 4
