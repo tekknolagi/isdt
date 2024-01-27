@@ -872,7 +872,7 @@ variable. If you do that, the target order does not matter.
 <!-- TODO(max): .DEFAULT_GOAL is re-assignable... what are the semantics?
 ...why? -->
 
-## Investigation
+### Investigation
 
 On a meta note, this kind of exploration is one of (at least) three kinds of
 investigation that we are trying to push you to do. We designed and executed
