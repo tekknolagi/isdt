@@ -680,21 +680,29 @@ $
 
 you can use `HELLO` as a Make variable.
 
-In short, environment variables (e.g. `export CFLAGS=-g ; make hello`):
+In short, when using environment variables in commands such as `export CFLAGS=-g ; make hello`:
 
-* Tells the shell to run make with `CFLAGS` set in the environment
+* The shell runs make with `CFLAGS` set in the environment
 * Make imports all environment variables as Make variables
 * However, assignments in the Makefile override environment variables! `=` and
   `:=` replace them entirely, while `+=` appends to them
 
 #### Variable overrides
 
-<!-- TODO -->
+Variable overrides are different. While environment variables allow for
+customization from the outside, variable overrides are a feature of Make that
+let the user forcibly change variable values.
 
-In short, variable overrides (e.g. `make CFLAGS=-g hello`):
+This means that making changes to variables need not involve mucking around
+inside a Makefile and finding all places where a variable is initialized.
+Instead, you can decide once and for all what the value should be when invoking
+`make`.
 
-* *Not* an environment variable: value passed as an argument to `make` directly
-* Sets the given Make variable to the given value
+In short, when using variable overrides in commands such as `make CFLAGS=-g hello`:
+
+* The shell does *not* use an environment variable: the shell passes the string
+  `CFLAGS=-g` as an argument to `make`, which parses it
+* Make sets the given variable to the given value
 * Causes *all* assignments in Makefile to that variable (`=`, `:=`, and `+=`)
   to be ignored
 
