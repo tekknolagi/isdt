@@ -869,6 +869,26 @@ variable. If you do that, the target order does not matter.
 <!-- TODO(max): .DEFAULT_GOAL is re-assignable... what are the semantics?
 ...why? -->
 
+## Investigation
+
+On a meta note, this kind of exploration is one of (at least) three kinds of
+investigation that we are trying to push you to do. We designed and executed
+several small experiments in the hope of learning something about how Make
+works from the outside.
+
+Another reasonable thing to do is going off and reading the documentation,
+whether that's `man` pages, `info` pages, or some web resource. While writing
+these notes, for example, I have the Make HTML documentation side-by-side as a
+reference.
+
+The last---but certainly not least---way of doing things is to dive right in
+and read through the code. This is especially necessary if the documentation
+apepars incorrect or is completely missing. It may be especially challenging if
+the project uses a... unique code style or is written in a language you are
+unfamiliar with. But you will likely read a good deal of code in your
+lifetime, so learning to both skim and thoroughly read code is a skill that
+will help you.
+
 ## Lecture 4
 
 ### Compilation
