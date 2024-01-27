@@ -937,10 +937,11 @@ factorial:                              ; @factorial
         ret
 ```
 
-You might notice that our chosen variable names are gone (no more `x`), there
-is no more obvious math (`x * factorial (x - 1)` is also gone), and the
-instructions appear to be a bit more regular looking... more linear. These are
-the qualities that people normally ascribe to lower-level languages.
+You might notice that our chosen variable names are gone (no more `x` and we
+have these funky-looking `eax`, `edi`, `.LBB0_1`, etc), there is no more
+obvious math (`x * factorial (x - 1)` is also gone), and the instructions
+appear to be a bit more regular looking... more linear. These are the qualities
+that people normally ascribe to lower-level languages.
 
 <!-- TODO: talk about object files -->
 
