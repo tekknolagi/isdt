@@ -719,8 +719,9 @@ choice.
 
 In short, when using variable overrides in commands such as `make CFLAGS=-g hello`:
 
-* The shell does *not* use an environment variable: the shell passes the string
-  `CFLAGS=-g` as an argument to `make`, which parses it
+* From the shell's perspective, `CFLAGS=-g` is a single command-line argument,
+  then Make parses the command-line argument as a variable assignment. Though
+  it looks like an environment variable, it *is not*
 * Make sets the given variable to the given value
 * Causes *all* assignments in Makefile to that variable (`=`, `:=`, and `+=`)
   to be ignored
@@ -737,7 +738,7 @@ all:
 
 ```console
 $ make HELLO=Tom
-Max
+Tom
 $
 ```
 
@@ -751,7 +752,7 @@ use them as you see fit.
 They are different than "normal" variables in two ways:
 
 * These default values have lower precedence than environment variables
-* Can be overridden by the environment or an assignment in your Makefile
+* They can be overridden by the environment or an assignment in your Makefile
 
 So, for example, the following Makefile's (default, implicit) `CC` value of
 `"cc"` is ignored in favor of the environment variable:
@@ -763,6 +764,8 @@ all:
 ```
 
 ```console
+$ make
+cc
 $ CC=wackycc make
 wackycc
 $
@@ -851,11 +854,11 @@ re-order the targets:
 
 ```make
 .PHONY: all something
-all:
-	echo Hello from all
-
 something:
 	echo Hello from something
+
+all:
+	echo Hello from all
 ```
 
 and run `make`?
