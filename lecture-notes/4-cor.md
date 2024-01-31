@@ -173,32 +173,52 @@ Gary Bernhardt.
 ## Lecture 2
 
 Even simple software has edge cases. In a data structures course, for example,
-one assignment might involve writing a `delete` function to remove an element
-from a binary search tree and maintain the BST invariant. This function alone
-had several cases: the node is `NULL`; the node has no children; the node has
-one child; the node has two children. Even though you probably should write
-unit tests, that's a manageable number of cases to test manually.
+one assignment might involve writing a `remove` function to remove an element
+from a binary search tree and maintain the BST invariant.
+
+
+```c++
+Node* BST::remove(Node* root, int value) {
+  // ...
+}
+```
+
+This function alone had several cases: the node is `NULL`; the root has the
+expected value (and you're deleting the root); the root does not have the
+expected value; the node has no children; the node has one child; the node has
+two children. Even though you probably should write unit tests, that's a
+manageable number of cases to test manually... for now. Are you going to
+remember to continue testing it as your software grows and changes? And this
+BST is still considered fairly simple, too.
 
 Complex software has many more edge cases. Business requirements often have to
 take into account the Real World, which is much messier than a binary search
-tree. In one day, you might have to think about software performance, adding a
-new feature, complying with internal guidelines, complying with a new law
-passed by the state, and complying with a new law passed in a different
-country. There are so many cases to consider. In isolation, they are tricky
-problems to keep correct. When combined, the cross product can swiftly become
-completely and utterly unmanageable to keep correct.
+tree. Even if you "just" have to consider the BST interacting with other
+software, that is complex on its own. You might need to think about interacting
+with the disk, a database, the network, the operating system, Unicode, and all
+the layers that have to work in between for anything to get done.
 
-The good news is that there *are* reasonably well-established software
-practices to untangle this huge mess of code. Writing tests is helpful, yes,
-but there are some other auxiliary practices that can help make your tests even
-more effective.
+And it's not just writing code all day, either. In one day, you might have to
+think about software performance, adding a new feature, complying with internal
+guidelines, complying with a new law passed by the state, and complying with a
+new law passed in a different country. There are so many cases to consider. In
+isolation, they are tricky problems to keep correct. When combined, the cross
+product can swiftly become completely and utterly unmanageable to keep correct.
+
+The point here is not to make you stop, shudder, and forever put down your
+keyboard. We would not be overwhelming you with a huge mess of stuff if we were
+not also going to give you hope. The good news is that there *are* reasonably
+well-established software practices to untangle this huge mess of code. Writing
+tests is helpful, yes, but there are some other auxiliary practices that can
+help make your tests even more effective.
 
 ### Automated tests
 
 If you, the programmer, have to run tests manually after every change you make,
 you will probably not run them very often. And, worse, if the test suite takes
-a long time to run, you may run them even less. Automating this process is
-instrumental to both ensuring that the tests run and reducing cognitive load.
+a long time to run, you may run them even less often. Automating this process
+is instrumental to both ensuring that the tests run and reducing cognitive
+load.
 
 If you think back to our source control module, where we introduced a Pull
 Request-based collaborative workflow, there is a great place to insert an
@@ -207,6 +227,12 @@ version control providers often expose an API surface for building and running
 tests. Having a green checkmark per change is a good signal to you, the
 programmer, and your colleagues, that you have not broken anything, and also
 pass your new tests.
+
+Tests are also one possible encoding of a specification for your program. Tests
+are not formal[^formal-semantics] and they do not form the complete set of
+expected behavior, but they do document and enforce a contract.
+
+[^formal-semantics]: <!-- TODO --> term of art
 
 ### Invariant of the green main branch
 
