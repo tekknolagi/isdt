@@ -477,7 +477,7 @@ git-<subcommand>`, like `man git-show`.
 
 CONTENTS: Git for solo development
 
-### A basic Git workflow
+### Making good commits
 Let's step back from the nitty-gritty of Git's internals and talk about how you
 as a developer can use Git to make your life easier. Although Git has a truly
 dizzying number of different subcommands, you've already seen most of the ones
@@ -492,8 +492,8 @@ commits regularly, they won't be able to help you.
 
 What is a "good" commit? In short, it's one that
 
-1. **Represents a single conceptual change to your code**
-1. **Explains why you made that change clearly and concisely**
+1. Represents a single conceptual change to your code
+1. Explains why you made that change clearly and concisely
 
 Let's discuss these two properties in detail:
 
@@ -519,11 +519,11 @@ single unit and so they might as well have just been one to begin with.
     Ensuring each commit stands alone is also known as "keeping the `main`
     branch green," and we'll talk about it more in the final module.
 
-Conversely, if you get in the habit of bundling multiple independent changes
-into a single commit, Git also becomes less useful. Subcommands such as `git
-revert`---which undoes a commit's changes---work best when commits are as
-granular as possible. In fact, Git makes it almost impossible to work with
-historical changes more granular than a commit.
+Conversely, if you get in the habit of stuffing several changes into the same
+commit, Git also becomes less useful. Subcommands such as `git revert`---which
+undoes a commit's changes---work best when commits are as granular as possible.
+In fact, Git makes it almost impossible to work with historical changes more
+granular than a commit.
 
 As you gain experience with Git, you'll learn how much granularity works best
 for you---everyone's workflow is different, and one developer's sweet spot might
