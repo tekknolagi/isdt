@@ -585,19 +585,79 @@ commit message style. Nonetheness, most projects agree that consistent styling
 across commits is a good thing, as it makes commit histories easier to read and
 makes collaboration easier.
 
-TODO: New example with the commands used last lecture, but leave out the
-`.git/` stuff and instead show multiple iterations of `git add` and `git
-commit` with realistic changes and commit messages.
+### Staging files partially (`git add -p`)
+If you try to follow our advice using the commands we've covered so far, you'll
+soon find that it's very difficult to create tidy commits when you can only
+stage changes on a file-by-file basis (`git add <file>`). The process of
+software development is rarely as organized as a Git history should be: while
+working on one change, for example, you might see other issues in the same file
+and fix them on the fly.
 
-#### Staging files partially (`git add -p`)
+But doesn't that force you to put both your original change and your quick fix
+in the same commit, since `git add` stages every change in the file? You might
+already be thinking of clever workarounds---like making a temporary copy of the
+file and then undoing one of the changes---but there's a better solution.
 
-TODO: Talk about how, in practice, you often make multiple changes at a time
-before thinking about committing. Adding at the file level (or worse, at the
-repo level with `git add .`) almost always includes more than you want, plus it
-doesn't let you double-check your changes.
+`git add -p` is that solution, but Git beginners often don't even know it
+exists. Unlike plain `git add` (or worse, `git add .`, which stages every change
+in every file), `git add -p` lets you partially stage a file. When invoked, it
+displays each block of modified lines (called a *hunk*) in sequence and asks you
+whether or not to stage it[^add-p-editing]. As usual, a subsequent `git commit`
+will include only the staged hunks, letting you quickly and easily distribute
+your changes across multiple commits.
 
+[^add-p-editing]: You can also choose to edit a hunk before staging it, which
+    will cause `git add -p` to open a text editor where you can modify or delete
+    lines. This isn't typically necessary, but it helps when unrelated changes
+    are close enough together that Git counts them as a single hunk.
+
+```
 TODO: Example of `git add -p` to stage specific hunks that have changed.
 Demonstrate committing multiple changes separately with good messages.
+```
+
+### Bringing it all together
+
+With `git add -p` and some commit guidelines under your belt, you have
+everything you need to start tracking a project's history in Git. Here's how
+that might look for a simple project (which will look familiar once you begin
+Homework 4!):
+
+```
+$ mkdir calc
+$ cd calc
+$ git init
+Initialized empty Git repository in /home/you/calc/.git/
+$ <create a simple main.c>
+$ cat main.c
+int main() {
+  printf("Hello, world!\n");
+  return 0;
+}
+$ git add main.c
+$ git commit -m "Initial commit"
+[main (root-commit) 3ba2a93] Initial commit
+ 1 file changed, 3 insertions(+)
+ create mode 100644 main.c
+$ <make an edit>
+$ git diff
+diff --git a/main.c b/main.c
+index fbd71ab..aed773b 100644
+--- a/main.c
++++ b/main.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++
+ int main() {
+   printf("Hello, world!\n");
+   return 0;
+
+$ git add main.c
+$ git commit -m "Add #include directives to fix compilation"
+[main a83e7a6] Add #include directives to fix compilation
+ 1 file changed, 2 insertions(+)
+$ TODO: rest of repository building
+```
 
 ### How Git helps you
 
