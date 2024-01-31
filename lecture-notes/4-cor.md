@@ -24,8 +24,11 @@ Possible meanings for software correctness (as discussed in class):
 * ...
 * It doesn't have any bugs
 
-Some [interesting reading](https://tildesites.bowdoin.edu/~allen/courses/cs260/readings/ch12.pdf)
-that we won't assign.
+(By the way, here's some [interesting reading](https://tildesites.bowdoin.edu/~allen/courses/cs260/readings/ch12.pdf) that we won't assign.)
+
+The broadest and also vaguest possible definition of software correctness is
+"it does what I mean", or "it has no bugs". But it's hard to talk about this if
+we haven't defined the term *bug*, so let's talk about that.
 
 ### What is a bug?
 Wikipedia has a fine definition.
@@ -59,7 +62,7 @@ people if it doesn’t perform the way it’s supposed to. Billions of people re
 on software every day for everything from critical infrastructure to medical
 equipment to silly games. If there's a one in a million chance that your cancer
 radiation therapy machine[^therac25] has a bug that kills you---well, you might
-care. Or if the facial recognition software the state employs has a bug that
+care. Or if the facial recognition software the State employs has a bug that
 lands you in a prison cell, you might care.
 
 [^therac25]: The Therac-25 radiation therapy machine is a case study often used
@@ -67,14 +70,20 @@ lands you in a prison cell, you might care.
     occasionally dosed people with hundreds of times the radiation they should
     have received, injuring several people and killing several people.
 
-On a less serious note, bugs can lead to revenue loss, or wasting people's
+On a less serious note, bugs can lead to data loss, or revenue loss, or wasting people's
 time. For personal projects, bugs might be inconsequential, like Bob Ross's
 happy little accidents. You won't always be writing code for small projects,
-though.
+though. You might be writing video game software and [accidentally delete
+people's home
+directories](https://github.com/valvesoftware/steam-for-linux/issues/3671).
+That would be a huge problem.
+
+So let's assume we want to reduce the quantity of bugs as much as possible. The
+logical next step is figuring out how to do that.
 
 ### How do we minimize the number of bugs in software?
 Different classes of bugs can be mitigated or outright prevented with different
-software practices.
+software and people practices.
 
 For example, *segmentation faults* and *memory corruption*, which you may have
 experienced while writing C++ code, result from a class of bug that is very
@@ -88,6 +97,8 @@ level languages often provide more library functions than lower level ones, and
 such functions often provide battle-tested implementations of such algorithms.
 Library functions are frequently more correct than a from-scratch
 implementation because they have been written and revised by many people.
+
+<!-- TODO: Rename Coq to Rocq? -->
 
 Other logic errors are preventable by employing *mathematical proofs*. Tools
 like [Coq](https://coq.inria.fr/) and [Isabelle](https://isabelle.in.tum.de/)
@@ -108,16 +119,22 @@ generate a program for you that has been proven correct[^specification-errors].
     example---or incomplete, the proof is worthless.
 
 When proving a program correct is impossible or intractable, it's almost always
-possible to fall back on *testing*. Tests manually exercise your code with some
-inputs and check the results against a set of known-correct answers. A good
-test suite on a software project is often a mark of high attention to detail
-and a reasonable proxy for correctness. Tests also have one advantage over
-proofs: since they exercise the code in a real environment, they validate the
-environment as well as the code. For example, if you accidentally rely on
-undefined behavior from your code and then upgrade your compiler to one that
-produces a different result, your test suite will let you know. As Donald Knuth
-once said, "Beware of bugs in the above code; I have only proved it correct,
-not tried it."
+possible to fall back on *testing*. These days, testing usually refers to
+*automated tests*, or snippets of code that exercise your program and check its
+output against expected known-correct output.
+
+A good test suite on a software project is often a mark of high attention to
+detail and a reasonable proxy for correctness[^evidence-of-bugs]. Tests also
+have one advantage over proofs: since they exercise the code in a real
+environment, they validate the environment as well as the code. For example, if
+you accidentally rely on undefined behavior from your code and then upgrade
+your compiler to one that produces a different result, your test suite will let
+you know. As Donald Knuth once said, "Beware of bugs in the above code; I have
+only proved it correct, not tried it."
+
+[^evidence-of-bugs]: Unfortunately, test suites are only cable of showing
+    evidence of a bug existing. They are not capable of showing that no bugs
+    exist in the system. Yes, even if you have "full test coverage".
 
 Lastly, software development practices can help. For a multi-person software
 project, having a required code review step in the development process can help
