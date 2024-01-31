@@ -599,17 +599,19 @@ already be thinking of clever workarounds---like making a temporary copy of the
 file and then undoing one of the changes---but there's a better solution.
 
 `git add -p` is that solution, but Git beginners often don't even know it
-exists. Unlike plain `git add` (or worse, `git add .`, which stages every change
-in every file), `git add -p` lets you partially stage a file. When invoked, it
-displays each block of modified lines (called a *hunk*) in sequence and asks you
-whether or not to stage it[^add-p-editing]. As usual, a subsequent `git commit`
-will include only the staged hunks, letting you quickly and easily distribute
-your changes across multiple commits.
+exists. Unlike plain `git add` (or worse, `git commit -a`, which commits every
+change in every file), `git add -p` lets you partially stage a file. When
+invoked, it displays each block of modified lines (called a *hunk*) in sequence
+and asks you whether or not to stage it[^add-p-editing]. As usual, a subsequent
+`git commit` will include only the staged hunks, letting you quickly and easily
+distribute your changes across multiple commits.
 
 [^add-p-editing]: You can also choose to edit a hunk before staging it, which
     will cause `git add -p` to open a text editor where you can modify or delete
     lines. This isn't typically necessary, but it helps when unrelated changes
-    are close enough together that Git counts them as a single hunk.
+    are close enough together that Git counts them as a single hunk. (For
+    changes that are close but not directly adjacent, you can also ask `git add
+    -p` split the hunk into multiple smaller hunks and prompt for each.)
 
 ```
 TODO: Example of `git add -p` to stage specific hunks that have changed.
@@ -623,12 +625,12 @@ everything you need to start tracking a project's history in Git. Here's how
 that might look for a simple project (which will look familiar once you begin
 Homework 4!):
 
-```
+```console
 $ mkdir calc
 $ cd calc
 $ git init
 Initialized empty Git repository in /home/you/calc/.git/
-$ <create a simple main.c>
+$ # create a simple main.c
 $ cat main.c
 int main() {
   printf("Hello, world!\n");
@@ -639,7 +641,7 @@ $ git commit -m "Initial commit"
 [main (root-commit) 3ba2a93] Initial commit
  1 file changed, 3 insertions(+)
  create mode 100644 main.c
-$ <make an edit>
+$ # make an edit
 $ git diff
 diff --git a/main.c b/main.c
 index fbd71ab..aed773b 100644
