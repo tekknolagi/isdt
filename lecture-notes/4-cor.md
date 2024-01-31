@@ -62,7 +62,7 @@ people if it doesn’t perform the way it’s supposed to. Billions of people re
 on software every day for everything from critical infrastructure to medical
 equipment to silly games. If there's a one in a million chance that your cancer
 radiation therapy machine[^therac25] has a bug that kills you---well, you might
-care. Or if the facial recognition software the State employs has a bug that
+care. Or if the facial recognition software The State employs has a bug that
 lands you in a prison cell, you might care.
 
 [^therac25]: The Therac-25 radiation therapy machine is a case study often used
