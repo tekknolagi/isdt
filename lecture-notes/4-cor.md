@@ -147,6 +147,23 @@ In this module, we're going to focus primarily on writing tests as a means for
 ensuring software correctness. Tests are not the only way to make your software
 more correct, but they are the easiest to immediately apply and reason about.
 
+### Common classes of bugs
+
+Some time ago, Patrick McKenzie wrote a blog post called [Falsehoods
+Programmers Believe About
+Names](https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/).
+In it, he lists common but false assumptions about names that lead to bugs in
+software. Bad name handling is especially tricky because it can disenfranchise
+entire classes of people. Imagine not being able to sign up for a service
+because your last name is "too short", for example.
+
+It inspired a rash of follow-on posts in the form "Falsehoods Programmers
+Believe About XYZ", all of which give perspective about a variety of domains
+and common problems in software. While they are probably not all worth reading
+and understanding in totality, it is certainly worth becoming more mindful
+about the assumptions you bring to the table and accidentally bake into
+software.
+
 ### "Best practices"
 While we intend for everything we teach to be helpful, our advice won't always
 apply in every situation. Use your best judgement. Read
