@@ -908,6 +908,8 @@ you.
 
 ### Compilation
 
+<!-- TODO(max): Preprocessor? -->
+
 Forget everything you heard in previous classes. For the sake of that course's
 specific learning material, that course probably used an overly-specific
 definition of the word "compile". We are going to define it much more broadly
@@ -918,9 +920,9 @@ transforms that input into another language, L2. Generally people imply that L2
 is less expressive or "lower level", but L2 can be as expressive as L1. It can
 even be the same language as L1!
 
-For example, let's look at the result of a C compiler transforming input in the
-C programming language. Below is a snippet of code representing the factorial
-function:
+For example, let's look at the result of a C compiler transforming input given
+in the C programming language. Below is a snippet of code representing the
+factorial function:
 
 ```c
 int factorial(int x) {
@@ -931,8 +933,12 @@ int factorial(int x) {
 }
 ```
 
-Using the Clang C compiler, we transformed this input from C into x86\_64
-assembly language. The output looks like this:
+Using the Clang C compiler, we can transform this input from C into x86\_64
+assembly language[^intermediate-representations]. The output looks like this:
+
+[^intermediate-representations]: In fact, inside Clang there are many different
+    compilers that are responsible for transforming textual C to an abstract
+    syntax tree (AST), from the AST to LLVM, and from LLVM to asssembly.
 
 ```nasm
 factorial:                              ; @factorial
@@ -951,17 +957,56 @@ factorial:                              ; @factorial
 
 You might notice that our chosen variable names are gone (no more `x` and we
 have these funky-looking `eax`, `edi`, `.LBB0_1`, etc), there is no more
-obvious math (`x * factorial (x - 1)` is also gone), and the instructions
-appear to be a bit more regular looking... more linear. These are the qualities
-that people normally ascribe to lower-level languages.
+obvious math (`x * factorial(x - 1)` is also gone), and the instructions appear
+to be a bit more regular looking... more linear. There is no `if` and there are
+no curly braces... instead, there are only jump instructions and labels. These
+are the qualities that people normally ascribe to lower-level languages.
 
-<!-- TODO: talk about object files -->
+Once the assembly has been generated, Clang has an assembler that turns the
+text assembly instructions into machine code---unreadable bits and bytes. It
+also adds some metadata about what kind of file it is and what functions are
+where. All this together is called an *object file*---a `.o` file.
 
 ### Linking
-### Loading
+
+<!-- from https://joellaity.com/2020/01/25/linking.html -->
+<img src="{{site.baseurl}}/assets/images/linking.jpg" style="max-width: 400px;" />
+
+Object files are not complete programs. They cannot be run on their own, even
+if they have a `main` function. Some object files also have dependencies on
+external functions that have not been resolved yet---functions like `printf`
+and `fabs`. In order to call these functions, the object file must be given the
+addresses of the other functions. This proecss is called *linking* and it
+produces an executable file.
+
+The above diagram with `main.cc` and `square.cc` (C++ files, not C files, but
+same idea) can be compiled two ways, both with the same outcome. The first way
+is as the diagram shows: separate compilation.
+
+```console
+$ c++ main.cc -c  # compile
+$ c++ square.cc -c  # compile
+$ c++ main.o square.o  # link
+```
+
+The second way does everything in one go:
+
+```console
+$ c++ main.cc square.cc  # compile and link
+```
+
+<!-- TODO(max): Since we're talking about Linux, mention ELF? And maybe also
+PE, or maybe that is later -->
+
+<!-- TODO(max): LTO? -->
 
 ### Compiling everything does not scale
-### Split compilation and linking
+
+<!-- TODO(max): We covered this earlier. Do we need to rehash? Do we need to
+make a graph showing compilation speed vs incremental compilation speed or
+something? -->
+
+### Loading
 
 ### Large projects with make
 #### Recursive make
