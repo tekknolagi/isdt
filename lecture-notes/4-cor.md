@@ -157,12 +157,13 @@ software. Bad name handling is especially tricky because it can disenfranchise
 entire classes of people. Imagine not being able to sign up for a service
 because your last name is "too short", for example.
 
-It inspired a rash of follow-on posts in the form "Falsehoods Programmers
-Believe About XYZ", all of which give perspective about a variety of domains
-and common problems in software. While they are probably not all worth reading
-and understanding in totality, it is certainly worth becoming more mindful
-about the assumptions you bring to the table and accidentally bake into
-software.
+It inspired [a rash of follow-on
+posts](https://github.com/kdeldycke/awesome-falsehood) in the form "Falsehoods
+Programmers Believe About XYZ", all of which give perspective about a variety
+of domains and common problems in software. While they are probably not all
+worth reading and understanding in totality, it is certainly worth becoming
+more mindful about the assumptions you bring to the table and accidentally bake
+into software.
 
 ### "Best practices"
 While we intend for everything we teach to be helpful, our advice won't always
