@@ -1006,6 +1006,10 @@ PE, or maybe that is later -->
 make a graph showing compilation speed vs incremental compilation speed or
 something? -->
 
+<!-- TODO(max): The rest of the file from this line down is kind of "optional"
+notes-wise since it's in the more exploratory part of this module and it'll be
+more presentation-heavy. We should come back to it later. -->
+
 ### Loading
 
 ### Large projects with make
