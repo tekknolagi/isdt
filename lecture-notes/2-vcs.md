@@ -465,6 +465,8 @@ Since commits have different timestamps by nature.)
 
 TODO: Example of `git log` to see all our commits.
 
+TODO: Need to introduce `git diff` somewhere in this section.
+
 ### Summary
 So what did we learn? We learned that Git repositories contain files and
 commits; the general write-add-commit flow; that all Git objects are stored in
@@ -623,14 +625,17 @@ Demonstrate committing multiple changes separately with good messages.
 With `git add -p` and some commit guidelines under your belt, you have
 everything you need to start tracking a project's history in Git. Here's how
 that might look for a simple project (which will look familiar once you begin
-Homework 4!):
+Homework 4!). First, you create a repository:
 
 ```console
 $ mkdir calc
 $ cd calc
 $ git init
 Initialized empty Git repository in /home/you/calc/.git/
-$ # create a simple main.c
+```
+
+Then, you commit some initial code:
+```console
 $ cat main.c
 int main() {
   printf("Hello, world!\n");
@@ -641,7 +646,10 @@ $ git commit -m "Initial commit"
 [main (root-commit) 3ba2a93] Initial commit
  1 file changed, 3 insertions(+)
  create mode 100644 main.c
-$ # make an edit
+```
+
+You fix mistakes in the code...
+```console
 $ git diff
 diff --git a/main.c b/main.c
 index fbd71ab..aed773b 100644
@@ -658,7 +666,249 @@ $ git add main.c
 $ git commit -m "Add #include directives to fix compilation"
 [main a83e7a6] Add #include directives to fix compilation
  1 file changed, 2 insertions(+)
-$ TODO: rest of repository building
+```
+
+...continue working on the project...
+```console
+$ cat main.c
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int calc(int left, char op, int right) {
+  <some code>
+}
+
+int main(int argc, char **argv) {
+  if (argc != 4) {
+    fprintf(stderr,
+            "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /.\n",
+            argv[0]);
+    return EXIT_FAILURE;
+  }
+  const char *left_str = argv[1];
+  const char *op_str = argv[2];
+  const char *right_str = argv[3];
+  errno = 0;
+  int left = strtol(left_str, NULL, 10);
+  if (errno != 0) {
+    perror(argv[0]);
+    return EXIT_FAILURE;
+  }
+
+  <some more code>
+
+  int result = calc(left, op_str[0], right);
+  fprintf(stdout, "%d\n", result);
+  return 0;
+}
+$ git add main.c
+$ git commit -m "Make main a simple calculator"
+[main 1838eea] Make main a simple calculator
+ 1 file changed, 45 insertions(+), 2 deletions(-)
+```
+
+...make some smaller edits...
+```console
+$ git diff
+diff --git a/main.c b/main.c
+index 7e2b75d..9407af1 100644
+--- a/main.c
++++ b/main.c
+@@ -12,6 +12,8 @@ int calc(int left, char op, int right) {
+     return left * right;
+   case '/':
+     return left / right;
++  case  '%':
++    return left % right;
+   }
+   fprintf(stderr, "Unrecognized op `%c'.\n", op);
+   exit(EXIT_FAILURE);
+@@ -19,16 +21,21 @@ int calc(int left, char op, int right) {
+
+ int main(int argc, char **argv) {
+   if (argc != 4) {
+-    fprintf(stderr,
+-            "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /.\n",
+-            argv[0]);
++    fprintf(
++        stderr,
++        "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
++        argv[0]);
+     return EXIT_FAILURE;
+   }
+   const char *left_str = argv[1];
+   const char *op_str = argv[2];
+   const char *right_str = argv[3];
+   errno = 0;
+-  int left = strtol(left_str, NULL, 10);
++  char *endptr;
++  int left = strtol(left_str, &endptr, 10);
++  if (left_str == endptr) {
++    errno = EINVAL;
++  }
+   if (errno != 0) {
+     perror(argv[0]);
+     return EXIT_FAILURE;
+@@ -38,7 +45,10 @@ int main(int argc, char **argv) {
+     return EXIT_FAILURE;
+   }
+   errno = 0;
+-  int right = strtol(right_str, NULL, 10);
++  int right = strtol(right_str, &endptr, 10);
++  if (right_str == endptr) {
++    errno = EINVAL;
++  }
+   if (errno != 0) {
+     perror(argv[0]);
+     return EXIT_FAILURE;
+```
+
+...and commit each one separately:
+```console
+$ git add -p
+diff --git a/main.c b/main.c
+index 7e2b75d..9407af1 100644
+--- a/main.c
++++ b/main.c
+@@ -12,6 +12,8 @@ int calc(int left, char op, int right) {
+     return left * right;
+   case '/':
+     return left / right;
++  case  '%':
++    return left % right;
+   }
+   fprintf(stderr, "Unrecognized op `%c'.\n", op);
+   exit(EXIT_FAILURE);
+(1/3) Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? ?
+y - stage this hunk
+n - do not stage this hunk
+q - quit; do not stage this hunk or any of the remaining ones
+a - stage this hunk and all later hunks in the file
+d - do not stage this hunk or any of the later hunks in the file
+j - leave this hunk undecided, see next undecided hunk
+J - leave this hunk undecided, see next hunk
+g - select a hunk to go to
+/ - search for a hunk matching the given regex
+e - manually edit the current hunk
+? - print help
+@@ -12,6 +12,8 @@ int calc(int left, char op, int right) {
+     return left * right;
+   case '/':
+     return left / right;
++  case  '%':
++    return left % right;
+   }
+   fprintf(stderr, "Unrecognized op `%c'.\n", op);
+   exit(EXIT_FAILURE);
+(1/3) Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? y
+@@ -19,16 +21,21 @@ int calc(int left, char op, int right) {
+
+ int main(int argc, char **argv) {
+   if (argc != 4) {
+-    fprintf(stderr,
+-            "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /.\n",
+-            argv[0]);
++    fprintf(
++        stderr,
++        "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
++        argv[0]);
+     return EXIT_FAILURE;
+   }
+   const char *left_str = argv[1];
+   const char *op_str = argv[2];
+   const char *right_str = argv[3];
+   errno = 0;
+-  int left = strtol(left_str, NULL, 10);
++  char *endptr;
++  int left = strtol(left_str, &endptr, 10);
++  if (left_str == endptr) {
++    errno = EINVAL;
++  }
+   if (errno != 0) {
+     perror(argv[0]);
+     return EXIT_FAILURE;
+(2/3) Stage this hunk [y,n,q,a,d,K,j,J,g,/,s,e,?]? s
+Split into 2 hunks.
+@@ -19,12 +21,13 @@ int calc(int left, char op, int right) {
+
+ int main(int argc, char **argv) {
+   if (argc != 4) {
+-    fprintf(stderr,
+-            "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /.\n",
+-            argv[0]);
++    fprintf(
++        stderr,
++        "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
++        argv[0]);
+     return EXIT_FAILURE;
+   }
+   const char *left_str = argv[1];
+   const char *op_str = argv[2];
+   const char *right_str = argv[3];
+   errno = 0;
+(2/4) Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? y
+@@ -25,10 +28,14 @@
+     return EXIT_FAILURE;
+   }
+   const char *left_str = argv[1];
+   const char *op_str = argv[2];
+   const char *right_str = argv[3];
+   errno = 0;
+-  int left = strtol(left_str, NULL, 10);
++  char *endptr;
++  int left = strtol(left_str, &endptr, 10);
++  if (left_str == endptr) {
++    errno = EINVAL;
++  }
+   if (errno != 0) {
+     perror(argv[0]);
+     return EXIT_FAILURE;
+(3/4) Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? q
+
+```
+
+```console
+$ git add -p
+diff --git a/main.c b/main.c
+index 0b5f470..9407af1 100644
+--- a/main.c
++++ b/main.c
+@@ -31,7 +31,11 @@ int main(int argc, char **argv) {
+   const char *op_str = argv[2];
+   const char *right_str = argv[3];
+   errno = 0;
+-  int left = strtol(left_str, NULL, 10);
++  char *endptr;
++  int left = strtol(left_str, &endptr, 10);
++  if (left_str == endptr) {
++    errno = EINVAL;
++  }
+   if (errno != 0) {
+     perror(argv[0]);
+     return EXIT_FAILURE;
+(1/2) Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? y
+@@ -41,7 +45,10 @@ int main(int argc, char **argv) {
+     return EXIT_FAILURE;
+   }
+   errno = 0;
+-  int right = strtol(right_str, NULL, 10);
++  int right = strtol(right_str, &endptr, 10);
++  if (right_str == endptr) {
++    errno = EINVAL;
++  }
+   if (errno != 0) {
+     perror(argv[0]);
+     return EXIT_FAILURE;
+(2/2) Stage this hunk [y,n,q,a,d,K,g,/,e,?]? y
+
+$ git commit -m 'Detect errors when parsing numbers
+quote>
+quote> strtol can signal error via errno, but it can also report when it
+quote> stopped parsing input. This is helpful for determining if the input was
+quote> not a number, or at least did not start with a digit.'
+[main 6fd624e] Detect errors when parsing numbers
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 ```
 
 ### How Git helps you
