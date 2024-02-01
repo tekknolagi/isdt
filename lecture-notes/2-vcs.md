@@ -654,7 +654,7 @@ $ git commit -m "Initial commit"
 ```
 
 You fix mistakes in the code...
-```console
+```console?prompt=$
 $ git diff
 diff --git a/main.c b/main.c
 index fbd71ab..aed773b 100644
