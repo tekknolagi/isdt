@@ -330,14 +330,29 @@ and [paper 2](https://arxiv.org/pdf/2102.11245.pdf)
 
 ## Lecture 3
 
-In this lecture, we will explore a method for writing useful tests for
+In this lecture, we will focus a bit more on one approach for software
+correctness---unit tests---and explore a method for writing useful tests for
 software.
 
 ### Where to start
 
-Start with the specification: what should the function do? Test what is
-specified. Imagine a function `isEven` that must return `true` if the number
-given was even, and `false` otherwise:
+Starting can be a little intimidating. You're sitting there, staring at the
+blank text editor window before you, vaguely humming Natasha Bedingfield songs
+to yourself. It's especially tricky when you haven't written any code yet *at
+all*[^tdd-orthodoxy]. What do you type first?
+
+[^tdd-orthodoxy]: This is what the Test Driven Development orthodoxy preaches.
+    I have my personal opinions about that---I think starting test first
+    always can lead to paralysis, and experimenting with the implementation
+    first can help. But I do in general agree that you should be testing pretty
+    rigorously as you go.
+
+Start with the specification, even if you have never written it down: what
+should the function do? Test what is specified, on paper or in your head. Call
+your imaginary function or API a couple times to see what it feels like.
+
+Imagine a function `isEven` that must return `true` if the number given was
+even, and `false` otherwise:
 
 ```c
 bool isEven(int num);
