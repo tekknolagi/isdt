@@ -866,6 +866,9 @@ Split into 2 hunks.
      return EXIT_FAILURE;
 (3/4) Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? q
 
+$ git commit -m "Support the modulo operator"
+[main 8ad441d] Support the modulo operator
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 ```
 
 ```console
