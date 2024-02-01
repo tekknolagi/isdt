@@ -627,7 +627,7 @@ everything you need to start tracking a project's history in Git. Here's how
 that might look for a simple project (which will look familiar once you begin
 Homework 4!). First, you create a repository:
 
-```console
+```console?prompt=$
 $ mkdir calc
 $ cd calc
 $ git init
@@ -635,7 +635,7 @@ Initialized empty Git repository in /home/you/calc/.git/
 ```
 
 Then, you commit some initial code:
-```console
+```console?prompt=$
 $ cat main.c
 int main() {
   printf("Hello, world!\n");
@@ -668,9 +668,8 @@ $ git commit -m "Add #include directives to fix compilation"
  1 file changed, 2 insertions(+)
 ```
 
-...continue working on the project...
-```console
-$ cat main.c
+...continue working on `main.c`...
+```c
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -702,6 +701,9 @@ int main(int argc, char **argv) {
   fprintf(stdout, "%d\n", result);
   return 0;
 }
+```
+
+```console?prompt=$
 $ git add main.c
 $ git commit -m "Make main a simple calculator"
 [main 1838eea] Make main a simple calculator
@@ -709,7 +711,7 @@ $ git commit -m "Make main a simple calculator"
 ```
 
 ...make some smaller edits...
-```console
+```console?prompt=$
 $ git diff
 diff --git a/main.c b/main.c
 index 7e2b75d..9407af1 100644
@@ -765,7 +767,7 @@ index 7e2b75d..9407af1 100644
 ```
 
 ...and commit each one separately:
-```console
+```console?prompt=$
 $ git add -p
 diff --git a/main.c b/main.c
 index 7e2b75d..9407af1 100644
@@ -871,7 +873,7 @@ $ git commit -m "Support the modulo operator"
  1 file changed, 6 insertions(+), 3 deletions(-)
 ```
 
-```console
+```console?prompt=$,quote>
 $ git add -p
 diff --git a/main.c b/main.c
 index 0b5f470..9407af1 100644
