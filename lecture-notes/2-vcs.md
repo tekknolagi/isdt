@@ -935,7 +935,7 @@ a half will be a whirlwind tour of some of those subcommands.
 
 The most basic subcommand to inspect your commit history is `git log`, which lists every commit in reverse chronological order:
 
-```
+```console?prompt=$
 $ git log
 commit 6fd624ec083a21b76a0879697974ccc3820e14e8 (HEAD -> main)
 Author: Thomas Hebb <tommyhebb@gmail.com>
@@ -976,12 +976,12 @@ TODO: description of how arguments are parsed for subcommands that take both an
 optional revision and an optional list of files (it's not pretty)
 
 Like most subcommands, you can alter the behavior of `git log` with various
-flags. `man git-log`, has a comprehensive list, but a couple notable ones are
+flags. `man git-log` has a comprehensive list, but a couple notable ones are
 
 - **`--patch` (`-p`)**: Show each commit's changes, not just its metadata
 - **`--oneline`**: Show each commit in a condensed format on a single line
 
-```
+```console?prompt=$
 $ git log --oneline
 6fd624e (HEAD -> main) Detect errors when parsing numbers
 8ad441d Support the modulo operator
@@ -994,7 +994,7 @@ a83e7a6 Add #include directives to fix compilation
 shows a single commit (the topmost one by default) and displays changes by
 default:
 
-```
+```console?prompt=$
 $ git show 8ad441d1469c
 commit 8ad441d1469c3e23bd7a261f9145f64179364c7c
 Author: Thomas Hebb <tommyhebb@gmail.com>
