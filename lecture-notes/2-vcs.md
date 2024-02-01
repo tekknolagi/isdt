@@ -716,7 +716,7 @@ $ git commit -m "Make main a simple calculator"
 ```
 
 ...make some smaller edits...
-```console?prompt=$
+```diff
 $ git diff
 diff --git a/main.c b/main.c
 index 7e2b75d..9407af1 100644
