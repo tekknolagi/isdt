@@ -348,8 +348,33 @@ all*[^tdd-orthodoxy]. What do you type first?
     rigorously as you go.
 
 Start with the specification, even if you have never written it down: what
-should the function do? Test what is specified, on paper or in your head. Call
-your imaginary function or API a couple times to see what it feels like.
+should the function do?
+
+### What even is a specification?
+
+We're probably going to start some fights by saying this, but a *specification*
+is the document that describes the intended behavior of a piece of (potentially
+imaginary) software. While the word "document" calls to mind a very formal
+paper to be submitted to IEEE or the IETF or similar, it can also be
+interpreted very loosely to mean something like a sketchy Google Doc written en
+route to a meeting.
+
+In an ideal world, it would describe all of the following: **purpose**,
+**inferfaces**, **constraints**, **assumptions**, **dependencies**, and
+**requirements**.
+
+That begs the question: is a website casually describing the behavior of your
+software project a spec? Is a comprehensive test suite? Do code comments
+constitute a specification?
+
+<!-- TODO -->
+
+Either way, the specification should guide your tests.
+
+### Write some tests
+
+Test what is specified, on paper or in your head. Call your imaginary function
+or API a couple times to see what it feels like.
 
 Imagine a function `isEven` that must return `true` if the number given was
 even, and `false` otherwise:
@@ -371,6 +396,9 @@ TEST(MySoftwareModule, IsEvenWithEvenNumberReturnsTrue) {
   EXPECT_EQ(isEven(8), true);
 }
 ```
+
+Ignore the particulars of the syntax and the names of things for a moment.
+Focus on the function calls.
 
 These tests exercise a small sample of the very large space of even and odd
 numbers (about two billion each) that could be passed into this function. The
