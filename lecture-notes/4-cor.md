@@ -369,6 +369,17 @@ constitute a specification?
 
 <!-- TODO -->
 
+<!--
+Can they be turned into documentation (Doxygen, JavaDoc)?
+Do they explain the audience-facing behavior?
+Do they explain *why* a decision was made?
+
+
+
+
+All this to say... it depends. Let's get back to tests.
+-->
+
 Either way, the specification should guide your tests.
 
 ### Write some tests
