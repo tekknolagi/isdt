@@ -463,10 +463,6 @@ TODO: Diagram showing how a change to a single file propagates up the tree and
 eventually results in a different commit hash. (Or maybe just a tree hash?
 Since commits have different timestamps by nature.)
 
-TODO: Example of `git log` to see all our commits.
-
-TODO: Need to introduce `git diff` somewhere in this section.
-
 ### Summary
 So what did we learn? We learned that Git repositories contain files and
 commits; the general write-add-commit flow; that all Git objects are stored in
@@ -653,7 +649,9 @@ $ git commit -m "Initial commit"
  create mode 100644 main.c
 ```
 
-You fix mistakes in the code...
+You fix mistakes in the code, using the handy `git diff` subcommand to view your
+unstaged changes (think of it like the `diff` command, except it compares files
+to Git's staging area instead of to other files).
 ```console?prompt=$
 $ git diff
 diff --git a/main.c b/main.c
@@ -923,13 +921,129 @@ quote> not a number, or at least did not start with a digit.'
 
 ### How Git helps you
 
-TODO: `git log` is nice, but do you really care that much about simply viewing
-your old commit messages?
+The example above may have left you confused about the exact commits it actually
+made. Although running the commands yourself is generally less confusing than
+reading a transcript of them, it can still be hard to remember what you've
+committed and when.
+
+Fortunately, the entire purpose of Git is to make it so you don't have to
+remember! At long last, it's time to talk about all the Git subcommands that let
+you do interesting things based on the commits you've made. The next lecture and
+a half will be a whirlwind tour of some of those subcommands.
+
+#### Viewing history
+
+The most basic subcommand to inspect your commit history is `git log`, which lists every commit in reverse chronological order:
+
+```
+$ git log
+commit 6fd624ec083a21b76a0879697974ccc3820e14e8 (HEAD -> main)
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Wed Jan 31 21:23:10 2024 -0500
+
+    Detect errors when parsing numbers
+
+    strtol can signal error via errno, but it can also report when it
+    stopped parsing input. This is helpful for determining if the input was
+    not a number, or at least did not start with a digit.
+
+commit 8ad441d1469c3e23bd7a261f9145f64179364c7c
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Wed Jan 31 21:17:45 2024 -0500
+
+    Support the modulo operator
+
+commit 1838eeae89ba4cc4068bff8a1c99c0a9b0853506
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Wed Jan 31 21:07:08 2024 -0500
+
+    Make main a simple calculator
+
+commit a83e7a6c4e9844b745a22450b69892d2292d8c7e
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Tue Jan 30 22:59:25 2024 -0500
+
+    Add #include directives to fix compilation
+
+commit 3ba2a935126dafc8d4acb96df131bad26cb37396
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Tue Jan 30 22:57:04 2024 -0500
+
+    Initial commit
+```
+
+TODO: description of how arguments are parsed for subcommands that take both an
+optional revision and an optional list of files (it's not pretty)
+
+Like most subcommands, you can alter the behavior of `git log` with various
+flags. `man git-log`, has a comprehensive list, but a couple notable ones are
+
+- **`--patch` (`-p`)**: Show each commit's changes, not just its metadata
+- **`--oneline`**: Show each commit in a condensed format on a single line
+
+```
+$ git log --oneline
+6fd624e (HEAD -> main) Detect errors when parsing numbers
+8ad441d Support the modulo operator
+1838eea Make main a simple calculator
+a83e7a6 Add #include directives to fix compilation
+3ba2a93 Initial commit
+```
+
+`git show` is similar to `git log`, taking many of the same options, but it just
+shows a single commit (the topmost one by default) and displays changes by
+default:
+
+```
+$ git show 8ad441d1469c
+commit 8ad441d1469c3e23bd7a261f9145f64179364c7c
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Wed Jan 31 21:17:45 2024 -0500
+
+    Support the modulo operator
+
+diff --git a/main.c b/main.c
+index 7e2b75d..0b5f470 100644
+--- a/main.c
++++ b/main.c
+@@ -12,6 +12,8 @@ int calc(int left, char op, int right) {
+     return left * right;
+   case '/':
+     return left / right;
++  case  '%':
++    return left % right;
+   }
+   fprintf(stderr, "Unrecognized op `%c'.\n", op);
+   exit(EXIT_FAILURE);
+@@ -19,9 +21,10 @@ int calc(int left, char op, int right) {
+
+ int main(int argc, char **argv) {
+   if (argc != 4) {
+-    fprintf(stderr,
+-            "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /.\n",
+-            argv[0]);
++    fprintf(
++        stderr,
++        "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
++        argv[0]);
+     return EXIT_FAILURE;
+   }
+   const char *left_str = argv[1];
+```
 
 #### Seeing what's changed
 
-TODO: Using `git diff` to view changes relative to the last commit or any
-arbitrary commit before that.
+We briefly mentioned `git diff` in the example above, but it's worth talking
+about the different modes it can run in. By default, `git diff` compares your
+code on disk to the code in the staging area, meaning it shows you unstaged
+changes.
+
+But like `git log`, `git diff` can be given a commit as an argument, which
+causes it to compare your code on disk to that commit. For example, `git diff
+HEAD` (TODO: have we talked about `HEAD` yet?) will show every uncommitted
+change, even ones you've staged.
+
+TODO: diff between two commits, `--cached`, filename filtering
 
 #### Undoing mistakes
 
