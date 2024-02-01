@@ -238,9 +238,10 @@ expected behavior, but they do document and enforce a contract.
 ### Invariant of the green main branch
 
 There's a bit of an implicit assumption that makes automated tests useful:
-expecting the main branch to be passing tests ("green"). If you maintain the
-invariant that the main branch always passes tests, it's straightforward to
-tell if your changes break anything.
+expecting the main branch to always be passing tests (to be "green", as in a
+green checkmark symbol). If you maintain the invariant that the main branch
+always passes tests, it's straightforward to tell if your changes break
+anything.
 
 If tests fail on your change, then it is most likely that the change introduced
 a bug---a *regression*. It's also possible that the change exposed a bug that
@@ -249,11 +250,15 @@ useful to the person submitting the change.
 
 If the tests are failing or flaky on the main branch, though, the signal is
 much less useful to anyone submitting a change to the project. It's very
-difficult to use the test failure to a particular root cause.
+difficult to use the test failure to a particular root cause[^test-bisect].
+
+[^test-bisect]: It's especially difficult if you are going to use a test to
+    programmatically track down what revision introduced buggy behavior. <!--
+    TODO talk more about this -->
 
 If you want to get really nitpicky about this, having tests run with every
 change *still* is not enough. Consider a case where multiple engineers are
-writing landing changes concurrently. Generally, tests run for each change:
+writing and landing changes concurrently. Generally, tests run for each change:
 
 ```
 change A        (pass)
@@ -275,6 +280,12 @@ that the linearization of concurrent landing commits still passes tests.
 Land-time tests build and run the project before every commit to the main
 branch.
 
+Most of the time this is done automatically by a kind of software known as
+"continuous integration" software, and we'll talk more about that later.
+
+<!-- TODO(max): Do we want to integrate the GitHub Actions activity I wrote for
+the NEU software class? -->
+
 ### The real world and pebbles in a stream
 
 As much as some people might wish, you are not writing code in a spherical
@@ -284,13 +295,17 @@ software and with hardware. This code is also extraordinarily unlikely to be
 bug-free.
 
 You will have bugs. Even if they aren’t bugs in the state-of-the-world at time
-of writing code, the world changes. It’s not about how good you are as a
-programmer. Your code interacts with the toolchain of the programming language
-in which it's written: the compiler or the runtime. It interacts with the
-operating system. With the filesystem. With the network. Your code may run well
-when compiled with Clang but crash when compiled with GCC, and the reason may
-be that your code implicitly took advantage of a subtle clause in the C
-standard that allows the two compilers to implement a behavior differently.
+of writing code, the world changes. Time passes, bits rot, and people die, no
+matter how much we try to stop it. Take a moment to call your loved ones and
+tell them how much they mean to you.
+
+It’s not about how good you are as a programmer. Your code interacts with the
+toolchain of the programming language in which it's written: the compiler or
+the runtime. It interacts with the operating system. With the filesystem. With
+the network. Your code may run well when compiled with Clang but crash when
+compiled with GCC, and the reason may be that your code implicitly took
+advantage of a subtle clause in the C standard that allows the two compilers to
+implement a behavior differently.
 
 The third-party library you use might also have bugs. Or if it does not have
 bugs, something changed with the last version. Perhaps the email software *du
@@ -304,6 +319,8 @@ time, because it relies on the current date to do something.
 In all of these cases, writing tests, frequently running tests, and ensuring
 that the test environment is the same as the "production" environment (whatever
 that may be), will ease your pain.
+
+<!-- TODO(max): expound -->
 
 Google’s new CPU failures [paper](https://sigops.org/s/conferences/hotos/2021/papers/hotos21-s01-hochschild.pdf)
 
