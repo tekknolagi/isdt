@@ -622,6 +622,11 @@ Demonstrate committing multiple changes separately with good messages.
 
 ### Bringing it all together
 
+*Note: this section has a whole lot of commands all in a row. Please skim them,
+but don't worry about understanding everything right away. You'll come back to
+this section in more manageable portions as you read the rest of the module,
+which uses this repository as an example.*
+
 With `git add -p` and some commit guidelines under your belt, you have
 everything you need to start tracking a project's history in Git. Here's how
 that might look for a simple project (which will look familiar once you begin
