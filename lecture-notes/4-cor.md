@@ -400,16 +400,35 @@ write some tests.
 
 ```c
 TEST(MySoftwareModule, IsEvenWithOddNumberReturnsFalse) {
-  EXPECT_EQ(isEven(7), false);
+  EXPECT_FALSE(isEven(7));
 }
 
 TEST(MySoftwareModule, IsEvenWithEvenNumberReturnsTrue) {
-  EXPECT_EQ(isEven(8), true);
+  EXPECT_TRUE(isEven(8));
 }
+
+UTEST_MAIN();
 ```
 
+and run them:
+
+```console?prompt=$
+$ cc test.c
+$ ./a.out
+[==========] Running 2 test cases.
+[ RUN      ] MySoftwareModule.IsEvenWithOddNumberReturnsFalse
+[       OK ] MySoftwareModule.IsEvenWithOddNumberReturnsFalse (631ns)
+[ RUN      ] MySoftwareModule.IsEvenWithEvenNumberReturnsTrue
+[       OK ] MySoftwareModule.IsEvenWithEvenNumberReturnsTrue (631ns)
+[==========] 2 test cases ran.
+[  PASSED  ] 2 tests.
+$
+```
+
+Neat. The tests passed. But what does that *mean*?
+
 Ignore the particulars of the syntax and the names of things for a moment.
-Focus on the function calls.
+Focus on the function calls to `isEven`.
 
 These tests exercise a small sample of the very large space of even and odd
 numbers (about two billion each) that could be passed into this function. The
