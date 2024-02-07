@@ -967,6 +967,8 @@ text assembly instructions into machine code---unreadable bits and bytes. It
 also adds some metadata about what kind of file it is and what functions are
 where. All this together is called an *object file*---a `.o` file.
 
+<!-- TODO(max): Add section diagram for ELF? -->
+
 ### Linking
 
 <!-- from https://joellaity.com/2020/01/25/linking.html -->
@@ -983,17 +985,135 @@ The above diagram with `main.cc` and `square.cc` (C++ files, not C files, but
 same idea) can be compiled two ways, both with the same outcome. The first way
 is as the diagram shows: separate compilation.
 
-```console
+```console?prompt=$
 $ c++ main.cc -c  # compile
 $ c++ square.cc -c  # compile
 $ c++ main.o square.o  # link
 ```
 
+This is the way we have been building programs in our Makefiles throughout
+this module. Now you know what the compilation does but there is still this
+mysterious step that combines object files.
+
+Let's figure out what is going on by experimenting a little bit.
+
+```c
+// main.c
+#include <stdio.h>
+
+extern int random_number();
+
+int main() {
+  printf("Your random number is: %d\n", random_number());
+}
+```
+
+```c
+// lib.c
+int random_number() {
+  return 4;
+}
+```
+
+```console?prompt=$
+$ gcc -Os -c main.c
+$ objdump -M intel --disassemble=main main.o
+0000000000000000 <main>:
+   0:	f3 0f 1e fa          	endbr64
+   4:	50                   	push   rax
+   5:	31 c0                	xor    eax,eax
+   7:	e8 00 00 00 00       	call   c <main+0xc>
+   c:	48 8d 35 00 00 00 00 	lea    rsi,[rip+0x0]        # 13 <main+0x13>
+  13:	bf 01 00 00 00       	mov    edi,0x1
+  18:	89 c2                	mov    edx,eax
+  1a:	31 c0                	xor    eax,eax
+  1c:	e8 00 00 00 00       	call   21 <main+0x21>
+  21:	31 c0                	xor    eax,eax
+  23:	5a                   	pop    rdx
+  24:	c3                   	ret
+$
+```
+
+In particular, it's important to note that the address for the function
+`random_number` is just `0`. You can see this by looking at the `call`
+instruction (the x86 opcode for this particular kind of call is `e8` and can be
+found at offset `7`).
+
+`e8 00 00 00 00` seems a little silly to me. What are the odds that the address
+of `random_number` just happens to be `0`? Isn't that supposed to be
+invalid---`NULL`, even? Also, look at the address for `printf` (offset `1c`).
+That is a different function and yet the code seems to be using the same
+address for calling both.
+
+Last, you may have noticed that we compiled an object file for `main.c`
+*without compiling or referencing `lib.c`*! Unlike in some languages with
+extensive module systems, there is no such transitive compilation in C. We said
+"compile `main.c`" and GCC did that... and only that.
+
+So there's actually no way these could be the right addresses because the
+compiler has no way of knowing where the code to `random_number` or `printf`
+lives. All it knows about `random_number` is that it will eventually be
+provided by some other object file (or it will fail to link).
+
+```console?prompt=$
+$ gcc -Os main.c
+/usr/bin/ld: /tmp/ccwTPkhi.o: in function `main':
+main.c:(.text.startup+0x8): undefined reference to `random_number'
+collect2: error: ld returned 1 exit status
+$
+```
+
+(Note that we did not pass `-c`, so we were requesting a full compilation and
+linking of `main.c` into an object file, not an executable.)
+
+```console?prompt=$
+$ gcc -Os main.c lib.c
+$ objdump -M intel --disassemble=main ./a.out
+0000000000001060 <main>:
+    1060:	f3 0f 1e fa          	endbr64
+    1064:	50                   	push   rax
+    1065:	31 c0                	xor    eax,eax
+    1067:	e8 0d 01 00 00       	call   1179 <random_number>
+    106c:	48 8d 35 91 0f 00 00 	lea    rsi,[rip+0xf91]        # 2004 <_IO_stdin_used+0x4>
+    1073:	bf 01 00 00 00       	mov    edi,0x1
+    1078:	89 c2                	mov    edx,eax
+    107a:	31 c0                	xor    eax,eax
+    107c:	e8 cf ff ff ff       	call   1050 <__printf_chk@plt>
+    1081:	31 c0                	xor    eax,eax
+    1083:	5a                   	pop    rdx
+    1084:	c3                   	ret
+$
+```
+
+<!-- TODO(max): Also note what is going on for printf; DLL lookup through plt.
+What is DLL? What happens if we do -static? -->
+
+```console?prompt=$
+$ gcc -Os -static main.c lib.c
+$ objdump -M intel --disassemble=main ./a.out
+0000000000401619 <main>:
+  401619:	f3 0f 1e fa          	endbr64
+  40161d:	50                   	push   rax
+  40161e:	31 c0                	xor    eax,eax
+  401620:	e8 40 01 00 00       	call   401765 <random_number>
+  401625:	48 8d 35 d8 69 09 00 	lea    rsi,[rip+0x969d8]        # 498004 <_IO_stdin_used+0x4>
+  40162c:	bf 01 00 00 00       	mov    edi,0x1
+  401631:	89 c2                	mov    edx,eax
+  401633:	31 c0                	xor    eax,eax
+  401635:	e8 d6 84 04 00       	call   449b10 <___printf_chk>
+  40163a:	31 c0                	xor    eax,eax
+  40163c:	5a                   	pop    rdx
+  40163d:	c3                   	ret
+$
+```
+
+<!--
 The second way does everything in one go:
 
 ```console
 $ c++ main.cc square.cc  # compile and link
 ```
+-->
 
 <!-- TODO(max): Since we're talking about Linux, mention ELF? And maybe also
 PE, or maybe that is later -->
