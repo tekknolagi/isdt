@@ -461,12 +461,17 @@ for an abort when passing in unimplemented input.
 > here and we'll come back to this thought later in the module.
 
 Sometimes your programming environment might change how you think about unit
-testing your code. In the above C environment, there are no exceptions to
-handle and types are fixed at compile time. There is no need to test that you
-will always get a `bool` back from `isEven`---it is guaranteed. In general,
-there is no need to test infrastructure guarantees. In other programming
-environments, you might have fewer things guaranteed by the compiler or
-runtime. Let us consider a Python language equivalent of `isEven`:
+testing your code. In the above C environment, there are no run-time exceptions
+to handle and types are decided at compile time. There is no need to test that
+you will always get a `bool` back from `isEven`---it is guaranteed. In general,
+there is no need to test infrastructure guarantees[^bernhardt-stripe]. In other
+programming environments, you might have fewer things guaranteed by the
+compiler or runtime. Let us consider a Python language equivalent of `isEven`:
+
+[^bernhard-stripe]: Again, *usually*. Refer back to renowned software engineer
+    and speaker Gary Bernhardt's
+    [tweet](https://twitter.com/garybernhardt/status/1433474928024735748) for
+    an argument in favor of testing outside infrastructure.
 
 ```python
 def is_even(num):
