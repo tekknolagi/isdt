@@ -937,9 +937,107 @@ remember! At long last, it's time to talk about all the Git subcommands that let
 you do interesting things based on the commits you've made. The next lecture and
 a half will be a whirlwind tour of some of those subcommands.
 
+#### Viewing commits
+
+We already demonstrated `git show` in the last lecture, but there we mainly used
+it to inspect various types of Git objects. During normal Git usage, `git show`
+almost exclusively operates on commits, and it has several features for doing so
+that we haven't yet covered.
+
+With no arguments, `git show` shows the most recent commit. Interestingly, `git
+show HEAD` does the exact same thing. `HEAD` is what's known as a *revision
+parameter*---an argument to a subcommand that names one or more commits. The easiest way to name a commit is to specify its hash, like so:
+
+```console
+$ git show a83e7a6c4e9844b745a22450b69892d2292d8c7e
+commit a83e7a6c4e9844b745a22450b69892d2292d8c7e
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Tue Jan 30 22:59:25 2024 -0500
+
+    Add #include directives to fix compilation
+
+diff --git a/main.c b/main.c
+index fbd71ab..aed773b 100644
+--- a/main.c
++++ b/main.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++
+ int main() {
+   printf("Hello, world!\n");
+   return 0;
+$ 
+```
+
+But no one would use Git if the only way to reference a commit was to memorize a
+40-digit pseudorandom identifier. Luckily, Git offers several simpler ways to
+refer to commits. For example, you can omit the end of a commit hash as long as
+the piece you do provide is unambiguous:
+
+```
+$ git show a83e7a6
+commit a83e7a6c4e9844b745a22450b69892d2292d8c7e
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Tue Jan 30 22:59:25 2024 -0500
+
+    Add #include directives to fix compilation
+
+diff --git a/main.c b/main.c
+index fbd71ab..aed773b 100644
+--- a/main.c
++++ b/main.c
+@@ -1,3 +1,5 @@
++#include <stdio.h>
++
+ int main() {
+   printf("Hello, world!\n");
+   return 0;
+```
+
+To refer to the current commit, you can use the special name `HEAD`. And to
+refer to a commit's parent, you can suffix its hash or name with the character
+`^`:
+
+```
+$ git show HEAD^
+commit 8ad441d1469c3e23bd7a261f9145f64179364c7c
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Wed Jan 31 21:17:45 2024 -0500
+
+    Support the modulo operator
+
+diff --git a/main.c b/main.c
+index 7e2b75d..0b5f470 100644
+--- a/main.c
++++ b/main.c
+@@ -12,6 +12,8 @@ int calc(int left, char op, int right) {
+     return left * right;
+<snip>
+$ 
+```
+
+You can also reference commits using branch and tag names, which we'll talk
+about next lecture, among many other methods. And this syntax isn't specific to
+`git show`: revision parameters are accepted by most Git subcommands, including
+many of those we're about to cover. To see every form a revision parameter can
+take, check out `man gitrevisions`.
+
+With that diversion out of the way, let's get back to `git show`: as you can see
+in the examples above, not only does it print a commit's metadata and message,
+it also prints the diff between that commit and its parent (`<commit>^`, in our
+newly-acquired terminology). In Git, every commit has exactly one
+parent[^multiple=children], so such a diff is always well-specified.
+
+[^multiple-children]: Although a commit's parent is unique and unambiguous, the
+    same cannot be said of its children. In fact, it would be quite time
+    consuming for Git to enumerate a commit's children, so there's no built-in
+    primitive to do so.
+
 #### Viewing history
 
-The most basic subcommand to inspect your commit history is `git log`, which lists every commit in reverse chronological order:
+Given that every commit has a parent (which in turn has its own parent), you
+might naturally want to view all a commit's ancestors. To do so, you can use
+`git log`:
 
 ```console?prompt=$
 $ git log
@@ -979,11 +1077,8 @@ Date:   Tue Jan 30 22:57:04 2024 -0500
 $ 
 ```
 
-TODO: description of how arguments are parsed for subcommands that take both an
-optional revision and an optional list of files (it's not pretty)
-
-Like most subcommands, you can alter the behavior of `git log` with various
-flags. `man git-log` has a comprehensive list, but a couple notable ones are
+Unlike `git show`, `git log` doesn't show diffs by default. But it does accept
+several flags to alter its behavior, including
 
 - **`--patch` (`-p`)**: Show each commit's changes, not just its metadata
 - **`--oneline`**: Show each commit in a condensed format on a single line
@@ -998,47 +1093,8 @@ a83e7a6 Add #include directives to fix compilation
 $ 
 ```
 
-`git show` is similar to `git log`, taking many of the same options, but it just
-shows a single commit (the topmost one by default) and displays changes by
-default:
-
-```console?prompt=$
-$ git show 8ad441d1469c
-commit 8ad441d1469c3e23bd7a261f9145f64179364c7c
-Author: Thomas Hebb <tommyhebb@gmail.com>
-Date:   Wed Jan 31 21:17:45 2024 -0500
-
-    Support the modulo operator
-
-diff --git a/main.c b/main.c
-index 7e2b75d..0b5f470 100644
---- a/main.c
-+++ b/main.c
-@@ -12,6 +12,8 @@ int calc(int left, char op, int right) {
-     return left * right;
-   case '/':
-     return left / right;
-+  case  '%':
-+    return left % right;
-   }
-   fprintf(stderr, "Unrecognized op `%c'.\n", op);
-   exit(EXIT_FAILURE);
-@@ -19,9 +21,10 @@ int calc(int left, char op, int right) {
-
- int main(int argc, char **argv) {
-   if (argc != 4) {
--    fprintf(stderr,
--            "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /.\n",
--            argv[0]);
-+    fprintf(
-+        stderr,
-+        "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
-+        argv[0]);
-     return EXIT_FAILURE;
-   }
-   const char *left_str = argv[1];
-$ 
-```
+TODO: description of how arguments are parsed for subcommands that take both an
+optional revision and an optional list of files (it's not pretty)
 
 #### Seeing what's changed
 
