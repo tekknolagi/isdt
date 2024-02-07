@@ -150,14 +150,14 @@ current state of things is. It shows you a description of what's going on, as
 well as some suggested things to do next. When you run it in a new repository,
 it helpfully suggests that you make and *track* some files:
 
-```
+```console
 $ git status
 On branch main
 
 No commits yet
 
 nothing to commit (create/copy files and use "git add" to track)
-$
+$ 
 ```
 
 (The "On branch main" message may be different for you, depending on both your
@@ -189,7 +189,7 @@ you a more effective Git user, especially when things go wrong.
 Start by taking a look at `.git/` in your new, empty repository. It has 8
 directories and 16 files, but we'll focus on just a few:
 
-```
+```console
 $ tree .git/
 .git/
 ├── branches
@@ -223,14 +223,14 @@ changed[^empty-commit]. So make a change by adding a new file:
 [^empty-commit]: You can override this behavior with the `--allow-empty` flag,
     but the occasions you'll want to are few and far between.
 
-```
+```console
 $ echo 'file contents' >myfile
 $ 
 ```
 
 Now, `git status` has more to tell us:
 
-```
+```console
 $ git status
 On branch main
 
@@ -241,7 +241,7 @@ Untracked files:
     myfile
 
 nothing added to commit but untracked files present (use "git add" to track)
-$
+$ 
 ```
 
 Git doesn't magically watch as you make changes to a repository. Unlike sync
@@ -260,7 +260,7 @@ files---`config`, `description`, `HEAD`, or `info/exclude`---been altered.
 To tell Git that the file exists and you plan to commit it, add it to the
 staging area with `git add`:
 
-```
+```console
 $ git add myfile
 $ git status
 On branch main
@@ -271,12 +271,12 @@ Changes to be committed:
   (use "git rm --cached <file>..." to unstage)
     new file:   myfile
 
-$
+$ 
 ```
 
 After running this, you'll finally see a change in your `.git/` directory!
 
-```
+```console
 $ tree .git
 .git
 ├── branches
@@ -298,7 +298,7 @@ $ tree .git
 
 10 directories, 6 files
 
-$
+$ 
 ```
 
 Git has created its first object, stored as the file
@@ -350,7 +350,7 @@ Git's object store, we can use the `git show` subcommand to decode it:
 [^file-command]: Tip: the `file` command tries to guess what kind of data a
     file holds. Try it out on the object!
 
-```
+```console
 $ git show d03e2425cf1c82616e12cb430c69aaa6cc08ff84
 file contents
 $ 
@@ -367,7 +367,7 @@ editor for you to write your commit message and waits until you save and close
 the message to make the commit. (The specific editor used depends on the
 `$EDITOR` environment variable and often defaults to Vim or Vi.)
 
-```
+```console
 $ git commit
 <editor opens>
 <save and quit>
@@ -399,7 +399,7 @@ data such that hash is identical.
 Let's take a look at the commit object by running `git show`---which when given
 no arguments shows the current commit:
 
-```
+```console
 $ git show
 commit 22210506499fe9e37086d3a5ff1fb8f400facd83 (HEAD -> main)
 Author: Max Bernstein <max@thebiscuitsons.net>
@@ -414,7 +414,7 @@ index 0000000..d03e242
 +++ b/myfile
 @@ -0,0 +1 @@
 +file contents
-$
+$ 
 ```
 
 This tells us some metadata about the commit object: the hash; the author; the
@@ -425,23 +425,23 @@ parent on the fly for your benefit.[^git-stores-trees]
 
 [^git-stores-trees]: To verify this, look at the output of `git cat-file`:
     
-    ```
+    ```console
     $ git cat-file commit 22210506499fe9e37086d3a5ff1fb8f400facd83
     tree 8a2f7e211356a8551e2e2eed121d2a643208ac6a
     author Max Bernstein <max@thebiscuitsons.net> 1632885282 -0700
     committer Max Bernstein <max@thebiscuitsons.net> 1632885282 -0700
     
     My message
-    $
+    $ 
     ```
     
     This shows a *tree* called `8a2f7e211356a8551e2e2eed121d2a643208ac6a`
     associated with the commit. And what is that tree?
     
-    ```
+    ```console
     $ git ls-tree 8a2f7e211356a8551e2e2eed121d2a643208ac6a
     100644 blob d03e2425cf1c82616e12cb430c69aaa6cc08ff84    myfile
-    $
+    $ 
     ```
     
     Aha! It contains our whole file (`d03e`...) and associated metadata.
@@ -633,6 +633,7 @@ $ mkdir calc
 $ cd calc
 $ git init
 Initialized empty Git repository in /home/you/calc/.git/
+$ 
 ```
 
 Then, you commit some initial code:
@@ -647,6 +648,7 @@ $ git commit -m "Initial commit"
 [main (root-commit) 3ba2a93] Initial commit
  1 file changed, 3 insertions(+)
  create mode 100644 main.c
+$ 
 ```
 
 You fix mistakes in the code, using the handy `git diff` subcommand to view your
@@ -669,6 +671,7 @@ $ git add main.c
 $ git commit -m "Add #include directives to fix compilation"
 [main a83e7a6] Add #include directives to fix compilation
  1 file changed, 2 insertions(+)
+$ 
 ```
 
 ...continue working on `main.c`...
@@ -711,6 +714,7 @@ $ git add main.c
 $ git commit -m "Make main a simple calculator"
 [main 1838eea] Make main a simple calculator
  1 file changed, 45 insertions(+), 2 deletions(-)
+$ 
 ```
 
 ...make some smaller edits...
@@ -874,6 +878,7 @@ Split into 2 hunks.
 $ git commit -m "Support the modulo operator"
 [main 8ad441d] Support the modulo operator
  1 file changed, 6 insertions(+), 3 deletions(-)
+$ 
 ```
 
 ```console?prompt=$,quote>
@@ -917,6 +922,7 @@ quote> stopped parsing input. This is helpful for determining if the input was
 quote> not a number, or at least did not start with a digit.'
 [main 6fd624e] Detect errors when parsing numbers
  1 file changed, 9 insertions(+), 2 deletions(-)
+$ 
 ```
 
 ### How Git helps you
@@ -970,6 +976,7 @@ Author: Thomas Hebb <tommyhebb@gmail.com>
 Date:   Tue Jan 30 22:57:04 2024 -0500
 
     Initial commit
+$ 
 ```
 
 TODO: description of how arguments are parsed for subcommands that take both an
@@ -988,6 +995,7 @@ $ git log --oneline
 1838eea Make main a simple calculator
 a83e7a6 Add #include directives to fix compilation
 3ba2a93 Initial commit
+$ 
 ```
 
 `git show` is similar to `git log`, taking many of the same options, but it just
@@ -1029,6 +1037,7 @@ index 7e2b75d..0b5f470 100644
      return EXIT_FAILURE;
    }
    const char *left_str = argv[1];
+$ 
 ```
 
 #### Seeing what's changed
