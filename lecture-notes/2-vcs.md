@@ -974,7 +974,7 @@ But no one would use Git if the only way to reference a commit was to memorize a
 refer to commits. For example, you can omit the end of a commit hash as long as
 the piece you do provide is unambiguous:
 
-```
+```console
 $ git show a83e7a6
 commit a83e7a6c4e9844b745a22450b69892d2292d8c7e
 Author: Thomas Hebb <tommyhebb@gmail.com>
@@ -998,7 +998,7 @@ To refer to the current commit, you can use the special name `HEAD`. And to
 refer to a commit's parent, you can suffix its hash or name with the character
 `^`:
 
-```
+```console
 $ git show HEAD^
 commit 8ad441d1469c3e23bd7a261f9145f64179364c7c
 Author: Thomas Hebb <tommyhebb@gmail.com>
@@ -1012,7 +1012,27 @@ index 7e2b75d..0b5f470 100644
 +++ b/main.c
 @@ -12,6 +12,8 @@ int calc(int left, char op, int right) {
      return left * right;
-<snip>
+   case '/':
+     return left / right;
++  case  '%':
++    return left % right;
+   }
+   fprintf(stderr, "Unrecognized op `%c'.\n", op);
+   exit(EXIT_FAILURE);
+@@ -19,9 +21,10 @@ int calc(int left, char op, int right) {
+
+ int main(int argc, char **argv) {
+   if (argc != 4) {
+-    fprintf(stderr,
+-            "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /.\n",
+-            argv[0]);
++    fprintf(
++        stderr,
++        "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
++        argv[0]);
+     return EXIT_FAILURE;
+   }
+   const char *left_str = argv[1];
 $ 
 ```
 
