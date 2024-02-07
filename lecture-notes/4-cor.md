@@ -399,6 +399,9 @@ cases mentioned in the specification: an even number; an odd number. Let's
 write some tests.
 
 ```c
+#include "utest.h"
+#include "is-even.h"
+
 TEST(MySoftwareModule, IsEvenWithOddNumberReturnsFalse) {
   EXPECT_FALSE(isEven(7));
 }
