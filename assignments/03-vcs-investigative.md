@@ -79,7 +79,7 @@ easier to clone and use the CLI.
    around.
    1. What was the first commit? Please provide the hash.
    1. How many files were in it?
-   1. Who authored the commit 1aec7078c4d173ff15ca15ce8ffd1a276d9c03b9? What
+   1. Who authored the commit `1aec7078c4d173ff15ca15ce8ffd1a276d9c03b9`? What
       GitHub pull request does it belong to? This question requires some use of
       the GitHub UI.
    1. Comment on the quality of the commit message. What would you change about
