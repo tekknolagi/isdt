@@ -765,7 +765,7 @@ This section could go out of date fast.
 
 ### Limitations of tests
 ### Coding practices for bug reduction
-### Adversarial thinking
+### Adversarial mindset
 ### Other ways to check runtime behavior
 ### What constitutes "behavior"?
 ### The parable of the intern
