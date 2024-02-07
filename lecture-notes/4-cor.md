@@ -455,6 +455,11 @@ uncommon in production codebases. The band-aid solution to this is generally to
 make the unimplemented case abort the program, and have a unit test checking
 for an abort when passing in unimplemented input.
 
+> **Pause for a moment.** Can you think of a testing strategy that might do
+> better at detecting "bugs" such as the stub implementation above? Try and
+> think outside the box. There is very little objective "right" and "wrong"
+> here and we'll come back to this thought later in the module.
+
 Sometimes your programming environment might change how you think about unit
 testing your code. In the above C environment, there are no exceptions to
 handle and types are fixed at compile time. There is no need to test that you
