@@ -496,6 +496,10 @@ sentinel value.
 
 ### Other things to test
 
+<!-- TODO(max): review 4350 notes for more detail here. perhaps it's more
+useful to instead of splitting it by approach, describe different attributes of
+test strategies? -->
+
 When testing a function, there are two main approaches: blackbox testing, and
 whitebox testing.
 
@@ -511,9 +515,10 @@ Some interesting values come to mind: what happens if you pass zero? A negative
 number? A very large number? Integers in C are bound to some platform-dependent
 size. What happens if you pass `INT_MIN` or `INT_MAX` to the function? Without
 looking at the body of this function in particular, there is not much else to
-test in this style. Other signatures may leave room for more interesting test
-cases---maybe they operate on strings or floating point numbers or something
-more complicated.
+test in this style. Other signatures and other programming languagea may leave
+room for more interesting test cases---maybe they operate on strings or
+floating point numbers or something more complicated (see for example
+JavaScript's number type).
 
 When writing whitebox unit tests, on the other hand, assume you have access to
 the current function definition. What test cases might break it? One common
@@ -521,7 +526,7 @@ strategy is coverage-based testing---ensuring that all code paths through the
 function are tested. This requires figuring out values that pass and fail
 various conditionals, exercise behaviors of loops, and so on. Some of the
 conditionals may be implicit, if they happen in functions called inside the
-function you are testing.
+function you are testing. <!-- TODO(max): This takes more care -->
 
 <!-- TODO: example of coverage based testing -->
 
@@ -530,6 +535,9 @@ should be wary about blindly chasing 100% coverage. There are plenty of cases
 where a code path just isn't that interesting or error-prone; writing tests for
 such paths purely to improve your coverage metric can waste time and hide the
 few tests that actually matter among lots that don't.
+
+<!-- TODO(max): it also gets "invalidated" if you change the implementation
+significantly -->
 
 ### Naming tests
 
@@ -543,6 +551,8 @@ you will likely come back to these tests in a year or three, with the
 implementation of `isEven` having completely changed, and wonder what made
 these numbers so special. Or perhaps your coworker will wonder about these
 things, because they did not write the code in the first place.
+
+<!-- TODO(max): Add examples of bad test names and critique them -->
 
 Having descriptive test names also separates concerns for the testing harness.
 If only part of the `isEven` function breaks, it would be nice to know at a
@@ -579,7 +589,11 @@ your results.
 
 **Avoid "round trips" through layers of software.** Round trips, including
 nested function calls, or network requests, or disk I/O, or other things,
-increase the amount of noise in your testing.
+increase the amount of noise in your testing. Noise in this context refers to
+potential unexpected failures that are unrelated to the code you wrote.
+
+<!-- TODO(max): if your software involves layers, test each layer independently
+and also working together; coupling -->
 
 **Avoid stateful computation.** If your test requires some setup, such as
 creating a file on the disk, or adding a table to a database, you will likely
@@ -591,6 +605,22 @@ Additionally, this violates the "round trips" maxim above.
 If they have never failed, it's entirely possible that you are testing the
 wrong function, or not running your tests, or something somewhere is very, very
 broken.
+
+<!-- TODO(max): unit vs integration; "continuum of tests" -->
+
+Few real tests perfectly fit into one category:
+
+* Units often depend on other units
+* Your language or architecture can prevent isolated testing of such units
+* Many unit tests, therefore, end up "seeing" other units indirectly
+
+But your intent still matters:
+
+* Unit and integration tests serve different purposes
+* Don't let technical constraints blind you to that fact
+* Write both unit and integration tests, and keep them separate
+  * Your unit tests may end up testing multiple units, and that's okay
+  * Your integration tests might not cover certain units, and that's okay too
 
 ## Lecture 4
 
@@ -706,3 +736,48 @@ their releases against their customers' tests.
 
 What do you do if you find breaking behavior surfaced by a large integration
 test written by your client?
+
+## Lecture 4.5
+
+### Strategies for isolating units
+### Maxim: avoid round trips
+### The Database interface
+### Self-contained units
+### Maxim: avoid state
+### Writing integration tests
+### Testing at scale
+### Doxygen
+
+## Lecture 5
+
+You write tests for a project, but they keep breaking because no one runs them.
+How would you fix this?
+
+### Continuous integration
+### Popular CI tools
+### GitHub Actions
+This section could go out of date fast.
+### Continuous integration vs build systems
+### Security considerations for CI
+### Testing CI
+
+## Lecture 6
+
+### Limitations of tests
+### Coding practices for bug reduction
+### Adversarial thinking
+### Other ways to check runtime behavior
+### What constitutes "behavior"?
+### The parable of the intern
+### Checking behavior statically
+Types and static analysis; proofs
+### Proof engineering
+### Adversarial situations
+You have been assuming you have normal coworkers
+
+Sometimes they are silly and paste large chunks untested from LLMs. You need a
+totally different mindset for this
+
+Or, worse, your coworkers are secretly working for a nation-state
+### Machine learning generating tests
+Speaking of LLMs, ...
