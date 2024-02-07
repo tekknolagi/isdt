@@ -946,7 +946,8 @@ that we haven't yet covered.
 
 With no arguments, `git show` shows the most recent commit. Interestingly, `git
 show HEAD` does the exact same thing. `HEAD` is what's known as a *revision
-parameter*---an argument to a subcommand that names one or more commits. The easiest way to name a commit is to specify its hash, like so:
+parameter*---an argument to a subcommand that names one or more commits. The
+most direct way to name a commit is to specify its hash, like so:
 
 ```console
 $ git show a83e7a6c4e9844b745a22450b69892d2292d8c7e
@@ -996,7 +997,12 @@ index fbd71ab..aed773b 100644
 
 To refer to the current commit, you can use the special name `HEAD`. And to
 refer to a commit's parent, you can suffix its hash or name with the character
-`^`:
+`^`[^nesting]:
+
+[^nesting]: A revision ending in `^` is still a revision, so you can suffix it
+    with another `^` to go to *its* parent, and so forth as many times as you
+    like. Git has a shorthand for this: `<commit>^N` means the Nth parent of
+    `<commit>`, e.g. `HEAD^5`.
 
 ```console
 $ git show HEAD^
@@ -1055,9 +1061,9 @@ parent[^multiple=children], so such a diff is always well-specified.
 
 #### Viewing history
 
-Given that every commit has a parent (which in turn has its own parent), you
-might naturally want to view all a commit's ancestors. To do so, you can use
-`git log`:
+Given that every commit (except the first one) has a parent, which in turn has
+its own parent, you might naturally want to view all a commit's ancestors. To do
+so, you can use `git log`:
 
 ```console?prompt=$
 $ git log
