@@ -1015,6 +1015,16 @@ int random_number() {
 }
 ```
 
+We can compile the `main.o` object by running `gcc` with the `-c` flag, as you
+have seen before.
+
+(Note that I am using `-Os`, which indicates to GCC that it should try and
+produce shorter code. It's not required; it's just for presentation. Also note
+that I am using `-M intel` so that the syntax matches up with the assembly
+listing above. This is also not required, and if you omit it, `objdump` may
+give you assembly formatted with AT&amp;T syntax. The actual code on disk is
+the same regardless of presentation syntax.)
+
 ```console?prompt=$
 $ gcc -Os -c main.c
 $ objdump -M intel --disassemble=main main.o
@@ -1037,7 +1047,8 @@ $
 In particular, it's important to note that the address for the function
 `random_number` is just `0`. You can see this by looking at the `call`
 instruction (the x86 opcode for this particular kind of call is `e8` and can be
-found at offset `7`).
+found at offset `7`). <!-- TODO(max): Explain that call c / 0xc is because it's
+relative to next instruction and the text representation is absolute -->
 
 `e8 00 00 00 00` seems a little silly to me. What are the odds that the address
 of `random_number` just happens to be `0`? Isn't that supposed to be
@@ -1066,6 +1077,10 @@ $
 (Note that we did not pass `-c`, so we were requesting a full compilation and
 linking of `main.c` into an object file, not an executable.)
 
+But okay, let's give `main.o` the library it needs and compile a full
+executable. This appears to link successfully---there was no error
+message---and we can inspect the code:
+
 ```console?prompt=$
 $ gcc -Os main.c lib.c
 $ objdump -M intel --disassemble=main ./a.out
@@ -1085,8 +1100,39 @@ $ objdump -M intel --disassemble=main ./a.out
 $
 ```
 
-<!-- TODO(max): Also note what is going on for printf; DLL lookup through plt.
-What is DLL? What happens if we do -static? -->
+There are a couple things to note!
+
+The first one is that our code offsets got a lot bigger. Whereas before we
+started `main` with offset 0 and went until 24, now we start at 1060 and go
+until 1084. That seems to indicate that the `main` function has been bundled
+with other code, some of which has been stored before it.
+
+The second one is that the offset for calling `random_number` changed. The
+zero offset got filled in and is now `0d 01 00 00` (and therefore the text
+representation on the right changed too to point at `0x1179`, somewhere shortly
+after the end of `main`). Since x86 is "little endian", this number is
+`0x010d`, or 269 bytes after the next instruction.
+
+We can check this by looking at the disassembly (and address) of the
+`random_number` function. Sure enough, it's at `0x1179`:
+
+```console?prompt=$
+$ objdump  --disassemble=random_number ./a.out
+0000000000001179 <random_number>:
+    1179:	f3 0f 1e fa          	endbr64
+    117d:	b8 04 00 00 00       	mov    $0x4,%eax
+    1182:	c3                   	ret
+$
+```
+
+Last, we notice that the call to `printf` changed to this weird
+`__printf_chk@plt` thing. We're going to mostly gloss over that and say "it's
+dynamically linked", which means that at program start time, the loader will
+find and set the real address for `printf`.
+
+If you're curious, you can see what happens when we statically link our program
+with `-static`, which means that we want to bundle `printf` (and other normally
+dynamically linked libraries) alongside it:
 
 ```console?prompt=$
 $ gcc -Os -static main.c lib.c
@@ -1107,13 +1153,7 @@ $ objdump -M intel --disassemble=main ./a.out
 $
 ```
 
-<!--
-The second way does everything in one go:
-
-```console
-$ c++ main.cc square.cc  # compile and link
-```
--->
+Now `__printf_chk` has a fixed address. No more `@plt`.
 
 <!-- TODO(max): Since we're talking about Linux, mention ELF? And maybe also
 PE, or maybe that is later -->
