@@ -1021,6 +1021,7 @@ We'll also write a little library to generate "random" numbers.
 ```c
 // lib.c
 int random_number() {
+  // See documentation: https://xkcd.com/221/
   return 4;
 }
 ```
