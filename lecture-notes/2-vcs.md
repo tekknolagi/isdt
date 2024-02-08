@@ -1103,10 +1103,10 @@ Date:   Tue Jan 30 22:57:04 2024 -0500
 $ 
 ```
 
-Unlike `git show`, `git log` doesn't show diffs by default. But it does accept
-several flags to alter its behavior, including
+`git log` doesn't show diffs by default. But it does accept several flags to
+alter its behavior, including
 
-- **`--patch` (`-p`)**: Show each commit's changes, not just its metadata
+- **`--patch` (`-p`)**: Show each commit's diff, just like `git show`
 - **`--oneline`**: Show each commit in a condensed format on a single line
 
 ```console?prompt=$
