@@ -1111,9 +1111,9 @@ $
 There are a couple things to note!
 
 The first one is that our code offsets got a lot bigger. Whereas before we
-started `main` with offset 0 and went until 24, now we start at 1060 and go
-until 1084. That seems to indicate that the `main` function has been bundled
-with other code, some of which has been stored before it.
+started `main` with offset `0x0` and went until `0x24`, now we start at
+`0x1060` and go until `0x1084`. That seems to indicate that the `main` function
+has been bundled with other code, some of which has been stored before it.
 
 The second one is that the offset for calling `random_number` changed. The
 zero offset got filled in and is now `0d 01 00 00` (and therefore the text
