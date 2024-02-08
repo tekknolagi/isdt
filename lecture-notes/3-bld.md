@@ -1127,10 +1127,10 @@ We can check this by looking at the disassembly (and address) of the
 `random_number` function. Sure enough, it's at `0x1179`:
 
 ```console?prompt=$
-$ objdump  --disassemble=random_number ./a.out
+$ objdump -M intel --disassemble=random_number ./a.out
 0000000000001179 <random_number>:
     1179:	f3 0f 1e fa          	endbr64
-    117d:	b8 04 00 00 00       	mov    $0x4,%eax
+    117d:	b8 04 00 00 00       	mov    eax,0x4
     1182:	c3                   	ret
 $
 ```
