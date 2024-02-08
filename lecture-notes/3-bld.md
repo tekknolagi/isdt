@@ -183,7 +183,7 @@ disk. During the course of development, though, we will likely make a change to
 `main.c` and try to rebuild with `make mybinary`. Make will give an unhelpful
 response and do nothing:
 
-```console
+```console?prompt=$
 $ make mybinary
 gcc main.c
 mv a.out mybinary
@@ -225,7 +225,7 @@ For languages like C that have a notion of split compilation, Make is even more
 useful. If you have, say, 10 C files that all need to be compiled together, it
 is possible to run:
 
-```console
+```console?prompt=$
 $ gcc file0.c file1.c ... file9.c -o mybinary
 $
 ```
@@ -244,7 +244,7 @@ file* and then link those together:
     `include` mechanism is a textual copy&amp;paste process early in the
     compilation pipeline.
 
-```console
+```console?prompt=$
 $ gcc -c file0.c file1.c ... file9.c
 $ gcc file0.o file1.o ... file9.o -o mybinary
 $
@@ -293,7 +293,7 @@ A DAG, just like Git uses!
 └───────┘└───────┘└───────┘
 ```
 
-```console
+```console?prompt=$
 $ cat Makefile
 mybinary: mybinary
 	touch mybinary
@@ -533,7 +533,7 @@ Because they are built-in, they support limited customization. If the implicit
 rule makes use of variables (such as `CC`, `CFLAGS`, and `LDFLAGS`), then you
 can customize execution by defining those variables.
 
-```console
+```console?prompt=$
 $ cat Makefile
 CFLAGS := -g
 hello: hello.o world.o
@@ -606,7 +606,7 @@ mytarget:
 	echo "hello"
 ```
 
-```console
+```console?prompt=$
 $ make mytarget
 echo "hello"
 hello
@@ -622,7 +622,7 @@ mytarget:
 	@echo "hello"
 ```
 
-```console
+```console?prompt=$
 $ make mytarget
 hello
 $
@@ -672,7 +672,7 @@ all:
 
 And then define an environment variable `HELLO` while running Make:
 
-```console
+```console?prompt=$
 $ HELLO=world make
 world
 $
@@ -697,7 +697,7 @@ all:
 	@echo $(HELLO)
 ```
 
-```console
+```console?prompt=$
 $ HELLO=Tom make
 Max
 $
@@ -737,7 +737,7 @@ all:
 	@echo $(HELLO)
 ```
 
-```console
+```console?prompt=$
 $ make HELLO=Tom
 Tom
 $
@@ -764,7 +764,7 @@ all:
 	@echo $(CC)
 ```
 
-```console
+```console?prompt=$
 $ make
 cc
 $ CC=wackycc make
@@ -781,7 +781,7 @@ all:
 	@echo $(CC)
 ```
 
-```console
+```console?prompt=$
 $ make
 rainbowcc
 $
@@ -822,7 +822,7 @@ all:
 
 and run `make`:
 
-```console
+```console?prompt=$
 $ make
 echo Hello from all
 Hello from all
@@ -843,7 +843,7 @@ something:
 
 and run `make`:
 
-```console
+```console?prompt=$
 $ make
 echo Hello from all
 Hello from all
@@ -864,7 +864,7 @@ all:
 
 and run `make`?
 
-```console
+```console?prompt=$
 $ make
 echo Hello from something
 Hello from something
