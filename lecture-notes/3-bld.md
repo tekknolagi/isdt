@@ -1121,7 +1121,7 @@ The second one is that the offset for calling `random_number` changed. The
 zero offset got filled in and is now `0d 01 00 00` (and therefore the text
 representation on the right changed too to point at `0x1179`, somewhere shortly
 after the end of `main`). Since x86 is "little endian", this number is
-`0x010d`, or 269 bytes after the next instruction.
+`0x010d`, or 269 bytes after the next instruction (`0x106c+0x010d=0x1179`).
 
 We can check this by looking at the disassembly (and address) of the
 `random_number` function. Sure enough, it's at `0x1179`:
