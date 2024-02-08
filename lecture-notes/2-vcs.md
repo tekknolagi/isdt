@@ -1119,8 +1119,55 @@ a83e7a6 Add #include directives to fix compilation
 $ 
 ```
 
-TODO: description of how arguments are parsed for subcommands that take both an
-optional revision and an optional list of files (it's not pretty)
+Like `git show`, `git log` uses revision parameters to determine which commits to show. Since `git log` typically shows multiple commits, though, the rules are a bit more complex:
+
+- Each revision parameter tells `git log` to show that commit and all its *ancestors* (i.e. commits reachable by recursively following its parent).
+- Instead of just one revision parameter, `git log` accepts an arbitrary number of them and shows all their ancestors.
+- Revision parameters can be prefixed with `^` (i.e. `^<commit>`), which tells `git log` not to show them or their ancestors, even if it otherwise would.
+- The shorthand `<earliest>..<latest>` can be used to show only the ancestors of `<latest>` that came after `<earliest>`­---in other words, the range of commits between `<earliest>` and `<latest>` It's equivalent to `git log <latest> ^<earliest>`.
+
+For example:
+
+```console?prompt=$
+$ git log 1838eeae..HEAD
+commit 6fd624ec083a21b76a0879697974ccc3820e14e8 (HEAD -> main)
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Wed Jan 31 21:23:10 2024 -0500
+
+    Detect errors when parsing numbers
+
+    strtol can signal error via errno, but it can also report when it
+    stopped parsing input. This is helpful for determining if the input was
+    not a number, or at least did not start with a digit.
+
+commit 8ad441d1469c3e23bd7a261f9145f64179364c7c
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Wed Jan 31 21:17:45 2024 -0500
+
+    Support the modulo operator
+$ 
+```
+
+Note that, instead of showing the entire history, this log cuts off right where commit 1838eeae89ba ("Make main a simple calculator") would appear. You'll usually pass `git log` just a single revision parameter (typically a branch name), but sometimes you'll find more complex arguments useful.
+
+As if that weren't enough, `git log` accepts even more optional arguments after the revision parameter(s): you can pass it file paths within your repository to restrict the log to only commits that affect those files:
+
+```
+TODO: our example repo only has one file :( Worth adding one more commit with a different file, or is it fine to omit this example?
+```
+
+This is extremely useful in large repositories where changes to a given file or directory are often interspersed among hundreds of unrelated commits.
+
+You might be wondering, though: if `git log` takes both revision parameters and file paths, how does it tell the two apart? What if your repository has a file named `HEAD`, for example? The answer is that it does its best to guess where the revision parameters end, but it can guess wrong when there are name conflicts.
+
+We mention this case not because it's common, but because it's extremely confusing if you encounter it unawares. Luckily, there's an easy way to ensure you never encounter it: put `--` before your path list to tell `git log` exactly where it starts:
+
+```console?prompt=$
+$ git log --oneline HEAD ^1838eeae -- main.c
+6fd624e (HEAD -> main) Detect errors when parsing numbers
+8ad441d Support the modulo operator
+$ 
+```
 
 #### Seeing what's changed
 
