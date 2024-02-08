@@ -14,7 +14,10 @@ the process of *building* code---that is, converting it into a form that can be
 run and/or distributed[^build-process]. You can think of build systems as
 supercharged shell scripts: like shell scripts, their purpose is to encapsulate
 a complex and intricate sequence of steps within a single command that's easy
-to remember and is guaranteed to produce the same result each time it's run.
+to remember and is guaranteed to produce the same result each time it's
+run[^reproducible-builds].
+
+[^reproducible-builds]: <!-- TODO -->
 
 Build systems differ from the shell in a key conceptual way, though: when you
 run a script, you tell the shell exactly what commands to run and in what
@@ -146,10 +149,10 @@ the build process[^phony]. In the example below, a Makefile has a target called
 [^phony]: Not always; sometimes there are "phony" targets that are names for
     batches of recipes and do not produce files.
 
-```
+```make
 mybinary:
-    gcc main.c
-    mv a.out mybinary
+	gcc main.c
+	mv a.out mybinary
 ```
 
 It also has *recipes* to build that target: `gcc main.c`. The recipes section
@@ -169,10 +172,10 @@ commands might be necessary.
 
 Let's look again at the Makefile from above:
 
-```
+```make
 mybinary:
-    gcc main.c
-    mv a.out mybinary
+	gcc main.c
+	mv a.out mybinary
 ```
 
 We can run this once with `make mybinary` and then we will have a `mybinary` on
@@ -180,7 +183,7 @@ disk. During the course of development, though, we will likely make a change to
 `main.c` and try to rebuild with `make mybinary`. Make will give an unhelpful
 response and do nothing:
 
-```
+```console?prompt=$
 $ make mybinary
 gcc main.c
 mv a.out mybinary
@@ -200,10 +203,10 @@ the programmer, have to specify the relationship manually.
 In order to instruct Make to rebuild `mybinary` when `main.c` is modified, add
 `main.c` as a *dependency* of `mybinary`:
 
-```
+```make
 mybinary: main.c
-    gcc main.c
-    mv a.out mybinary
+	gcc main.c
+	mv a.out mybinary
 ```
 
 Now Make will look at the <dfn><abbr title="modification time">m-time</abbr></dfn>
@@ -222,7 +225,7 @@ For languages like C that have a notion of split compilation, Make is even more
 useful. If you have, say, 10 C files that all need to be compiled together, it
 is possible to run:
 
-```
+```console?prompt=$
 $ gcc file0.c file1.c ... file9.c -o mybinary
 $
 ```
@@ -241,7 +244,7 @@ file* and then link those together:
     `include` mechanism is a textual copy&amp;paste process early in the
     compilation pipeline.
 
-```
+```console?prompt=$
 $ gcc -c file0.c file1.c ... file9.c
 $ gcc file0.o file1.o ... file9.o -o mybinary
 $
@@ -253,34 +256,35 @@ linking step, which together should be much faster than recompiling everything.
 It's hard to keep track of this manually, so we can write Make recipes to
 handle this for us:
 
-```
+```make
 mybinary: file0.o file1.o file2.o  # and so on
-    gcc file0.o file1.o file2.o -o mybinary
+	gcc file0.o file1.o file2.o -o mybinary
 
 file0.o: file0.c
-    gcc -c file0.c
+	gcc -c file0.c
 
 file1.o: file1.c
-    gcc -c file1.c
+	gcc -c file1.c
 
 file2.o: file2.c
-    gcc -c file2.c
+	gcc -c file2.c
 ```
 
 Now it is possible to modify any one C file and have the binary rebuilt
 automatically with the least amount of steps.
 
 You will notice that all of this typing is getting cumbersome. We will talk
-about a solution to this repetition later!
+about a solution to this repetition later! We will also talk more in depth
+about compiling and linking later.
 
 ### The dependency graph
 
 A DAG, just like Git uses!
 
 ```
-┌───────────────────┐      
-│mybinary           │      
-└┬────────┬────────┬┘      
+┌───────────────────┐
+│mybinary           │
+└┬────────┬────────┬┘
 ┌▽──────┐┌▽──────┐┌▽──────┐
 │file0.o││file1.o││file2.o│
 └┬──────┘└┬──────┘└┬──────┘
@@ -289,7 +293,7 @@ A DAG, just like Git uses!
 └───────┘└───────┘└───────┘
 ```
 
-```
+```console?prompt=$
 $ cat Makefile
 mybinary: mybinary
 	touch mybinary
@@ -299,6 +303,8 @@ $
 ```
 
 ### What happens when you type `make`
+
+two phases: read-in and target-update <!-- TODO -->
 
 * Make reads `Makefile`
 * determines target(s) to execute
@@ -323,3 +329,890 @@ Make has been around a long time and its performance and correctness are
 well understood. Its interface is well understood, too; people who know Make
 are at home in most other projects that use Make. Not so for a custom shell
 script.
+
+### Variables
+
+Up until now we have written rules and filenames and commands as constants in
+the Makefile. This means that if you ever had to reference a file `foo.c` more
+than once in the Makefile, you would have to copy around the text. Fortunately,
+like other programming languages, Make provides variables.
+
+User-defined variables come in two forms in Make: *simply expanded* variables
+use `NAME := val` syntax and *recursively expanded* variables use `NAME = val`
+syntax. You will likely not want to use recursively expanded variables much, if
+at all, as they have different semantics than in other programming languages:
+
+<!-- TODO(max): What about ::= ??? -->
+
+**Simply expanded** means that variable references and function calls on the
+right hand side happen when the variable is *defined* (in the *read-in* phase).
+
+In the below example, we have a simply expanded variable `EXE` that can be used
+throughout the Makefile to refer to the desired executable name. This allows
+for a single point of truth.
+
+```make
+EXE := main
+$(EXE): main.o log.o
+	gcc main.o log.o -o $(EXE)
+main.o: main.c log.h
+	gcc -c main.c
+log.o: log.c log.h
+	gcc -c log.c
+.PHONY: clean
+clean:
+	rm -rf *.o $(EXE)
+```
+
+(While variables can normally have any name, the convention is to use
+upper-case characters.)
+
+**Recursively expanded** means that variable references and function calls on
+the right hand side happen when the variable is *used* (in the *target-update*
+phase for recipe usage). This structure allows complex templates to be stored
+in a variable and used with many different values.
+
+Expansions of both kinds of variables can occur anywhere, and use `$(VAR)`
+syntax.
+
+In the below example, we have a mix of simply and recursively expanded
+variables. `LOG_TARGET` is recursively expanded (note the `=`) and `CFLAGS` is
+simply expanded (note the `:=`).
+
+```make
+LOG_TARGET = echo "Current target: $@" ; echo "Prerequisites: $^"
+CFLAGS := -Wall
+CFLAGS := $(CFLAGS) -Werror
+main: main.o log.o
+	$(LOG_TARGET)
+	gcc $(CFLAGS) $^ -o $@
+main.o: main.c log.h
+	$(LOG_TARGET)
+	gcc $(CFLAGS) -c $< -o $@
+log.o: log.c log.h
+	$(LOG_TARGET)
+	gcc $(CFLAGS) -c $< -o $@
+```
+
+Because `LOG_TARGET` is recursively expanded, it is expanded at each use site
+in the Makefile: in `main`, in `main.o`, and in `log.o`. Every time it is
+expanded, the variable references inside it see the automatic variables (those
+funky-looking variables) local to that rule.
+
+Speaking of automatic variables...
+
+### Automatic variables
+
+Similar to how C gives you `__FILE__` and `__LINE__` and `__func__`, Make also
+defines some variables for you within rules. These special variables are called
+*automatic variables* and help refer to different parts of the rule so you, the
+programmer, don't repeat yourself too much.
+
+There are many automatic variables, particuarly in the GNU implementation of
+Make, but you will probably see these three the most: `$@`, `$^`, and `$<`. In
+order:
+
+* `$@` refers to the name of the target. In our example above, this is used in
+  the `gcc` invocations to provide an output filename for the `-o` option. In
+  the `main` rule, `$@` expands to `main`, in the `main.o` rule it expands to
+  `main.o`, etc.
+* `$^` refers to the names of all of the prerequisites, separated by spaces. In
+  the `main` rule, for example, it refers to `main.o log.o`. It is used here to
+  provide the names of all of the object files to GCC so they can be linked
+  together. It is *not* used in the `.o` rules because generally you do not
+  pass `.h` files to the compiler (they are `include`d).
+* `$<` refers to the name of the first prerequisite. You can infer from this
+  that generally people write C Makefiles in a way that makes this variable
+  useful:
+	```make
+	main.o: main.c main.h
+		gcc -c $<
+	```
+  Both `main.c` and `main.h` are prerequisites for `main.o`, but because
+  `main.c` is listed as the first prerequisite, it can be referred to by `$<`
+  in the build recipe.
+
+See [the GNU Make
+documentation](https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html)
+for more automatic variables.
+
+### Functions
+
+Make has [many built-in
+*functions*](https://www.gnu.org/software/make/manual/html_node/index.html#toc-Functions-for-Transforming-Text),
+which allow you to process text directly from within Make.
+
+Here is a little snippet that showcases `word`, `subst`, `patsubst`, and
+`filter`:
+
+```make
+# world
+x := $(word 2,hello world)
+# hi world
+x := $(subst hello,hi,hello world)
+# src/foo.c src/bar.c
+objs := bld/foo.o bld/bar.o
+x := $(patsubst bld/%.o,src/%.c,$(objs))
+# foo.c bar.c
+srcs := foo.c bar.c bar.h
+x := $(filter %.c,$(srcs))
+```
+
+You'll usually use functions when specifying variables, targets, or
+prerequisites: inside a recipe itself, it's almost always better to use the
+shell to do any text processing you need. <!-- TODO: add a footnote explaining
+why -->
+
+Function invocations take one or more comma-separated arguments, which is what
+distinguishes them from variable expansions. They otherwise have identical
+`$()` syntax.
+
+Functions are are (in general) evaluated the same way as variables are
+expanded---at the time they're used in a rule or a `:=` assignment.
+
+### Make variables and functions are textual
+
+From reading about variable expansions and function expansions and the various
+phases of everything, you may have gotten the feeling that, similar to the C
+preprocessor and shell, everything is textual. You would be correct.
+
+Like the shell, Make has no concept of data types. Everything is text, and
+Make's minimal escaping and tolerance for spaces can lead to some pretty odd
+constructs. The following is taken verbatim from the GNU Make manual:
+
+```make
+comma:= ,
+empty:=
+space:= $(empty) $(empty)
+foo:= a b c
+bar:= $(subst $(space),$(comma),$(foo))
+# bar is now 'a,b,c'.
+```
+
+We will leave you to marinate with that one.
+
+## Lecture 3
+
+You've learned about variables and some built-in functions. With just that, you
+can write quite a reasonable Makefile for a little project. But you will soon
+find yourself wanting features like the following.
+
+### Pattern rules
+
+Similar to the patterns you saw in `patsubst`, rules can have patterns. To
+specify a pattern rule, use `%` somewhere in the target name. For example:
+
+```make
+%.o: %.c %.h
+	gcc -c $< -o $@
+```
+
+In this rule, the `%` matches any (non-empty) text before `.o` and is called
+the *stem*. This means it will match any target like `a.o`, `foo.o`, etc. When
+it matches, Make substitutes the stem (`a` or `foo`) in the `%` in the
+prerequisites as well.
+
+<!-- TODO(tom): clarify whether multi-target pattern rules are different from
+normal "multi-target" rules. they seem different?? -->
+
+In these pattern rules, automatic variables do not only remain convenient; they
+are also a necessity.
+
+### Implicit rules
+
+If you have ever had `foo.c` sitting around and no Makefile yet, but
+accidentally run `make`, you may have noticed Make... still do something? This
+is because of *implicit rules*. These "implicit rules" are automatically
+present any time you run `make` even if you don't have a Makefile at all!
+
+Make already knows how to compile C, C++, Fortran, and many other languages:
+inside Make are built-in pattern rules for common file extensions (e.g. `.c`,
+`.cpp`, `.o`).
+
+Because they are built-in, they support limited customization. If the implicit
+rule makes use of variables (such as `CC`, `CFLAGS`, and `LDFLAGS`), then you
+can customize execution by defining those variables.
+
+```console?prompt=$
+$ cat Makefile
+CFLAGS := -g
+hello: hello.o world.o
+$ make hello
+cc -g -c -o hello.o hello.c  # from implicit rule for compiling C
+cc -g -c -o world.o world.c  # from implicit rule for compiling C
+cc hello.o world.o -o hello  # from implicit rule for linking C
+rm -f hello.o  # by default, Make doesn't keep intermediate
+               # files between two pattern rules
+rm -f world.o
+$
+```
+
+Dependencies can be altered by writing a rule definition with no recipe. For
+example, the implicit `.c` to `.o` rule only has the `.c` file as a dependency:
+
+```make
+%.o: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c
+```
+
+If you have any header files that are dependencies for a given object file, you
+probably want them included. To include the dependencies you want without
+rewriting the whole thing, skip the recipe portion of the rule; the implicit
+recipe will be used.
+
+```make
+hello.o: hello.c world.h
+	# still going to do $(CC) etc
+```
+
+Note that if you are, for example, adding more `.o` dependencies to a big C
+binary and still planning on using the implicit rule, you must make sure that
+the target matches at least one of the `.o` dependencies or the rule won't
+match:
+
+```make
+hello: hello.o world.o foo.o bar.o
+```
+
+Because `hello` shares a stem with `hello.o`, the rule will match. Also note
+that all of the other `.o` files are not the target of any rule! They use the
+implicit `%.o: %.c` pattern rule.
+
+#### Pitfalls
+
+It's not all fun and rainbows. Implicit rules are convenient, and you should
+use them if you want, but remember the following:
+
+* Header files not automatic prerequisites (but you can add them yourself, as
+  above)
+* Implicit rules are not explicit, which some people and projects value
+
+So they may not be the best for you and your team.
+
+### Silencing commands
+
+Build output can be noisy. When you run a command anywhere in a Makefile, Make
+prints the command (not its output---the command itself) before running it.
+This can be useful for debugging, but sometimes the command's only purpose is
+to print something else (e.g. `echo`). In this case, it's not helpful. To
+prevent the command from being printed, preface its line in your recipe with
+`@`.
+
+Without silencing:
+
+```make
+.PHONY: mytarget
+mytarget:
+	echo "hello"
+```
+
+```console?prompt=$
+$ make mytarget
+echo "hello"
+hello
+$
+```
+
+With silencing:
+
+```make
+$ cat Makefile
+.PHONY: mytarget
+mytarget:
+	@echo "hello"
+```
+
+```console?prompt=$
+$ make mytarget
+hello
+$
+```
+
+### `?=` and `+=` assignment
+
+We already saw `=` (recursively expanded) and `:=` (simply expanded)
+assignments for variables. Now we are going to look at `?=` and `+=`.
+
+**`?=` assignment**:
+
+* Only sets the variable if it hasn't been defined yet
+* Doesn't override variables that have been defined, *even if they're empty*
+* Is always recursively-expanded
+
+**`+=` assignment**:
+
+* Appends the given text to the end of an existing variable
+* If not yet defined, is recursively-expanded; otherwise, is expanded as
+  specified by the previous definition
+
+The `+=` assignment is useful for building up lists of things in a Makefile.
+That's pretty much only what we've seen it used for.
+
+The `?=` assignment is excellent for allowing the person running `make` to
+customize the execution of the Makefile without editing it. Speaking of
+which...
+
+### Variables, overrides, and the environment
+
+<!-- TODO -->
+
+#### Environment variables
+
+You learned about environment variables in the command-line module. They are a
+great way to pass around snippets of data between programs. As such, they are
+commonly used in Make. Make even *imports all environment variables* as Make
+variables. For example, if you have the following Makefile:
+
+```make
+.PHONY: all
+VAR:=$(HELLO)
+all:
+	@echo $(VAR)
+```
+
+And then define an environment variable `HELLO` while running Make:
+
+```console?prompt=$
+$ HELLO=world make
+world
+$
+```
+
+you can use `HELLO` as a Make variable.
+
+In short, when using environment variables in commands such as `export CFLAGS=-g ; make hello`:
+
+* The shell runs make with the variables (in this case, `CFLAGS`) set in the
+  environment
+* Make imports all environment variables as Make variables
+* However, assignments in the Makefile override environment variables! `=` and
+  `:=` replace them entirely, while `+=` appends to them
+
+So, for example, the following Makefile overrides the environment variable:
+
+```make
+.PHONY: all
+HELLO:=Max
+all:
+	@echo $(HELLO)
+```
+
+```console?prompt=$
+$ HELLO=Tom make
+Max
+$
+```
+
+#### Variable overrides
+
+Variable overrides are different. While environment variables allow for
+customization from the outside, variable overrides are a feature of Make that
+let the user forcibly change variable values.
+
+This means that making changes to variables need not involve mucking around
+inside a Makefile and finding all places where a variable is initialized.
+Instead, you can decide once and for all what the value should be when invoking
+`make`.
+
+Imagine using someone else's Makefile where they have hard-coded `CC:=gcc` at
+the top. No need to edit; run `make CC=clang` and enjoy using your compiler of
+choice.
+
+In short, when using variable overrides in commands such as `make CFLAGS=-g hello`:
+
+* From the shell's perspective, `CFLAGS=-g` is a single command-line argument,
+  then Make parses the command-line argument as a variable assignment. Though
+  it looks like an environment variable, it *is not*
+* Make sets the given variable to the given value
+* Causes *all* assignments in Makefile to that variable (`=`, `:=`, and `+=`)
+  to be ignored
+
+So, for example, the following Makefile's `HELLO` value is ignored in favor of
+the override:
+
+```make
+.PHONY: all
+HELLO:=Max
+all:
+	@echo $(HELLO)
+```
+
+```console?prompt=$
+$ make HELLO=Tom
+Tom
+$
+```
+
+### Implicit variables
+
+Some variables used by implicit rules, like `CC` (the C compiler) have default
+values (`CC`, for example, defaults to `"cc"`). While they exist for use
+primarily in implicit rules, they also have values all throughout the Makefile;
+use them as you see fit.
+
+They are different than "normal" variables in two ways:
+
+* These default values have lower precedence than environment variables
+* They can be overridden by the environment or an assignment in your Makefile
+
+So, for example, the following Makefile's (default, implicit) `CC` value of
+`"cc"` is ignored in favor of the environment variable:
+
+```make
+.PHONY: all
+all:
+	@echo $(CC)
+```
+
+```console?prompt=$
+$ make
+cc
+$ CC=wackycc make
+wackycc
+$
+```
+
+or by an assignment:
+
+```make
+.PHONY: all
+CC:=rainbowcc
+all:
+	@echo $(CC)
+```
+
+```console?prompt=$
+$ make
+rainbowcc
+$
+```
+
+### "multi-target" rules
+
+<!-- TODO -->
+
+### .PHONY
+
+<!-- TODO -->
+
+"A phony target is one that is not really the name of a file; rather it is just
+a name for a recipe to be executed when you make an explicit request. There are
+two reasons to use a phony target: to avoid a conflict with a file of the same
+name, and to improve performance. If you write a rule whose recipe will not
+create the target file, the recipe will be executed every time the target comes
+up for remaking."
+
+https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html
+
+### .DEFAULT_GOAL
+
+Until now, we have been using this `.PHONY` target `all` and haven't talked
+about it one bit. You may have wondered to yourself what it does. Does it run
+all the targets? Is it just the name of one target? You may have wondered if it
+was a quirk of this course, convention, or perhaps even hard-coded into Make
+itself. Let's take a look and see if we can figure it out.
+
+If we write a Makefile with one target named `all`:
+
+```make
+.PHONY: all
+all:
+	echo Hello from all
+```
+
+and run `make`:
+
+```console?prompt=$
+$ make
+echo Hello from all
+Hello from all
+$
+```
+
+As you might have expected, it runs the `all` target. Okay, let's try adding
+another target and see if that runs too:
+
+```make
+.PHONY: all something
+all:
+	echo Hello from all
+
+something:
+	echo Hello from something
+```
+
+and run `make`:
+
+```console?prompt=$
+$ make
+echo Hello from all
+Hello from all
+$
+```
+
+So it seems as though it really is the name of a target. What happens if we
+re-order the targets:
+
+```make
+.PHONY: all something
+something:
+	echo Hello from something
+
+all:
+	echo Hello from all
+```
+
+and run `make`?
+
+```console?prompt=$
+$ make
+echo Hello from something
+Hello from something
+$
+```
+
+So maybe actually the name doesn't matter at all. It kind of looks like Make is
+actually just running the first target in the file... and that's exactly right!
+The target `all` is just convention, and not in any way hard-coded into Make.
+And it's also convention to put it first in the Makefile as a default. But you
+could choose to do whatever you want.
+
+If you don't want to put `all` first or for some reason have other constraints
+on the organization of your Makefile, you can even tell GNU Make (and only GNU
+Make) to use a different target by default by setting the `.DEFAULT_GOAL`
+variable. If you do that, the target order does not matter.
+
+<!-- TODO(max): .DEFAULT_GOAL is re-assignable... what are the semantics?
+...why? -->
+
+### Investigation
+
+On a meta note, this kind of exploration is one of (at least) three kinds of
+investigation that we are trying to push you to do. We designed and executed
+several small experiments in the hope of learning something about how Make
+works from the outside.
+
+Another reasonable thing to do is going off and reading the documentation,
+whether that's `man` pages, `info` pages, or some web resource. While writing
+these notes, for example, I have the Make HTML documentation side-by-side as a
+reference.
+
+The last---but certainly not least---way of doing things is to dive right in
+and read through the code. This is especially necessary if the documentation
+appears incorrect or is completely missing. It may be especially challenging if
+the project uses a... unique code style or is written in a language you are
+unfamiliar with. But you will likely read a good deal of code in your lifetime,
+so learning to both skim and thoroughly read code is a skill that will help
+you.
+
+## Lecture 4
+
+### Compilation
+
+<!-- TODO(max): Preprocessor? -->
+
+Forget everything you heard in previous classes. For the sake of that course's
+specific learning material, that course probably used an overly-specific
+definition of the word "compile". We are going to define it much more broadly
+because Max is a pedantic compilers guy.
+
+A **compiler** is a program that takes input in one language, L1, and
+transforms that input into another language, L2. Generally people imply that L2
+is less expressive or "lower level", but L2 can be as expressive as L1. It can
+even be the same language as L1!
+
+For example, let's look at the result of a C compiler transforming input given
+in the C programming language. Below is a snippet of code representing the
+factorial function:
+
+```c
+int factorial(int x) {
+  if (x < 2) {
+    return 1;
+  }
+  return x * factorial(x - 1);
+}
+```
+
+Using the Clang C compiler, we can transform this input from C into x86\_64
+assembly language[^intermediate-representations]. The output looks like this:
+
+[^intermediate-representations]: In fact, inside Clang there are many different
+    compilers that are responsible for transforming textual C to an abstract
+    syntax tree (AST), from the AST to LLVM, and from LLVM to asssembly.
+
+<!-- TODO(max): Use objdump as we do in linking section -->
+
+```nasm
+factorial:                              ; @factorial
+        mov     eax, 1
+        cmp     edi, 2
+        jl      .LBB0_2
+.LBB0_1:                                ; =>This Inner Loop Header: Depth=1
+        imul    eax, edi
+        lea     ecx, [rdi - 1]
+        cmp     edi, 2
+        mov     edi, ecx
+        ja      .LBB0_1
+.LBB0_2:
+        ret
+```
+
+You might notice that our chosen variable names are gone (no more `x` and we
+have these funky-looking `eax`, `edi`, `.LBB0_1`, etc), there is no more
+obvious math (`x * factorial(x - 1)` is also gone), and the instructions appear
+to be a bit more regular looking... more linear. There is no `if` and there are
+no curly braces... instead, there are only jump instructions and labels. These
+are the qualities that people normally ascribe to lower-level languages.
+
+Once the assembly has been generated, Clang has an assembler that turns the
+text assembly instructions into machine code---unreadable bits and bytes. It
+also adds some metadata about what kind of file it is and what functions are
+where. All this together is called an *object file*---a `.o` file.
+
+<!-- TODO(max): Add section diagram for ELF? -->
+
+### Linking
+
+<!-- from https://joellaity.com/2020/01/25/linking.html -->
+<img src="{{site.baseurl}}/assets/images/linking.jpg" style="max-width: 400px;" />
+
+Object files are not complete programs. They cannot be run on their own, even
+if they have a `main` function. Some object files also have dependencies on
+external functions that have not been resolved yet---functions like `printf`
+and `fabs`. In order to call these functions, the object file must be given the
+addresses of the other functions. This proecss is called *linking* and it
+produces an executable file.
+
+The above diagram with `main.cc` and `square.cc` (C++ files, not C files, but
+same idea) can be compiled two ways, both with the same outcome. The first way
+is as the diagram shows: separate compilation.
+
+```console?prompt=$
+$ c++ main.cc -c  # compile
+$ c++ square.cc -c  # compile
+$ c++ main.o square.o  # link
+```
+
+This is the way we have been building programs in our Makefiles throughout this
+module: each C file gets compiled into an object file as just described, and
+then somehow they're combined into an executable program. Let's try to
+demystify what happens there with some experiments: we'll write a main file
+that calls a function to generate a random number and then print it:
+
+```c
+// main.c
+#include <stdio.h>
+
+int random_number();
+
+int main() {
+  printf("Your random number is: %d\n", random_number());
+}
+```
+
+Note that instead of having a header file, we are instead writing `int
+random_number();`. This is equvialent to `#include`ing a header file that has
+the same declaration because an `#include` is equvialent to copy-and-pasting
+the header into the C file.
+
+We'll also write a little library to generate "random" numbers.
+
+```c
+// lib.c
+int random_number() {
+  // See documentation: https://xkcd.com/221/
+  return 4;
+}
+```
+
+We can compile the `main.o` object by running `gcc` with the `-c` flag, as you
+have seen before:
+
+> (Note that I am using `-Os`, which indicates to GCC that it should try and
+> produce shorter code. It's not required; it's just to make the assembly more
+> human-readable. Also note that I am using `-M intel` so that the syntax
+> matches up with the assembly listing above. This is also not required, and if
+> you omit it, `objdump` may give you assembly formatted with AT&amp;T syntax.
+> The actual code on disk is the same regardless of presentation syntax.)
+
+```console?prompt=$
+$ gcc -Os -c main.c
+$ objdump -M intel --disassemble=main main.o
+0000000000000000 <main>:
+   0:	f3 0f 1e fa          	endbr64
+   4:	50                   	push   rax
+   5:	31 c0                	xor    eax,eax
+   7:	e8 00 00 00 00       	call   c <main+0xc>
+   c:	48 8d 35 00 00 00 00 	lea    rsi,[rip+0x0]        # 13 <main+0x13>
+  13:	bf 01 00 00 00       	mov    edi,0x1
+  18:	89 c2                	mov    edx,eax
+  1a:	31 c0                	xor    eax,eax
+  1c:	e8 00 00 00 00       	call   21 <main+0x21>
+  21:	31 c0                	xor    eax,eax
+  23:	5a                   	pop    rdx
+  24:	c3                   	ret
+$
+```
+
+In particular, it's important to note that the offset for the function
+`random_number` is all `0`s. You can see this by looking at the `call`
+instruction (the x86 opcode for this particular kind of call is `e8` and can be
+found at offset `7`). The `e8` call opcode is a *relative call*, meaning that
+the instruction takes an offset as its argument. In this case, it's `0xc`
+because `e8` takes an offset relative to the next instruction (not an absolute
+address) and the next instruction begins at `0xc`.
+
+It's probably not the case that GCC dumped the body of `random_number` into the
+`main` function. It's impossible, actually, since we compiled `main.c` in
+isolation---we did not give GCC the code for `lib.c` in our compile command.
+Same thing with `printf` (at code offset `0x1c`). So something must be afoot...
+perhaps the it's a placeholder value. Which means that all it knows about
+`random_number` is that it will eventually be provided by some other object
+file (or it will fail to link).
+
+And yep, if we ask GCC to build an executable, it fails to link:
+
+```console?prompt=$
+$ gcc -Os main.c
+/usr/bin/ld: /tmp/ccwTPkhi.o: in function `main':
+main.c:(.text.startup+0x8): undefined reference to `random_number'
+collect2: error: ld returned 1 exit status
+$
+```
+
+(Note that we did not pass `-c`, so we were requesting a full compilation and
+linking of `main.c` into an executable, not an object file.)
+
+But okay, let's give `main.o` the library it needs and compile a full
+executable. This appears to link successfully---there was no error
+message---and we can inspect the code:
+
+```console?prompt=$
+$ gcc -Os main.c lib.c
+$ objdump -M intel --disassemble=main ./a.out
+0000000000001060 <main>:
+    1060:	f3 0f 1e fa          	endbr64
+    1064:	50                   	push   rax
+    1065:	31 c0                	xor    eax,eax
+    1067:	e8 0d 01 00 00       	call   1179 <random_number>
+    106c:	48 8d 35 91 0f 00 00 	lea    rsi,[rip+0xf91]        # 2004 <_IO_stdin_used+0x4>
+    1073:	bf 01 00 00 00       	mov    edi,0x1
+    1078:	89 c2                	mov    edx,eax
+    107a:	31 c0                	xor    eax,eax
+    107c:	e8 cf ff ff ff       	call   1050 <__printf_chk@plt>
+    1081:	31 c0                	xor    eax,eax
+    1083:	5a                   	pop    rdx
+    1084:	c3                   	ret
+$
+```
+
+There are a couple things to note!
+
+The first one is that our code offsets got a lot bigger. Whereas before we
+started `main` with offset `0x0` and went until `0x24`, now we start at
+`0x1060` and go until `0x1084`. That seems to indicate that the `main` function
+has been bundled with other code, some of which has been stored before it.
+
+The second one is that the offset for calling `random_number` changed. The
+zero offset got filled in and is now `0d 01 00 00` (and therefore the text
+representation on the right changed too to point at `0x1179`, somewhere shortly
+after the end of `main`). Since x86 is "little endian", this number is
+`0x010d`, or 269 bytes after the next instruction (`0x106c+0x010d=0x1179`).
+
+We can check this by looking at the disassembly (and address) of the
+`random_number` function. Sure enough, it's at `0x1179`:
+
+```console?prompt=$
+$ objdump -M intel --disassemble=random_number ./a.out
+0000000000001179 <random_number>:
+    1179:	f3 0f 1e fa          	endbr64
+    117d:	b8 04 00 00 00       	mov    eax,0x4
+    1182:	c3                   	ret
+$
+```
+
+Last, we notice that the call to `printf` changed to this weird
+`__printf_chk@plt` thing. We're going to mostly gloss over that and say "it's
+dynamically linked", which means that at program start time, the loader will
+find and set the real address for `printf`[^static-linking].
+
+[^static-linking]: If you're curious, you can see what happens when we
+    statically link our program with `-static`, which means that we want to
+    bundle `printf` (and other normally dynamically linked libraries) alongside
+    it:
+
+    ```console?prompt=$
+    $ gcc -Os -static main.c lib.c
+    $ objdump -M intel --disassemble=main ./a.out
+    0000000000401619 <main>:
+      401619:	f3 0f 1e fa          	endbr64
+      40161d:	50                   	push   rax
+      40161e:	31 c0                	xor    eax,eax
+      401620:	e8 40 01 00 00       	call   401765 <random_number>
+      401625:	48 8d 35 d8 69 09 00 	lea    rsi,[rip+0x969d8]        # 498004 <_IO_stdin_used+0x4>
+      40162c:	bf 01 00 00 00       	mov    edi,0x1
+      401631:	89 c2                	mov    edx,eax
+      401633:	31 c0                	xor    eax,eax
+      401635:	e8 d6 84 04 00       	call   449b10 <___printf_chk>
+      40163a:	31 c0                	xor    eax,eax
+      40163c:	5a                   	pop    rdx
+      40163d:	c3                   	ret
+    $
+    ```
+
+    Now `__printf_chk` has a fixed address. No more `@plt`.
+
+<!-- TODO(max): Since we're talking about Linux, mention ELF? And maybe also
+PE, or maybe that is later -->
+
+<!-- TODO(max): LTO? -->
+
+### Compiling everything does not scale
+
+<!-- TODO(max): We covered this earlier. Do we need to rehash? Do we need to
+make a graph showing compilation speed vs incremental compilation speed or
+something? -->
+
+<!-- TODO(max): The rest of the file from this line down is kind of "optional"
+notes-wise since it's in the more exploratory part of this module and it'll be
+more presentation-heavy. We should come back to it later. -->
+
+### Loading
+
+### Large projects with make
+#### Recursive make
+#### include directive
+
+## Lecture 5
+
+### Out-of-tree builds
+### Reproducible builds
+### Limitations of Make
+### Types of build system
+### Build system vs build runner vs task runner
+### Language-agnostic
+#### Make
+#### Ninja
+#### Rake
+#### Tup
+
+## Lecture 6
+
+### Multi-language
+#### GNU autotools
+#### CMake
+#### Meson
+#### Bazel, Buck
+### Language-specific
+#### Pip
+#### Setuptools/distutils
+#### Poetry
+#### Cargo
+### Web build systems
+### Build systems vs package managers
+### How to choose
+### Hermeticity
+### Hermetic environments
+### Entire OS images
+### Parting words
