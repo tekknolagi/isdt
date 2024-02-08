@@ -1066,13 +1066,9 @@ It's probably not the case that GCC dumped the body of `random_number` into the
 `main` function. It's impossible, actually, since we compiled `main.c` in
 isolation---we did not give GCC the code for `lib.c` in our compile command.
 Same thing with `printf` (at code offset `0x1c`). So something must be afoot...
-perhaps the it's a placeholder value.
-
-Because `lib.c` hasn't been compiled yet, it's impossible for these offsets to
-be accurate: the compiler has no way of knowing where the code to
-`random_number` or `printf` lives. All it knows about `random_number` is that
-it will eventually be provided by some other object file (or it will fail to
-link).
+perhaps the it's a placeholder value. Which means that all it knows about
+`random_number` is that it will eventually be provided by some other object
+file (or it will fail to link).
 
 And yep, if we request an executable, it fails to link:
 
