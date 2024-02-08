@@ -1134,32 +1134,33 @@ $
 Last, we notice that the call to `printf` changed to this weird
 `__printf_chk@plt` thing. We're going to mostly gloss over that and say "it's
 dynamically linked", which means that at program start time, the loader will
-find and set the real address for `printf`.
+find and set the real address for `printf`[^static-linking].
 
-If you're curious, you can see what happens when we statically link our program
-with `-static`, which means that we want to bundle `printf` (and other normally
-dynamically linked libraries) alongside it:
+[^static-linking]: If you're curious, you can see what happens when we
+    statically link our program with `-static`, which means that we want to
+    bundle `printf` (and other normally dynamically linked libraries) alongside
+    it:
 
-```console?prompt=$
-$ gcc -Os -static main.c lib.c
-$ objdump -M intel --disassemble=main ./a.out
-0000000000401619 <main>:
-  401619:	f3 0f 1e fa          	endbr64
-  40161d:	50                   	push   rax
-  40161e:	31 c0                	xor    eax,eax
-  401620:	e8 40 01 00 00       	call   401765 <random_number>
-  401625:	48 8d 35 d8 69 09 00 	lea    rsi,[rip+0x969d8]        # 498004 <_IO_stdin_used+0x4>
-  40162c:	bf 01 00 00 00       	mov    edi,0x1
-  401631:	89 c2                	mov    edx,eax
-  401633:	31 c0                	xor    eax,eax
-  401635:	e8 d6 84 04 00       	call   449b10 <___printf_chk>
-  40163a:	31 c0                	xor    eax,eax
-  40163c:	5a                   	pop    rdx
-  40163d:	c3                   	ret
-$
-```
+    ```console?prompt=$
+    $ gcc -Os -static main.c lib.c
+    $ objdump -M intel --disassemble=main ./a.out
+    0000000000401619 <main>:
+      401619:	f3 0f 1e fa          	endbr64
+      40161d:	50                   	push   rax
+      40161e:	31 c0                	xor    eax,eax
+      401620:	e8 40 01 00 00       	call   401765 <random_number>
+      401625:	48 8d 35 d8 69 09 00 	lea    rsi,[rip+0x969d8]        # 498004 <_IO_stdin_used+0x4>
+      40162c:	bf 01 00 00 00       	mov    edi,0x1
+      401631:	89 c2                	mov    edx,eax
+      401633:	31 c0                	xor    eax,eax
+      401635:	e8 d6 84 04 00       	call   449b10 <___printf_chk>
+      40163a:	31 c0                	xor    eax,eax
+      40163c:	5a                   	pop    rdx
+      40163d:	c3                   	ret
+    $
+    ```
 
-Now `__printf_chk` has a fixed address. No more `@plt`.
+    Now `__printf_chk` has a fixed address. No more `@plt`.
 
 <!-- TODO(max): Since we're talking about Linux, mention ELF? And maybe also
 PE, or maybe that is later -->
