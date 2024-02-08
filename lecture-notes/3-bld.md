@@ -1052,11 +1052,13 @@ $ objdump -M intel --disassemble=main main.o
 $
 ```
 
-In particular, it's important to note that the address for the function
-`random_number` is just `0`. You can see this by looking at the `call`
+In particular, it's important to note that the offset for the function
+`random_number` is all `0`s. You can see this by looking at the `call`
 instruction (the x86 opcode for this particular kind of call is `e8` and can be
-found at offset `7`). <!-- TODO(max): Explain that call c / 0xc is because it's
-relative to next instruction and the text representation is absolute -->
+found at offset `7`). The textual version on the right hand side shows the
+absolute address for easier reading. In this case, it's `0xc` because `e8`
+takes an offset relative to the next instruction (not an absolute address) and
+the next instruction begins at `0xc`.
 
 `e8 00 00 00 00` seems a little silly to me. What are the odds that the address
 of `random_number` just happens to be `0`? Isn't that supposed to be
