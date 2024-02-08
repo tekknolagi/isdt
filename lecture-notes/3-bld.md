@@ -995,18 +995,26 @@ This is the way we have been building programs in our Makefiles throughout
 this module. Now you know what the compilation does but there is still this
 mysterious step that combines object files.
 
-Let's figure out what is going on by experimenting a little bit.
+Let's figure out what is going on by experimenting a little bit. We'll write a
+main file that calls a function to generate a random number and then print it:
 
 ```c
 // main.c
 #include <stdio.h>
 
-extern int random_number();
+int random_number();
 
 int main() {
   printf("Your random number is: %d\n", random_number());
 }
 ```
+
+Note that instead of having a header file, we are instead writing `int
+random_number();`. This is equvialent to `#include`ing a header file that has
+the same declaration because an `#include` is equvialent to copy-and-pasting
+the header into the C file.
+
+We'll also write a little library to generate "random" numbers.
 
 ```c
 // lib.c
@@ -1016,14 +1024,14 @@ int random_number() {
 ```
 
 We can compile the `main.o` object by running `gcc` with the `-c` flag, as you
-have seen before.
+have seen before:
 
-(Note that I am using `-Os`, which indicates to GCC that it should try and
-produce shorter code. It's not required; it's just for presentation. Also note
-that I am using `-M intel` so that the syntax matches up with the assembly
-listing above. This is also not required, and if you omit it, `objdump` may
-give you assembly formatted with AT&amp;T syntax. The actual code on disk is
-the same regardless of presentation syntax.)
+> (Note that I am using `-Os`, which indicates to GCC that it should try and
+> produce shorter code. It's not required; it's just for presentation. Also
+> note that I am using `-M intel` so that the syntax matches up with the
+> assembly listing above. This is also not required, and if you omit it,
+> `objdump` may give you assembly formatted with AT&amp;T syntax. The actual
+> code on disk is the same regardless of presentation syntax.)
 
 ```console?prompt=$
 $ gcc -Os -c main.c
