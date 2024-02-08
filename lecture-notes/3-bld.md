@@ -997,10 +997,8 @@ $ c++ main.o square.o  # link
 This is the way we have been building programs in our Makefiles throughout this
 module: each C file gets compiled into an object file as just described, and
 then somehow they're combined into an executable program. Let's try to
-demystify what happens there with some experiments:
-
-Let's figure out what is going on by experimenting a little bit. We'll write a
-main file that calls a function to generate a random number and then print it:
+demystify what happens there with some experiments: we'll write a main file
+that calls a function to generate a random number and then print it:
 
 ```c
 // main.c
