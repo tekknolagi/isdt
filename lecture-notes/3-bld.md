@@ -1029,11 +1029,11 @@ We can compile the `main.o` object by running `gcc` with the `-c` flag, as you
 have seen before:
 
 > (Note that I am using `-Os`, which indicates to GCC that it should try and
-> produce shorter code. It's not required; it's just to make the assembly more human-readable. Also
-> note that I am using `-M intel` so that the syntax matches up with the
-> assembly listing above. This is also not required, and if you omit it,
-> `objdump` may give you assembly formatted with AT&amp;T syntax. The actual
-> code on disk is the same regardless of presentation syntax.)
+> produce shorter code. It's not required; it's just to make the assembly more
+> human-readable. Also note that I am using `-M intel` so that the syntax
+> matches up with the assembly listing above. This is also not required, and if
+> you omit it, `objdump` may give you assembly formatted with AT&amp;T syntax.
+> The actual code on disk is the same regardless of presentation syntax.)
 
 ```console?prompt=$
 $ gcc -Os -c main.c
@@ -1058,9 +1058,9 @@ In particular, it's important to note that the offset for the function
 `random_number` is all `0`s. You can see this by looking at the `call`
 instruction (the x86 opcode for this particular kind of call is `e8` and can be
 found at offset `7`). The `e8` call opcode is a *relative call*, meaning that
-it takes an offset as its argument. In this case, it's `0xc` because `e8`
-takes an offset relative to the next instruction (not an absolute address) and
-the next instruction begins at `0xc`.
+the instruction takes an offset as its argument. In this case, it's `0xc`
+because `e8` takes an offset relative to the next instruction (not an absolute
+address) and the next instruction begins at `0xc`.
 
 It's probably not the case that GCC dumped the body of `random_number` into the
 `main` function. It's impossible, actually, since we compiled `main.c` in
