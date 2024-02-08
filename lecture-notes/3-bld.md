@@ -991,9 +991,10 @@ $ c++ square.cc -c  # compile
 $ c++ main.o square.o  # link
 ```
 
-This is the way we have been building programs in our Makefiles throughout
-this module. Now you know what the compilation does but there is still this
-mysterious step that combines object files.
+This is the way we have been building programs in our Makefiles throughout this
+module: each C file gets compiled into an object file as just described, and
+then somehow they're combined into an executable program. Let's try to
+demystify what happens there with some experiments:
 
 Let's figure out what is going on by experimenting a little bit. We'll write a
 main file that calls a function to generate a random number and then print it:
@@ -1055,26 +1056,23 @@ $
 In particular, it's important to note that the offset for the function
 `random_number` is all `0`s. You can see this by looking at the `call`
 instruction (the x86 opcode for this particular kind of call is `e8` and can be
-found at offset `7`). The textual version on the right hand side shows the
-absolute address for easier reading. In this case, it's `0xc` because `e8`
+found at offset `7`). The `e8` call opcode is a *relative call*, meaning that
+it takes an offset as its argument. In this case, it's `0xc` because `e8`
 takes an offset relative to the next instruction (not an absolute address) and
 the next instruction begins at `0xc`.
 
-`e8 00 00 00 00` seems a little silly to me. What are the odds that the address
-of `random_number` just happens to be `0`? Isn't that supposed to be
-invalid---`NULL`, even? Also, look at the address for `printf` (offset `1c`).
-That is a different function and yet the code seems to be using the same
-address for calling both.
+It's probably not the case that GCC dumped the body of `random_number` into the
+`main` function. It's impossible, actually, since we compiled `main.c` in
+isolation---we did not give GCC the code for `lib.c` in our compile command.
+Same thing with `printf` (at code offset `0x1c`). So something must be afoot...
+perhaps the it's a placeholder value.
 
-Last, you may have noticed that we compiled an object file for `main.c`
-*without compiling or referencing `lib.c`*! Unlike in some languages with
-extensive module systems, there is no such transitive compilation in C. We said
-"compile `main.c`" and GCC did that... and only that.
+Because `lib.c` hasn't been compiled yet, it's impossible these offsets to be
+accurate: the compiler has no way of knowing where the code to `random_number`
+or `printf` lives. All it knows about `random_number` is that it will
+eventually be provided by some other object file (or it will fail to link).
 
-So there's actually no way these could be the right addresses because the
-compiler has no way of knowing where the code to `random_number` or `printf`
-lives. All it knows about `random_number` is that it will eventually be
-provided by some other object file (or it will fail to link).
+And yep, if we request an executable, it fails to link:
 
 ```console?prompt=$
 $ gcc -Os main.c
@@ -1085,7 +1083,7 @@ $
 ```
 
 (Note that we did not pass `-c`, so we were requesting a full compilation and
-linking of `main.c` into an object file, not an executable.)
+linking of `main.c` into an executable, not an object file.)
 
 But okay, let's give `main.o` the library it needs and compile a full
 executable. This appears to link successfully---there was no error
