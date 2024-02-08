@@ -1031,7 +1031,7 @@ We can compile the `main.o` object by running `gcc` with the `-c` flag, as you
 have seen before:
 
 > (Note that I am using `-Os`, which indicates to GCC that it should try and
-> produce shorter code. It's not required; it's just for presentation. Also
+> produce shorter code. It's not required; it's just to make the assembly more human-readable. Also
 > note that I am using `-M intel` so that the syntax matches up with the
 > assembly listing above. This is also not required, and if you omit it,
 > `objdump` may give you assembly formatted with AT&amp;T syntax. The actual
