@@ -19,8 +19,8 @@ without notice. The [change history][site-commits] is public.
 
 ## Overview
 
-Learn the tools you are expected to know as a working software engineer that
-make you more efficient at writing better code and tackle problems you
+Learn tools you'll be expected to know as a working software engineer, which will
+help you write better code, collaborate with others, and tackle problems you
 previously thought impossible.
 
 Effective software development requires more than just coding skill: in
