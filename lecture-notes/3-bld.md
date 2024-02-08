@@ -1070,7 +1070,7 @@ perhaps the it's a placeholder value. Which means that all it knows about
 `random_number` is that it will eventually be provided by some other object
 file (or it will fail to link).
 
-And yep, if we request an executable, it fails to link:
+And yep, if we ask GCC to build an executable, it fails to link:
 
 ```console?prompt=$
 $ gcc -Os main.c
