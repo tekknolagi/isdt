@@ -274,7 +274,8 @@ Now it is possible to modify any one C file and have the binary rebuilt
 automatically with the least amount of steps.
 
 You will notice that all of this typing is getting cumbersome. We will talk
-about a solution to this repetition later!
+about a solution to this repetition later! We will also talk more in depth
+about compiling and linking later.
 
 ### The dependency graph
 
@@ -939,6 +940,8 @@ assembly language[^intermediate-representations]. The output looks like this:
 [^intermediate-representations]: In fact, inside Clang there are many different
     compilers that are responsible for transforming textual C to an abstract
     syntax tree (AST), from the AST to LLVM, and from LLVM to asssembly.
+
+<!-- TODO(max): Use objdump as we do in linking section -->
 
 ```nasm
 factorial:                              ; @factorial
