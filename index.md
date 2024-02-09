@@ -19,6 +19,10 @@ without notice. The [change history][site-commits] is public.
 
 ## Overview
 
+Learn tools you'll be expected to know as a working software engineer, which will
+help you write better code, collaborate with others, and tackle problems you
+previously thought impossible.
+
 Effective software development requires more than just coding skill: in
 industry and academia alike, developers use tools to keep their code
 maintainable and reliable. In this course, you will learn four fundamental
