@@ -62,7 +62,7 @@ to learn a little C
 **Assignments:** 8 assignments (2 per module), to be submitted with `provide`  
 **Exams:** none  
 
-## Schedule
+## Schedule (dates to be updated!)
 
 *Note:* We will publish notes or slides for each lecture after it happens, but
 the lecture recordings will not be available to students. If you require access
