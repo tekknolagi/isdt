@@ -8,12 +8,13 @@
 
 # Home
 
-This is the course website for *CS 50: Introduction to Software Development
-Tooling* at Tufts University. This site holds the authoritative syllabus, as
-well as lecture notes and assignments.
+This is the course website for *CS 4973: Introduction to Software Development
+Tooling* at Northeastern University, Summer 2 2024. This site holds the
+authoritative syllabus, as well as lecture notes and assignments.
 
 *Note:* The course staff reserves the right to change this page at any time
-without notice. The [change history][site-commits] is public.
+without notice. The [change history][site-commits] is public. **It is being
+actively changed right now as we update it for Summer 2024.**
 
 [site-commits]: https://github.com/tekknolagi/isdt/commits/main
 
@@ -45,16 +46,16 @@ tools for ensuring that your software meets quality standards.
 
 ## Administrivia
 
-**Instructors:** [Max Bernstein](https://bernsteinbear.com) and [Tom
-Hebb](https://tchebb.me/)  
+**Instructor:** [Max Bernstein](https://bernsteinbear.com)
 **Teaching Assistants:** TBD
 
 **Office Hours:** TBD; extra hours to be announced on Piazza (access via
 Canvas)  
 **Discussion board:** Piazza
 
-**Prerequisites:** CS 15 or permission of instructor  
-**Equipment:** A computer with SSH access to the Tufts homework server  
+**Prerequisites:** An introductory computer science class and the willingness
+to learn a little C
+**Equipment:** A computer with a POSIX shell
 **Textbook:** none  
 
 **Lectures:** TBD via Zoom (access via Canvas)  
