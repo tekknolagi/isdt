@@ -46,7 +46,7 @@ tools for ensuring that your software meets quality standards.
 
 ## Administrivia
 
-**Instructor:** [Max Bernstein](https://bernsteinbear.com)
+**Instructor:** [Max Bernstein](https://bernsteinbear.com)  
 **Teaching Assistants:** TBD
 
 **Office Hours:** TBD; extra hours to be announced on Piazza (access via
@@ -54,7 +54,7 @@ Canvas)
 **Discussion board:** Piazza
 
 **Prerequisites:** An introductory computer science class and the willingness
-to learn a little C
+to learn a little C  
 **Equipment:** A computer with a POSIX shell
 **Textbook:** none  
 
