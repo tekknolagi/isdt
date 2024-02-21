@@ -49,9 +49,8 @@ tools for ensuring that your software meets quality standards.
 **Instructor:** [Max Bernstein](https://bernsteinbear.com)  
 **Teaching Assistants:** TBD
 
-**Office Hours:** TBD; extra hours to be announced on Piazza (access via
-Canvas)  
-**Discussion board:** Piazza
+**Office Hours:** TBD; extra hours to be announced on Piazza  
+**Discussion board:** Piazza (access via Canvas)
 
 **Prerequisites:** An introductory computer science class and the willingness
 to learn a little C  
