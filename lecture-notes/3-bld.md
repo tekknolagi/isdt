@@ -126,9 +126,12 @@ Java, or any other projects the same way. As such, it is widely used in the
 real world and available on Linux, BSD, and macOS machines. If you were to pick
 a hammer for all of your nails, Make is a good choice.
 
+<!--
+TODO(max): Motivate for NEU students
 In addition, since you are working on C and C++ projects in the undergraduate
 program at Tufts, Make is particularly useful. It comes with purpose-built
 shortcuts that make building C projects easier.
+-->
 
 ## Lecture 2
 
