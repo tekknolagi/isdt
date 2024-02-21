@@ -59,7 +59,7 @@ to learn a little C
 **Textbook:** none  
 
 **Lectures:** TBD via Zoom (access via Canvas)  
-**Assignments:** 8 assignments (2 per module), to be submitted with `provide`  
+**Assignments:** 8 assignments (2 per module), to be submitted on Gradescope  
 **Exams:** none  
 
 ## Schedule (dates to be updated!)
