@@ -57,7 +57,7 @@ to learn a little C
 **Equipment:** A computer with a POSIX shell  
 **Textbook:** none  
 
-**Lectures:** TBD via Zoom (access via Canvas)  
+**Lectures:** TBD, in person  
 **Assignments:** 8 assignments (2 per module), to be submitted on Gradescope  
 **Exams:** none  
 
