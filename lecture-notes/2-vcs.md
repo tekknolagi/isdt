@@ -1197,16 +1197,15 @@ In our hypothetical example, you could see the history of `main` the file, not
 #### Seeing what's changed
 
 We briefly mentioned `git diff` in the example above, but it's worth talking
-about the different modes it can run in. By default, `git diff` compares your
-code on disk to the code in the staging area, meaning it shows you unstaged
+about the different modes it can run in. By default, `git diff` compares code in
+the working tree to the code in the staging area, meaning it shows you unstaged
 changes.
 
 But like `git log`, `git diff` can be given a commit as an argument, which
-causes it to compare your code on disk to that commit. For example, `git diff
-HEAD` (TODO: have we talked about `HEAD` yet?) will show every uncommitted
-change, even ones you've staged.
+causes it to compare the working tree to that commit. For example, `git diff
+HEAD` will show every uncommitted change, even ones you've staged.
 
-TODO: diff between two commits, `--cached`, filename filtering
+TODO: diff between two commits, `--cached`, `--no-index`, filename filtering
 
 #### Undoing mistakes
 
