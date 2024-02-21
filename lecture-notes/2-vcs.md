@@ -973,7 +973,26 @@ $
 But no one would use Git if the only way to reference a commit was to memorize a
 40-digit pseudorandom identifier. Luckily, Git offers several simpler ways to
 refer to commits. For example, you can omit the end of a commit hash as long as
-the piece you do provide is unambiguous:
+the piece you do provide is unambiguous[^ambiguous-hashes]:
+
+[^ambiguous-hashes]: If a prefix matches multiple hashes, you'll see an error
+    like this:
+
+    ```console?prompt=$
+    $ git log abcde2
+    error: short object ID abcde2 is ambiguous
+    hint: The candidates are:
+    hint:   abcde22a7cfe tree
+    hint:   abcde2851321 tree
+    hint:   abcde2f236a0 blob
+    fatal: ambiguous argument 'abcde2': unknown revision or path not in the working tree.
+    ```
+
+    That example is from the Linux kernel's Git repository, where 6-character
+    conflicts are incredibly common and many 7+ character ones exist too. Linux
+    developers are currently advised to use 12 digits of a commit's hash to
+    uniquely identify it, enough to make the probability of a conflict near
+    zero.
 
 ```console
 $ git show a83e7a6
