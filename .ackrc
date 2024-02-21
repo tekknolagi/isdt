@@ -1,0 +1,2 @@
+--ignore-directory=is:_site
+--ignore-directory=is:.jekyll-cache
