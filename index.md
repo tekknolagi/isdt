@@ -55,7 +55,7 @@ Canvas)
 
 **Prerequisites:** An introductory computer science class and the willingness
 to learn a little C  
-**Equipment:** A computer with a POSIX shell
+**Equipment:** A computer with a POSIX shell  
 **Textbook:** none  
 
 **Lectures:** TBD via Zoom (access via Canvas)  
