@@ -1119,67 +1119,67 @@ a83e7a6 Add #include directives to fix compilation
 $ 
 ```
 
-Like `git show`, `git log` uses revision parameters to determine which commits
-to show. Since `git log` typically shows multiple commits, though, the rules are
-a bit more complex:
+Like `git show`, `git log` accepts a revision parameter indicating which
+commit's *ancestors* (i.e. commits reachable by recursively following that
+commit's parent) to show[^git-log-args]. You'll typically pass it either a
+branch name or no argument at all (to show the ancestors of `HEAD`).
 
-- Each revision parameter tells `git log` to show that commit and all its
-  *ancestors* (i.e. commits reachable by recursively following its parent).
-- Instead of just one revision parameter, `git log` accepts an arbitrary number
-  of them and shows all their ancestors.
-- Revision parameters can be prefixed with `^` (i.e. `^<commit>`), which tells
-  `git log` not to show them or their ancestors, even if it otherwise would.
-- The shorthand `<earliest>..<latest>` can be used to show only the ancestors of
-  `<latest>` that came after `<earliest>`­---in other words, the range of
-  commits between `<earliest>` and `<latest>` It's equivalent to `git log
-  <latest> ^<earliest>`.
+[^git-log-args]: Unlike `git show`, `git log` can  take multiple revision
+    parameters, which together specify a precise set of commits to show. Here's
+    how that works:
 
-For example:
+    - Each normal revision parameter tells `git log` to show that commit and all
+      its ancestors.
+    - Revision parameters prefixed with `^` (i.e. `^<commit>`) tell `git log`
+      not to show them or their ancestors, even if it otherwise would.
+    - The shorthand `<earliest>..<latest>` shows only the ancestors of
+      `<latest>` that came after `<earliest>`­---in other words, the range of
+      commits between `<earliest>` and `<latest>` It's equivalent to `git log
+      <latest> ^<earliest>`.
 
-```console?prompt=$
-$ git log 1838eeae..HEAD
-commit 6fd624ec083a21b76a0879697974ccc3820e14e8 (HEAD -> main)
-Author: Thomas Hebb <tommyhebb@gmail.com>
-Date:   Wed Jan 31 21:23:10 2024 -0500
+    For example:
 
-    Detect errors when parsing numbers
+    ```console?prompt=$
+    $ git log 1838eeae..HEAD
+    commit 6fd624ec083a21b76a0879697974ccc3820e14e8 (HEAD -> main)
+    Author: Thomas Hebb <tommyhebb@gmail.com>
+    Date:   Wed Jan 31 21:23:10 2024 -0500
 
-    strtol can signal error via errno, but it can also report when it
-    stopped parsing input. This is helpful for determining if the input was
-    not a number, or at least did not start with a digit.
+        Detect errors when parsing numbers
 
-commit 8ad441d1469c3e23bd7a261f9145f64179364c7c
-Author: Thomas Hebb <tommyhebb@gmail.com>
-Date:   Wed Jan 31 21:17:45 2024 -0500
+        strtol can signal error via errno, but it can also report when it
+        stopped parsing input. This is helpful for determining if the input was
+        not a number, or at least did not start with a digit.
 
-    Support the modulo operator
-$ 
-```
+    commit 8ad441d1469c3e23bd7a261f9145f64179364c7c
+    Author: Thomas Hebb <tommyhebb@gmail.com>
+    Date:   Wed Jan 31 21:17:45 2024 -0500
 
-Note that, instead of showing the entire history, this log cuts off right where
-commit 1838eeae89ba ("Make main a simple calculator") would appear. You'll
-usually pass `git log` just a single revision parameter (typically a branch
-name), but sometimes you'll find more complex arguments useful.
+        Support the modulo operator
+    $ 
+    ```
 
-As if that weren't enough, `git log` accepts even more optional arguments after
-the revision parameter(s): you can pass it file paths within your repository to
-restrict the log to only commits that affect those files:
+    Instead of showing the entire history, this log cuts off right where commit
+    1838eeae89ba ("Make main a simple calculator") would appear. 
+
+To further narrow `git log`'s output, you can also pass it one or more file
+paths within your repository to see only commits that affect those files. This
+is extremely useful in large repositories where changes to a given file or
+directory are often interspersed among hundreds of unrelated commits:
 
 ```
 TODO: our example repo only has one file :( Worth adding one more commit with a
 different file, or is it fine to omit this example?
 ```
 
-This is extremely useful in large repositories where changes to a given file or
-directory are often interspersed among hundreds of unrelated commits.
+There's a pitfall here, though: since `git log` takes multiple revision
+parameters (see footnote) and also multiple file paths, it can be ambiguous
+where the revision list ends and the file list begins. For example, imagine
+running `git log main` to see the history of a file named `main`. If your
+repository also has a branch named `main`, that command will show the branch's
+history, not the file's!
 
-You might be wondering, though: if `git log` takes both revision parameters and
-file paths, how does it tell the two apart? What if your repository has a file
-named `HEAD`, for example? The answer is that it does its best to guess where
-the revision parameters end, but it can guess wrong when there are name
-conflicts.
-
-We mention this case not because it's common, but because it's extremely
+We mention this case not because it's common but because it's extremely
 confusing if you encounter it unawares. Luckily, there's an easy way to ensure
 you never encounter it: put `--` before your path list to tell `git log` exactly
 where it starts:
@@ -1190,6 +1190,9 @@ $ git log --oneline HEAD ^1838eeae -- main.c
 8ad441d Support the modulo operator
 $ 
 ```
+
+In our hypothetical example, you could see the history of `main` the file, not
+`main` the branch, by running `git log -- main`.
 
 #### Seeing what's changed
 
