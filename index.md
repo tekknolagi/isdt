@@ -108,7 +108,7 @@ help us shape future iterations of the course.
 
 ## Academic Integrity
 
-You are expected to adhere to [Tufts' Academic Integrity Policy][tufts-policy]
+You are expected to adhere to [NEU's Academic Integrity Policy][neu-policy]
 in this course. Plagiarism of code or answers to assignments is strictly
 prohibited, as is sharing answers with or accepting answers from others.
 
@@ -155,7 +155,7 @@ problem-solving skills to an assignment, you will receive a failing grade for
 that assignment. Additionally, if you don't attribute the unoriginal code, you
 will be guilty of plagiarism and the extra consequences that entails.
 
-[tufts-policy]: https://students.tufts.edu/student-affairs/student-code-conduct/academic-integrity-resources
+[neu-policy]: https://osccr.sites.northeastern.edu/academic-integrity-policy/
 
 ## Grading
 
@@ -168,9 +168,9 @@ assignment.
 
 Your final letter grade will be computed from your final percentage grade using
 the cutoffs outlined [here](https://math.tufts.edu/resources/grading-schemes).
-(We know that's a math department page, but their scheme closely matches that
-which most students expect, and the computer science department doesn't have a
-recommended set of cutoffs documented anywhere.)
+(We know that's a Tufts math department page, but their scheme closely matches
+that which most students expect, and the computer science department doesn't
+have a recommended set of cutoffs documented anywhere.)
 
 Often on homework assignments we will ask you questions as part of an
 "investigative" assignment. The purpose of these questions is to guide you
