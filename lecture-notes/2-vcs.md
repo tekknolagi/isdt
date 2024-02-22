@@ -1248,11 +1248,175 @@ about the different modes it can run in. By default, `git diff` compares code in
 the working tree to the code in the staging area, meaning it shows you unstaged
 changes.
 
-But like `git log`, `git diff` can be given a commit as an argument, which
-causes it to compare the working tree to that commit. For example, `git diff
-HEAD` will show every uncommitted change, even ones you've staged.
+If you instead want to see staged changes (i.e. what will go in your next
+commit), you can run `git diff --cached`. (Apparently Git's developers weren't
+satisfied with two terms, "index" and "staging area", for the same thing, as
+they sometimes also call it the *cache*.)
 
-TODO: diff between two commits, `--cached`, `--no-index`, filename filtering
+For example, let's say we've made two changes to `main.c` but only staged one of
+them:
+```console?prompt=$
+$ git add -p
+diff --git a/main.c b/main.c
+index 9407af1..ede468c 100644
+--- a/main.c
++++ b/main.c
+@@ -3,6 +3,7 @@
+ #include <stdlib.h>
+
+ int calc(int left, char op, int right) {
++  fprintf(stderr, "DEBUG: op is %c\n", op);
+   switch (op) {
+   case '+':
+     return left + right;
+(1/2) Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? n
+@@ -54,6 +55,6 @@ int main(int argc, char **argv) {
+     return EXIT_FAILURE;
+   }
+   int result = calc(left, op_str[0], right);
+-  fprintf(stdout, "%d\n", result);
++  printf("%d\n", result);
+   return 0;
+ }
+(2/2) Stage this hunk [y,n,q,a,d,K,g,/,e,?]? y
+
+$ 
+```
+
+We can now use `git diff` like this:
+```diff
+$ git diff
+diff --git a/main.c b/main.c
+index 2ff8c48..ede468c 100644
+--- a/main.c
++++ b/main.c
+@@ -3,6 +3,7 @@
+ #include <stdlib.h>
+
+ int calc(int left, char op, int right) {
++  fprintf(stderr, "DEBUG: op is %c\n", op);
+   switch (op) {
+   case '+':
+     return left + right;
+$ git diff --cached
+diff --git a/main.c b/main.c
+index 9407af1..2ff8c48 100644
+--- a/main.c
++++ b/main.c
+@@ -54,6 +54,6 @@ int main(int argc, char **argv) {
+     return EXIT_FAILURE;
+   }
+   int result = calc(left, op_str[0], right);
+-  fprintf(stdout, "%d\n", result);
++  printf("%d\n", result);
+   return 0;
+ }
+$ 
+```
+
+`git diff` can be given a revision parameter, which causes it to compare the
+working tree to that commit. For example, `git diff HEAD` will show every
+uncommitted change, even ones you've staged. By adding a second revision
+parameter, you can compare two commits directly:
+
+```diff
+$ git diff 1838eea HEAD
+diff --git a/Makefile b/Makefile
+new file mode 100644
+index 0000000..6003f4b
+--- /dev/null
++++ b/Makefile
+@@ -0,0 +1,8 @@
++all: main
++
++main: main.c
++       gcc main.c -o main
++
++.PHONY: clean
++clean:
++       rm -f main
+diff --git a/main.c b/main.c
+index 7e2b75d..9407af1 100644
+--- a/main.c
++++ b/main.c
+@@ -12,6 +12,8 @@ int calc(int left, char op, int right) {
+     return left * right;
+   case '/':
+     return left / right;
++  case  '%':
++    return left % right;
+   }
+   fprintf(stderr, "Unrecognized op `%c'.\n", op);
+   exit(EXIT_FAILURE);
+@@ -19,16 +21,21 @@ int calc(int left, char op, int right) {
+
+ int main(int argc, char **argv) {
+   if (argc != 4) {
+-    fprintf(stderr,
+-            "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /.\n",
+-            argv[0]);
++    fprintf(
++        stderr,
++        "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
++        argv[0]);
+     return EXIT_FAILURE;
+   }
+   const char *left_str = argv[1];
+   const char *op_str = argv[2];
+   const char *right_str = argv[3];
+   errno = 0;
+-  int left = strtol(left_str, NULL, 10);
++  char *endptr;
++  int left = strtol(left_str, &endptr, 10);
++  if (left_str == endptr) {
++    errno = EINVAL;
++  }
+   if (errno != 0) {
+     perror(argv[0]);
+     return EXIT_FAILURE;
+@@ -38,7 +45,10 @@ int main(int argc, char **argv) {
+     return EXIT_FAILURE;
+   }
+   errno = 0;
+-  int right = strtol(right_str, NULL, 10);
++  int right = strtol(right_str, &endptr, 10);
++  if (right_str == endptr) {
++    errno = EINVAL;
++  }
+   if (errno != 0) {
+     perror(argv[0]);
+     return EXIT_FAILURE;
+```
+
+Like `git log`, `git diff` can filter its output by file path. The argument
+syntax is identical---a list of one or more file paths after all other
+arguments, optionally preceded by `--` to eliminate ambiguity:
+
+```diff
+$ git diff 1838eea HEAD -- Makefile
+diff --git a/Makefile b/Makefile
+new file mode 100644
+index 0000000..6003f4b
+--- /dev/null
++++ b/Makefile
+@@ -0,0 +1,8 @@
++all: main
++
++main: main.c
++       gcc main.c -o main
++
++.PHONY: clean
++clean:
++       rm -f main
+```
+
+One final note about `git diff`: Git has become so ubiquitous that diffs from
+`git diff` are much more widely accepted than those from `diff` itself. Although
+`diff` can emulate Git's style with the `-u` flag, it's not a perfect match and
+doesn't support some advanced features of `git diff`, such as binary file
+diffing. If you want to `git diff` two arbitrary files (like you'd run `diff`),
+you can use its `--no-index` flag: `git diff --no-index <file1> <file2>`. This
+even works outside a Git repository!
 
 #### Undoing mistakes
 
