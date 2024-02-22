@@ -31,7 +31,7 @@ something like this:
 
 ```sh
 #!/bin/sh
-cc foo.c -o foo
+cc -o foo foo.c rng.c
 ```
 
 If only it were that simple for your assignment. We'll get more into all this
@@ -78,7 +78,11 @@ You MUST:
 * Write your program so that it runs under `sh` or `bash`
 * Include a shebang line at the beginning of your script for either `sh` or
   `bash`
-* 
+
+You MUST NOT:
+
+* Shell out to `make` or any other software that would do substantive work for
+  you
 
 Your output should be a list of files that are present in the directory but not
 in the snapshot, one per line. In other words, print out the files that have
