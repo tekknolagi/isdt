@@ -717,7 +717,28 @@ $ git commit -m "Make main a simple calculator"
 $ 
 ```
 
-...make some smaller edits...
+...add a Makefile (a sneak peek of module 3!)...
+```make
+all: main
+
+main: main.c
+	gcc main.c -o main
+
+.PHONY: clean
+clean:
+	rm -f main
+```
+
+```console?prompt=$
+$ git add Makefile
+$ git commit -m "Add a simple Makefile"
+[main 01302bc] Add a simple Makefile
+ 1 file changed, 8 insertions(+)
+ create mode 100644 Makefile
+$ 
+```
+
+...fix some bugs...
 ```diff
 $ git diff
 diff --git a/main.c b/main.c
@@ -876,7 +897,7 @@ Split into 2 hunks.
 (3/4) Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? q
 
 $ git commit -m "Support the modulo operator"
-[main 8ad441d] Support the modulo operator
+[main 2d66030] Support the modulo operator
  1 file changed, 6 insertions(+), 3 deletions(-)
 $ 
 ```
@@ -920,7 +941,7 @@ quote>
 quote> strtol can signal error via errno, but it can also report when it
 quote> stopped parsing input. This is helpful for determining if the input was
 quote> not a number, or at least did not start with a digit.'
-[main 6fd624e] Detect errors when parsing numbers
+[main 221af3e] Detect errors when parsing numbers
  1 file changed, 9 insertions(+), 2 deletions(-)
 $ 
 ```
@@ -1025,9 +1046,9 @@ refer to a commit's parent, you can suffix its hash or name with the character
 
 ```console
 $ git show HEAD^
-commit 8ad441d1469c3e23bd7a261f9145f64179364c7c
+commit 2d6603026105b168c126d2ee22c6f4dba8d48437
 Author: Thomas Hebb <tommyhebb@gmail.com>
-Date:   Wed Jan 31 21:17:45 2024 -0500
+Date:   Wed Feb 21 23:07:15 2024 -0500
 
     Support the modulo operator
 
@@ -1086,9 +1107,9 @@ so, you can use `git log`:
 
 ```console?prompt=$
 $ git log
-commit 6fd624ec083a21b76a0879697974ccc3820e14e8 (HEAD -> main)
+commit 221af3ea46453739392720c56fd44c92124c50fe (HEAD -> main)
 Author: Thomas Hebb <tommyhebb@gmail.com>
-Date:   Wed Jan 31 21:23:10 2024 -0500
+Date:   Wed Feb 21 23:09:36 2024 -0500
 
     Detect errors when parsing numbers
 
@@ -1096,11 +1117,17 @@ Date:   Wed Jan 31 21:23:10 2024 -0500
     stopped parsing input. This is helpful for determining if the input was
     not a number, or at least did not start with a digit.
 
-commit 8ad441d1469c3e23bd7a261f9145f64179364c7c
+commit 2d6603026105b168c126d2ee22c6f4dba8d48437
 Author: Thomas Hebb <tommyhebb@gmail.com>
-Date:   Wed Jan 31 21:17:45 2024 -0500
+Date:   Wed Feb 21 23:07:15 2024 -0500
 
     Support the modulo operator
+
+commit 01302bc5eb8bbefb9a70366952e478c6af4841e2
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Wed Feb 21 23:04:35 2024 -0500
+
+    Add a simple Makefile
 
 commit 1838eeae89ba4cc4068bff8a1c99c0a9b0853506
 Author: Thomas Hebb <tommyhebb@gmail.com>
@@ -1130,8 +1157,9 @@ alter its behavior, including
 
 ```console?prompt=$
 $ git log --oneline
-6fd624e (HEAD -> main) Detect errors when parsing numbers
-8ad441d Support the modulo operator
+221af3e (HEAD -> main) Detect errors when parsing numbers
+2d66030 Support the modulo operator
+01302bc Add a simple Makefile
 1838eea Make main a simple calculator
 a83e7a6 Add #include directives to fix compilation
 3ba2a93 Initial commit
@@ -1159,10 +1187,10 @@ branch name or no argument at all (to show the ancestors of `HEAD`).
     For example:
 
     ```console?prompt=$
-    $ git log 1838eeae..HEAD
-    commit 6fd624ec083a21b76a0879697974ccc3820e14e8 (HEAD -> main)
+    $ git log 01302bc5..HEAD
+    commit 221af3ea46453739392720c56fd44c92124c50fe (HEAD -> main)
     Author: Thomas Hebb <tommyhebb@gmail.com>
-    Date:   Wed Jan 31 21:23:10 2024 -0500
+    Date:   Wed Feb 21 23:09:36 2024 -0500
 
         Detect errors when parsing numbers
 
@@ -1170,25 +1198,26 @@ branch name or no argument at all (to show the ancestors of `HEAD`).
         stopped parsing input. This is helpful for determining if the input was
         not a number, or at least did not start with a digit.
 
-    commit 8ad441d1469c3e23bd7a261f9145f64179364c7c
+    commit 2d6603026105b168c126d2ee22c6f4dba8d48437
     Author: Thomas Hebb <tommyhebb@gmail.com>
-    Date:   Wed Jan 31 21:17:45 2024 -0500
+    Date:   Wed Feb 21 23:07:15 2024 -0500
 
         Support the modulo operator
     $ 
     ```
 
     Instead of showing the entire history, this log cuts off right where commit
-    1838eeae89ba ("Make main a simple calculator") would appear. 
+    01302bc5eb8b ("Add a simple Makefile") would appear. 
 
 To further narrow `git log`'s output, you can also pass it one or more file
 paths within your repository to see only commits that affect those files. This
 is extremely useful in large repositories where changes to a given file or
 directory are often interspersed among hundreds of unrelated commits:
 
-```
-TODO: our example repo only has one file :( Worth adding one more commit with a
-different file, or is it fine to omit this example?
+```console?prompt=$
+$ git log --oneline Makefile
+01302bc Add a simple Makefile
+$ 
 ```
 
 There's a pitfall here, though: since `git log` takes multiple revision
@@ -1204,9 +1233,8 @@ you never encounter it: put `--` before your path list to tell `git log` exactly
 where it starts:
 
 ```console?prompt=$
-$ git log --oneline HEAD ^1838eeae -- main.c
-6fd624e (HEAD -> main) Detect errors when parsing numbers
-8ad441d Support the modulo operator
+$ git log --oneline -- Makefile
+01302bc Add a simple Makefile
 $ 
 ```
 
