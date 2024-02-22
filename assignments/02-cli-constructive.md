@@ -76,38 +76,39 @@ Notice two things:
 You MUST:
 
 * Write your program so that it runs under `sh` or `bash`
+* Write your program entirely in one file
 * Include a shebang line at the beginning of your script for either `sh` or
   `bash`
 * Only recompile a target if any of its dependencies' modified-time (mtime) is
   later than the target's mtime
+* Be able to build `foo` by running `./build.sh`
+* Use the error-handling practices we encouraged in lecture
 
 You MUST NOT:
 
 * Shell out to `make` or any other software that would do substantive work for
   you
+* Modify any of the C source files we provide to you
 
 You MAY:
 
 * Print the commands executed by your script as they are executed
+* Take an optional argument to specify what target to build
+* Use (small) standard Unix utilities
+* Define functions to make your code more readable
+* Write data to temporary files as part of your build script. If you do, you
+  MUST:
+  * Use the `mktemp` utility to create them
+  * Automatically clean up the temporary files when the build script finishes
 
-Your output should be a list of files that are present in the directory but not
-in the snapshot, one per line. In other words, print out the files that have
-been added since the snapshot was taken. These should be valid paths relative
-to the given directory (so either `file1` or `./file1` is acceptable). You may
-find the `comm` utility useful in generating this list; see `man comm`.
+`mktemp` generates a new file with a random name inside `/tmp`, a system
+directory designed to hold temporary files that don't need to stick around
+across reboots.
 
-Please include a `#!` line at the beginning of your script that indicates it
-should be executed with either `/bin/sh` or `/bin/bash`. (`/bin/sh` points to
-different shells on different systems but is always guaranteed to be a
-POSIX-compliant shell; `/bin/bash` is always Bash specifically.) And use the
-error handling practices we encouraged in lecture.
+Note that `/bin/sh` points to different shells on different systems but is
+always guaranteed to be a POSIX-compliant shell; `/bin/bash` is always Bash
+specifically.
 
-Your program may write data to files as part of generating its result. If it
-does, please use the `mktemp` utility to create them. `mktemp` generates a new
-file with a random name inside `/tmp`, a system directory designed to hold
-temporary files that don't need to stick around. We encourage you to remove any
-temporary files you use once your script finishes, but you will not lose points
-if you don't.
 
 ## Using syscalls: write your own ls!
 We discussed in lecture how system calls (also known as "syscalls") are the
@@ -186,7 +187,7 @@ required for full marks.
 
 ## Using `build.sh` to compile `myls.c`
 
-...
+Now integrate by adding `myls.c` as a target to `build.sh`!
 
 ## Submitting your work
 Please submit your two files, `whats-new.sh` and `myls.c`, with `provide
