@@ -637,6 +637,7 @@ $
 ```
 
 Then, you commit some initial code:
+
 ```console?prompt=$
 $ cat main.c
 int main() {
@@ -654,6 +655,7 @@ $
 You fix mistakes in the code, using the handy `git diff` subcommand to view your
 unstaged changes (think of it like the `diff` command, except it compares files
 to Git's staging area instead of to other files).
+
 ```console?prompt=$
 $ git diff
 diff --git a/main.c b/main.c
@@ -675,6 +677,7 @@ $
 ```
 
 ...continue working on `main.c`...
+
 ```c
 #include <errno.h>
 #include <stdio.h>
@@ -718,6 +721,7 @@ $
 ```
 
 ...add a Makefile (a sneak peek of module 3!)...
+
 ```make
 all: main
 
@@ -739,6 +743,7 @@ $
 ```
 
 ...fix some bugs...
+
 ```diff
 $ git diff
 diff --git a/main.c b/main.c
@@ -795,6 +800,7 @@ index 7e2b75d..9407af1 100644
 ```
 
 ...and commit each one separately:
+
 ```console?prompt=$
 $ git add -p
 diff --git a/main.c b/main.c
@@ -1007,6 +1013,7 @@ the piece you do provide is unambiguous[^ambiguous-hashes]:
     hint:   abcde2851321 tree
     hint:   abcde2f236a0 blob
     fatal: ambiguous argument 'abcde2': unknown revision or path not in the working tree.
+    $ 
     ```
 
     That example is from the Linux kernel's Git repository, where 6-character
@@ -1255,6 +1262,7 @@ they sometimes also call it the *cache*.)
 
 For example, let's say we've made two changes to `main.c` but only staged one of
 them:
+
 ```console?prompt=$
 $ git add -p
 diff --git a/main.c b/main.c
@@ -1284,6 +1292,7 @@ $
 ```
 
 We can now use `git diff` like this:
+
 ```diff
 $ git diff
 diff --git a/main.c b/main.c
