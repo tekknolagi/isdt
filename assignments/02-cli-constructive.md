@@ -25,7 +25,7 @@ require you to write C: we provide sample C code you can use to test your build
 system. Later, though, you *will* write some C code and integrate it into your
 build system.
 
-Your job is to write a program in Bash, `build.sh`, that compiles some C
+Your job is to write a program in Bash or Sh, `build.sh`, that compiles some C
 program. The minimal functional (but not acceptable to submit) solution looks
 something like this:
 
