@@ -3,77 +3,82 @@
 
 # Homework 2: CLI, Constructive
 
-## Note: what counts as a "file"?
-Both pieces of this assignment ask you to print a list of files. The word
-"file" is often used to refer specifically to a *regular file*, which is the
-"normal" kind of file that holds data and shows up in `ls` with a type of `-`.
-However, the strict POSIX definition of "file" encompasses not only regular
-files but also directories, symlinks, devices, and every other thing that can
-go inside a directory. For this assignment, we are referring to the POSIX
-definition whenever we say "file." Your implementations of `whats-new.sh` and
-`myls.c` should consider directories, symlinks, and all other types of file
-when producing their output.
+## `build.sh`: making trouble
 
-## `whats-new.sh`: finding newly-added files on the homework server
-The server that Tufts uses to host home directories has a special feature to
-help prevent data loss: in every directory, the server adds a hidden, read-only
-directory named `.snapshot/`. Inside `.snapshot/` is a set of directories with
-names like `daily.2021-09-22_0010`. Each of these directories holds a copy of
-the contents of the original directory from a certain point in time.  Take a
-moment to SSH to the server and see for yourself!
+A lot of systems programming is done in languages such as C, C++, and Rust.
+These languages all have one thing in common: they are predominantly compiled
+before being executed[^interpreters]. This two-step tango means that every time
+you modify your program, you have to compile it before running it.
 
-The first piece of each snapshot's name---`daily`, in this example---represents
-the frequency at which those snapshots are taken. The second
-part---`2021-09-22_0010`---is the date and time at which it was taken.
-Snapshots that happen more frequently are also deleted more aggressively,
-meaning that the granularity of snapshots goes down the further you go back.
+[^interpreters]: We say *predominantly* because the evaluation strategy is not
+    necessarily part of the language! The language is the abstract concept and
+    the implementation makes it go zoom. There are C and Rust interpreters and
+    there are (for example) Ruby and Python compilers.
 
-Note that, to prevent overwhelming tools that recursively traverse a directory
-tree, the `.snapshot/` directory only shows up in listings (`ls -a`) in your
-top-level home directory. However, it is also present in every subdirectory if
-you specifically ask for it:
+That's not fun, especially if it requires some kind of arcane build flags that
+are hard to remember. Or maybe it has a lot of files and your build command is
+getting unwieldy. Either way, you are going to solve your own problems today by
+*writing a build system*.
 
-```
-$ ls -a Documents/  # No .snapshot/ listed!
-.  ..  do-not-read  top-secret-file
-$ ls Documents/.snapshot/
-daily.2021-09-19_0010             every_four_hours.2021-09-23_1205
-daily.2021-09-20_0010             every_four_hours.2021-09-23_1605
-daily.2021-09-21_0010             every_four_hours.2021-09-23_2005
-daily.2021-09-22_0010             every_four_hours.2021-09-24_0005
-daily.2021-09-23_0010             weekly.2021-09-05_0015
-daily.2021-09-24_0010             weekly.2021-09-12_0015
-every_four_hours.2021-09-23_0405  weekly.2021-09-19_0015
-every_four_hours.2021-09-23_0805
-$ 
+You need not have written C code ever before starting this part of the
+assignment. We will provide sample code to you so that you can test your build
+system. Later, though, you *will* write some C code and integrate it into your
+build system.
+
+Your job is to write a program in Bash, `build.sh`, that compiles some C
+program. The minimal functional (but not acceptable to submit) solution looks
+something like this:
+
+```sh
+#!/bin/sh
+cc foo.c -o foo
 ```
 
-This is not a standard feature of Linux or POSIX---it's specific to the network
-servers that Tufts uses. Nevertheless, `.snapshot/` can be very useful when you
-accidentally remove or overwrite an important file and want to get the old
-version back. (In the next module, we'll learn about version control systems,
-which are like `.snapshot/` but supercharged.) In this part of the assignment,
-you'll write a shell script that automates the process of finding what files
-have been added to a directory since its most recent snapshot.
+If only it were that simple for your assignment. We'll get more into all this
+later in the term, but this program is not ideal: it builds `foo.c` into `foo`
+every time `build.sh` is executed, even if `foo.c` has not changed. Your
+program must instead only rebuild `foo` if any of its dependencies have
+changed. In addition, your program must build intermediate object files for
+each C file.
 
-Your script, named `whats-new.sh`, should take as its only argument a path to a
-directory to find new files in. If the argument is missing, or does not point
-to a directory that has been snapshotted, or the script is provided too many
-arguments, your script should print an error message and exit with a nonzero
-exit status. (The `exit` command immediately exits a shell script and takes the
-exit status as an argument.)
+This means example runs might look like this:
 
-If the argument is valid, your script should compare the contents of the
-directory with the contents of the most recent snapshot. We define the *most
-recent snapshot* as the one with the highest timestamp in its name, regardless
-of whether it's `daily`, `weekly`, or something else. We define the *contents*
-of a directory as all the non-hidden files (see note above) that are directly
-contained within it.
+```console?prompt=$
+$ ls
+build.sh  foo.c  foo.h  rng.c  rng.h
+$ ./build.sh 
+cc -c foo.c
+cc -c rng.c
+cc -o foo foo.o rng.o
+$ ./build.sh 
+$ touch rng.c
+$ ./build.sh 
+cc -c rng.c
+cc -o foo foo.o rng.o
+$
+```
 
-In other words, you do not need to show new hidden files (ones that start with
-`.`), nor do you need to recurse into subdirectories. You may do either of
-these if you so choose, however. (If you do decide to handle hidden files, try
-to not list `.snapshot/` itself as a new file!)
+Notice two things:
+
+* We can run `build.sh` and if nothing needs to get rebuilt, nothing will be
+  rebuilt
+* We can update individual C files without recompiling other C files
+
+...
+
+### Requirements
+
+> Note: The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+> "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this
+> document are to be interpreted as described in [RFC
+> 2119](https://datatracker.ietf.org/doc/html/rfc2119).
+
+You MUST:
+
+* Write your program so that it runs under `sh` or `bash`
+* Include a shebang line at the beginning of your script for either `sh` or
+  `bash`
+* 
 
 Your output should be a list of files that are present in the directory but not
 in the snapshot, one per line. In other words, print out the files that have
@@ -168,6 +173,10 @@ int main(int argc, char **argv) {
 As an extension, you may allow the user to omit the argument and have your
 program list the contents of the current working directory. This is not
 required for full marks.
+
+## Using `build.sh` to compile `myls.c`
+
+...
 
 ## Submitting your work
 Please submit your two files, `whats-new.sh` and `myls.c`, with `provide
