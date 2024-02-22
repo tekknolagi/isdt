@@ -78,11 +78,17 @@ You MUST:
 * Write your program so that it runs under `sh` or `bash`
 * Include a shebang line at the beginning of your script for either `sh` or
   `bash`
+* Only recompile a target if any of its dependencies' modified-time (mtime) is
+  later than the target's mtime
 
 You MUST NOT:
 
 * Shell out to `make` or any other software that would do substantive work for
   you
+
+You MAY:
+
+* Print the commands executed by your script as they are executed
 
 Your output should be a list of files that are present in the directory but not
 in the snapshot, one per line. In other words, print out the files that have
