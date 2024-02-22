@@ -20,8 +20,8 @@ are hard to remember. Or maybe it has a lot of files and your build command is
 getting unwieldy. Either way, you are going to solve your own problems today by
 *writing a build script*.
 
-You need not have written C code ever before starting this part of the
-assignment. We will provide sample code to you so that you can test your build
+This part of the assignment uses the C compiler as an example, but it doesn't
+require you to write C: we provide sample C code you can use to test your build
 system. Later, though, you *will* write some C code and integrate it into your
 build system.
 
