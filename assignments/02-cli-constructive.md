@@ -101,12 +101,12 @@ You MAY:
   * Use the `mktemp` utility to create them
   * Automatically clean up the temporary files when the build script finishes
 
-`mktemp` generates a new file with a random name inside `/tmp`, a system
+Note: `mktemp` generates a new file with a random name inside `/tmp`, a system
 directory designed to hold temporary files that don't need to stick around
 across reboots.
 
-Note that `/bin/sh` points to different shells on different systems but is
-always guaranteed to be a POSIX-compliant shell; `/bin/bash` is always Bash
+Note: `/bin/sh` points to different shells on different systems but is always
+guaranteed to be a POSIX-compliant shell; `/bin/bash` is always Bash
 specifically.
 
 
