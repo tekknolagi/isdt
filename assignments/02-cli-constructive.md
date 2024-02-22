@@ -190,9 +190,7 @@ required for full marks.
 Now integrate by adding `myls.c` as a target to `build.sh`!
 
 ## Submitting your work
-Please submit your two files, `whats-new.sh` and `myls.c`, with `provide
-comp50isdt cli-constructive whats-new.sh myls.c`. You must be logged into the
-homework server to use Provide.
+Please submit your two files, `build.sh` and `myls.c` on Gradescope.
 
 ## Just for fun...
 **At this point, you are done with the assignment. You need not read anything
