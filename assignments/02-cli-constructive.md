@@ -15,7 +15,7 @@ you modify your program, you have to compile it before running it.
     the implementation makes it go zoom. There are C and Rust interpreters and
     there are (for example) Ruby and Python compilers.
 
-That's not fun, especially if it requires some kind of arcane build flags that
+That's not fun, especially if it requires arcane compiler flags that
 are hard to remember. Or maybe it has a lot of files and your build command is
 getting unwieldy. Either way, you are going to solve your own problems today by
 *writing a build system*.
