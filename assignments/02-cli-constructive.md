@@ -18,7 +18,7 @@ you modify your program, you have to compile it before running it.
 That's not fun, especially if it requires arcane compiler flags that
 are hard to remember. Or maybe it has a lot of files and your build command is
 getting unwieldy. Either way, you are going to solve your own problems today by
-*writing a build system*.
+*writing a build script*.
 
 You need not have written C code ever before starting this part of the
 assignment. We will provide sample code to you so that you can test your build
