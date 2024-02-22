@@ -1210,8 +1210,8 @@ $ git log --oneline HEAD ^1838eeae -- main.c
 $ 
 ```
 
-In our hypothetical example, you could see the history of `main` the file, not
-`main` the branch, by running `git log -- main`.
+In our hypothetical example, you could see the history of `main` the file,
+instead of `main` the branch, by running `git log -- main`.
 
 #### Seeing what's changed
 
