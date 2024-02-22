@@ -109,6 +109,10 @@ Note: `/bin/sh` points to different shells on different systems but is always
 guaranteed to be a POSIX-compliant shell; `/bin/bash` is always Bash
 specifically.
 
+To give you rough idea of the complexity of the program, the course reference
+solution is 24 [SLOC](https://en.wikipedia.org/wiki/Source_lines_of_code) for
+the "build system" part and 6 SLOC for the project-specific component.
+
 
 ## Using syscalls: write your own ls!
 We discussed in lecture how system calls (also known as "syscalls") are the
