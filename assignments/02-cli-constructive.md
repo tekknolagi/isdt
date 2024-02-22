@@ -68,6 +68,10 @@ Notice two things:
 
 ### Requirements
 
+This all might sound a little bit scary but we promise that explicitly laying
+out the behavior like this makes for easier implementation. You can think of it
+like a checklist.
+
 > Note: The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 > "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this
 > document are to be interpreted as described in [RFC
