@@ -190,7 +190,7 @@ required for full marks.
 Now integrate by adding `myls.c` as a target to `build.sh`!
 
 ## Submitting your work
-Please submit your two files, `build.sh` and `myls.c` on Gradescope.
+Please submit your two files, `build.sh` and `myls.c`, on Gradescope.
 
 ## Just for fun...
 **At this point, you are done with the assignment. You need not read anything
