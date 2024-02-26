@@ -101,12 +101,16 @@ and carry out small experiments on your own so that you can continue to broaden
 your knowledge long after this course has ended. We believe this ability is
 just as important to your success as anything we can teach you directly.
 
-*Note:* This is a new course, written from scratch and being taught for the
-first time. Some things might feel rough, slightly out-of-order, or poorly
-scheduled. When this happens, please let us know on Piazza. Your feedback will
-help us shape future iterations of the course.
+*Note:* This is a relatively new course, written from scratch and being taught
+for the second time. Some things might feel rough, slightly out-of-order, or
+poorly scheduled. When this happens, please let us know on Piazza. Your
+feedback will help us shape future iterations of the course.
 
 ## Academic Integrity
+
+**TL;DR: Do all of your own work. This course will necessarily involve a lot of
+searching and reading. Skipping the work will only make your life easier in the
+short term. Don't use LLMs such as ChatGPT.**
 
 You are expected to adhere to [NEU's Academic Integrity Policy][neu-policy]
 in this course. Plagiarism of code or answers to assignments is strictly
