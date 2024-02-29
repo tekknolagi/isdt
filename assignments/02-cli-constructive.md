@@ -5,7 +5,7 @@
 
 This is the first of four "constructive" assignments---most of which ask
 you to write a small amount of code. While writing that code, you will likely
-make mistakes that highlight gaps in your understanding and require you to
+make mistakes that highlight gaps in your understanding. We expect you to
 fill those gaps by referencing lecture notes or documentation. Not only is that
 expected, it's the main reason we created these assignments. The programs
 you produce are secondary to the experience you gain while producing them.
