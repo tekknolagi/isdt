@@ -19,38 +19,42 @@ material = iter(
             "Course Administrivia &amp; "
             + lecture(
                 "CLI 1: Intro to Linux and the shell", "lecture-notes/1-cli/#lecture-1"
-            )
+            ),
+            link("Homework 1 out", "assignments/01-cli-investigative/"),
         ],
         [
             lecture(
                 "CLI 2: Quoting, common tools, and permissions",
                 "lecture-notes/1-cli/#lecture-2",
             ),
-            link("Homework 1 out", "assignments/01-cli-investigative/"),
         ],
-        [lecture("CLI 3: Advanced shell features", "lecture-notes/1-cli/#lecture-3")],
+        [
+            lecture("CLI 3: Advanced shell features", "lecture-notes/1-cli/#lecture-3"),
+        ],
         [
             lecture(
                 "CLI 4: The shell as a programming language",
                 "lecture-notes/1-cli/#lecture-4",
-            )
+            ),
+            "Homework 1 due; "
+            + link("Homework 2 out", "assignments/02-cli-constructive/"),
         ],
         [
             lecture("CLI 5: Behind the scenes", "lecture-notes/1-cli/#lecture-5"),
-            "Homework 1 due; "
-            + link("Homework 2 out", "assignments/02-cli-constructive/"),
         ],
         [lecture("CLI 6: Linux and POSIX", "lecture-notes/1-cli/#lecture-6")],
         [
             lecture(
                 "VCS 1: Intro to version control", "lecture-notes/2-vcs/#lecture-1"
             ),
-            "Homework 2 due",
         ],
-        [lecture("VCS 2: Git operations", "lecture-notes/2-vcs-slides-l2-l4.pdf")],
+        [
+            lecture("VCS 2: Git operations", "lecture-notes/2-vcs-slides-l2-l4.pdf"),
+            "Homework 2 due; "
+            + link("Homework 3 out", "assignments/03-vcs-investigative/"),
+        ],
         [
             "VCS 3: Git operations, continued",
-            link("Homework 3 out", "assignments/03-vcs-investigative/"),
         ],
         ["VCS 4: Git operations, continued"],
         [
@@ -58,14 +62,14 @@ material = iter(
                 "VCS 5: Collaboration with Git",
                 "lecture-notes/2-vcs-slides-l5.pdf",
             ),
-            "Homework 3 due; "
-            + link("Homwork 4 out", "assignments/04-vcs-constructive/"),
         ],
         [
             lecture(
                 "VCS 6: Survey of alternative and related tools",
                 "lecture-notes/2-vcs-slides-l6.pdf",
-            )
+            ),
+            "Homework 3 due; "
+            + link("Homework 4 out", "assignments/04-vcs-constructive/"),
         ],
         [
             lecture(
@@ -73,7 +77,6 @@ material = iter(
                 "lecture-notes/3-bld/#lecture-1",
                 "lecture-notes/3-bld-slides-l1.pdf",
             ),
-            "Homework 4 due",
         ],
         [
             lecture(
@@ -84,18 +87,17 @@ material = iter(
         ],
         [
             lecture("BLD 3: The Make language", "lecture-notes/3-bld-slides-l3.pdf"),
-            link("Homework 5 out", "assignments/05-bld-investigative/"),
         ],
         [
             lecture(
                 "BLD 4: Compilation and linking + large-scale Make",
                 "lecture-notes/3-bld-slides-l4.pdf",
-            )
+            ),
+            "Homework 4 due; "
+            + link("Homework 5 out", "assignments/05-bld-investigative/"),
         ],
         [
             lecture("BLD 5: The great wide world", "lecture-notes/3-bld-slides-l5.pdf"),
-            "Homework 5 due; "
-            + link("Homework 6 out", "assignments/06-bld-constructive/"),
         ],
         [
             lecture(
@@ -109,7 +111,6 @@ material = iter(
                 "lecture-notes/4-cor/#lecture-1",
                 "lecture-notes/4-cor-slides-l1.pdf",
             ),
-            "Homework 6 due",
         ],
         [
             lecture(
@@ -117,7 +118,8 @@ material = iter(
                 "lecture-notes/4-cor/#lecture-2",
                 "lecture-notes/4-cor-slides-l2.pdf",
             ),
-            link("Homework 7 out", "assignments/07-cor-investigative/"),
+            "Homework 5 due; "
+            + link("Homework 6 out", "assignments/06-bld-constructive/"),
         ],
         [
             lecture(
@@ -132,22 +134,29 @@ material = iter(
                 "lecture-notes/4-cor/#lecture-4",
                 "lecture-notes/4-cor-slides-l4.pdf",
             ),
-            "Homework 7 due; "
-            + link("Homework 8 out", "assignments/08-cor-constructive/"),
         ],
-        [lecture("COR 5: Continuous integration", "lecture-notes/4-cor-slides-l5.pdf")],
+        [
+            lecture(
+                "COR 5: Continuous integration", "lecture-notes/4-cor-slides-l5.pdf"
+            ),
+        ],
         [
             lecture(
                 "COR 6: Other methods for ensuring software correctness",
                 "lecture-notes/4-cor-slides-l6.pdf",
             ),
-            "Homwork 8 due",
+            "Homework 6 due; "
+            + link("Homework 7 out", "assignments/07-cor-investigative/"),
         ],
         ["TBD"],
         ["TBD"],
+        [
+            "TBD",
+            "Homework 7 due; "
+            + link("Homework 8 out", "assignments/08-cor-constructive/"),
+        ],
         ["TBD"],
-        ["TBD"],
-        ["TBD"],
+        ["TBD", "Homework 8 due"],
         ["TBD"],
         ["TBD"],
         ["TBD"],
@@ -161,7 +170,7 @@ holidays = {
     datetime.date(2024, 7, 4),  # Independence day
 }
 start_date = datetime.date(2024, 7, 1)
-end_date = datetime.date(2024, 8, 15)
+end_date = datetime.date(2024, 8, 20)
 meeting_days = ["Monday", "Tuesday", "Wednesday", "Thursday"]
 
 
