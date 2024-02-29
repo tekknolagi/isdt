@@ -92,7 +92,7 @@ Notice three things:
 * We can update individual C files without recompiling other C files (we do
   need to link them at the end, though)
 * By "changed", we mean that the file's modification time is newer than its
-  target; the file contents may not have changed
+  target; the file contents may not have changed (see note about m-time below)
 
 This is a pretty standard set of features for build systems. Many people have
 put many years into making build systems great. Because we are dealing with
