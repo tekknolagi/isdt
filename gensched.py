@@ -47,16 +47,20 @@ material = iter(
             lecture(
                 "VCS 1: Intro to version control", "lecture-notes/2-vcs/#lecture-1"
             ),
-        ],
-        [
-            lecture("VCS 2: Git operations", "lecture-notes/2-vcs-slides-l2-l4.pdf"),
             "Homework 2 due; "
             + link("Homework 3 out", "assignments/03-vcs-investigative/"),
         ],
         [
+            lecture("VCS 2: Git operations", "lecture-notes/2-vcs-slides-l2-l4.pdf"),
+        ],
+        [
             "VCS 3: Git operations, continued",
         ],
-        ["VCS 4: Git operations, continued"],
+        [
+            "VCS 4: Git operations, continued",
+            "Homework 3 due; "
+            + link("Homework 4 out", "assignments/04-vcs-constructive/"),
+        ],
         [
             lecture(
                 "VCS 5: Collaboration with Git",
@@ -68,8 +72,6 @@ material = iter(
                 "VCS 6: Survey of alternative and related tools",
                 "lecture-notes/2-vcs-slides-l6.pdf",
             ),
-            "Homework 3 due; "
-            + link("Homework 4 out", "assignments/04-vcs-constructive/"),
         ],
         [
             lecture(
@@ -77,6 +79,8 @@ material = iter(
                 "lecture-notes/3-bld/#lecture-1",
                 "lecture-notes/3-bld-slides-l1.pdf",
             ),
+            "Homework 4 due; "
+            + link("Homework 5 out", "assignments/05-bld-investigative/"),
         ],
         [
             lecture(
@@ -93,8 +97,8 @@ material = iter(
                 "BLD 4: Compilation and linking + large-scale Make",
                 "lecture-notes/3-bld-slides-l4.pdf",
             ),
-            "Homework 4 due; "
-            + link("Homework 5 out", "assignments/05-bld-investigative/"),
+            "Homework 5 due; "
+            + link("Homework 6 out", "assignments/06-bld-constructive/"),
         ],
         [
             lecture("BLD 5: The great wide world", "lecture-notes/3-bld-slides-l5.pdf"),
@@ -103,7 +107,7 @@ material = iter(
             lecture(
                 "BLD 6: The great wide world, continued",
                 "lecture-notes/3-bld-slides-l6.pdf",
-            )
+            ),
         ],
         [
             lecture(
@@ -111,6 +115,8 @@ material = iter(
                 "lecture-notes/4-cor/#lecture-1",
                 "lecture-notes/4-cor-slides-l1.pdf",
             ),
+            "Homework 6 due; "
+            + link("Homework 7 out", "assignments/07-cor-investigative/"),
         ],
         [
             lecture(
@@ -118,8 +124,6 @@ material = iter(
                 "lecture-notes/4-cor/#lecture-2",
                 "lecture-notes/4-cor-slides-l2.pdf",
             ),
-            "Homework 5 due; "
-            + link("Homework 6 out", "assignments/06-bld-constructive/"),
         ],
         [
             lecture(
@@ -134,6 +138,8 @@ material = iter(
                 "lecture-notes/4-cor/#lecture-4",
                 "lecture-notes/4-cor-slides-l4.pdf",
             ),
+            "Homework 7 due; "
+            + link("Homework 8 out", "assignments/08-cor-constructive/"),
         ],
         [
             lecture(
@@ -145,18 +151,12 @@ material = iter(
                 "COR 6: Other methods for ensuring software correctness",
                 "lecture-notes/4-cor-slides-l6.pdf",
             ),
-            "Homework 6 due; "
-            + link("Homework 7 out", "assignments/07-cor-investigative/"),
-        ],
-        ["TBD"],
-        ["TBD"],
-        [
-            "TBD",
-            "Homework 7 due; "
-            + link("Homework 8 out", "assignments/08-cor-constructive/"),
         ],
         ["TBD"],
         ["TBD", "Homework 8 due"],
+        ["TBD"],
+        ["TBD"],
+        ["TBD"],
         ["TBD"],
         ["TBD"],
         ["TBD"],
