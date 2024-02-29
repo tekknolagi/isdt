@@ -56,7 +56,7 @@ $ touch rng.c
 $ ./build.sh 
 cc -c rng.c
 cc -o foo foo.o rng.o
-$ ./foo
+$ ./foo 
 hello, world! your randomly chosen number is 4
 $
 ```
@@ -133,7 +133,7 @@ the "build system" part and 6 SLOC for the project-specific component. Your
 solution may be longer or shorter; both are fine.
 
 
-## Using syscalls: write your own ls!
+## Using syscalls: write your own `ls`!
 Now that you have a tool that can be used to compile the course-provided sample
 C program, we're going to have you write some C.
 
