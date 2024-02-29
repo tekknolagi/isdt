@@ -184,20 +184,19 @@ running on a POSIX system. Nearly all C library functions have their own man
 pages; don't be afraid to use them!
 
 Your program, `myls.c`, MUST take as its only argument a path to a directory
-and print the name of each file[^what-is-a-file] inside that directory, one per
+and print the name of each file inside that directory, one per
 line. You MAY include files starting with `.` at your discretion. If your
 program is run without a directory name or the given name is not a directory,
 your program MUST print an error and return a nonzero exit code.
 
-[^what-is-a-file]: This assignment asks you to print a list of files. The word
-    "file" is often used to refer specifically to a *regular file*, which is
-    the "normal" kind of file that holds data and shows up in `ls` with a type
-    of `-`. However, the strict POSIX definition of "file" encompasses not only
-    regular files but also directories, symlinks, devices, and every other
-    thing that can go inside a directory. For this assignment, we are referring
-    to the POSIX definition whenever we say "file." Your implementation of
-    `myls.c` should consider directories, symlinks, and all other types of file
-    when producing their output.
+This assignment asks you to print a list of files. The word "file" is often
+used to refer specifically to a *regular file*, which is the "normal" kind of
+file that holds data and shows up in `ls` with a type of `-`. However, the
+strict POSIX definition of "file" encompasses not only regular files but also
+directories, symlinks, devices, and every other thing that can go inside a
+directory. For this assignment, we are referring to the POSIX definition
+whenever we say "file." Your implementation of `myls.c` should consider
+directories, symlinks, and all other types of file when producing its output.
 
 Now, onto implementation notes. We suggest looking into a couple of different
 syscalls and their C wrappers as starting points.
