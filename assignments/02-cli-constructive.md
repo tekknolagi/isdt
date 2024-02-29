@@ -6,17 +6,18 @@
 ## `build.sh`: making trouble
 
 A lot of systems programming is done in languages such as C, C++, and Rust.
-These languages all have one thing in common: they are predominantly compiled
-before being executed[^interpreters]. This two-step tango means that every time
-you modify your program, you have to compile it before running it.
+These languages all have one thing in common: programs written in them are
+predominantly compiled before being executed[^interpreters]. This two-step
+tango means that every time you modify your program, you have to compile it
+before running it.
 
 [^interpreters]: We say *predominantly* because the evaluation strategy is not
     necessarily part of the language! The language is the abstract concept and
     the implementation makes it go zoom. There are C and Rust interpreters and
     there are (for example) Ruby and Python compilers.
 
-That's not fun, especially if it requires arcane compiler flags that
-are hard to remember. Or maybe it has a lot of files and your build command is
+That's not fun, especially if it requires arcane compiler flags that are hard
+to remember. Or maybe your program has a lot of files and your build command is
 getting unwieldy. Either way, you are going to solve your own problems today by
 *writing a build script*.
 
@@ -35,11 +36,11 @@ cc -o foo foo.c rng.c
 ```
 
 If only it were that simple for your assignment. We'll get more into all this
-later in the term, but this program is not ideal: it builds `foo.c` into `foo`
-every time `build.sh` is executed, even if `foo.c` has not changed. Your
-program must instead only rebuild `foo` if any of its dependencies have
-changed. In addition, your program must build intermediate object files for
-each C file.
+later in the term, but this program is not ideal: it builds `foo.c` and `rng.c`
+into `foo` every time `build.sh` is executed, even if `foo.c` and `rng.c` have
+not changed. Your program must instead only rebuild `foo` if any of its
+dependencies have changed. In addition, your program must build intermediate
+object files for each C file.
 
 This means example runs might look like this:
 
@@ -55,16 +56,28 @@ $ touch rng.c
 $ ./build.sh 
 cc -c rng.c
 cc -o foo foo.o rng.o
+$ ./foo
+hello, world! your randomly chosen number is 4
 $
 ```
 
-Notice two things:
+Notice three things:
 
 * We can run `build.sh` and if nothing needs to get rebuilt, nothing will be
   rebuilt
-* We can update individual C files without recompiling other C files
+* We can update individual C files without recompiling other C files (we do
+  need to link them at the end, though)
+* By "changed", we mean that the file's modification time is newer than its
+  target; the file contents may not have changed
 
-...
+This is a pretty standard set of features for build systems. Many people have
+put many years into making build systems great. Because we are dealing with
+small code and don't have a lot of strange requirements, you are only going to
+peek a little bit into that yawning abyss.
+
+Unlike other build systems, you are going to put the "should we recompile this"
+logic in the same file as the project-specific components. Together, they will
+form the build script for `foo`.
 
 ### Requirements
 
@@ -79,35 +92,36 @@ like a checklist.
 
 You MUST:
 
+* Be able to build `foo` by running `./build.sh`
+* Only recompile a target if any of its dependencies' modified-time (mtime) is
+  later than the target's mtime
 * Write your program so that it runs under `sh` or `bash`
 * Write your program entirely in one file
 * Include a shebang line at the beginning of your script for either `sh` or
   `bash`
-* Only recompile a target if any of its dependencies' modified-time (mtime) is
-  later than the target's mtime
-* Be able to build `foo` by running `./build.sh`
 * Use the error-handling practices we encouraged in lecture
 
 You MUST NOT:
 
-* Shell out to `make` or any other software that would do substantive work for
-  you
+* Shell out to `make` or `watchman` or `entr` or any other software that would
+  do substantive work for you
 * Modify any of the C source files we provide to you
 
 You MAY:
 
 * Print the commands executed by your script as they are executed
-* Take an optional argument to specify what target to build
-* Use (small) standard Unix utilities
+* Take an optional argument to `build.sh` to specify what target to build
+* Use (small) standard Unix utilities. When in doubt, ask on Piazza
 * Define functions to make your code more readable
+* Support modifying the build by setting `CC`, `CFLAGS`, `LDFLAGS`, and other
+  assorted environment variables
 * Write data to temporary files as part of your build script. If you do, you
   MUST:
   * Use the `mktemp` utility to create them
   * Automatically clean up the temporary files when the build script finishes
 
-Note: `mktemp` generates a new file with a random name inside `/tmp`, a system
-directory designed to hold temporary files that don't need to stick around
-across reboots.
+In general, you MAY go above and beyond if you want to, as long as your
+extended program still meets the requirements.
 
 Note: `/bin/sh` points to different shells on different systems but is always
 guaranteed to be a POSIX-compliant shell; `/bin/bash` is always Bash
@@ -115,10 +129,14 @@ specifically.
 
 To give you rough idea of the complexity of the program, the course reference
 solution is 24 [SLOC](https://en.wikipedia.org/wiki/Source_lines_of_code) for
-the "build system" part and 6 SLOC for the project-specific component.
+the "build system" part and 6 SLOC for the project-specific component. Your
+solution may be longer or shorter; both are fine.
 
 
 ## Using syscalls: write your own ls!
+Now that you have a tool that can be used to compile the course-provided sample
+C program, we're going to have you write some C.
+
 We discussed in lecture how system calls (also known as "syscalls") are the
 primary way for userspace programs to communicate with the Linux kernel. Now
 it's time to get your hands dirty and make a syscall of your own. You're going
@@ -126,11 +144,11 @@ to write a stripped-down version of `ls` that prints the contents of a
 directory.
 
 This piece of the assignment involves writing C code, but we’re confident that
-you’ll be able to do it with what you know from CS 15 and the
-`our-friendly-cat` implementation we showed in class. C is very similar to the
-pieces of C++ you already know, and you can take a look at this old [CS 40
+you'll be able to do it with what you know already and the `our-friendly-cat`
+implementation we showed in class. You can take a look at this old [Tufts CS 40
 lab](https://bernsteinbear.com/resources/comp40-lab0.pdf) to learn some of the
-notable differences (plus details on `argc` and `argv`).
+notable differences between C and C++ (if that's helpful), plus details on
+`argc` and `argv`.
 
 You'll be calling some system functions from C, including one called `fputs()`
 to print to stdout as well as a number of syscall shim functions (described
@@ -139,11 +157,24 @@ which is a set of function implementations that are available to any C program
 running on a POSIX system. Nearly all C library functions have their own man
 pages; don't be afraid to use them!
 
-Your program, `myls.c`, should take as its only argument a path to a directory
-and print the name of each file (see note above) inside that directory, one per
-line. You may or may not include files starting with `.` at your discretion. If
-your program is run without a directory name or the given name is not a
-directory, your program should print an error and return a nonzero exit code.
+Your program, `myls.c`, MUST take as its only argument a path to a directory
+and print the name of each file[^what-is-a-file] inside that directory, one per
+line. You MAY include files starting with `.` at your discretion. If your
+program is run without a directory name or the given name is not a directory,
+your program MUST print an error and return a nonzero exit code.
+
+[^what-is-a-file]: This assignment asks you to print a list of files. The word
+    "file" is often used to refer specifically to a *regular file*, which is
+    the "normal" kind of file that holds data and shows up in `ls` with a type
+    of `-`. However, the strict POSIX definition of "file" encompasses not only
+    regular files but also directories, symlinks, devices, and every other
+    thing that can go inside a directory. For this assignment, we are referring
+    to the POSIX definition whenever we say "file." Your implementation of
+    `myls.c` should consider directories, symlinks, and all other types of file
+    when producing their output.
+
+Now, onto implementation notes. We suggest looking into a couple of different
+syscalls and their C wrappers as starting points.
 
 Internally, GNU's implementation of `ls` calls the `readdir()` function from
 libc. `readdir()` behaves as a transparent wrapper around the `readdir`
@@ -169,12 +200,12 @@ program directly using syscalls. Specifically, you'll probably want to use
 These functions can return a whole host of different errors in different
 conditions. If any of them returns a value that signals an error (check the man
 page for each one), you should print a helpful error message and exit
-immediately with a nonzero exit code.[^perror]
+immediately with a nonzero exit code[^perror].
 
 [^perror]: We won't require you to use it, but you may find the `perror`
     function (`man 3 perror`) helpful.
 
-You can start with the following skeleton, or you can write your own:
+You MAY start with the following skeleton:
 
 ```c
 #include <stdio.h>
@@ -193,9 +224,15 @@ As an extension, you may allow the user to omit the argument and have your
 program list the contents of the current working directory. This is not
 required for full marks.
 
+This is a small program. You may feel tempted to copy it off the internet or
+classmate. **Don't.** You are robbing yourself of learning. We have given you
+enough function names to get started. Check out their manual pages.
+
 ## Using `build.sh` to compile `myls.c`
 
-Now integrate by adding `myls.c` as a target to `build.sh`!
+Now integrate by adding `myls` as a target to `build.sh`! You MUST be able to
+compile `myls` by running `./build.sh` (and also follow all the other rebuild
+requirements listed above).
 
 ## Submitting your work
 Please submit your two files, `build.sh` and `myls.c`, on Gradescope.
