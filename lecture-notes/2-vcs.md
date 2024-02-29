@@ -1512,6 +1512,8 @@ it. Talk about fast-forward merges.
 TODO: `git cherry-pick` for "replaying" a specific commit from one branch on top
 of another.
 
+TODO: `git commit --amend` for quick fixes
+
 TODO: `git rebase` for doing lots of charry-picks in a row automatically.
 
 ### Rewriting history
