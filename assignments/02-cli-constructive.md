@@ -3,98 +3,174 @@
 
 # Homework 2: CLI, Constructive
 
-## Note: what counts as a "file"?
-Both pieces of this assignment ask you to print a list of files. The word
-"file" is often used to refer specifically to a *regular file*, which is the
-"normal" kind of file that holds data and shows up in `ls` with a type of `-`.
-However, the strict POSIX definition of "file" encompasses not only regular
-files but also directories, symlinks, devices, and every other thing that can
-go inside a directory. For this assignment, we are referring to the POSIX
-definition whenever we say "file." Your implementations of `whats-new.sh` and
-`myls.c` should consider directories, symlinks, and all other types of file
-when producing their output.
+This is the first of four "constructive" assignments---most of which ask
+you to write a small amount of code. While writing that code, you will likely
+make mistakes that highlight gaps in your understanding. Not only is that
+expected, it's the main reason we created these assignments. We would like you to
+fill those gaps by referencing lecture notes or documentation. The programs
+you produce are secondary to the experience you gain while producing them.
 
-## `whats-new.sh`: finding newly-added files on the homework server
-The server that Tufts uses to host home directories has a special feature to
-help prevent data loss: in every directory, the server adds a hidden, read-only
-directory named `.snapshot/`. Inside `.snapshot/` is a set of directories with
-names like `daily.2021-09-22_0010`. Each of these directories holds a copy of
-the contents of the original directory from a certain point in time.  Take a
-moment to SSH to the server and see for yourself!
+In the past couple of years, it has gotten dramatically easier to bypass the
+trial-and-error portion of a programming assignment by generating a program
+using a large language model like ChatGPT or Copilot. Although such tools
+have their place, they do not in general help you build understanding, which is
+the primary purpose of these assignments. There is no way to prevent you from
+using these tools and it would be detrimental to your learning to assign so
+complex and specific an assignment that such LLMs fail.
 
-The first piece of each snapshot's name---`daily`, in this example---represents
-the frequency at which those snapshots are taken. The second
-part---`2021-09-22_0010`---is the date and time at which it was taken.
-Snapshots that happen more frequently are also deleted more aggressively,
-meaning that the granularity of snapshots goes down the further you go back.
+So remember this: the academic integrity policies of NEU and of this course
+still hold. Please do your own work. The course staff do not like reporting
+possible violations---it feels bad and is a lot of paperwork. We would much
+prefer you do your work. And, if there are extenuating circumstances, we would
+prefer if you approached us or the dean privately and explained what is going
+on.
 
-Note that, to prevent overwhelming tools that recursively traverse a directory
-tree, the `.snapshot/` directory only shows up in listings (`ls -a`) in your
-top-level home directory. However, it is also present in every subdirectory if
-you specifically ask for it:
+With that out of the way, let's get to it.
 
+## `build.sh`: making trouble
+
+A lot of systems programming is done in languages such as C, C++, and Rust.
+These languages all have one thing in common: programs written in them are
+predominantly compiled before being executed[^interpreters]. This two-step
+tango means that every time you modify your program, you have to compile it
+before running it.
+
+[^interpreters]: We say *predominantly* because the evaluation strategy is not
+    necessarily part of the language! The language is the abstract concept and
+    the implementation makes it go zoom. There are C and Rust interpreters and
+    there are (for example) Ruby and Python compilers.
+
+That's not fun, especially if it requires arcane compiler flags that are hard
+to remember. Or maybe your program has a lot of files and your build command is
+getting unwieldy. Either way, you are going to solve your own problems today by
+*writing a build script*.
+
+This part of the assignment uses the C compiler as an example, but it doesn't
+require you to write C: we provide sample C code you can use to test your build
+system. Later, though, you *will* write some C code and integrate it into your
+build system.
+
+Your job is to write a program in Bash or POSIX shell, `build.sh`, that
+compiles some C program. The minimal functional (but not acceptable to submit)
+solution looks something like this:
+
+```sh
+#!/bin/sh
+cc -o foo foo.c rng.c
 ```
-$ ls -a Documents/  # No .snapshot/ listed!
-.  ..  do-not-read  top-secret-file
-$ ls Documents/.snapshot/
-daily.2021-09-19_0010             every_four_hours.2021-09-23_1205
-daily.2021-09-20_0010             every_four_hours.2021-09-23_1605
-daily.2021-09-21_0010             every_four_hours.2021-09-23_2005
-daily.2021-09-22_0010             every_four_hours.2021-09-24_0005
-daily.2021-09-23_0010             weekly.2021-09-05_0015
-daily.2021-09-24_0010             weekly.2021-09-12_0015
-every_four_hours.2021-09-23_0405  weekly.2021-09-19_0015
-every_four_hours.2021-09-23_0805
-$ 
+
+We'll get more into all this later in the term, but this program is not ideal:
+it builds `foo.c` and `rng.c` into `foo` every time `build.sh` is executed,
+even if `foo.c` and `rng.c` have not changed. The script you submit, in
+contrast, must only rebuild `foo` if either of those dependencies have changed.
+In addition, your program must build intermediate object files for each C file.
+
+This means example runs might look like this:
+
+```console?prompt=$
+$ ls
+build.sh  foo.c  foo.h  rng.c  rng.h
+$ ./build.sh 
+cc -c foo.c
+cc -c rng.c
+cc -o foo foo.o rng.o
+$ ./build.sh 
+$ touch rng.c
+$ ./build.sh 
+cc -c rng.c
+cc -o foo foo.o rng.o
+$ ./foo 
+hello, world! your randomly chosen number is 4
+$
 ```
 
-This is not a standard feature of Linux or POSIX---it's specific to the network
-servers that Tufts uses. Nevertheless, `.snapshot/` can be very useful when you
-accidentally remove or overwrite an important file and want to get the old
-version back. (In the next module, we'll learn about version control systems,
-which are like `.snapshot/` but supercharged.) In this part of the assignment,
-you'll write a shell script that automates the process of finding what files
-have been added to a directory since its most recent snapshot.
+Notice three things:
 
-Your script, named `whats-new.sh`, should take as its only argument a path to a
-directory to find new files in. If the argument is missing, or does not point
-to a directory that has been snapshotted, or the script is provided too many
-arguments, your script should print an error message and exit with a nonzero
-exit status. (The `exit` command immediately exits a shell script and takes the
-exit status as an argument.)
+* We can run `build.sh` and if nothing needs to get rebuilt, nothing will be
+  rebuilt
+* We can update individual C files without recompiling other C files (we do
+  need to link them at the end, though)
+* By "changed", we mean that the file's modification time is newer than its
+  target; the file contents may not have changed (see note about m-time below)
 
-If the argument is valid, your script should compare the contents of the
-directory with the contents of the most recent snapshot. We define the *most
-recent snapshot* as the one with the highest timestamp in its name, regardless
-of whether it's `daily`, `weekly`, or something else. We define the *contents*
-of a directory as all the non-hidden files (see note above) that are directly
-contained within it.
+This is a pretty standard set of features for build systems. Many people have
+put many years into making build systems great. Because we are dealing with
+small code and don't have a lot of strange requirements, you are only going to
+peek a little bit into that yawning abyss.
 
-In other words, you do not need to show new hidden files (ones that start with
-`.`), nor do you need to recurse into subdirectories. You may do either of
-these if you so choose, however. (If you do decide to handle hidden files, try
-to not list `.snapshot/` itself as a new file!)
+Unlike other build systems, you are going to put the "should we recompile this"
+logic in the same file as the project-specific components. Together, they will
+form the build script for `foo`.
 
-Your output should be a list of files that are present in the directory but not
-in the snapshot, one per line. In other words, print out the files that have
-been added since the snapshot was taken. These should be valid paths relative
-to the given directory (so either `file1` or `./file1` is acceptable). You may
-find the `comm` utility useful in generating this list; see `man comm`.
+### Requirements
 
-Please include a `#!` line at the beginning of your script that indicates it
-should be executed with either `/bin/sh` or `/bin/bash`. (`/bin/sh` points to
-different shells on different systems but is always guaranteed to be a
-POSIX-compliant shell; `/bin/bash` is always Bash specifically.) And use the
-error handling practices we encouraged in lecture.
+This all might sound a little bit scary but we promise that explicitly laying
+out the behavior like this makes for easier implementation. You can think of it
+like a checklist.
 
-Your program may write data to files as part of generating its result. If it
-does, please use the `mktemp` utility to create them. `mktemp` generates a new
-file with a random name inside `/tmp`, a system directory designed to hold
-temporary files that don't need to stick around. We encourage you to remove any
-temporary files you use once your script finishes, but you will not lose points
-if you don't.
+> Note: The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+> "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this
+> document are to be interpreted as described in [RFC
+> 2119](https://datatracker.ietf.org/doc/html/rfc2119).
 
-## Using syscalls: write your own ls!
+You MUST:
+
+* Be able to build `foo` by running `./build.sh`
+* Only recompile a target if at least one of its dependencies has been modified
+  more recently than it (see note about m-time below)
+* Write your program so that it runs under `sh` or `bash`
+* Write your program entirely in one file
+* Include a shebang line at the beginning of your script for either `sh` or
+  `bash`
+* Use the error-handling practices we encouraged in lecture
+* Exit with error code 0 if the script succeeded
+* Exit with a non-zero error code if the script did not succeed
+
+> <!-- cribbed from BLD notes -->
+> *Note:* Some build systems use modification time (m-time) of files to
+> determine when they were last modified. Some build systems use content
+> hashing, like Git does, to only rebuild when the contents of the file change.
+> (The implication here, which is important, is that m-time might change even
+> if the content does not.)
+> <!-- end snip -->
+> We'll talk more about this in the BLD module.
+
+You MUST NOT:
+
+* Use `make` or `watchman` or `entr` or any other software that would do
+  substantive work for you
+* Modify any of the C source files we provide to you
+
+You SHOULD:
+
+* Define functions to make your code more readable
+
+You MAY:
+
+* Print the commands executed by your script as they are executed
+* Take an optional argument to `build.sh` to specify what target to build
+* Use (small) standard Unix utilities. When in doubt, ask on Piazza
+* Support modifying the build by setting `CC`, `CFLAGS`, `LDFLAGS`, and other
+  assorted environment variables
+
+In general, you MAY go above and beyond if you want to, as long as your
+extended program still meets the requirements. This MAY result in some light
+sprinkling of extra points.
+
+Note: `/bin/sh` points to different shells on different systems but is always
+guaranteed to be a POSIX-compliant shell; `/bin/bash` is always Bash
+specifically.
+
+To give you rough idea of the complexity of the program, the course reference
+solution is 24 [SLOC](https://en.wikipedia.org/wiki/Source_lines_of_code) for
+the "build system" part and 6 SLOC for the project-specific component. Your
+solution may be longer or shorter; both are fine.
+
+
+## Using syscalls: write your own `ls`!
+Now that you have a tool that can be used to compile the course-provided sample
+C program, we're going to have you write some C.
+
 We discussed in lecture how system calls (also known as "syscalls") are the
 primary way for userspace programs to communicate with the Linux kernel. Now
 it's time to get your hands dirty and make a syscall of your own. You're going
@@ -102,11 +178,11 @@ to write a stripped-down version of `ls` that prints the contents of a
 directory.
 
 This piece of the assignment involves writing C code, but we’re confident that
-you’ll be able to do it with what you know from CS 15 and the
-`our-friendly-cat` implementation we showed in class. C is very similar to the
-pieces of C++ you already know, and you can take a look at this old [CS 40
+you'll be able to do it with what you know already and the `our-friendly-cat`
+implementation we showed in class. You can take a look at this old [Tufts CS 40
 lab](https://bernsteinbear.com/resources/comp40-lab0.pdf) to learn some of the
-notable differences (plus details on `argc` and `argv`).
+notable differences between C and C++ (if that's helpful), plus details on
+`argc` and `argv`.
 
 You'll be calling some system functions from C, including one called `fputs()`
 to print to stdout as well as a number of syscall shim functions (described
@@ -115,11 +191,23 @@ which is a set of function implementations that are available to any C program
 running on a POSIX system. Nearly all C library functions have their own man
 pages; don't be afraid to use them!
 
-Your program, `myls.c`, should take as its only argument a path to a directory
-and print the name of each file (see note above) inside that directory, one per
-line. You may or may not include files starting with `.` at your discretion. If
-your program is run without a directory name or the given name is not a
-directory, your program should print an error and return a nonzero exit code.
+Your program, `myls.c`, MUST take as its only argument a path to a directory
+and print the name of each file inside that directory, one per
+line. You MAY include files starting with `.` at your discretion. If your
+program is run without a directory name or the given name is not a directory,
+your program MUST print an error and return a nonzero exit code.
+
+This assignment asks you to print a list of files. The word "file" is often
+used to refer specifically to a *regular file*, which is the "normal" kind of
+file that holds data and shows up in `ls` with a type of `-`. However, the
+strict POSIX definition of "file" encompasses not only regular files but also
+directories, symlinks, devices, and every other thing that can go inside a
+directory. For this assignment, we are referring to the POSIX definition
+whenever we say "file." Your implementation of `myls.c` should consider
+directories, symlinks, and all other types of file when producing its output.
+
+Now, on to implementation notes. We suggest looking into a couple of different
+syscalls and their C wrappers as starting points.
 
 Internally, GNU's implementation of `ls` calls the `readdir()` function from
 libc. `readdir()` behaves as a transparent wrapper around the `readdir`
@@ -145,12 +233,12 @@ program directly using syscalls. Specifically, you'll probably want to use
 These functions can return a whole host of different errors in different
 conditions. If any of them returns a value that signals an error (check the man
 page for each one), you should print a helpful error message and exit
-immediately with a nonzero exit code.[^perror]
+immediately with a nonzero exit code[^perror].
 
 [^perror]: We won't require you to use it, but you may find the `perror`
     function (`man 3 perror`) helpful.
 
-You can start with the following skeleton, or you can write your own:
+You MAY start with the following skeleton:
 
 ```c
 #include <stdio.h>
@@ -169,10 +257,18 @@ As an extension, you may allow the user to omit the argument and have your
 program list the contents of the current working directory. This is not
 required for full marks.
 
+This is a small program. You may feel tempted to copy it off the internet or
+classmate. **Don't.** You are robbing yourself of learning. We have given you
+enough function names to get started. Check out their manual pages.
+
+## Using `build.sh` to compile `myls.c`
+
+Now integrate by adding `myls` as a target to `build.sh`! You MUST be able to
+compile `myls` by running `./build.sh` (and also follow all the other rebuild
+requirements listed above).
+
 ## Submitting your work
-Please submit your two files, `whats-new.sh` and `myls.c`, with `provide
-comp50isdt cli-constructive whats-new.sh myls.c`. You must be logged into the
-homework server to use Provide.
+Please submit your two files, `build.sh` and `myls.c`, on Gradescope.
 
 ## Just for fun...
 **At this point, you are done with the assignment. You need not read anything
