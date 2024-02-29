@@ -94,6 +94,14 @@ Notice three things:
 * By "changed", we mean that the file's modification time is newer than its
   target; the file contents may not have changed
 
+<!-- cribbed from BLD notes -->
+Some build systems use modification time (m-time) of files to determine when
+they were last modified. Some build systems use content hashing, like Git does,
+to only rebuild when the contents of the file change. (The implication here,
+which is important, is that m-time might change even if the content does not.)
+<!-- end snip -->
+We'll talk more about this in the BLD module.
+
 This is a pretty standard set of features for build systems. Many people have
 put many years into making build systems great. Because we are dealing with
 small code and don't have a lot of strange requirements, you are only going to
