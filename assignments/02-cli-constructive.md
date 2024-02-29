@@ -97,9 +97,7 @@ Notice three things:
 This is a pretty standard set of features for build systems. Many people have
 put many years into making build systems great. Because we are dealing with
 small code and don't have a lot of strange requirements, you are only going to
-peek a little bit into that yawning abyss. We hope that after writing your
-build script, you look at Make with a little less apprehension. You too could
-write such a tool given enough time.
+peek a little bit into that yawning abyss.
 
 Unlike other build systems, you are going to put the "should we recompile this"
 logic in the same file as the project-specific components. Together, they will
