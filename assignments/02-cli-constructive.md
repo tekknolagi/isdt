@@ -14,14 +14,9 @@ In the past couple of years, it has gotten dramatically easier to bypass the
 trial-and-error portion of a programming assignment by generating a program
 using a large language model like ChatGPT or Copilot. Although such tools
 have their place, they do not in general help you build understanding, which is
-the primary purpose of these assignments.
-
-You are in school, we hope for the purpose of learning something. It has always
-been possible to cheat yourself of learning by copying code. In the past couple
-of years, it has gotten dramatically easier to do so by asking large language
-models such as ChatGPT or Copilot to write programs for you. There is no way to
-prevent you from doing so and it would be detrimental to your learning to
-assign so complex and specific an assignment that such LLMs fail.
+the primary purpose of these assignments. There is no way to prevent you from
+using these tools and it would be detrimental to your learning to assign so
+complex and specific an assignment that such LLMs fail.
 
 So remember this: the academic integrity policies of NEU and of this course
 still hold. Please do your own work. The course staff do not like reporting
