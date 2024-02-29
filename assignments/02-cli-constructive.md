@@ -127,16 +127,19 @@ You MUST:
 
 You MUST NOT:
 
-* Shell out to `make` or `watchman` or `entr` or any other software that would
-  do substantive work for you
+* Use `make` or `watchman` or `entr` or any other software that would do
+  substantive work for you
 * Modify any of the C source files we provide to you
+
+You SHOULD:
+
+* Define functions to make your code more readable
 
 You MAY:
 
 * Print the commands executed by your script as they are executed
 * Take an optional argument to `build.sh` to specify what target to build
 * Use (small) standard Unix utilities. When in doubt, ask on Piazza
-* Define functions to make your code more readable
 * Support modifying the build by setting `CC`, `CFLAGS`, `LDFLAGS`, and other
   assorted environment variables
 * Write data to temporary files as part of your build script. If you do, you
@@ -145,7 +148,8 @@ You MAY:
   * Automatically clean up the temporary files when the build script finishes
 
 In general, you MAY go above and beyond if you want to, as long as your
-extended program still meets the requirements.
+extended program still meets the requirements. This MAY result in some light
+sprinkling of extra points.
 
 Note: `/bin/sh` points to different shells on different systems but is always
 guaranteed to be a POSIX-compliant shell; `/bin/bash` is always Bash
