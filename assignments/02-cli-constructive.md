@@ -124,6 +124,8 @@ You MUST:
 * Include a shebang line at the beginning of your script for either `sh` or
   `bash`
 * Use the error-handling practices we encouraged in lecture
+* Exit with error code 0 if the script succeeded
+* Exit with a non-zero error code if the script did not succeed
 
 You MUST NOT:
 
