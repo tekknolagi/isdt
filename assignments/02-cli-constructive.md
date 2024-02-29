@@ -3,6 +3,28 @@
 
 # Homework 2: CLI, Constructive
 
+This is the first of four "constructive" assignments---assigments where we ask
+you to write a program. The point of such assignments is to get you more
+comfortable building things in a safe environment so that later, in a more
+"real" setting, you believe in yourself. While we are somewhat biased, we also
+think they can even be thought of as fun.
+
+You are in school, we hope for the purpose of learning something. It has always
+been possible to cheat yourself of learning by copying code. In the past couple
+of years, it has gotten dramatically easier to do so by asking large language
+models such as ChatGPT or Copilot to write programs for you. There is no way to
+prevent you from doing so and it would be detrimental to your learning to
+assign so complex and specific an assignment that such LLMs fail.
+
+So remember this: the academic integrity policies of NEU and of this course
+still hold. Please do your own work. The course staff do not like reporting
+possible violations---it feels bad and is a lot of paperwork. We would much
+prefer you do your work. And, if there are extenuating circumstances, we would
+prefer if you approached us or the dean privately and explained what is going
+on.
+
+With that out of the way, let's get to it.
+
 ## `build.sh`: making trouble
 
 A lot of systems programming is done in languages such as C, C++, and Rust.
