@@ -94,14 +94,6 @@ Notice three things:
 * By "changed", we mean that the file's modification time is newer than its
   target; the file contents may not have changed
 
-<!-- cribbed from BLD notes -->
-Some build systems use modification time (m-time) of files to determine when
-they were last modified. Some build systems use content hashing, like Git does,
-to only rebuild when the contents of the file change. (The implication here,
-which is important, is that m-time might change even if the content does not.)
-<!-- end snip -->
-We'll talk more about this in the BLD module.
-
 This is a pretty standard set of features for build systems. Many people have
 put many years into making build systems great. Because we are dealing with
 small code and don't have a lot of strange requirements, you are only going to
@@ -127,8 +119,8 @@ like a checklist.
 You MUST:
 
 * Be able to build `foo` by running `./build.sh`
-* Only recompile a target if any of its dependencies' modified-time (mtime) is
-  later than the target's mtime
+* Only recompile a target if at least one of its dependencies has been modified
+  more recently than it (see note about m-time below)
 * Write your program so that it runs under `sh` or `bash`
 * Write your program entirely in one file
 * Include a shebang line at the beginning of your script for either `sh` or
@@ -136,6 +128,15 @@ You MUST:
 * Use the error-handling practices we encouraged in lecture
 * Exit with error code 0 if the script succeeded
 * Exit with a non-zero error code if the script did not succeed
+
+> <!-- cribbed from BLD notes -->
+> *Note:* Some build systems use modification time (m-time) of files to
+> determine when they were last modified. Some build systems use content
+> hashing, like Git does, to only rebuild when the contents of the file change.
+> (The implication here, which is important, is that m-time might change even
+> if the content does not.)
+> <!-- end snip -->
+> We'll talk more about this in the BLD module.
 
 You MUST NOT:
 
