@@ -166,7 +166,7 @@ meeting_days = ["Monday", "Tuesday", "Wednesday", "Thursday"]
 
 
 def fmt(date):
-    cal = f"{date.strftime('%b')} {date.day}"
+    cal = f"*{date.strftime('%b')} {date.day}*"
     if date in holidays:
         return f"{cal}<br>*No class*"
     try:
