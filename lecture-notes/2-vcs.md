@@ -1429,7 +1429,111 @@ even works outside a Git repository!
 
 #### Undoing mistakes
 
-TODO: Using `git revert` to undo an old change.
+Viewing past changes is well and good, and it'll often help you figure out why
+the code you've been editing has mysteriously stopped working. But once you've
+figured out the problem, what can you do about it? You could hope that your text
+editor's undo history is long enough; you could copy and paste individual lines
+from the output of `git diff` or `git show`. Or, you could use one of several
+Git subcommands, detailed in the next few sections, that apply pieces of your
+Git history to files in the working tree.
+
+`git revert` is the most intuitive of these commands. Given a revision
+parameter, `git revert` generates a new commit that undoes the changes of just
+that commit, preserving changes from other intervening commits:
+
+```console?prompt=$
+$ git revert 2d66030
+Auto-merging main.c
+<editor opens>
+<save and quit>
+[main 0fb5235] Revert "Support the modulo operator"
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+$ 
+```
+
+This results in a new commit, whose changes are immediately reflected in the
+working tree:
+
+```console?prompt=$
+$ git log --oneline
+0fb5235 (HEAD -> main) Revert "Support the modulo operator"
+221af3e Detect errors when parsing numbers
+2d66030 Support the modulo operator
+01302bc Add a simple Makefile
+1838eea Make main a simple calculator
+a83e7a6 Add #include directives to fix compilation
+3ba2a93 Initial commit
+$ git show HEAD
+commit 0fb52357b6d1c76bda2d33890e1c8d2cd36ec792 (HEAD -> main)
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Wed Feb 28 22:35:12 2024 -0500
+
+    Revert "Support the modulo operator"
+
+    This reverts commit 2d6603026105b168c126d2ee22c6f4dba8d48437.
+
+diff --git a/main.c b/main.c
+index 9407af1..56ef02d 100644
+--- a/main.c
++++ b/main.c
+@@ -12,8 +12,6 @@ int calc(int left, char op, int right) {
+     return left * right;
+   case '/':
+     return left / right;
+-  case  '%':
+-    return left % right;
+   }
+   fprintf(stderr, "Unrecognized op `%c'.\n", op);
+   exit(EXIT_FAILURE);
+@@ -21,10 +19,9 @@ int calc(int left, char op, int right) {
+
+ int main(int argc, char **argv) {
+   if (argc != 4) {
+-    fprintf(
+-        stderr,
+-        "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
+-        argv[0]);
++    fprintf(stderr,
++            "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /.\n",
++            argv[0]);
+     return EXIT_FAILURE;
+   }
+   const char *left_str = argv[1];
+$ head -n 20 main.c
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int calc(int left, char op, int right) {
+  switch (op) {
+  case '+':
+    return left + right;
+  case '-':
+    return left - right;
+  case '*':
+    return left * right;
+  case '/':
+    return left / right;
+  }
+  fprintf(stderr, "Unrecognized op `%c'.\n", op);
+  exit(EXIT_FAILURE);
+}
+
+int main(int argc, char **argv) {
+$ 
+```
+
+The generated commit removes just the changes introduced in commit 2d6603026105
+("Support the modulo operator") but doesn't touch the bug fix from commit
+221af3ea4645 ("Detect errors when parsing numbers"), even though that commit
+came later.
+
+If you find it odd that `git revert` creates a new "undo" commit instead of
+deleting the original commit, you're not alone: new users of Git often look for
+ways to delete or edit a commit after it's made, assuming that the best way fix
+mistakes. However, Git discourages such an approach in multiple ways:
+
+- TODO
 
 #### Going back in time
 
