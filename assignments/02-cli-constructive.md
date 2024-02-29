@@ -59,12 +59,11 @@ solution looks something like this:
 cc -o foo foo.c rng.c
 ```
 
-If only it were that simple for your assignment. We'll get more into all this
-later in the term, but this program is not ideal: it builds `foo.c` and `rng.c`
-into `foo` every time `build.sh` is executed, even if `foo.c` and `rng.c` have
-not changed. The script you submit, in contrast, must only rebuild `foo` if either of those
-dependencies have changed. In addition, your program must build intermediate
-object files for each C file.
+We'll get more into all this later in the term, but this program is not ideal:
+it builds `foo.c` and `rng.c` into `foo` every time `build.sh` is executed,
+even if `foo.c` and `rng.c` have not changed. The script you submit, in
+contrast, must only rebuild `foo` if either of those dependencies have changed.
+In addition, your program must build intermediate object files for each C file.
 
 This means example runs might look like this:
 
