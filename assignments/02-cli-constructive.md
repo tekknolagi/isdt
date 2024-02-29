@@ -142,10 +142,6 @@ You MAY:
 * Use (small) standard Unix utilities. When in doubt, ask on Piazza
 * Support modifying the build by setting `CC`, `CFLAGS`, `LDFLAGS`, and other
   assorted environment variables
-* Write data to temporary files as part of your build script. If you do, you
-  MUST:
-  * Use the `mktemp` utility to create them
-  * Automatically clean up the temporary files when the build script finishes
 
 In general, you MAY go above and beyond if you want to, as long as your
 extended program still meets the requirements. This MAY result in some light
