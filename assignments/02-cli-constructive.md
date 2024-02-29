@@ -3,11 +3,18 @@
 
 # Homework 2: CLI, Constructive
 
-This is the first of four "constructive" assignments---assigments where we ask
-you to write a program. The point of such assignments is to get you more
-comfortable building things in a safe environment so that later, in a more
-"real" setting, you believe in yourself. While we are somewhat biased, we also
-think they can even be thought of as fun.
+This is the first of four "constructive" assignments---most of which ask
+you to write a small amount of code. While writing that code, you will likely
+make mistakes that highlight gaps in your understanding and require you to
+fill those gaps by referencing lecture notes or documentation. Not only is that
+expected, it's the main reason we created these assignments. The programs
+you produce are secondary to the experience you gain while producing them.
+
+In the past couple of years, it has gotten dramatically easier to bypass the
+trial-and-error portion of a programming assignment by generating a program
+using a large language model like ChatGPT or Copilot. Although such tools
+have their place, they do not in general help you build understanding, which is
+the primary purpose of these assignments.
 
 You are in school, we hope for the purpose of learning something. It has always
 been possible to cheat yourself of learning by copying code. In the past couple
