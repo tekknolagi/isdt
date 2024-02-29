@@ -198,7 +198,7 @@ directory. For this assignment, we are referring to the POSIX definition
 whenever we say "file." Your implementation of `myls.c` should consider
 directories, symlinks, and all other types of file when producing its output.
 
-Now, onto implementation notes. We suggest looking into a couple of different
+Now, on to implementation notes. We suggest looking into a couple of different
 syscalls and their C wrappers as starting points.
 
 Internally, GNU's implementation of `ls` calls the `readdir()` function from
