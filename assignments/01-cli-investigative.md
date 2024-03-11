@@ -7,7 +7,7 @@
 
 For this and all future assignments, please make sure you are using Bash as
 your shell, as that's what this course will focus on for the reasons described
-in [lecture](../lecture-notes/1-cli.html). You may already be using Bash, or
+in [lecture]({{site.baseurl}}/lecture-notes/1-cli.html). You may already be using Bash, or
 you may be using another shell such as Zsh. For coursework, we recommend either
 running `bash -l` each time you do coursework or changing your shell with
 `chsh` until the term is over.
@@ -25,7 +25,8 @@ what commands to use when will come in handy.
 To get started, you're going to poke around the homework server using the tools
 we discussed in lecture. You'll get some hands-on experience with `pwd`, `cd`,
 `ls`, `cat`, `tree`, and `man`. Please answer the following questions and "show
-your work" (see [Grading](../#grading) on the syllabus for an example) with each:
+your work" (see [Grading]({{site.baseurl}}/#grading) on the syllabus for an
+example) with each:
 
 1. When you log into the homework server, what directory are you in?
 2. How many files are directly inside your current directory? How many
