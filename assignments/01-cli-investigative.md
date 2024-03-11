@@ -25,7 +25,7 @@ what commands to use when will come in handy.
 To get started, you're going to poke around the homework server using the tools
 we discussed in lecture. You'll get some hands-on experience with `pwd`, `cd`,
 `ls`, `cat`, `tree`, and `man`. Please answer the following questions and "show
-your work" (see [Grading](/#grading) on the syllabus for an example) with each:
+your work" (see [Grading](../#grading) on the syllabus for an example) with each:
 
 1. When you log into the homework server, what directory are you in?
 2. How many files are directly inside your current directory? How many
