@@ -7,7 +7,7 @@
 
 For this and all future assignments, please make sure you are using Bash as
 your shell, as that's what this course will focus on for the reasons described
-in [lecture]({{site.baseurl}}/lecture-notes/1-cli.html). You may already be using Bash, or
+in [lecture]({{site.baseurl}}/lecture-notes/1-cli/). You may already be using Bash, or
 you may be using another shell such as Zsh. For coursework, we recommend either
 running `bash -l` each time you do coursework or changing your shell with
 `chsh` until the term is over.
