@@ -57,7 +57,7 @@ to learn a little C
 **Equipment:** A computer with a POSIX shell  
 **Textbook:** none  
 
-**Lectures:** Mo-Tu-We-Thu, 9:50am-11:30am, in person (location TBD)
+**Lectures:** Mo-Tu-We-Thu, 9:50am-11:30am, in person (location TBD)  
 **Assignments:** 8 assignments (2 per module), to be submitted on Gradescope  
 **Exams:** none  
 
