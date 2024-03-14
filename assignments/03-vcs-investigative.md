@@ -99,8 +99,5 @@ easier to clone and use the CLI.
 
 ## Submitting your work
 
-You should write your answers in a file, `answers.txt`, split into two
-sections.
-
-Please submit with `provide comp50isdt vcs-investigative answers.txt`. You must
-be logged into the homework server to use Provide.
+Write your answers in a file, `answers.txt`, split into two sections, and
+numbered as appropriate. Submit this file on Gradescope.

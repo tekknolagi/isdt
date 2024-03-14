@@ -75,7 +75,5 @@ The following is an incomplete list of best practices for writing tests.
 
 ## Submitting your work
 
-You should write your answers in a file, `answers.txt`.
-
-Please submit with `provide comp50isdt cor-investigative answers.txt`. You must
-be logged into the homework server to use Provide.
+Write your answers in a text file, `answers.txt`. Submit this file on
+Gradescope.
