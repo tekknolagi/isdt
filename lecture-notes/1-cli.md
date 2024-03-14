@@ -1117,10 +1117,11 @@ ran. You can use this to rerun the last command verbatim (e.g. to repeatedly
 compile a program) or to add something to the beginning or end of it (e.g. to
 rerun the previous command as root with `sudo !!`).
 
-History expansion isn't confined to the last command you ran. Remember the
-history event number in the example shell prompt from Lecture 1?[^ps1] By
-prefixing the history event number of a given command with a single `!`, you
-can rerun that command. Here's an example:
+History expansion isn't confined to the last command you ran. Remember how Bash
+prompts are customizable? You can add a history event number to your prompt by
+changing the `$PS1` shell variable. (See the PROMPTING section of `man bash`
+for details.) By prefixing the history event number of a given command with a
+single `!`, you can rerun that command. Here's an example:
 
 ```
 vm-hw03{thebb01}1013: gcc -Wall -Werror -o hello hello.c
@@ -1134,14 +1135,9 @@ vm-hw03{thebb01}1017: !1014
 Hello world!
 vm-hw03{thebb01}1018: 
 ```
-
 Note that Bash prints a line after each command with a history expansion, prior
 to the command's output, showing what was actually run. This is for clarity and
 also happens with `!!`.
-
-[^ps1]: If the prompt on your local system doesn't have a history event number,
-    you can add one by changing the `$PS1` shell variable. See the PROMPTING
-    section of `man bash` for details.
 
 ### Variables in the shell
 We now change focus from shell features that help you run simple commands at an
