@@ -1528,12 +1528,45 @@ The generated commit removes just the changes introduced in commit 2d6603026105
 221af3ea4645 ("Detect errors when parsing numbers"), even though that commit
 came later.
 
-If you find it odd that `git revert` creates a new "undo" commit instead of
-deleting the original commit, you're not alone: new users of Git often look for
-ways to delete or edit a commit after it's made, assuming that the best way fix
-mistakes. However, Git discourages such an approach in multiple ways:
+TODO: resolving merge conflicts
 
-- TODO
+#### Aside: rewriting history
+
+If you find it odd that `git revert` creates a new "undo" commit instead of
+deleting the original commit, you're not alone: new users of Git often seek to
+delete or edit a commit after it's made, assuming that to be the right way to
+fix mistakes. Although the "right" way to use Git, like any tool, is ultimately
+up to its user, there are at least two reasons why most collaborative Git
+workflows only revise existing commits in very specific situations:
+
+Firstly, Git arguably makes it impossible to edit a commit in the traditional
+sense. Git identifies a commit by its hash, but that hash is derived from the
+commit's contents: by changing the contents, you change the hash, making the
+resulting "edited" commit no different from an entirely new commit that just
+happens to have similar contents to the original. To underscore that fact (and
+match Git's documentation), from now on we'll say that such commits have been
+"*rewritten*" rather than "edited".
+
+The ease of rewriting a commit depends on how many places that commit is
+referenced, both implicitly (e.g. by children, branches, and other copies of the
+repository) and explicitly (e.g. by commit messages and documentation).
+References by child commits pose the biggest problem, as you can only update
+children by rewriting them (and all their transitive children) as well!
+
+So, although it's easy to rewrite a commit immediately after you make it (and,
+in fact, `git commit --amend` does exactly that), it's difficult and inadvisable
+to rewrite a commit with a significant number of children, especially in
+projects with multiple collaborators who each have a copy of the repository.
+There are Git commands, like `git rebase` and the much riskier `git
+filter-repo`, which do so nonetheless, but you should use those judiciously and
+only in accordance with what your collaborators on a given project expect.
+
+Hopefully this illustrates the technical reason why `git revert` creates a new
+commit instead of rewriting history. But there's also a much simpler ergonomic
+reason why, which is that an accurate history helps us as developers. Seeing a
+commit followed by a revert tells you what's been tried before, why it failed,
+and what approach (not) to take if you try it again! So even if it were easy to
+edit commits, `git revert` would likely work just the same.
 
 #### Going back in time
 
