@@ -71,17 +71,6 @@ shells. We'll also cover some Bash-specific command syntax that you'll likely
 encounter when reading shell scripts, as the vast majority of scripts you'll
 find in the wild are written for Bash.
 
-If you want to follow along with this module on the Tufts homework servers, you
-should run `bash --login` to start Bash each time you connect. This is because
-the homework servers are in a small minority of Linux systems that are not
-configured to use Bash by default. Instead, they default to a non-POSIX shell
-called tcsh for historical reasons that we are not privy to. tcsh's prompt on
-the servers looks identical to Bash's, so `bash --login` won't appear to have
-any effect when you run it. You can run `echo $0` (which will make more sense
-after lecture 4) to check which shell you're using. If you don't switch to
-Bash, tcsh will interpret your commands, meaning much of the more advanced
-syntax we cover will result in error messages or unexpected behavior.
-
 [posix-scl]: https://pubs.opengroup.org/onlinepubs/9699919799.2018edition/utilities/V3_chap02.html
 
 [^linux-posix]: The majority of Linux distributions are not actually
@@ -107,13 +96,13 @@ from GNU, which is why some people refer to them as
 *GNU+Linux*[^other-userspaces] instead of simply Linux.
 
 We've chosen GNU+Linux because it's freely available to anyone, will run on
-almost any hardware (unlike, say, macOS), and is what the Tufts homework
-servers run. Much of what you will learn is transferable to other POSIX
-operating systems like macOS, but some of it (for example, the directory
+almost any hardware (unlike, say, macOS), and is what many real-world servers
+run. Much of what you will learn is transferable to other POSIX
+operating systems like macOS, but some of it (for example, the exact directory
 hierarchy) is not.
 
 [^linux-distros]: For example, Ubuntu, Debian, Fedora, Red Hat Enterprise
-    Linux, Arch Linux, or Gentoo. The Tufts homework servers run Red Hat.
+    Linux, Arch Linux, or Gentoo.
 
 [^other-userspaces]: It's possible to run the Linux kernel with no GNU project
     code at all: [BusyBox](https://busybox.net/), for example, implements most
@@ -126,10 +115,10 @@ hierarchy) is not.
 
 ### Anatomy of a shell prompt
 The first thing you see when you open a command line is what's known as a
-*prompt*. On the Tufts homework server, it looks like this:
+*prompt*. On the instructor's computer, it looks like this:
 
 ```
-vm-hw09{utln01}31:
+max@cedar:~$
 ```
 
 The prompt is printed by the shell (which is Bash for all examples in this
@@ -137,12 +126,11 @@ course) and serves both to inform you that the shell is ready to accept a new
 command and to orient you with basic information about the state of the command
 line.
 
-In the example above, the prompt consists of three parts: the first, `vm-hw06`,
-is the name (or *hostname*) of the computer you're using. In this case, that's
-one of Tufts' homework servers (which are virtual machines, hence the `vm-`
-naming convention). The second part, `utln01`, is your username, which at Tufts
-is your UTLN. The final part, `31`, is something called the "history event
-number", which increases by one with each command you run.
+In the example above, the prompt consists of three dynamic parts: the first,
+`max`, is the username of the current user. The second part is the name (or
+*hostname*) of the computer you're using. In this case, that's one of Max's
+computers, which are all named after tree species. The third part, `~`, is the
+current working directory of the shell.
 
 Each of these pieces of information serves a purpose: the hostname and username
 together tell you where you're executing the command. Accidentally running a
@@ -150,13 +138,12 @@ command on the wrong computer (for example, if you forget you've run `ssh`) or
 as the wrong user (if you forgot you've run `su` or `sudo`) can be
 catastrophic---imagine accidentally rebooting a server that dozens of people are
 using instead of your local workstation---and so nearly every shell prompt you
-see will include this information prominently. The history event number is
-useful when using advanced shell features that let you reference and edit old
-commands, which we'll cover in a future lecture.
+see will include this information prominently.
 
 The punctuation that separates this information is considerably less important
-and has no standardized meaning. On the Tufts servers, your username is in
-curly braces and the prompt ends with `: `. But the Bash prompt is
+and has no standardized meaning. The symbol `@` ("at") is conventional and this
+has carried over even to email addresses. The symbol `$` ("dollar") is
+conventional to indicate the end of the prompt. But the Bash prompt is
 customizable, and other systems you encounter will use different punctuation
 and include slightly different information[^prompt-shorthand]. In fact, there's
 one notable piece of information missing from the Tufts prompt. To illustrate,
@@ -535,7 +522,7 @@ since `echo` joins all its arguments with spaces before printing them anyway.
 But the distinction is much more important when we're trying to specify
 something like a filename.
 
-To illustrate, let's look at an example directory on the homework server with a
+To illustrate, let's look at an example directory on the course server with a
 file named `hello` (containing "1"), one named `world` (containing "2"), and
 one named `hello world` (containing "3"). When viewing these files using the
 `cat` command (which prints the contents of one or more files), quotes make a
@@ -872,8 +859,8 @@ administrators to see live updating commands like `top`, some kind of live log,
 and maybe also have an editor running, all at once.
 
 It also allows you to detach and reattach to the session you started, so you
-can persist your work across logins to the homework server. Note that it does
-not survive system restarts.
+can persist your work across logins to a server. Note that it does not survive
+system restarts.
 
 The keybindings are customizable, so read the manual pages for the default
 bindings.
@@ -1278,7 +1265,7 @@ HOME=/h/thebb01
 $ 
 ```
 
-The homework server has a much bigger environment than this, but I've omitted
+Many servers has a much bigger environment than this, but I've omitted
 most of the variables so we can focus on these. Some of these variables hold
 system information: HOSTNAME is the computer's name and LANG is the language
 that programs should prefer. Others hold information about my user: USER and
@@ -1649,7 +1636,7 @@ flexibility the pipe operator brings.
 One limitation of pipelines is that they write their final output to the
 terminal. In the case of our example above, that's fine because the output is
 just one file. But what if we wanted to save a report of how many lines were in
-each header file at a given time? On the homework server, `find /usr/include/
+each header file at a given time? On a sample server, `find /usr/include/
 -type f -name '*.h' -print0 | wc --files0-from=- -l` outputs over 18,000 lines,
 so manually retyping, or even copy/pasting, the output would not be fun.
 
@@ -2008,10 +1995,10 @@ section).[^shell-complication]
 
 > NOTE: We have had reports of strange shell script behavior from students
 > writing their programs on Windows in an editor like Sublime Text. If you are
-> on Windows, your best bet is probably to write your program in an editor on
-> the homework server itself, like `nano`, `vim`, or `emacs`.
+> on Windows, your best bet is probably to write your program in a text editor
+> in WSL or a Linux VM.
 >
-> This is due to the way Windows vs Unix line endings.
+> This is due to the way Windows vs Unix handle line endings.
 
 [^shell-complication]: As it turns out, if you run your executable script with
     `./myscript.sh` and there is no shebang, the kernel will refuse to execute
