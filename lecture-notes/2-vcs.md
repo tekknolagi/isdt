@@ -1434,12 +1434,12 @@ the code you've been editing has mysteriously stopped working. But once you've
 figured out the problem, what can you do about it? You could hope that your text
 editor's undo history is long enough; you could copy and paste individual lines
 from the output of `git diff` or `git show`. Or, you could use one of several
-Git subcommands, detailed in the next few sections, that apply pieces of your
-Git history to files in the working tree.
+Git subcommands, detailed in the next few sections, that use your Git history to
+make useful changes to the working tree.
 
-`git revert` is the most intuitive of these commands. Given a revision
-parameter, `git revert` generates a new commit that undoes the changes of just
-that commit, preserving changes from other intervening commits:
+`git revert` is one such command. Given a revision parameter, `git revert`
+generates a new commit that undoes the changes of just the specified commit,
+preserving changes from other intervening commits:
 
 ```console?prompt=$
 $ git revert 2d66030
@@ -1555,18 +1555,18 @@ children by rewriting them (and all their transitive children) as well!
 
 So, although it's easy to rewrite a commit immediately after you make it (and,
 in fact, `git commit --amend` does exactly that), it's difficult and inadvisable
-to rewrite a commit with a significant number of children, especially in
+to rewrite a commit with a significant number of references, especially in
 projects with multiple collaborators who each have a copy of the repository.
 There are Git commands, like `git rebase` and the much riskier `git
 filter-repo`, which do so nonetheless, but you should use those judiciously and
 only in accordance with what your collaborators on a given project expect.
 
 Hopefully this illustrates the technical reason why `git revert` creates a new
-commit instead of rewriting history. But there's also a much simpler ergonomic
-reason why, which is that an accurate history helps us as developers. Seeing a
-commit followed by a revert tells you what's been tried before, why it failed,
-and what approach (not) to take if you try it again! So even if it were easy to
-edit commits, `git revert` would likely work just the same.
+commit instead of rewriting history. But there's also a second reason why, which
+is that an accurate history helps us as developers. Seeing a commit followed by
+a revert tells you what's been tried before, why it failed, and what approach
+(not) to take if you try it again! So even if it were easy to edit commits, `git
+revert` would likely work just the same.
 
 #### Going back in time
 
