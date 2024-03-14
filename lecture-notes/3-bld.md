@@ -64,10 +64,11 @@ and `types.h`") and let the compiler figure out on its own what needs to be
 rebuilt. This kind of incremental build is *much* faster.
 
 Last, engineering projects tend to have much larger scope, more files, and more
-external dependencies than, for example, CS 11 projects do. So while you may be
-able to get away with re-typing the same command and building everything each
-time for CS 11, this might not be the case in a larger project. This could be
-the difference between a twelve-hour build and a two-minute build.
+external dependencies than, for example, introductory course CS projects do. So
+while you may be able to get away with re-typing the same command and building
+everything each time for your courses, this might not be the case in a larger
+project. This could be the difference between a twelve-hour build and a
+two-minute (or even instant) build.
 
 ### How does do they solve it?
 

@@ -138,12 +138,12 @@ Gary Bernhardt.
 
 ## Lecture 2
 
-Even simple software has edge cases. In CS 15, for example, one assignment
-involves writing a `delete` function to remove an element from a binary search
-tree and maintain the BST invariant. This function alone had several cases: the
-node is `NULL`; the node has no children; the node has one child; the node has
-two children. Even though you probably should write unit tests, that's a
-manageable number of cases to test manually.
+Even simple software has edge cases. In a data structures course, for example,
+one assignment might involve writing a `delete` function to remove an element
+from a binary search tree and maintain the BST invariant. This function alone
+had several cases: the node is `NULL`; the node has no children; the node has
+one child; the node has two children. Even though you probably should write
+unit tests, that's a manageable number of cases to test manually.
 
 Complex software has many more edge cases. Business requirements often have to
 take into account the Real World, which is much messier than a binary search
