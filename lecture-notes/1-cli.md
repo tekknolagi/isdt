@@ -1957,11 +1957,12 @@ libjpg, for working with JPGs) and format-agnostic libraries (like Python's
 Even if your data is textual, you should probably pick another language if you
 need to store and later query that data as opposed to processing it all in one
 pass like a pipeline does. Because shell variables aren't typed, you can't
-build any of the data structures you might have learned about in CS 15 in a
-shell script. The best you can do is organize your data as files on disk.
-Languages like Python and Ruby, on the other hand, likely have the data
-structures you need built-in. And if they don't, you can build those
-structures.
+<!-- TODO(max): Eh, they are typed, it's just... not normal -->
+build any of the data structures you might have learned about in an
+introductory course in a shell script. The best you can do is organize your
+data as files on disk. Languages like Python and Ruby, on the other hand,
+likely have the data structures you need built-in. And if they don't, you can
+build those structures.
 
 #### Complex logic
 If you need to do math, nest conditionals more than a couple levels deep, or
@@ -2033,8 +2034,8 @@ echo "foo" # I am another comment
 ### Control flow in the shell
 So, you've chosen to use Bash to solve your problem; after you pass this class,
 we'll trust your judgement. Let's learn the missing pieces of shell syntax
-needed to write programs! Most of these will be familiar from CS 11, so we'll
-focus more on "how" than on "why" for each.
+needed to write programs! Most of these will likely be familiar from your CS
+curriculum, so we'll focus more on "how" than on "why" for each.
 
 In this section, we'll try to stick to syntax that's part of POSIX, so that
 your programs don't depend on Bash specifically. Bash does actually have some
@@ -2238,7 +2239,7 @@ Here is a function to write a greeting to the person specified:
 
 ```bash
 greet() {
-    echo "Welcome to CS 50ISDT, $1!"
+    echo "Welcome to CS 4973, $1!"
 }
 ```
 
@@ -2247,7 +2248,7 @@ programming languages, parentheses are not required:
 
 ```bash
 greet "max"
-# => Welcome to CS 50ISDT, max!
+# => Welcome to CS 4973, max!
 ```
 
 Now that you are an expert shell script programmer (TM), you may find it
