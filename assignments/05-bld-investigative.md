@@ -21,11 +21,12 @@ questions.
     Git---your local clone contains the entire repository and all metadata
     needed to reconstruct it elsewhere.
 
-Open up the
-[Makefile](https://git.sr.ht/~sircmpwn/scdoc/tree/master/item/Makefile) for the
-"scdoc" project and answer the following questions. Please provide *both* the
+Navigate to [the tree at commit 5ea8873e][tree], open up the Makefile for the
+"scdoc" project, and answer the following questions. Please provide *both* the
 answer and how you arrived at that answer (show your work or cite your sources,
 as appropriate):
+
+[tree]: https://git.sr.ht/~sircmpwn/scdoc/tree/5ea8873e33a5be55625e05673a47e440182bc09e
 
 1. In general, how does Make determine which target to build if you run it with
    no arguments?
