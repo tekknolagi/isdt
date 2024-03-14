@@ -210,25 +210,25 @@ arrow will bring you back, and you can press <kbd>Ctrl-c</kbd> to go straight
 to a fresh prompt no matter how far back you are.
 
 Tab completion is how you ask the shell to figure out what you want to type
-before you're done typing it. For example, let's say you want to list files in
-this course's directory, `/comp/50ISDT/`, on the Tufts homework server. Type
-`ls /comp/50` (without pressing <kbd>Enter</kbd>) and then press the
-<kbd>Tab</kbd> key to trigger tab completion. If you did it right, nothing will
-happen immediately. This is because there are lots of different CS 50s on the
-server and Bash doesn't know which one you want, which it signals by ignoring
-your first press of <kbd>Tab</kbd>. However, if you press <kbd>Tab</kbd> again,
-Bash will show you a list of every option it knows about[^no-ls]:
+before you're done typing it. For example, let's say you want to list some
+programs installed on your computer in the `/bin` directory. Type `ls /b`
+(without pressing <kbd>Enter</kbd>) and then press the <kbd>Tab</kbd> key to
+trigger tab completion. If you did it right, nothing will happen immediately.
+This is because are probably two directories that begin with `b` in `/` and
+Bash doesn't know which one you want, which it signals by ignoring your first
+press of <kbd>Tab</kbd>. However, if you press <kbd>Tab</kbd> again, Bash will
+show you a list of every option it knows about[^no-ls]:
 
 ```
-50/     50AIR/  50BIO/  50cog/  50CP/   50FCD/  50GD/   50IOT/  50ISDT/ 50NLP/  50PSS/  50SDT/  50WD/
+bin/     boot/
 ```
 
-Now, add `IS` to your command so you have `ls /comp/50IS` and press
-<kbd>Tab</kbd> again. This time, Bash can see there's only one choice that
-matches and so it will immediately fill in the `DT/`, no confirmation required.
-Tab completion also works with command names (although since POSIX commands are
-almost universally four letters or less, it's not usually as useful there) and
-some other command-specific things as well. If ever in doubt, just try it!
+Now, add `i` to your command so you have `ls /bi` and press <kbd>Tab</kbd>
+again. This time, Bash can see there's only one choice that matches and so it
+will immediately fill in the `n/`, no confirmation required. Tab completion
+also works with command names (although since POSIX commands are almost
+universally four letters or less, it's not usually as useful there) and some
+other command-specific things as well. If ever in doubt, just try it!
 
 [^readline]: See `man 3 readline` for more information on this wondrous
     ability.

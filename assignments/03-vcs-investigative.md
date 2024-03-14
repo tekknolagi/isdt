@@ -42,15 +42,6 @@ an open-source code editor maintained by Microsoft. For this piece of the
 assignment, go to the VS Code repository on GitHub at
 [microsoft/vscode](https://github.com/microsoft/vscode).
 
-**If you are using the homework server:** You should have enough disk space to
-download the repository (it weighs about 500MB), but if you do not, the EECS
-staff have requested you email them at
-[staff@eecs.tufts.edu](mailto:staff@eecs.tufts.edu) to request a quota
-increase. In your email, you should mention this course (CS 50ISDT).
-
-**If you are cloning to another computer:** Go for it, but we cannot guarantee
-technical support.
-
 For the following questions, please provide *both* the answer and how you
 arrived at that answer ("show your work"/"cite your sources"). You are welcome
 to attempt to answer these questions using the GitHub UI, but you may find it
