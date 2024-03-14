@@ -85,9 +85,6 @@ as your answer.
 
 ## Submitting your work
 
-Please format your answers in a text file, `answers.txt`, split into two
-sections (CaLIsthenics and mystery), and numbered where appropriate.
-
-When you are done, submit your work with `provide comp50isdt
-cli-investigative answers.txt`. You must be logged into the homework server to
-use Provide.
+Write your answers in a text file, `answers.txt`. It should be split into two
+sections (CaLIsthenics and mystery), and numbered where appropriate. Submit
+this file on Gradescope.
