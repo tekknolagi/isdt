@@ -863,7 +863,7 @@ Here's a diagram to illustrate what we mean. We've used boxes to indicate
 entire units that can be called. Dashed boxes represent library code we did not
 write, whereas solid boxes represent our code:
 
-<object class="svg" type="image/svg+xml" data="{{site.baseurl}}/assets/images/modularization-bad.excalidraw.svg">
+<object class="svg" type="image/svg+xml" style="max-width: 100%;" data="{{site.baseurl}}/assets/images/modularization-bad.excalidraw.svg">
   If you're seeing this text, it means your browser cannot render SVG.
 </object>
 
@@ -945,7 +945,7 @@ Here's a new diagram to illustrate the new architecture. Because we have
 extracted `validate_password` and `create_validation_email` into their own
 stateless functions, they can be more easily tested in isolation:
 
-<object class="svg" type="image/svg+xml" data="{{site.baseurl}}/assets/images/modularization-good.excalidraw.svg">
+<object class="svg" type="image/svg+xml" style="max-width: 100%;" data="{{site.baseurl}}/assets/images/modularization-good.excalidraw.svg">
   If you're seeing this text, it means your browser cannot render SVG.
 </object>
 
