@@ -1566,10 +1566,11 @@ only in accordance with what your collaborators on a given project expect.
 
 Hopefully this illustrates the technical reason why `git revert` creates a new
 commit instead of rewriting history. But there's also a second reason why, which
-is that an accurate history helps us as developers. Seeing a commit followed by
-a revert tells you what's been tried before, why it failed, and what approach
-(not) to take if you try it again! So even if it were easy to edit commits, `git
-revert` would likely work just the same.
+is that an accurate history helps us as developers: just because a commit wasn't
+perfect doesn't mean it holds no value. Keeping reverted commits in the history
+lets us retry them, reproduce the conditions that led to the revert, and see (in
+the revert's message) important context about what went wrong. So even if it
+were easy to edit commits, `git revert` would likely work just the same.
 
 #### Going back in time
 
