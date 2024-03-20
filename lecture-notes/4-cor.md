@@ -941,9 +941,16 @@ Likewise, you can test the HTML rendering of the users page---if you
 like---without connecting to the database; you can create temporary `User`
 objects without needing to commit (write) and then fetch them.
 
+Here's a new diagram to illustrate the new architecture. Because we have
+extracted `validate_password` and `create_validation_email` into their own
+stateless functions, they can be more easily tested in isolation:
+
 <object class="svg" type="image/svg+xml" data="{{site.baseurl}}/assets/images/modularization-good.excalidraw.svg">
   If you're seeing this text, it means your browser cannot render SVG.
 </object>
+
+We've also indicated that these can now be considered "unit" tests instead of
+"integration" tests because they test one small feature at a time.
 
 ### Maxim: avoid round trips
 ### The Database interface
