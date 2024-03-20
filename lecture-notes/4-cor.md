@@ -740,6 +740,196 @@ test written by your client?
 ## Lecture 4.5
 
 ### Strategies for isolating units
+
+Abstraction is wonderful. It helps you paper over the nasty stuff while you
+write your elegant software. It helps you replace components without getting
+into the weeds in every single other component of your software. There's a
+reason they teach it in introductory computer science courses.
+
+Abstraction is terrible. It leads to code bloat. People pick the wrong
+abstractions too frequently. It hides details that are important for
+correctness, security, or performance. There's a reason that you learn some of
+the gnarly details in the introductory computer science course.
+
+<style>
+/* https://stackoverflow.com/a/43691462/569183 */
+img[src*='#left'] {
+    float: left;
+}
+img[src*='#right'] {
+    float: right;
+}
+img[src*='#center'] {
+    display: block;
+    margin: auto;
+}
+</style>
+
+![]({{site.baseurl}}/assets/images/layers.jpg#right "Shrek saying 'Layers!' angrily to Donkey. You can feel the Scottish accent in your bones.")
+
+Abstraction leads to layers.
+
+Imagine you're writing a web application that multiple people will use, and
+that each person needs a profile page. This sounds like it needs a database, so
+you install your favorite database management system (DBMS) and make some
+tables.
+
+You then start writing the application part of it. You scaffold some web
+routes: the index page, `/`; `/signup`, `/login`, `/page/:user`, etc. Right
+now they all return "hello, world" but soon they will do Real Stuff.
+
+You start writing raw SQL queries inside your application endpoints to fetch
+and filter users, but then you sit back and think *hmm, maybe I would like to
+migrate databases one day... I should use an ORM*. Maybe you also want to avoid
+SQL injections, (which happen oh-so-frequently due to mixing code and data).
+Totally valid reasons. You install the ORM du jour and use that instead.
+
+Life is good. The techno music is thumping[^cake]. Your foot is tapping and the
+code is flowing. You blow through several albums and finish a workable
+prototype. You're all ready to ship.
+
+[^cake]: At the time of writing, I'm actually listening to CAKE.
+
+Then, suddenly, with a sinking feeling and growing horror, you realize that you
+don't have any tests and you have no idea how to test your application. You
+see, it kind of looks like this imagined code:
+
+```python
+# app.py
+from flask import Flask, request, render_template
+from dbstuff import create_db
+from mailer import send_email
+
+@app.post("/signup")
+def do_signup():
+    email = request.form.get("email")
+    password = request.form.get("password")
+    if len(password) < 7:
+        return "<p>Pick a longer password, silly</p>", 400
+    hashed = bcrypt(password)
+    code = new_uuid()
+    send_email(email, subject="Confirm your email", body="Code is {code}")
+    with db.session() as session:
+        user = db.User(email, hashed, code)
+        session.commit(user)
+    return f"<p>Success! Thanks for joining, {user.fullname}.</p>"
+
+@app.get("/users")
+def list_users():
+    return render_template("users.html", db=db)
+
+db = create_db("sqlite://")
+app = Flask(__name__)
+app.run("localhost", 8080)
+```
+
+```html
+{% raw %}
+<!-- users.html -->
+<html>
+    <head></head>
+    <body>
+        <ul>
+        {% for user in db.User.all() %}
+        <li><a href="/{{ user.username }}">{{ user.fullname }}</a></li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>
+{% endraw %}
+```
+
+I am not picking on Flask or Python or any specific technology here. Flask is
+just fairly ubiquitous and Python is fairly readable. I am picking on some of
+the other software design choices. So pause and think about it this microcosm
+of larger issues: what's going on? Take a moment to think about how you woud
+test it.
+
+...alright, welcome back. I hope you came to the conclusion that it's just not
+obvious. What are you going to do in your tests, start up your HTTP server and
+fire requests at it? Infer if the process succeeded from the HTML? That's the
+core of the problem: there is only one way for data to flow in (request
+parameters), the control-flow graph is very deep (call, call, call, call,
+return, return, return, return), and half of the logic has a bunch of side
+effects, such as writing to the database or sending an email. We'll learn more
+about why side effects are bad news later, but for now you can trust us.
+
+The core problem in this example is not actually the layers or the
+abstraction---we've misled you---but the entanglement *between* the
+hypothetical layers and differing amounts of abstraction. <!-- TODO(max): Hm,
+rewrite -->
+
+Let's take a look at a different imagining of the same application:
+
+```python
+# lib.py
+def validate_password(password):
+    if len(password) < 7:
+        raise InvalidPassword("Password too short")
+
+def create_validation_email(code):
+    return {"subject": "Confirm your email", "body": "Code is {code}"}
+```
+
+```python
+# app.py
+from flask import Flask, request, render_template
+from dbstuff import create_db
+from mailer import send_email
+from lib import validate_password, create_validation_email
+
+@app.post("/signup")
+def do_signup():
+    email = request.form.get("email")
+    password = request.form.get("password")
+    validate_password(password)
+    hashed = bcrypt(password)
+    code = new_uuid()
+    send_email(email, **create_validation_email(code))
+    with db.session() as session:
+        user = db.User(email, hashed)
+        session.commit(user)
+    return f"<p>Success! Thanks for joining, {user.fullname}.</p>"
+
+@app.get("/users")
+def list_users():
+    all_users = db.User.all()
+    return render_template("users.html", all_users=all_users)
+
+db = create_db("sqlite://...")
+app = Flask(__name__)
+app.run("localhost", 8080)
+```
+
+```html
+{% raw %}
+<!-- users.html -->
+<html>
+    <head></head>
+    <body>
+        <ul>
+        {% for user in all_users %}
+        <li><a href="/{{ user.username }}">{{ user.fullname }}</a></li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>
+{% endraw %}
+```
+
+Now you can test individual elements, such as `validate_password` without
+needing to be connected to the internet and sending an email. Imagine not being
+able to test password validation because you're on a train...
+
+And now you can test `create_validation_email` and notice that there has been a
+bug in there the entire time: you don't use the proper string formatting syntax
+(`f"{xyz}"`, note the leading `f`), so the desired confirmation code never gets
+embedded in the actual email to your real, frustrated, human customers.
+
+Likewise, you can test the HTML rendering of the users page---if you
+like---without connecting to the database; you can create temporary `User`
+objects without needing to commit (write) and then fetch them.
+
 ### Maxim: avoid round trips
 ### The Database interface
 ### Self-contained units
