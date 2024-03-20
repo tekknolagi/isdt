@@ -150,7 +150,7 @@ current state of things is. It shows you a description of what's going on, as
 well as some suggested things to do next. When you run it in a new repository,
 it helpfully suggests that you make and *track* some files:
 
-```console
+```console?prompt=$
 $ git status
 On branch main
 
@@ -189,7 +189,7 @@ you a more effective Git user, especially when things go wrong.
 Start by taking a look at `.git/` in your new, empty repository. It has 8
 directories and 16 files, but we'll focus on just a few:
 
-```console
+```console?prompt=$
 $ tree .git/
 .git/
 ├── branches
@@ -223,14 +223,14 @@ changed[^empty-commit]. So make a change by adding a new file:
 [^empty-commit]: You can override this behavior with the `--allow-empty` flag,
     but the occasions you'll want to are few and far between.
 
-```console
+```console?prompt=$
 $ echo 'file contents' >myfile
 $ 
 ```
 
 Now, `git status` has more to tell us:
 
-```console
+```console?prompt=$
 $ git status
 On branch main
 
@@ -260,7 +260,7 @@ files---`config`, `description`, `HEAD`, or `info/exclude`---been altered.
 To tell Git that the file exists and you plan to commit it, add it to the
 staging area with `git add`:
 
-```console
+```console?prompt=$
 $ git add myfile
 $ git status
 On branch main
@@ -276,7 +276,7 @@ $
 
 After running this, you'll finally see a change in your `.git/` directory!
 
-```console
+```console?prompt=$
 $ tree .git
 .git
 ├── branches
@@ -350,7 +350,7 @@ Git's object store, we can use the `git show` subcommand to decode it:
 [^file-command]: Tip: the `file` command tries to guess what kind of data a
     file holds. Try it out on the object!
 
-```console
+```console?prompt=$
 $ git show d03e2425cf1c82616e12cb430c69aaa6cc08ff84
 file contents
 $ 
@@ -367,7 +367,7 @@ editor for you to write your commit message and waits until you save and close
 the message to make the commit. (The specific editor used depends on the
 `$EDITOR` environment variable and often defaults to Vim or Vi.)
 
-```console
+```console?prompt=$
 $ git commit
 <editor opens>
 <save and quit>
@@ -399,7 +399,7 @@ data such that hash is identical.
 Let's take a look at the commit object by running `git show`---which when given
 no arguments shows the current commit:
 
-```console
+```console?prompt=$
 $ git show
 commit 22210506499fe9e37086d3a5ff1fb8f400facd83 (HEAD -> main)
 Author: Max Bernstein <max@thebiscuitsons.net>
@@ -425,7 +425,7 @@ parent on the fly for your benefit.[^git-stores-trees]
 
 [^git-stores-trees]: To verify this, look at the output of `git cat-file`:
     
-    ```console
+    ```console?prompt=$
     $ git cat-file commit 22210506499fe9e37086d3a5ff1fb8f400facd83
     tree 8a2f7e211356a8551e2e2eed121d2a643208ac6a
     author Max Bernstein <max@thebiscuitsons.net> 1632885282 -0700
@@ -438,7 +438,7 @@ parent on the fly for your benefit.[^git-stores-trees]
     This shows a *tree* called `8a2f7e211356a8551e2e2eed121d2a643208ac6a`
     associated with the commit. And what is that tree?
     
-    ```console
+    ```console?prompt=$
     $ git ls-tree 8a2f7e211356a8551e2e2eed121d2a643208ac6a
     100644 blob d03e2425cf1c82616e12cb430c69aaa6cc08ff84    myfile
     $ 
@@ -978,7 +978,7 @@ show HEAD` does the exact same thing. `HEAD` is what's known as a *revision
 parameter*---an argument to a subcommand that names one or more commits. The
 most direct way to name a commit is to specify its hash, like so:
 
-```console
+```console?prompt=$
 $ git show a83e7a6c4e9844b745a22450b69892d2292d8c7e
 commit a83e7a6c4e9844b745a22450b69892d2292d8c7e
 Author: Thomas Hebb <tommyhebb@gmail.com>
@@ -1024,7 +1024,7 @@ the piece you do provide is unambiguous[^ambiguous-hashes]:
     uniquely identify it, enough to make the probability of a conflict near
     zero.
 
-```console
+```console?prompt=$
 $ git show a83e7a6
 commit a83e7a6c4e9844b745a22450b69892d2292d8c7e
 Author: Thomas Hebb <tommyhebb@gmail.com>
@@ -1053,7 +1053,7 @@ refer to a commit's parent, you can suffix its hash or name with the character
     like. Git has a shorthand for this: `<commit>^N` means the Nth parent of
     `<commit>`, e.g. `HEAD^5`.
 
-```console
+```console?prompt=$
 $ git show HEAD^
 commit 2d6603026105b168c126d2ee22c6f4dba8d48437
 Author: Thomas Hebb <tommyhebb@gmail.com>
