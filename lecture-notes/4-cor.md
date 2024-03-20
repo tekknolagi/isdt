@@ -859,6 +859,17 @@ abstraction---we've misled you---but the entanglement *between* the
 hypothetical layers and differing amounts of abstraction. <!-- TODO(max): Hm,
 rewrite -->
 
+Here's a diagram to illustrate what we mean. We've used boxes to indicate
+entire units that can be called. Dashed boxes represent library code we did not
+write, whereas solid boxes represent our code:
+
+<object class="svg" type="image/svg+xml" data="{{site.baseurl}}/assets/images/modularization-bad.excalidraw.svg">
+  If you're seeing this text, it means your browser cannot render SVG.
+</object>
+
+There's one way into a monolithic unit of code, which means no way to test the
+middle bits without testing the rest, too.
+
 Let's take a look at a different imagining of the same application:
 
 ```python
@@ -929,6 +940,10 @@ embedded in the actual email to your real, frustrated, human customers.
 Likewise, you can test the HTML rendering of the users page---if you
 like---without connecting to the database; you can create temporary `User`
 objects without needing to commit (write) and then fetch them.
+
+<object class="svg" type="image/svg+xml" data="{{site.baseurl}}/assets/images/modularization-good.excalidraw.svg">
+  If you're seeing this text, it means your browser cannot render SVG.
+</object>
 
 ### Maxim: avoid round trips
 ### The Database interface
