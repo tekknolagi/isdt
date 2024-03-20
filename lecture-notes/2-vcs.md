@@ -519,9 +519,7 @@ single unit and so they might as well have just been one to begin with.
 
 Conversely, if you get in the habit of stuffing several changes into the same
 commit, Git also becomes less useful. Subcommands such as `git revert`---which
-undoes a commit's changes---work best when commits are as granular as possible.
-In fact, Git makes it almost impossible to work with historical changes more
-granular than a commit.
+undoes a commit---work best when each commit holds only one functional change.
 
 As you gain experience with Git, you'll learn how much granularity works best
 for you---everyone's workflow is different, and one developer's sweet spot might
@@ -622,6 +620,8 @@ Demonstrate committing multiple changes separately with good messages.
 but don't worry about understanding everything right away. You'll come back to
 this section in more manageable portions as you read the rest of the module,
 which uses this repository as an example.*
+
+TODO: expand on what parts of the code snippets to pay attention to
 
 With `git add -p` and some commit guidelines under your belt, you have
 everything you need to start tracking a project's history in Git. Here's how
@@ -732,6 +732,8 @@ main: main.c
 clean:
 	rm -f main
 ```
+
+...commit it...
 
 ```console?prompt=$
 $ git add Makefile
@@ -1097,14 +1099,15 @@ take, check out `man gitrevisions`.
 
 With that diversion out of the way, let's get back to `git show`: as you can see
 in the examples above, not only does it print a commit's metadata and message,
-it also prints the diff between that commit and its parent (`<commit>^`, in our
-newly-acquired terminology). In Git, every commit has exactly one
-parent[^multiple=children], so such a diff is always well-specified.
+it also prints what changed between that commit's tree and its parent's
+(`<commit>^`, in our newly-acquired terminology). In Git, every commit has
+exactly one parent[^multiple=children], so such a diff is always well-specified.
 
-[^multiple-children]: Although a commit's parent is unique and unambiguous, the
-    same cannot be said of its children. In fact, it would be quite time
-    consuming for Git to enumerate a commit's children, so there's no built-in
-    primitive to do so.
+[^multiple-children]: A commit's parent is unique and unambiguous, as its hash
+    is stored in the commit. The same is not true of its children, though: the
+    only way to enumerate a commit's children is bt checking every other commit
+    in the repository. That's quite inefficient, and there's no built-in
+    primitive to do it.
 
 #### Viewing history
 
