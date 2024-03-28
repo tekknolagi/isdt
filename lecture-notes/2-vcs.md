@@ -2319,6 +2319,10 @@ shortcut for fetch+merge but can be unintuitive.
 
 ### `git clone` for making a local copy of a remote repo
 
+You don't always start off making a local repo and then pushing it to a forge.
+Sometimes, the project already exists and you want to contribute. To work
+locally, you will need to download the repository using `git clone`:
+
 ### Tracking branches
 
 TODO: Ugh, I still don't understand the full semantics of these. Figure it out
