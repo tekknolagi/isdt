@@ -2241,12 +2241,11 @@ To do this, you need to add a *remote*.
 
 A *remote* is a copy of your repository that is... somewhere else. It could be
 the directory next door, it could be a big binary file called a
-*bundle*[^bundle],
-or---most commonly---it could be on someone else's computer[^xkcd908]
-accessible over the network. These network remotes look like an HTTPS remote
-`https://server.com/myusername/myreponame` or a SSH remote
+*bundle*[^bundle], or---most commonly---it could be on someone else's
+computer[^xkcd908] accessible over the network. These network remotes look like
+an HTTPS remote `https://server.com/myusername/myreponame` or a SSH remote
 `git@server.com:myusername/myreponame.git` or (less commonly) a Git remote
-`git://server.com/myusername/myreponame.git`. These days, `server.com` is
+`git://server.com/myusername/myreponame.git`. These days, `server.com` is often
 `github.com` or one of the other forges. These URLs specify the location and
 protocol for how your local Git installation should make network requests to
 the remote repository.
