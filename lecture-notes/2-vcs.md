@@ -2233,7 +2233,9 @@ and software such as Gitolite (I used to do that for years), but these forges
 So you go ahead and make a repository on GitHub. Now you're in this weird
 situation where you have a repository locally and GitHub has this blank
 repository somewhere in San Francisco and you have to find a way to get your
-code across the country. To do this, you need to add a *remote*.
+code across the country. (To be clear, *all* forges will create blank repos
+when you click the "New Repository" button on the website. This is expected.)
+To do this, you need to add a *remote*.
 
 ### Sharing branches with others
 
