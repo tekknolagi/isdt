@@ -2238,7 +2238,8 @@ code across the country. To do this, you need to add a *remote*.
 ### Sharing branches with others
 
 A *remote* is a copy of your repository that is... somewhere else. It could be
-the directory next door, it could be a big binary file called a *bundle*,
+the directory next door, it could be a big binary file called a
+*bundle*[^bundle],
 or---most commonly---it could be on someone else's computer[^xkcd908]
 accessible over the network. These network remotes look like an HTTPS remote
 `https://server.com/myusername/myreponame` or a SSH remote
@@ -2247,6 +2248,10 @@ accessible over the network. These network remotes look like an HTTPS remote
 `github.com` or one of the other forges. These URLs specify the location and
 protocol for how your local Git installation should make network requests to
 the remote repository.
+
+[^bundle]: A [bundle](https://git-scm.com/docs/git-bundle) is a snapshot of an
+    entire Git repository using *packfiles*. This gets pretty into the weeds of
+    Git, but feel free to read and learn more on your own.
 
 [^xkcd908]: See [XKCD 908](https://xkcd.com/908/).
 
