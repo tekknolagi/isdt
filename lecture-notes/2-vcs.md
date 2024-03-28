@@ -1575,14 +1575,14 @@ were easy to edit commits, `git revert` would likely work just the same.
 #### Going back in time
 
 We discussed in Lecture 1 how each commit holds a snapshot of all the files in
-your repository. Git has several subcommands that let you inspect and restore
-those snapshots.
+your repository. Git has several subcommands that let you inspect those
+snapshots or bring back their contents.
 
-To view a file as it was after a given commit, you can use a special form of
-`git show`. Imagine that, after reverting the modulo operator from your
-calculator, you want to reference its code for use in another project. Instead
-of trying to reconstruct the code in your head from diffs, you can run the
-following (`2d6603026105` being the "Support the modulo operator" commit):
+To view a file as it was at a given commit, you can use a special form of `git
+show`. Imagine that, after reverting the modulo operator from your calculator,
+you want to reference its code for use in another project. Instead of trying to
+reconstruct the code in your head from diffs, you can run the following
+(`2d6603026105` being the "Support the modulo operator" commit):
 
 ```console?prompt=$
 $ git show 2d6603026105:main.c
@@ -1643,8 +1643,8 @@ $
 
 By adding a colon and file path to the revision parameter, you tell `git show`
 that, instead of showing the commit, it should print the given file from the
-tree the commit references. And indeed, the output shows `main.c` as it was just
-after the modulo operator was added. Unlike `git revert`, this command neither
+tree the commit references. And indeed, the output shows `main.c` as it was when
+the modulo operator was first added. Unlike `git revert`, this command neither
 makes a commit nor alters the working tree---it just prints to the terminal.
 
 If you want to change the file on disk instead of printing it, you can use `git
@@ -1654,7 +1654,7 @@ restore`:
 $ git status
 On branch main
 nothing to commit, working tree clean
-$ git restore -s 2d6603026105 main.c
+$ git restore --source 2d6603026105 main.c
 $ git status
 On branch main
 Changes not staged for commit:
@@ -1684,45 +1684,16 @@ int calc(int left, char op, int right) {
   fprintf(stderr, "Unrecognized op `%c'.\n", op);
   exit(EXIT_FAILURE);
 }
-
-int main(int argc, char **argv) {
-  if (argc != 4) {
-    fprintf(
-        stderr,
-        "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
-        argv[0]);
-    return EXIT_FAILURE;
-  }
-  const char *left_str = argv[1];
-  const char *op_str = argv[2];
-  const char *right_str = argv[3];
-  errno = 0;
-  int left = strtol(left_str, NULL, 10);
-  if (errno != 0) {
-    perror(argv[0]);
-    return EXIT_FAILURE;
-  }
-  if (op_str[1] != '\0') {
-    fprintf(stderr, "Op must be one character. Got `%s'.\n", op_str);
-    return EXIT_FAILURE;
-  }
-  errno = 0;
-  int right = strtol(right_str, NULL, 10);
-  if (errno != 0) {
-    perror(argv[0]);
-    return EXIT_FAILURE;
-  }
-  int result = calc(left, op_str[0], right);
-  fprintf(stdout, "%d\n", result);
-  return 0;
-}
+<snip>
 $ 
 ```
 
 This retrieves the same past version of `main.c` from the Git history
-but---instead of printing it---writes it directly to the working tree. Unlike
-`git revert`, it does not create a new commit or stage the changes, meaning they
-show up in `git status` and `git diff` like if you'd made them manually.
+but---instead of printing it---writes it directly to the working tree. The
+revision to restore is specified using the `-s`/`--source` flag. Unlike `git
+revert`, `git restore` does not create a new commit or stage the changes,
+meaning they show up in `git status` and `git diff` like if you'd made them
+manually.
 
 There's also a third way to go back in history---`git checkout`. Like `git
 restore`, `git checkout` changes the working tree. But it doesn't leave those
@@ -1771,38 +1742,7 @@ int calc(int left, char op, int right) {
   fprintf(stderr, "Unrecognized op `%c'.\n", op);
   exit(EXIT_FAILURE);
 }
-
-int main(int argc, char **argv) {
-  if (argc != 4) {
-    fprintf(
-        stderr,
-        "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
-        argv[0]);
-    return EXIT_FAILURE;
-  }
-  const char *left_str = argv[1];
-  const char *op_str = argv[2];
-  const char *right_str = argv[3];
-  errno = 0;
-  int left = strtol(left_str, NULL, 10);
-  if (errno != 0) {
-    perror(argv[0]);
-    return EXIT_FAILURE;
-  }
-  if (op_str[1] != '\0') {
-    fprintf(stderr, "Op must be one character. Got `%s'.\n", op_str);
-    return EXIT_FAILURE;
-  }
-  errno = 0;
-  int right = strtol(right_str, NULL, 10);
-  if (errno != 0) {
-    perror(argv[0]);
-    return EXIT_FAILURE;
-  }
-  int result = calc(left, op_str[0], right);
-  fprintf(stdout, "%d\n", result);
-  return 0;
-}
+<snip>
 $ git status
 HEAD detached at 2d66030
 nothing to commit, working tree clean
@@ -1818,7 +1758,9 @@ checkout main` to get back to your latest change before making any new commits.
 It's worth noting that, if you pass file paths to `git checkout` after the
 revision parameter, it acts like `git restore`: `git checkout 2d6603026105
 main.c` does exactly the same thing as `git restore -s 2d6603026105 main.c`,
-meaning it doesn't move `HEAD`. `git restore` was a later addition to Git.
+meaning it doesn't move `HEAD`. Since every other form of `git checkout` does
+move `HEAD`, Git's developers eventually identified this one as the odd one out,
+decided to give it its own subcommand, and `git restore` was born.
 
 #### Saving changes for later
 
