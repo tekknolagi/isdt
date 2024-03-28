@@ -2218,10 +2218,88 @@ possibilities of Git.
 
 CONTENTS: Collaboration with Git
 
+You've done enough solo development. It's now time to start working with your
+groupmates on your project. In order to do that, you need to make your
+repository accessible to the others somehow.
+
+Git is pretty flexible about how repositories can be shared---after all, they
+are "just files"---but the easiest and most common way to share is via a code
+forge such as GitHub, SourceHut, or GitLab. These Git forges do a bunch of
+stuff but the most important part is hosting a copy of your `.git` folder and
+managing permissions. It's totally possible to DIY this with your own server
+and software such as Gitolite (I used to do that for years), but these forges
+*also* provide issue tracking and pull requests and other niceties.
+
+So you go ahead and make a repository on GitHub. Now you're in this weird
+situation where you have a repository locally and GitHub has this blank
+repository somewhere in San Francisco and you have to find a way to get your
+code across the country. To do this, you need to add a *remote*.
+
 ### Sharing branches with others
 
-TODO: What's a remote? Example of `git remote add` and `git remote -v`. Talk
-about different remote protocols.
+A *remote* is a copy of your repository that is... somewhere else. It could be
+the directory next door, it could be a big binary file called a *bundle*,
+or---most commonly---it could be on someone else's computer[^xkcd908]
+accessible over the network. These network remotes look like an HTTPS remote
+`https://server.com/myusername/myreponame` or a SSH remote
+`git@server.com:myusername/myreponame.git` or (less commonly) a Git remote
+`git://server.com/myusername/myreponame.git`. These days, `server.com` is
+`github.com` or one of the other forges. These URLs specify the location and
+protocol for how your local Git installation should make network requests to
+the remote repository.
+
+[^xkcd908]: See [XKCD 908](https://xkcd.com/908/).
+
+One repository can have zero or more remotes, though having one remote is
+probably the most common. To go from zero to one, you need to add the remote:
+
+```console?prompt=$
+$ git remote
+$ git remote add origin git@github.com:myusername/myreponame.git
+$ git remote
+origin
+$
+```
+
+(The name `origin` is convention and the default Git remote name; you could
+call it `fred` or `lemonade` if you prefer.)
+
+All this has done is make a little entry in your `.git/config` telling Git
+where the remote called `origin` points. It does not make any network requests
+or anything:
+
+```console?prompt=$
+$ cat .git/config
+...
+[remote "origin"]
+	url = git@github.com:myusername/myreponame.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+...
+$
+```
+
+To see this information without digging into the configuration, you can also
+use `git remote -v`:
+
+```console?prompt=$
+$ git remote -v
+origin	git@github.com:myusername/myreponame.git (fetch)
+origin	git@github.com:myusername/myreponame.git (push)
+$
+```
+
+If you had more remotes, they would also show up both in the configuration file
+and in the output of `git remote -v`.
+
+> Now, SSH is just one way to share Git objects over the network. We prefer it
+> because it is the most convenient once set up and does not require typing in
+> your password or using an additional HTTPS authentication token on GitHub.
+> You should feel free to use whatever protocol you like.
+
+> As another aside, this convention of the path being `username/projectname` is
+> just that---convention. The server name and path name could be anything that
+> the server chooses. In GitHub's case, though, separating out by username
+> gives nice namespacing (same for the other forges).
 
 TODO: Can either `git fetch` from or `git push` to a remote. These update
 *remote-tracking branches*, which can then be used to update your local
