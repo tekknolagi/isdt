@@ -2301,6 +2301,12 @@ and in the output of `git remote -v`.
 > the server chooses. In GitHub's case, though, separating out by username
 > gives nice namespacing (same for the other forges).
 
+So you have a remote now. You can tell Git to write a local ref to the remote
+by using the `push` subcommand:
+
+```console?prompt=$
+```
+
 TODO: Can either `git fetch` from or `git push` to a remote. These update
 *remote-tracking branches*, which can then be used to update your local
 branches via `git merge --ff-only` or `git rebase`. Mention `git pull` is a
