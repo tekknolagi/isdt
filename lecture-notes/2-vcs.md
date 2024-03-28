@@ -2246,8 +2246,8 @@ computer[^xkcd908] accessible over the network. Network remotes are referenced
 using URLs: common types are HTTPS
 (`https://server.com/myusername/myreponame`), SSH
 (`git@server.com:myusername/myreponame.git`) and (less commonly) Git's native
-protocol (`git://server.com/myusername/myreponame.git`). These days,
-`server.com` is often `github.com` or one of the other forges. These URLs
+protocol (`git://server.com/myusername/myreponame.git`)[^protocols]. These
+days, `server.com` is often `github.com` or one of the other forges. These URLs
 specify the location and protocol for how your local Git installation should
 make network requests to the remote repository.
 
@@ -2256,6 +2256,11 @@ make network requests to the remote repository.
     Git, but feel free to read and learn more on your own.
 
 [^xkcd908]: See [XKCD 908](https://xkcd.com/908/).
+
+[^protocols]: Now, SSH is just one way to share Git objects over the network.
+    We prefer it because it is the most convenient once set up and does not
+    require typing in your password or using an additional HTTPS authentication
+    token on GitHub. You should feel free to use whatever protocol you like.
 
 One repository can have zero or more remotes, though having one remote is
 probably the most common. To go from zero to one, you need to add the remote:
@@ -2297,11 +2302,6 @@ $
 
 If you had more remotes, they would also show up both in the configuration file
 and in the output of `git remote -v`.
-
-> Now, SSH is just one way to share Git objects over the network. We prefer it
-> because it is the most convenient once set up and does not require typing in
-> your password or using an additional HTTPS authentication token on GitHub.
-> You should feel free to use whatever protocol you like.
 
 > As another aside, this convention of the path being `username/projectname` is
 > just that---convention. The server name and path name could be anything that
