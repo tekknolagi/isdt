@@ -2366,6 +2366,50 @@ $ cat .git/config
 $ # Now you can do `git push`
 ```
 
+#### Remote tracking branches
+
+Time for a light detour. Another side effect of a `git push` is updating
+*remote tracking branches*. These are refs that are the cached local view of
+the remote's state that you care about. For example, if you `git push origin
+main`, you know (for a little while at least) exactly what ref the remote's
+`main` branch points to: you just pushed it! You can inspect (but not manually
+update) this ref by (for example) the name `origin/main`. The remote state may
+change while you are disconnected from it, but that is okay.
+
+These remote tracking branches share similar names to your local branches. Your
+local `main` branch, for example, has a counterpart called `origin/main`. When
+you make a commit, `origin/main` is left alone; it falls behind your local
+`main`. For example, it might look like this:
+
+```
+* a879406 (HEAD -> main) My second new commit
+* 5e72155 My first new commit
+* 2187cc4 (origin/main) The last shared commit
+.
+.
+.
+```
+
+In the diagram above, the topmost commit `a879406` is the most recent, whereas
+the bottom commit `2187cc4` is the least recent. Commits are also labeled with
+what branches have that commit as their most recent commit.
+
+In order to update `origin/main`, you would need to push your changes again.
+But what if someone else has updated (pushed to) the remote in the meantime?
+Well, you'll need to download their changes. You can do that with `git fetch`.
+
+#### Fetch
+
+
+Now with the power of `git push`, you can send your changes into the great wide
+world. It would be awesome if your friends, fellow students, and colleagues
+could see and work with these changes. Luckily, the authors of Git had the
+foresight to make remotes support read operations as well and there is a
+command called `git fetch`.
+
+
+
+
 TODO: Can either `git fetch` from or `git push` to a remote. These update
 *remote-tracking branches*, which can then be used to update your local
 branches via `git merge --ff-only` or `git rebase`. Mention `git pull` is a
