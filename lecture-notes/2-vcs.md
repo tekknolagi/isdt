@@ -2352,6 +2352,19 @@ $
 
 To reduce the amount of typing, you can also use `--set-upstream`/`-u` one time
 to mark `origin/main` as the default destination for the local ref `origin`.
+This adds an entry in the `.git/config` file:
+
+```console?prompt=$
+$ git push -u origin main
+...
+$ cat .git/config
+...
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+...
+$ # Now you can do `git push`
+```
 
 TODO: Can either `git fetch` from or `git push` to a remote. These update
 *remote-tracking branches*, which can then be used to update your local
