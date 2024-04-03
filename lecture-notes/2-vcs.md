@@ -2303,6 +2303,7 @@ $
 If you had more remotes, they would also show up both in the configuration file
 and in the output of `git remote -v`.
 
+<!-- TODO(max): Figure out x-overflow -->
 <style>
 .sidenote {
     font-size: 80%;
