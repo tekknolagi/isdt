@@ -2400,15 +2400,9 @@ Well, you'll need to download their changes. You can do that with `git fetch`.
 
 #### Fetch
 
-
-Now with the power of `git push`, you can send your changes into the great wide
-world. It would be awesome if your friends, fellow students, and colleagues
-could see and work with these changes. Luckily, the authors of Git had the
-foresight to make remotes support read operations as well and there is a
-command called `git fetch`.
-
-
-
+Running `git fetch` will update all of your remote tracking branches. For
+example, if someone updated `main` on the remote, you can see their changes
+(update your local `origin/main`) by fetching.
 
 TODO: Can either `git fetch` from or `git push` to a remote. These update
 *remote-tracking branches*, which can then be used to update your local
