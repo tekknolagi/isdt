@@ -1764,7 +1764,205 @@ decided to give it its own subcommand, and `git restore` was born.
 
 #### Saving changes for later
 
-TODO: Using `git stash` to put away and restore changes that you're working on.
+The development workflow we've outlined so far---where you make a complete,
+self-contained change in the working tree, use `git add` to record that change
+in the index, and finally use `git commit` to save it to a commit---is sadly
+quite idealistic. In reality, you'll often find yourself juggling several tasks
+at once. For example, while refactoring some code, you may notice a preexisting
+bug that you want to investigate by checking out an older commit. But when you
+use your newfound `git checkout` skills to do so, you might see something like
+this:
+
+```console?prompt=$
+git checkout 2d6603026105
+error: Your local changes to the following files would be overwritten by checkout:
+	main.c
+Please commit your changes or stash them before you switch branches.
+Aborting
+$ 
+```
+
+The cause of this is your half-finished refactor, which you haven't committed
+yet:
+
+```diff
+$ git diff
+diff --git a/main.c b/main.c
+index 56ef02d..6f0fa39 100644
+--- a/main.c
++++ b/main.c
+@@ -1,6 +1,7 @@
+ #include <errno.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <stdbool.h>
+
+ int calc(int left, char op, int right) {
+   switch (op) {
+@@ -17,6 +18,23 @@ int calc(int left, char op, int right) {
+   exit(EXIT_FAILURE);
+ }
+
++// Converts the string str into an integer using strtol.
++// Returns 1 and stores the result in resultp on success.
++// Returns 0 and sets errno otherwise.
++bool to_int(const char *str, int *resultp) {
++  char *endptr;
++  errno = 0;
++  int result = strtol(str, &endptr, 10);
++  if (str == endptr) {
++    errno = EINVAL;
++  }
++  if (errno != 0) {
++    return false;
++  }
++  *resultp = result;
++  return true;
++}
++
+ int main(int argc, char **argv) {
+   if (argc != 4) {
+     fprintf(stderr,
+@@ -29,11 +47,8 @@ int main(int argc, char **argv) {
+   const char *right_str = argv[3];
+   errno = 0;
+   char *endptr;
+-  int left = strtol(left_str, &endptr, 10);
+-  if (left_str == endptr) {
+-    errno = EINVAL;
+-  }
+-  if (errno != 0) {
++  int left;
++  if (!to_int(left_str, left)) {
+     perror(argv[0]);
+     return EXIT_FAILURE;
+   }
+```
+
+Git sees that you've modified `main.c`, so it refuses to check out any other
+version of that file for fear of destroying your modifications! Although this is
+a nice safety feature, it can be annoying: you're not ready to commit your
+refactor---it crashes and introduces a compiler warning---but you have more
+important things to do than debug it. So what can you do?
+
+One option is to commit the unfinished change and finish it in a later commit.
+Although this violates our rule that each commit should be complete and
+self-contained, it can be a viable strategy when the refactoring work is on its
+own branch. (More on that next lecture.) Another is to destroy your work so far
+(e.g. by `git restore`ing `main.c`) and redo it later, which is clearly
+undesirable.
+
+A third option is to use a subcommand called `git stash` to save your work for
+later. `git stash` is a bit like `git commit`, in that it saves changes from the
+working tree to a more permanent location. Unlike `git commit`, however, those
+changes don't become part of the Git history. Instead, they go into a special
+area called the *stash*, which unlike the history is neither linear nor shared
+between different copies of the repository. `git stash` is shorthand for `git stash push`, which moves all uncommitted changes to a new stash entry:
+
+```console?prompt=$
+$ git stash
+Saved working directory and index state WIP on main: 0fb5235 Revert "Support the modulo operator"
+$ git status
+On branch main
+nothing to commit, working tree clean
+$ cat main.c
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int calc(int left, char op, int right) {
+  switch (op) {
+  case '+':
+    return left + right;
+  case '-':
+    return left - right;
+  case '*':
+    return left * right;
+  case '/':
+    return left / right;
+  }
+  fprintf(stderr, "Unrecognized op `%c'.\n", op);
+  exit(EXIT_FAILURE);
+}
+
+int main(int argc, char **argv) {
+<snip>
+$ 
+```
+
+After running it, the working tree becomes clean and your changes (like the new `to_int()` function in `main.c`) disappear! Where have they gone?
+
+```console?prompt=$
+$ git stash list
+stash@{0}: WIP on main: 0fb5235 Revert "Support the modulo operator"
+```
+
+There's a new stash entry, named `stash@{0}`[^todo-footnote]. Unlike commits, stash entries store *diffs* rather than *snapshots*. When you save a stash entry, the differences between the latest commit and the working tree get saved. Then, once your other work is done and you're ready to restore that stash entry, those differences are applied to your current working tree, even if pieces of it have changed. To restore a stash entry, use `git stash pop`:
+
+```console?prompt=$
+$ git stash pop
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   main.c
+$ git diff
+diff --git a/main.c b/main.c
+index 56ef02d..6f0fa39 100644
+--- a/main.c
++++ b/main.c
+@@ -1,6 +1,7 @@
+ #include <errno.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <stdbool.h>
+
+ int calc(int left, char op, int right) {
+   switch (op) {
+@@ -17,6 +18,23 @@ int calc(int left, char op, int right) {
+   exit(EXIT_FAILURE);
+ }
+
++// Converts the string str into an integer using strtol.
++// Returns 1 and stores the result in resultp on success.
++// Returns 0 and sets errno otherwise.
++bool to_int(const char *str, int *resultp) {
++  char *endptr;
++  errno = 0;
++  int result = strtol(str, &endptr, 10);
++  if (str == endptr) {
++    errno = EINVAL;
++  }
++  if (errno != 0) {
++    return false;
++  }
++  *resultp = result;
++  return true;
++}
++
+ int main(int argc, char **argv) {
+   if (argc != 4) {
+     fprintf(stderr,
+@@ -29,11 +47,8 @@ int main(int argc, char **argv) {
+   const char *right_str = argv[3];
+   errno = 0;
+   char *endptr;
+-  int left = strtol(left_str, &endptr, 10);
+-  if (left_str == endptr) {
+-    errno = EINVAL;
+-  }
+-  if (errno != 0) {
++  int left;
++  if (!to_int(left_str, left)) {
+     perror(argv[0]);
+     return EXIT_FAILURE;
+   }
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+Your changes are back, just as if nothing ever happened, and you can now
+continue refactoring where you left off.
 
 #### Seeing who changed a line (`git blame`)
 
