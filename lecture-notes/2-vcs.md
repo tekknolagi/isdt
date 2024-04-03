@@ -2303,21 +2303,61 @@ $
 If you had more remotes, they would also show up both in the configuration file
 and in the output of `git remote -v`.
 
-> As another aside, this convention of the path being `username/projectname` is
-> just that---convention. The server name and path name could be anything that
-> the server chooses. In GitHub's case, though, separating out by username
-> gives nice namespacing (same for the other forges).
+<style>
+.sidenote {
+    font-size: 80%;
+    position: relative;
+    float: right;
+}
+/* Wide viewport */
+@media (min-width: 1400px) {
+    .sidenote {
+        clear: right;
+        margin-right: -23vw;
+        text-align: left;
 
-So you have a remote now. You can tell Git to write a local ref to the remote
-by using the `push` subcommand:
+        top: -3rem;
+        width: 20vw;
+        margin-top: 1rem;
+    }
+}
+/* Narrow viewport */
+@media (max-width: 1400px) {
+    .sidenote {
+        text-align: right;
+        width: 100%;
+        margin: 1rem 0;
+        padding-left: 15%;
+    }
+}
+</style>
+
+<div class="sidenote" markdown=1>
+  As another aside, this convention of the path being `username/projectname` is
+  just that---convention. The server name and path name could be anything that
+  the server chooses. In GitHub's case, though, separating out by username
+  gives nice namespacing (same for the other forges).
+</div>
+
+So you have a remote now. You can tell Git to write a local ref (in this case,
+the `main` branch) to the remote (in this case, `origin`) by using the `push`
+subcommand:
 
 ```console?prompt=$
+$ git push origin main
+...
+$
 ```
+
+To reduce the amount of typing, you can also use `--set-upstream`/`-u` one time
+to mark `origin/main` as the default destination for the local ref `origin`.
 
 TODO: Can either `git fetch` from or `git push` to a remote. These update
 *remote-tracking branches*, which can then be used to update your local
 branches via `git merge --ff-only` or `git rebase`. Mention `git pull` is a
 shortcut for fetch+merge but can be unintuitive.
+
+TODO: Deleting branches with `git push :foo`
 
 ### `git clone` for making a local copy of a remote repo
 
