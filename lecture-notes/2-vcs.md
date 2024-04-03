@@ -2369,8 +2369,8 @@ $ # Now you can do `git push`
 #### Remote tracking branches
 
 Time for a light detour. Another side effect of a `git push` is updating
-*remote tracking branches*. These are refs that are the cached local view of
-the remote's state that you care about. For example, if you `git push origin
+*remote tracking branches*. These are local refs that cache the last known
+state of refs on the remotes you've added. For example, if you `git push origin
 main`, you know (for a little while at least) exactly what ref the remote's
 `main` branch points to: you just pushed it! You can inspect (but not manually
 update) this ref by (for example) the name `origin/main`. The remote state may
