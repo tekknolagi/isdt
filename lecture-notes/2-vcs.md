@@ -1989,8 +1989,141 @@ $
 
 #### Seeing who changed a line (`git blame`)
 
-TODO: Introduction to `git blame`. General workflow of `git blame`, `git show`
-`git log <rev>^ --`, and repeat until you've found what you want.
+To wrap up our survey of basic Git commands, let's discuss an alternate way to
+view a file's history. Whereas `git log` shows every commit that's changed any
+line in a given file, `git blame` shows which commit most recently changed
+*each* line of the given file. As its name implies, it's extremely useful when
+you want to know who's responsible for a specific piece of code:
+
+```console?prompt=$
+$ git blame main.c
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  1) #include <errno.h>
+a83e7a6c (Thomas Hebb 2024-01-30 22:59:25 -0500  2) #include <stdio.h>
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  3) #include <stdlib.h>
+a83e7a6c (Thomas Hebb 2024-01-30 22:59:25 -0500  4)
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  5) int calc(int left, char op, int right) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  6)   switch (op) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  7)   case '+':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  8)     return left + right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  9)   case '-':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 10)     return left - right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 11)   case '*':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 12)     return left * right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 13)   case '/':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 14)     return left / right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 15)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 16)   fprintf(stderr, "Unrecognized op `%c'.\n", op);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 17)   exit(EXIT_FAILURE);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 18) }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 19)
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 20) int main(int argc, char **argv) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 21)   if (argc != 4) {
+0fb52357 (Thomas Hebb 2024-02-28 22:35:12 -0500 22)     fprintf(stderr,
+0fb52357 (Thomas Hebb 2024-02-28 22:35:12 -0500 23)             "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /.\n",
+0fb52357 (Thomas Hebb 2024-02-28 22:35:12 -0500 24)             argv[0]);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 25)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 26)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 27)   const char *left_str = argv[1];
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 28)   const char *op_str = argv[2];
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 29)   const char *right_str = argv[3];
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 30)   errno = 0;
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 31)   char *endptr;
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 32)   int left = strtol(left_str, &endptr, 10);
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 33)   if (left_str == endptr) {
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 34)     errno = EINVAL;
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 35)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 36)   if (errno != 0) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 37)     perror(argv[0]);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 38)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 39)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 40)   if (op_str[1] != '\0') {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 41)     fprintf(stderr, "Op must be one character. Got `%s'.\n", op_str);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 42)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 43)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 44)   errno = 0;
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 45)   int right = strtol(right_str, &endptr, 10);
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 46)   if (right_str == endptr) {
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 47)     errno = EINVAL;
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 48)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 49)   if (errno != 0) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 50)     perror(argv[0]);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 51)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 52)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 53)   int result = calc(left, op_str[0], right);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 54)   fprintf(stdout, "%d\n", result);
+^3ba2a93 (Thomas Hebb 2024-01-30 22:57:04 -0500 55)   return 0;
+^3ba2a93 (Thomas Hebb 2024-01-30 22:57:04 -0500 56) }
+$ 
+```
+
+As you can see, each line has been annotated with a commit hash (the first
+column), as well as basic metadata about that commit (`^` at the beginning of a
+hash indicates a commit with no parent---generally the first commit ever made).
+To see more details of a commit, you can use `git show` as usual.
+
+By default, `git blame` blames a file as it exists in the working tree, but like
+`git log` it can take a commit hash to change that. This lets you "skip past" an
+irrelevant commit in the blame and instead see the second-most (or third-most,
+etc) recent commit to change a line. To do so, pass `git blame` the parent of
+the commit you don't care about. For example, we can check what commit prior to
+`221af3ea` touched line 32:
+
+```console?prompt=$
+$ git blame 221af3ea^ -- main.c
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  1) #include <errno.h>
+a83e7a6c (Thomas Hebb 2024-01-30 22:59:25 -0500  2) #include <stdio.h>
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  3) #include <stdlib.h>
+a83e7a6c (Thomas Hebb 2024-01-30 22:59:25 -0500  4)
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  5) int calc(int left, char op, int right) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  6)   switch (op) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  7)   case '+':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  8)     return left + right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  9)   case '-':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 10)     return left - right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 11)   case '*':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 12)     return left * right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 13)   case '/':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 14)     return left / right;
+2d660302 (Thomas Hebb 2024-02-21 23:07:15 -0500 15)   case  '%':
+2d660302 (Thomas Hebb 2024-02-21 23:07:15 -0500 16)     return left % right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 17)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 18)   fprintf(stderr, "Unrecognized op `%c'.\n", op);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 19)   exit(EXIT_FAILURE);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 20) }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 21)
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 22) int main(int argc, char **argv) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 23)   if (argc != 4) {
+2d660302 (Thomas Hebb 2024-02-21 23:07:15 -0500 24)     fprintf(
+2d660302 (Thomas Hebb 2024-02-21 23:07:15 -0500 25)         stderr,
+2d660302 (Thomas Hebb 2024-02-21 23:07:15 -0500 26)         "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
+2d660302 (Thomas Hebb 2024-02-21 23:07:15 -0500 27)         argv[0]);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 28)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 29)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 30)   const char *left_str = argv[1];
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 31)   const char *op_str = argv[2];
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 32)   const char *right_str = argv[3];
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 33)   errno = 0;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 34)   int left = strtol(left_str, NULL, 10);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 35)   if (errno != 0) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 36)     perror(argv[0]);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 37)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 38)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 39)   if (op_str[1] != '\0') {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 40)     fprintf(stderr, "Op must be one character. Got `%s'.\n", op_str);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 41)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 42)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 43)   errno = 0;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 44)   int right = strtol(right_str, NULL, 10);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 45)   if (errno != 0) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 46)     perror(argv[0]);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 47)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 48)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 49)   int result = calc(left, op_str[0], right);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 50)   fprintf(stdout, "%d\n", result);
+^3ba2a93 (Thomas Hebb 2024-01-30 22:57:04 -0500 51)   return 0;
+^3ba2a93 (Thomas Hebb 2024-01-30 22:57:04 -0500 52) }
+$ 
+```
 
 #### Finding bugs
 
