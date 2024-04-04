@@ -2218,8 +2218,8 @@ possibilities of Git.
 
 CONTENTS: Collaboration with Git
 
-You've done enough solo development. It's now time to start working with your
-groupmates on your project. In order to do that, you need to make your
+You've done enough solo development. It's now time to learn to work with your
+groupmates on projects. In order to do that, you need to know how to make your
 repository accessible to the others somehow.
 
 Git is pretty flexible about how repositories can be shared---after all, they
