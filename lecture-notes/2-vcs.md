@@ -473,8 +473,6 @@ git-<subcommand>`, like `man git-show`.
 
 ## Lecture 2
 
-CONTENTS: Git for solo development
-
 ### Making good commits
 Let's step back from the nitty-gritty of Git's internals and talk about how you
 as a developer can use Git to make your life easier. Although Git has a truly

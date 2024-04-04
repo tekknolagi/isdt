@@ -51,7 +51,7 @@ material = iter(
             + link("Homework 3 out", "assignments/03-vcs-investigative/"),
         ],
         [
-            lecture("VCS 2: Git operations", "lecture-notes/2-vcs-slides-l2-l4.pdf"),
+            lecture("VCS 2: Git operations", "lecture-notes/2-vcs/#lecture-2"),
         ],
         [
             "VCS 3: Git operations, continued",
