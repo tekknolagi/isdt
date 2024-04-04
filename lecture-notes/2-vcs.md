@@ -1858,9 +1858,9 @@ between different copies of the repository. The stash is intended to hold
 in-progress or experimental changes that you want to temporarily remove from the
 working tree.
 
-To create a new stash entry, simply type `git stash` (which is shorthand for
-`git stash push`). That moves all uncommitted changes, staged or not, to the
-stash and leaves your working tree clean:
+To create a new stash entry, type `git stash` (which is shorthand for `git stash
+push`). That moves all uncommitted changes, staged or not, to the stash and
+leaves your working tree clean:
 
 ```console?prompt=$
 $ git stash
@@ -1917,12 +1917,18 @@ name (e.g. `stash@{1}`, `stash@{2}`, etc.) as an argument.
     running `git reflog stash`. Does the output look familiar? Then look up
     `@{}` in `man gitrevisions` and see how it connects!
 
-To bring your latest stash entry back into the working tree, use `git stash
-pop`---or pass an argument specifying an earlier entry. You can restore stash
-entries even if your working tree has changed since they were created: that's
-because `git stash pop` applies the *diff* from the entry to the current working
-tree, whatever its contents. If there would be a merge conflict, though, the pop
-will fail unless the conflicting hunks have been either staged or committed.
+`git stash pop` restores a stash entry to the working tree. By default, it
+restores the latest one (hence the push/pop terminology---the stash is last-in
+first-out, just like a stack), but you can also explicitly specify an earlier
+one as an argument. You can restore stash entries even if your working tree has
+changed since they were created: that's because `git stash pop` applies the
+*diff* from the entry to the current working tree, whatever its contents.
+
+Popping a stash entry removes it from the stash, unless the restored changes
+conflict with the current state of the working tree, in which case it's kept in
+the stash for extra safety. For the same reason, you cannot pop a change that
+would overwrite unstaged working tree changes at all. `git stash apply` is like
+`git stash pop`, except it never removes the stash entry.
 
 ```console?prompt=$
 $ git stash pop
