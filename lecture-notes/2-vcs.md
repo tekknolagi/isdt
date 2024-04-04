@@ -2262,8 +2262,9 @@ make network requests to the remote repository.
     require typing in your password or using an additional HTTPS authentication
     token on GitHub. You should feel free to use whatever protocol you like.
 
-One repository can have zero or more remotes, though having one remote is
-probably the most common. To go from zero to one, you need to add the remote:
+A repository on your local machine can have zero or more remotes, though having
+one remote is probably the most common. To go from zero to one, you need to add
+the remote:
 
 ```console?prompt=$
 $ git remote
