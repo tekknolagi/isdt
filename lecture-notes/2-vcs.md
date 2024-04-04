@@ -2346,9 +2346,19 @@ subcommand:
 
 ```console?prompt=$
 $ git push origin main
-...
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 7 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 367 bytes | 367.00 KiB/s, done.
+Total 4 (delta 3), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+To github.com:tekknolagi/isdt.git
+   d509779..7cc7fb1  mb-vcs-4 -> mb-vcs-4
 $
 ```
+
+TODO: describe above output
 
 To reduce the amount of typing, you can also use `--set-upstream`/`-u` one time
 to mark `origin/main` as the default destination for the local ref `origin`.
@@ -2357,6 +2367,7 @@ This adds an entry in the `.git/config` file:
 ```console?prompt=$
 $ git push -u origin main
 ...
+Branch 'main' set up to track remote branch 'main' from 'origin'.
 $ cat .git/config
 ...
 [branch "main"]
