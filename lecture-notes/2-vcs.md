@@ -2465,11 +2465,25 @@ case and is illustrated by the below diagram:
 It's not the *only* situation we could be in, though. We could also have a
 situation where the remote tracking branch has a new commit **and** the local
 branch has a *different* new commit. In that case, Git will note that the
-branches have "diverged". Now, divergence only means that one ref is not
-strictly behind or in front of the other; it does not imply anything about the
-commit contents or whether the commits will textually conflict with one
-another. (For now, we'll assume *no conflicts*, because it's not the point of
-this section. The same principles from earlier still apply.)
+branches have "diverged" and will not let you push to the remote branch:
+
+```console?prompt=$
+$ g push
+To github.com:tekknolagi/isdt.git
+ ! [rejected]        mb-vcs-4 -> mb-vcs-4 (non-fast-forward)
+error: failed to push some refs to 'github.com:tekknolagi/isdt.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+$
+```
+
+Now, divergence only means that one ref is not strictly behind or in front of
+the other; it does not imply anything about the commit contents or whether the
+commits will textually conflict with one another. (For now, we'll assume *no
+conflicts*, because it's not the point of this section. The same principles
+from earlier still apply.)
 
 In either case, we can use rebase to bring in the remote changes. For example:
 
@@ -2487,6 +2501,10 @@ If there are no local commits, Git will choose to automatically fast-forward
 the local branch to get it up to date with the remote branch. Otherwise, it
 will go through the full rigamarole of applying commits one by one (making new
 commits along the way!).
+
+After you have rebased, you can safely push your (renewed) local commits to the
+remote. That is, unless someone else has beaten you to the punch and pushed
+even more commits to the remote. In that case, keep fetching and rebasing.
 
 Note that this re-applying of local commits on top of remote changes
 constitutes *rewriting history*. Some people find this very distasteful and
