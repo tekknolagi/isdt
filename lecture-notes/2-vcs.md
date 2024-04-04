@@ -2304,42 +2304,10 @@ $
 If you had more remotes, they would also show up both in the configuration file
 and in the output of `git remote -v`.
 
-<!-- TODO(max): Figure out x-overflow -->
-<style>
-.sidenote {
-    font-size: 80%;
-    position: relative;
-    float: right;
-}
-/* Wide viewport */
-@media (min-width: 1400px) {
-    .sidenote {
-        clear: right;
-        margin-right: -23vw;
-        text-align: left;
-
-        top: -3rem;
-        width: 20vw;
-        margin-top: 1rem;
-    }
-}
-/* Narrow viewport */
-@media (max-width: 1400px) {
-    .sidenote {
-        text-align: right;
-        width: 100%;
-        margin: 1rem 0;
-        padding-left: 15%;
-    }
-}
-</style>
-
-<div class="sidenote" markdown=1>
-  As another aside, this convention of the path being `username/projectname` is
-  just that---convention. The server name and path name could be anything that
-  the server chooses. In GitHub's case, though, separating out by username
-  gives nice namespacing (same for the other forges).
-</div>
+> As another aside, this convention of the path being `username/projectname` is
+> just that---convention. The server name and path name could be anything that
+> the server chooses. In GitHub's case, though, separating out by username
+> gives nice namespacing (same for the other forges).
 
 So you have a remote now. You can tell Git to write a local ref (in this case,
 the `main` branch) to the remote (in this case, `origin`) by using the `push`
