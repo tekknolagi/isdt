@@ -2404,10 +2404,104 @@ Running `git fetch` will update all of your remote tracking branches. For
 example, if someone updated `main` on the remote, you can see their changes
 (update your local `origin/main`) by fetching.
 
-TODO: Can either `git fetch` from or `git push` to a remote. These update
-*remote-tracking branches*, which can then be used to update your local
-branches via `git merge --ff-only` or `git rebase`. Mention `git pull` is a
-shortcut for fetch+merge but can be unintuitive.
+```console?prompt=$
+$ git fetch
+cedar% git fetch
+remote: Enumerating objects: 22, done.
+remote: Counting objects: 100% (22/22), done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 16 (delta 12), reused 9 (delta 6), pack-reused 0
+Unpacking objects: 100% (16/16), 7.74 KiB | 792.00 KiB/s, done.
+From github.com:tekknolagi/isdt
+   b357867..d573c7f  mb-vcs-4         -> origin/mb-vcs-4
+ * [new branch]      tom-vcs-lecture2 -> origin/tom-vcs-lecture2
+$
+```
+
+In this output, we can see that the server has printed some messages for us to
+see (the lines starting with `remote:`). Then, Git unpacks the objects---this
+can take a long time in large repositories---and shows a summary of what refs
+have changed. We can see that the remote has updates on its `origin/mb-vcs-4`
+branch and on its (new to us!) `origin/tom-vcs-lecture2` branch.
+
+I use fetch a lot. Right before I go offline---say, for a plane or train
+trip---I'll fetch all of the changes to the upstream repo so that I have them
+available when I'm offline.
+
+Again: fetch *only* updates remote tracking branches. It does **not** update
+normal local branches. My `mb-vcs-4` branch will remain untouched until I
+manually incorporate the changes from upstream using `rebase` or (less
+commonly) `merge`.
+
+#### Rebase
+
+You learned about rebase earlier, but for the sake of completeness and
+repetition in learning, I'll show how I might incorporate the remote changes
+into my local branches using `rebase`. First, we'll take stock of the situation
+and reflexively type `git status` to see what's going on:
+
+```console?prompt=$
+$ git status
+On branch mb-vcs-4
+Your branch is behind 'origin/mb-vcs-4' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+$
+```
+
+As expected, the remote has updates that we do not, so our local branch is
+*behind*. The status message also notes that our local branch can be
+*fast-forwarded*, which we talked about earlier as well. This is the easiest
+case and is illustrated by the below diagram:
+
+```
+* a879406 (origin/mb-vcs-4) A shiny new thing, freshly downloaded
+* 5e72155 (mb-vcs-4) My most recent local commit
+* 2187cc4 My previous local commit
+.
+.
+.
+```
+
+It's not the *only* situation we could be in, though. We could also have a
+situation where the remote tracking branch has a new commit **and** the local
+branch has a *different* new commit. In that case, Git will note that the
+branches have "diverged". Now, divergence only means that one ref is not
+strictly behind or in front of the other; it does not imply anything about the
+commit contents or whether the commits will textually conflict with one
+another. (For now, we'll assume *no conflicts*, because it's not the point of
+this section. The same principles from earlier still apply.)
+
+In either case, we can use rebase to bring in the remote changes. For example:
+
+```console?prompt=$
+$ git rebase origin/mb-vcs-4
+Successfully rebased and updated refs/heads/mb-vcs-4.
+$
+```
+
+This rebase command finds the *fork point* between the local `mb-vcs-4` and the
+remote `origin/mb-vcs-4`. Then, it applies (cherry-picks) all of the remote
+commits to the fork point. Last, it applies all of the local commits on top.
+
+If there are no local commits, Git will choose to automatically fast-forward
+the local branch to get it up to date with the remote branch. Otherwise, it
+will go through the full rigamarole of applying commits one by one (making new
+commits along the way!).
+
+Note that this re-applying of local commits on top of remote changes
+constitutes *rewriting history*. Some people find this very distasteful and
+even ban it in their projects, preferring merge commits exclusively. The course
+staff has a more moderate view of things: rewriting history is fine if it's a
+private, short-lived development branch. Otherwise, merge.
+
+#### Merge
+
+First case: `--ff-only`
+
+#### Pull
+
+TODO: update your local branches via `git merge --ff-only` or `git rebase`.
+Mention `git pull` is a shortcut for fetch+merge but can be unintuitive.
 
 TODO: Deleting branches with `git push :foo`
 
