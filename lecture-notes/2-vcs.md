@@ -2406,7 +2406,6 @@ example, if someone updated `main` on the remote, you can see their changes
 
 ```console?prompt=$
 $ git fetch
-cedar% git fetch
 remote: Enumerating objects: 22, done.
 remote: Counting objects: 100% (22/22), done.
 remote: Compressing objects: 100% (10/10), done.
@@ -2468,7 +2467,7 @@ branch has a *different* new commit. In that case, Git will note that the
 branches have "diverged" and will not let you push to the remote branch:
 
 ```console?prompt=$
-$ g push
+$ git push
 To github.com:tekknolagi/isdt.git
  ! [rejected]        mb-vcs-4 -> mb-vcs-4 (non-fast-forward)
 error: failed to push some refs to 'github.com:tekknolagi/isdt.git'
