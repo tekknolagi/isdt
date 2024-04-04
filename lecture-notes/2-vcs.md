@@ -1764,14 +1764,13 @@ decided to give it its own subcommand, and `git restore` was born.
 
 #### Saving changes for later
 
-The development workflow we've outlined so far---where you make a complete,
+The development workflow we've depicted so far---where you make a complete,
 self-contained change in the working tree, use `git add` to record that change
 in the index, and finally use `git commit` to save it to a commit---is sadly
 quite idealistic. In reality, you'll often find yourself juggling several tasks
-at once. For example, while refactoring some code, you may notice a preexisting
-bug that you want to investigate by checking out an older commit. But when you
-use your newfound `git checkout` skills to do so, you might see something like
-this:
+at once. For example, while refactoring some code, you may notice a bug that you
+want to investigate by checking out an older commit. But upon using your
+newfound `git checkout` skills to do so, you might see something like this:
 
 ```console?prompt=$
 git checkout 2d6603026105
@@ -1847,17 +1846,21 @@ important things to do than debug it. So what can you do?
 
 One option is to commit the unfinished change and finish it in a later commit.
 Although this violates our rule that each commit should be complete and
-self-contained, it can be a viable strategy when the refactoring work is on its
-own branch. (More on that next lecture.) Another is to destroy your work so far
-(e.g. by `git restore`ing `main.c`) and redo it later, which is clearly
-undesirable.
+self-contained, it can be a viable strategy if the refactoring work is on its
+own branch---more on that next lecture. Assuming you don't want to do that,
+though, there's another option available to you: `git stash`.
 
-A third option is to use a subcommand called `git stash` to save your work for
-later. `git stash` is a bit like `git commit`, in that it saves changes from the
-working tree to a more permanent location. Unlike `git commit`, however, those
-changes don't become part of the Git history. Instead, they go into a special
-area called the *stash*, which unlike the history is neither linear nor shared
-between different copies of the repository. `git stash` is shorthand for `git stash push`, which moves all uncommitted changes to a new stash entry:
+`git stash` is a bit like `git commit` in that it saves changes from the working
+tree to a more permanent location. Unlike `git commit`, however, those changes
+don't become part of the Git history. Instead, they're saved in a special area
+called the *stash*, which unlike the history is neither linear nor shared
+between different copies of the repository. The stash is intended to hold
+in-progress or experimental changes that you want to temporarily remove from the
+working tree.
+
+To create a new stash entry, simply type `git stash` (which is shorthand for
+`git stash push`). That moves all uncommitted changes, staged or not, to the
+stash and leaves your working tree clean:
 
 ```console?prompt=$
 $ git stash
@@ -1890,14 +1893,36 @@ int main(int argc, char **argv) {
 $ 
 ```
 
-After running it, the working tree becomes clean and your changes (like the new `to_int()` function in `main.c`) disappear! Where have they gone?
+Notice that your changes to `main.c` (like the new `to_int()` function) are no
+longer present! Let's see where they've gone:
 
 ```console?prompt=$
 $ git stash list
 stash@{0}: WIP on main: 0fb5235 Revert "Support the modulo operator"
+$ git stash show
+ main.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
+$ 
 ```
 
-There's a new stash entry, named `stash@{0}`[^todo-footnote]. Unlike commits, stash entries store *diffs* rather than *snapshots*. When you save a stash entry, the differences between the latest commit and the working tree get saved. Then, once your other work is done and you're ready to restore that stash entry, those differences are applied to your current working tree, even if pieces of it have changed. To restore a stash entry, use `git stash pop`:
+There's now one stash entry, named `stash@{0}`[^stash-reflog], which contains
+your changes. By default, `git stash show` shows a short summary of the most
+recent stash entry. You can make it show the full diff with the `--patch`/`-p`
+flag, and you can make it show a different stash entry by passing the entry's
+name (e.g. `stash@{1}`, `stash@{2}`, etc.) as an argument.
+
+[^stash-reflog]: Stash entries are numbered using the somewhat unwieldy `@{}`
+    syntax because, under the hood, stash entries are stored as commits pointed
+    to by a ref called `stash`. Once you learn about refs and `git reflog`, try
+    running `git reflog stash`. Does the output look familiar? Then look up
+    `@{}` in `man gitrevisions` and see how it connects!
+
+To bring your latest stash entry back into the working tree, use `git stash
+pop`---or pass an argument specifying an earlier entry. You can restore stash
+entries even if your working tree has changed since they were created: that's
+because `git stash pop` applies the *diff* from the entry to the current working
+tree, whatever its contents. If there would be a merge conflict, though, the pop
+will fail unless the conflicting hunks have been either staged or committed.
 
 ```console?prompt=$
 $ git stash pop
@@ -1959,10 +1984,8 @@ index 56ef02d..6f0fa39 100644
    }
 
 no changes added to commit (use "git add" and/or "git commit -a")
+$ 
 ```
-
-Your changes are back, just as if nothing ever happened, and you can now
-continue refactoring where you left off.
 
 #### Seeing who changed a line (`git blame`)
 
