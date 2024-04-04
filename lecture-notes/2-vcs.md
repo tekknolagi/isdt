@@ -2514,6 +2514,10 @@ private, short-lived development branch. Otherwise, merge.
 
 #### Merge
 
+It's also possible to use `git merge` to reconcile local and remote changes.
+Merge also comes with ability to fast-forward but that must be requested by
+default with `git merge --ff`.
+
 First case: `--ff-only`
 
 #### Pull
