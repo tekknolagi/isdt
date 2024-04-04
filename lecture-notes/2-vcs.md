@@ -2125,14 +2125,6 @@ a83e7a6c (Thomas Hebb 2024-01-30 22:59:25 -0500  4)
 $ 
 ```
 
-#### Finding bugs
-
-TODO: Using `git bisect` to figure out what change broke your program. Only one
-or two paragraphs---we don't want to overwhelm them.
-
-TODO: In lecture, let's include an impressive demo to hook them on the
-possibilities of Git.
-
 ## Lecture 3
 
 CONTENTS: More complex workflows
@@ -2200,6 +2192,14 @@ TODO: `git rebase` for doing lots of charry-picks in a row automatically.
 TODO: This can mostly come from our existing slide.
 
 TODO: Talk about interactive rebasing for squashing/prettifying.
+
+#### Finding bugs
+
+TODO: Using `git bisect` to figure out what change broke your program. Only one
+or two paragraphs---we don't want to overwhelm them.
+
+TODO: In lecture, let's include an impressive demo to hook them on the
+possibilities of Git.
 
 ### Odds and ends
 
