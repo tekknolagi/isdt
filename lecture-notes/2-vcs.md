@@ -1574,26 +1574,565 @@ were easy to edit commits, `git revert` would likely work just the same.
 
 #### Going back in time
 
-TODO: Using `git restore` to restore a file to an older version. Mention that
-`git checkout` did this in older version of git, but that wasn't its primary
-purpose.
+We discussed in Lecture 1 how each commit holds a snapshot of all the files in
+your repository. Git has several subcommands that let you inspect those
+snapshots or bring back their contents.
+
+To view a file as it was at a given commit, you can use a special form of `git
+show`. Imagine that, after reverting the modulo operator from your calculator,
+you want to reference its code for use in another project. Instead of trying to
+reconstruct the code in your head from diffs, you can run the following
+(`2d6603026105` being the "Support the modulo operator" commit):
+
+```console?prompt=$
+$ git show 2d6603026105:main.c
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int calc(int left, char op, int right) {
+  switch (op) {
+  case '+':
+    return left + right;
+  case '-':
+    return left - right;
+  case '*':
+    return left * right;
+  case '/':
+    return left / right;
+  case  '%':
+    return left % right;
+  }
+  fprintf(stderr, "Unrecognized op `%c'.\n", op);
+  exit(EXIT_FAILURE);
+}
+
+int main(int argc, char **argv) {
+  if (argc != 4) {
+    fprintf(
+        stderr,
+        "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
+        argv[0]);
+    return EXIT_FAILURE;
+  }
+  const char *left_str = argv[1];
+  const char *op_str = argv[2];
+  const char *right_str = argv[3];
+  errno = 0;
+  int left = strtol(left_str, NULL, 10);
+  if (errno != 0) {
+    perror(argv[0]);
+    return EXIT_FAILURE;
+  }
+  if (op_str[1] != '\0') {
+    fprintf(stderr, "Op must be one character. Got `%s'.\n", op_str);
+    return EXIT_FAILURE;
+  }
+  errno = 0;
+  int right = strtol(right_str, NULL, 10);
+  if (errno != 0) {
+    perror(argv[0]);
+    return EXIT_FAILURE;
+  }
+  int result = calc(left, op_str[0], right);
+  fprintf(stdout, "%d\n", result);
+  return 0;
+}
+$ 
+```
+
+By adding a colon and file path to the revision parameter, you tell `git show`
+that, instead of showing the commit, it should print the given file from the
+tree the commit references. And indeed, the output shows `main.c` as it was when
+the modulo operator was first added. Unlike `git revert`, this command neither
+makes a commit nor alters the working tree---it just prints to the terminal.
+
+If you want to change the file on disk instead of printing it, you can use `git
+restore`:
+
+```console?prompt=$
+$ git status
+On branch main
+nothing to commit, working tree clean
+$ git restore --source 2d6603026105 main.c
+$ git status
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   main.c
+
+no changes added to commit (use "git add" and/or "git commit -a")
+$ cat main.c
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int calc(int left, char op, int right) {
+  switch (op) {
+  case '+':
+    return left + right;
+  case '-':
+    return left - right;
+  case '*':
+    return left * right;
+  case '/':
+    return left / right;
+  case  '%':
+    return left % right;
+  }
+  fprintf(stderr, "Unrecognized op `%c'.\n", op);
+  exit(EXIT_FAILURE);
+}
+<snip>
+$ 
+```
+
+This retrieves the same past version of `main.c` from the Git history
+but---instead of printing it---writes it directly to the working tree. The
+revision to restore is specified using the `-s`/`--source` flag. Unlike `git
+revert`, `git restore` does not create a new commit or stage the changes,
+meaning they show up in `git status` and `git diff` like if you'd made them
+manually.
+
+There's also a third way to go back in history---`git checkout`. Like `git
+restore`, `git checkout` changes the working tree. But it doesn't leave those
+changes unstaged; instead, it moves `HEAD` to point to the given commit,
+resulting in no unstaged *or* staged changes---since Git shows changes relative
+to `HEAD`!
+
+```console?prompt=$
+$ git checkout 2d6603026105
+Note: switching to '2d6603026105'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 2d66030 Support the modulo operator
+$ cat main.c
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int calc(int left, char op, int right) {
+  switch (op) {
+  case '+':
+    return left + right;
+  case '-':
+    return left - right;
+  case '*':
+    return left * right;
+  case '/':
+    return left / right;
+  case  '%':
+    return left % right;
+  }
+  fprintf(stderr, "Unrecognized op `%c'.\n", op);
+  exit(EXIT_FAILURE);
+}
+<snip>
+$ git status
+HEAD detached at 2d66030
+nothing to commit, working tree clean
+$ 
+```
+
+As Git helpfully informs us, checking out a raw commit hash isn't the typical
+use of `git checkout`, as it it puts your repository into a state called
+"detached HEAD", where new commits aren't tracked as part of a branch. Until we
+discuss branches next lecture, don't worry too much about that: just run `git
+checkout main` to get back to your latest change before making any new commits.
+
+It's worth noting that, if you pass file paths to `git checkout` after the
+revision parameter, it acts like `git restore`: `git checkout 2d6603026105
+main.c` does exactly the same thing as `git restore -s 2d6603026105 main.c`,
+meaning it doesn't move `HEAD`. Since every other form of `git checkout` does
+move `HEAD`, Git's developers eventually identified this one as the odd one out,
+decided to give it its own subcommand, and `git restore` was born.
 
 #### Saving changes for later
 
-TODO: Using `git stash` to put away and restore changes that you're working on.
+The development workflow we've depicted so far---where you make a complete,
+self-contained change in the working tree, use `git add` to record that change
+in the index, and finally use `git commit` to save it to a commit---is sadly
+quite idealistic. In reality, you'll often find yourself juggling several tasks
+at once. For example, while refactoring some code, you may notice a bug that you
+want to investigate by checking out an older commit. But upon using your
+newfound `git checkout` skills to do so, you might see something like this:
+
+```console?prompt=$
+git checkout 2d6603026105
+error: Your local changes to the following files would be overwritten by checkout:
+	main.c
+Please commit your changes or stash them before you switch branches.
+Aborting
+$ 
+```
+
+The cause of this is your half-finished refactor, which you haven't committed
+yet:
+
+```diff
+$ git diff
+diff --git a/main.c b/main.c
+index 56ef02d..6f0fa39 100644
+--- a/main.c
++++ b/main.c
+@@ -1,6 +1,7 @@
+ #include <errno.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <stdbool.h>
+
+ int calc(int left, char op, int right) {
+   switch (op) {
+@@ -17,6 +18,23 @@ int calc(int left, char op, int right) {
+   exit(EXIT_FAILURE);
+ }
+
++// Converts the string str into an integer using strtol.
++// Returns 1 and stores the result in resultp on success.
++// Returns 0 and sets errno otherwise.
++bool to_int(const char *str, int *resultp) {
++  char *endptr;
++  errno = 0;
++  int result = strtol(str, &endptr, 10);
++  if (str == endptr) {
++    errno = EINVAL;
++  }
++  if (errno != 0) {
++    return false;
++  }
++  *resultp = result;
++  return true;
++}
++
+ int main(int argc, char **argv) {
+   if (argc != 4) {
+     fprintf(stderr,
+@@ -29,11 +47,8 @@ int main(int argc, char **argv) {
+   const char *right_str = argv[3];
+   errno = 0;
+   char *endptr;
+-  int left = strtol(left_str, &endptr, 10);
+-  if (left_str == endptr) {
+-    errno = EINVAL;
+-  }
+-  if (errno != 0) {
++  int left;
++  if (!to_int(left_str, left)) {
+     perror(argv[0]);
+     return EXIT_FAILURE;
+   }
+```
+
+Git sees that you've modified `main.c`, so it refuses to check out any other
+version of that file for fear of destroying your modifications! Although this is
+a nice safety feature, it can be annoying: you're not ready to commit your
+refactor---it crashes and introduces a compiler warning---but you have more
+important things to do than debug it. So what can you do?
+
+One option is to commit the unfinished change and finish it in a later commit.
+Although this violates our rule that each commit should be complete and
+self-contained, it can be a viable strategy if the refactoring work is on its
+own branch---more on that next lecture. Assuming you don't want to do that,
+though, there's another option available to you: `git stash`.
+
+`git stash` is a bit like `git commit` in that it saves changes from the working
+tree to a more permanent location. Unlike `git commit`, however, those changes
+don't become part of the Git history. Instead, they're saved in a special area
+called the *stash*, which unlike the history is neither linear nor shared
+between different copies of the repository. The stash is intended to hold
+in-progress or experimental changes that you want to temporarily remove from the
+working tree.
+
+To create a new stash entry, type `git stash` (which is shorthand for `git stash
+push`). That moves all uncommitted changes, staged or not, to the stash and
+leaves your working tree clean:
+
+```console?prompt=$
+$ git stash
+Saved working directory and index state WIP on main: 0fb5235 Revert "Support the modulo operator"
+$ git status
+On branch main
+nothing to commit, working tree clean
+$ cat main.c
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int calc(int left, char op, int right) {
+  switch (op) {
+  case '+':
+    return left + right;
+  case '-':
+    return left - right;
+  case '*':
+    return left * right;
+  case '/':
+    return left / right;
+  }
+  fprintf(stderr, "Unrecognized op `%c'.\n", op);
+  exit(EXIT_FAILURE);
+}
+
+int main(int argc, char **argv) {
+<snip>
+$ 
+```
+
+Notice that your changes to `main.c` (like the new `to_int()` function) are no
+longer present! Let's see where they've gone:
+
+```console?prompt=$
+$ git stash list
+stash@{0}: WIP on main: 0fb5235 Revert "Support the modulo operator"
+$ git stash show
+ main.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
+$ 
+```
+
+There's now one stash entry, named `stash@{0}`[^stash-reflog], which contains
+your changes. By default, `git stash show` shows a short summary of the most
+recent stash entry. You can make it show the full diff with the `--patch`/`-p`
+flag, and you can make it show a different stash entry by passing the entry's
+name (e.g. `stash@{1}`, `stash@{2}`, etc.) as an argument.
+
+[^stash-reflog]: Stash entries are numbered using the somewhat unwieldy `@{}`
+    syntax because, under the hood, stash entries are stored as commits pointed
+    to by a ref called `stash`. Once you learn about refs and `git reflog`, try
+    running `git reflog stash`. Does the output look familiar? Then look up
+    `@{}` in `man gitrevisions` and see how it connects!
+
+`git stash pop` restores a stash entry to the working tree. By default, it
+restores the latest one (hence the push/pop terminology---the stash is last-in
+first-out, just like a stack), but you can also explicitly specify an earlier
+one as an argument. You can restore stash entries even if your working tree has
+changed since they were created: that's because `git stash pop` applies the
+*diff* from the entry to the current working tree, whatever its contents.
+
+Popping a stash entry removes it from the stash, unless the restored changes
+conflict with the current state of the working tree, in which case it's kept in
+the stash for extra safety. For the same reason, you cannot pop a change that
+would overwrite unstaged working tree changes at all. `git stash apply` is like
+`git stash pop`, except it never removes the stash entry.
+
+```console?prompt=$
+$ git stash pop
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   main.c
+$ git diff
+diff --git a/main.c b/main.c
+index 56ef02d..6f0fa39 100644
+--- a/main.c
++++ b/main.c
+@@ -1,6 +1,7 @@
+ #include <errno.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <stdbool.h>
+
+ int calc(int left, char op, int right) {
+   switch (op) {
+@@ -17,6 +18,23 @@ int calc(int left, char op, int right) {
+   exit(EXIT_FAILURE);
+ }
+
++// Converts the string str into an integer using strtol.
++// Returns 1 and stores the result in resultp on success.
++// Returns 0 and sets errno otherwise.
++bool to_int(const char *str, int *resultp) {
++  char *endptr;
++  errno = 0;
++  int result = strtol(str, &endptr, 10);
++  if (str == endptr) {
++    errno = EINVAL;
++  }
++  if (errno != 0) {
++    return false;
++  }
++  *resultp = result;
++  return true;
++}
++
+ int main(int argc, char **argv) {
+   if (argc != 4) {
+     fprintf(stderr,
+@@ -29,11 +47,8 @@ int main(int argc, char **argv) {
+   const char *right_str = argv[3];
+   errno = 0;
+   char *endptr;
+-  int left = strtol(left_str, &endptr, 10);
+-  if (left_str == endptr) {
+-    errno = EINVAL;
+-  }
+-  if (errno != 0) {
++  int left;
++  if (!to_int(left_str, left)) {
+     perror(argv[0]);
+     return EXIT_FAILURE;
+   }
+
+no changes added to commit (use "git add" and/or "git commit -a")
+$ 
+```
 
 #### Seeing who changed a line (`git blame`)
 
-TODO: Introduction to `git blame`. General workflow of `git blame`, `git show`
-`git log <rev>^ --`, and repeat until you've found what you want.
+To wrap up our survey of basic Git commands, let's discuss an alternate way to
+view a file's history. Whereas `git log` shows every commit that's changed any
+line in a given file, `git blame` shows which commit most recently changed
+*each* line of the given file. As its name implies, it's extremely useful when
+you want to know who's responsible for a specific piece of code:
 
-#### Finding bugs
+```console?prompt=$
+$ git blame main.c
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  1) #include <errno.h>
+a83e7a6c (Thomas Hebb 2024-01-30 22:59:25 -0500  2) #include <stdio.h>
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  3) #include <stdlib.h>
+a83e7a6c (Thomas Hebb 2024-01-30 22:59:25 -0500  4)
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  5) int calc(int left, char op, int right) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  6)   switch (op) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  7)   case '+':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  8)     return left + right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  9)   case '-':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 10)     return left - right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 11)   case '*':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 12)     return left * right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 13)   case '/':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 14)     return left / right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 15)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 16)   fprintf(stderr, "Unrecognized op `%c'.\n", op);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 17)   exit(EXIT_FAILURE);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 18) }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 19)
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 20) int main(int argc, char **argv) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 21)   if (argc != 4) {
+0fb52357 (Thomas Hebb 2024-02-28 22:35:12 -0500 22)     fprintf(stderr,
+0fb52357 (Thomas Hebb 2024-02-28 22:35:12 -0500 23)             "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /.\n",
+0fb52357 (Thomas Hebb 2024-02-28 22:35:12 -0500 24)             argv[0]);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 25)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 26)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 27)   const char *left_str = argv[1];
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 28)   const char *op_str = argv[2];
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 29)   const char *right_str = argv[3];
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 30)   errno = 0;
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 31)   char *endptr;
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 32)   int left = strtol(left_str, &endptr, 10);
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 33)   if (left_str == endptr) {
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 34)     errno = EINVAL;
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 35)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 36)   if (errno != 0) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 37)     perror(argv[0]);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 38)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 39)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 40)   if (op_str[1] != '\0') {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 41)     fprintf(stderr, "Op must be one character. Got `%s'.\n", op_str);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 42)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 43)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 44)   errno = 0;
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 45)   int right = strtol(right_str, &endptr, 10);
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 46)   if (right_str == endptr) {
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 47)     errno = EINVAL;
+221af3ea (Thomas Hebb 2024-02-21 23:09:36 -0500 48)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 49)   if (errno != 0) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 50)     perror(argv[0]);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 51)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 52)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 53)   int result = calc(left, op_str[0], right);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 54)   fprintf(stdout, "%d\n", result);
+^3ba2a93 (Thomas Hebb 2024-01-30 22:57:04 -0500 55)   return 0;
+^3ba2a93 (Thomas Hebb 2024-01-30 22:57:04 -0500 56) }
+$ 
+```
 
-TODO: Using `git bisect` to figure out what change broke your program. Only one
-or two paragraphs---we don't want to overwhelm them.
+As you can see, each line has been annotated with a commit hash (the first
+column), as well as basic metadata about that commit (`^` at the beginning of a
+hash indicates a commit with no parent---generally the first commit ever made).
+To see more details of a commit, you can use `git show` as usual.
 
-TODO: In lecture, let's include an impressive demo to hook them on the
-possibilities of Git.
+By default, `git blame` blames a file as it exists in the working tree, but like
+`git log` it can take a commit hash to change that. This lets you "skip past" an
+irrelevant commit in the blame and instead see the second-most (or third-most,
+etc) recent commit to change a line. To do so, pass `git blame` the parent of
+the commit you don't care about. For example, we can check what commit prior to
+`221af3ea` touched line 32:
+
+```console?prompt=$
+$ git blame 221af3ea^ -- main.c
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  1) #include <errno.h>
+a83e7a6c (Thomas Hebb 2024-01-30 22:59:25 -0500  2) #include <stdio.h>
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  3) #include <stdlib.h>
+a83e7a6c (Thomas Hebb 2024-01-30 22:59:25 -0500  4)
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  5) int calc(int left, char op, int right) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  6)   switch (op) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  7)   case '+':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  8)     return left + right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500  9)   case '-':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 10)     return left - right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 11)   case '*':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 12)     return left * right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 13)   case '/':
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 14)     return left / right;
+2d660302 (Thomas Hebb 2024-02-21 23:07:15 -0500 15)   case  '%':
+2d660302 (Thomas Hebb 2024-02-21 23:07:15 -0500 16)     return left % right;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 17)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 18)   fprintf(stderr, "Unrecognized op `%c'.\n", op);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 19)   exit(EXIT_FAILURE);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 20) }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 21)
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 22) int main(int argc, char **argv) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 23)   if (argc != 4) {
+2d660302 (Thomas Hebb 2024-02-21 23:07:15 -0500 24)     fprintf(
+2d660302 (Thomas Hebb 2024-02-21 23:07:15 -0500 25)         stderr,
+2d660302 (Thomas Hebb 2024-02-21 23:07:15 -0500 26)         "Usage: %s <num> <op> <num>\nWhere <op> is one of +, -, *, /, %%.\n",
+2d660302 (Thomas Hebb 2024-02-21 23:07:15 -0500 27)         argv[0]);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 28)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 29)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 30)   const char *left_str = argv[1];
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 31)   const char *op_str = argv[2];
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 32)   const char *right_str = argv[3];
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 33)   errno = 0;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 34)   int left = strtol(left_str, NULL, 10);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 35)   if (errno != 0) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 36)     perror(argv[0]);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 37)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 38)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 39)   if (op_str[1] != '\0') {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 40)     fprintf(stderr, "Op must be one character. Got `%s'.\n", op_str);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 41)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 42)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 43)   errno = 0;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 44)   int right = strtol(right_str, NULL, 10);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 45)   if (errno != 0) {
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 46)     perror(argv[0]);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 47)     return EXIT_FAILURE;
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 48)   }
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 49)   int result = calc(left, op_str[0], right);
+1838eeae (Thomas Hebb 2024-01-31 21:07:08 -0500 50)   fprintf(stdout, "%d\n", result);
+^3ba2a93 (Thomas Hebb 2024-01-30 22:57:04 -0500 51)   return 0;
+^3ba2a93 (Thomas Hebb 2024-01-30 22:57:04 -0500 52) }
+$ 
+```
+
+(Despite its name, please don't use the results of `git blame` to shame anyone
+for the code they've written!)
 
 ## Lecture 3
 
@@ -1662,6 +2201,14 @@ TODO: `git rebase` for doing lots of charry-picks in a row automatically.
 TODO: This can mostly come from our existing slide.
 
 TODO: Talk about interactive rebasing for squashing/prettifying.
+
+#### Finding bugs
+
+TODO: Using `git bisect` to figure out what change broke your program. Only one
+or two paragraphs---we don't want to overwhelm them.
+
+TODO: In lecture, let's include an impressive demo to hook them on the
+possibilities of Git.
 
 ### Odds and ends
 
