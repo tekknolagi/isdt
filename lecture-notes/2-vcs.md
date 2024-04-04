@@ -2290,8 +2290,8 @@ $ cat .git/config
 $
 ```
 
-To see this information without digging into the configuration, you can also
-use `git remote -v`:
+To see this information without digging into the configuration, you can use
+`git remote -v`:
 
 ```console?prompt=$
 $ git remote -v
