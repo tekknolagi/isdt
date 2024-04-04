@@ -2131,6 +2131,9 @@ a83e7a6c (Thomas Hebb 2024-01-30 22:59:25 -0500  4)
 $ 
 ```
 
+(Despite its name, please don't use the results of `git blame` to shame anyone
+for the code they've written!)
+
 ## Lecture 3
 
 CONTENTS: More complex workflows
