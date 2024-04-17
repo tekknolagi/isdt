@@ -2167,12 +2167,10 @@ subdirectories (which are sometimes inferred for ease of use).
 
 TODO: `HEAD` as a special ref pointing to your current checkout.
 
-TODO: Talk about how either hashes or ref names can be used to refer to a
-commit. Hashes are immutable, while refs may change. Say that either method
-can be used in nearly every place you see us using one of them.
+TODO: Refs define what's "in" a repository, more or less. Mention `git gc`,
+dangers of committing while in detached HEAD.
 
-TODO: There are operators that let you "move around" from a ref. For example,
-`^` gets a ref's parent commit. Namedrop `man gitrevisions`.
+TODO: Hashes are immutable, while refs may change.
 
 ### Exploring multiple branches
 
