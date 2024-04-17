@@ -2552,6 +2552,38 @@ You don't always start off making a local repo and then pushing it to a forge.
 Sometimes, the project already exists and you want to contribute. To work
 locally, you will need to download the repository using `git clone`:
 
+```console?prompt=$
+$ git clone git@github.com:tekknolagi/isdt.git
+Cloning into 'isdt'...
+remote: Enumerating objects: 2103, done.
+remote: Counting objects: 100% (907/907), done.
+remote: Compressing objects: 100% (274/274), done.
+remote: Total 2103 (delta 685), reused 818 (delta 627), pack-reused 1196
+Receiving objects: 100% (2103/2103), 4.08 MiB | 20.98 MiB/s, done.
+Resolving deltas: 100% (1334/1334), done.
+$
+```
+
+By default, `git clone` will create a new directory with the same name as the
+repository[^clone-repo-name]. Then it downloads all of the objects from the
+remote repository, and checks out the default branch.
+
+[^clone-repo-name]: It comes with a heuristic to determine what that is, but
+    you can think of it as the last thing in the URL with the `.git` stripped.
+
+Now that you know a bunch of new terms from the first part of this lecture, you
+can digest the man page:
+
+> Clones a repository into a newly created directory, creates remote-tracking
+> branches for each branch in the cloned repository (visible using `git branch
+> --remotes`), and creates and checks out an initial branch that is forked from
+> the cloned repository's currently active branch.
+
+> After the clone, a plain `git fetch` without arguments will update all the
+> remote-tracking branches, and a `git pull` without arguments will in addition
+> merge the remote `master` branch into the current `master` branch, if any
+> [...].
+
 ## Lecture 5
 
 CONTENTS: Collaboration in practice
@@ -2567,6 +2599,9 @@ on it.
 TODO: Git has no built-in way to propose a change. So lots of solutions for
 proposing and reviewing changes before they're merged upstream have emerged.
 Talk about mailing lists, GitHub model, Phabricator model.
+
+TODO: mention https://github.com/vim/vim/pull/8859 since that came up during
+ISDT notes
 
 ### Integrating changes: merging vs squashing vs rebasing
 
