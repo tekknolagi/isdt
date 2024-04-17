@@ -2139,11 +2139,11 @@ CONTENTS: More complex workflows
 ### Branches
 
 Although we've mentioned them several times, we've yet to explain what
-*branches* actually are. Conceptually, a branch is one specific line of
+*branches* actually are. Conceptually, a branch is one specific thread of
 development---in other words, a specific commit history---within a Git
 repository. Newly-created repositories have just a single branch, conventionally
-named either `main` or `master`, and it's to this branch that our examples so
-far have added commits.
+named either `main` or `master`, and so far we have only added commits to this
+branch.
 
 By creating other branches, you can keep track of more than just one history.
 One branch, for example, might be an old version of the project, lacking new
