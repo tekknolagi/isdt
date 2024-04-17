@@ -2329,6 +2329,8 @@ $
 
 TODO: describe above output
 
+TODO: Deleting branches with `git push :foo`
+
 To reduce the amount of typing, you can also use `--set-upstream`/`-u` one time
 to mark `origin/main` as the default destination for the local ref `origin`.
 This adds an entry in the `.git/config` file:
@@ -2543,8 +2545,6 @@ Unfortunately, most people who start off with Git start with a
 `commit`+`push`+`pull` workflow and don't understand why things break when they
 do, or don't understand why there are these funky merge commits sometimes. Now
 you know.
-
-TODO: Deleting branches with `git push :foo`
 
 ### `git clone` for making a local copy of a remote repo
 
