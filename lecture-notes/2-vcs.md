@@ -2485,19 +2485,31 @@ After you have rebased, you can safely push your (renewed) local commits to the
 remote. That is, unless someone else has beaten you to the punch and pushed
 even more commits to the remote. In that case, keep fetching and rebasing.
 
-Note that this re-applying of local commits on top of remote changes
-constitutes *rewriting history*. Some people find this very distasteful and
-even ban it in their projects, preferring merge commits exclusively. The course
-staff has a more moderate view of things: rewriting history is fine if it's a
-private, short-lived development branch. Otherwise, merge.
+> Note that this re-applying of local commits on top of remote changes
+> constitutes *rewriting history*. As we have discussed before, some people
+> find this very distasteful and even ban it in their projects, preferring
+> merge commits exclusively. The course staff has a more moderate view of
+> things: rewriting history is fine if it's a private, short-lived development
+> branch. Otherwise, merge.
 
 #### Merge
 
 It's also possible to use `git merge` to reconcile local and remote changes.
-Merge also comes with ability to fast-forward but that must be requested by
-default with `git merge --ff`.
+Like rebase, merge also comes with ability to fast-forward, but that does not
+happen automatically; it must be requested with `git merge --ff` or
+`--ff-only`.
 
-First case: `--ff-only`
+We'll talk about `--ff-only` first because it's the most similar to what you
+have seen so far. If you run `git merge --ff-only origin/branch-name`, the
+merge will only succeed if it need not create a merge commit. That is, if the
+local branch can be fast-forwarded to the remote, great. If not, noisily fail.
+
+In the case where the two branches diverge (`--ff-only` would fail), you can
+use `git merge origin/branch-name` to make a merge commit between your local
+branch and the remote-tracking branch.
+
+A middle ground is `git merge --ff`, which will try to fast-forward if it can,
+and otherwise fall back to creating a merge commit.
 
 #### Pull
 
