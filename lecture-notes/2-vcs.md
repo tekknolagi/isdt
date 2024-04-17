@@ -2513,8 +2513,36 @@ and otherwise fall back to creating a merge commit.
 
 #### Pull
 
-TODO: update your local branches via `git merge --ff-only` or `git rebase`.
-Mention `git pull` is a shortcut for fetch+merge but can be unintuitive.
+Now, we've talked about running `git fetch` and then either `git rebase` or
+`git merge` to reconcile differences between local and remote commits. Running
+two commands each time can be cumbersome, so Git provides a shortcut. We
+mention the shortcut last for two reasons:
+
+1. We want you to understand what is going behind the scenes; this combo
+   command is not magical
+2. The combo command can behave in unexpected ways, especially if you don't
+   understand the underlying concepts
+
+The command is `git pull`. Now, directly from the man page:
+
+> Incorporates changes from a remote repository into the current branch. If the
+> current branch is behind the remote, then by default it will fast-forward the
+> current branch to match the remote. If the current branch and the remote have
+> diverged, the user needs to specify how to reconcile the divergent branches
+> with `--rebase` or `--no-rebase` [...].
+
+> More precisely, `git pull` runs `git fetch` with the given parameters and
+> then depending on configuration options or command line flags, will call
+> either `git rebase` or `git merge` to reconcile diverging branches.
+
+Now that you have both learned about remote tracking branches and refreshed
+your memory about rebase/merge, this may sound like absolutely no big deal. Of
+course that's what it does, right? Why would it do anything else?
+
+Unfortunately, most people who start off with Git start with a
+`commit`+`push`+`pull` workflow and don't understand why things break when they
+do, or don't understand why there are these funky merge commits sometimes. Now
+you know.
 
 TODO: Deleting branches with `git push :foo`
 
