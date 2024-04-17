@@ -2138,11 +2138,30 @@ CONTENTS: More complex workflows
 
 ### Branches
 
+Although we've mentioned them several times, we've yet to explain what
+*branches* actually are. Conceptually, a branch is one specific line of
+development---in other words, a specific commit history---within a Git
+repository. Newly-created repositories have just a single branch, conventionally
+named either `main` or `master`, and it's to this branch that our examples so
+far have added commits.
+
+By creating other branches, you can keep track of more than just one history.
+One branch, for example, might be an old version of the project, lacking new
+commits from `main`. Another might contain everything from `main` plus
+additional commits pertaining to an in-development feature. And yet another
+might have no commits in common with `main` and hold a completely separate
+codebase (although this is not common---typically branches within a single
+repository share at least some commits).
+
 TODO: "What is a branch?" paragraph. A convenient name you can use to reference
 a specific variant of your code or set of changes you're working on.
 
 TODO: Examples of what branches might be used for. Classify into long-lived
 branches and development/feature branches.
+
+It's worth noting that there's nothing technically special about `main` as a
+branch. Git treats it exactly like any other branch, save for its automatic
+creation. By convention, however, many projects use `main` as TODO.
 
 TODO: The concept of main/trunk/master as the main place where you commit new
 code and the one long-lived branch you can rely on virtually every project to
