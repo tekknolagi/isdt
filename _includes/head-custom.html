@@ -1,3 +1,4 @@
+{% if jekyll.environment == 'production' %}
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MNTD6DM8MP"></script>
 <script>
@@ -14,5 +15,6 @@
     }
 </script>
 <script async src="/assets/js/count.js"></script>
+{% endif %}
 <link rel="shortcut icon" type="image/x-icon" href="{{ site.baseurl }}/favicon.ico" />
 <link rel="icon" type="image/x-icon" href="{{ site.baseurl }}/favicon.ico" />
