@@ -2512,7 +2512,7 @@ lecture 5
 
 It's also possible to use `git merge` to reconcile local and remote changes.
 Like rebase, merge also comes with ability to fast-forward, and this will
-happen automatically unless disabled.
+happen automatically unless disabled with `--no-ff`.
 
 We'll talk about `--ff-only` first because it's the most similar to what you
 have seen so far. If you run `git merge --ff-only origin/branch-name`, the
