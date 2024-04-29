@@ -2498,12 +2498,15 @@ After you have rebased, you can safely push your (renewed) local commits to the
 remote. That is, unless someone else has beaten you to the punch and pushed
 even more commits to the remote. In that case, keep fetching and rebasing.
 
+<!-- TODO(max): Figure out whether to keep this, delete it, or move it to
+lecture 5
 > Note that this re-applying of local commits on top of remote changes
 > constitutes *rewriting history*. As we have discussed before, some people
 > find this very distasteful and even ban it in their projects, preferring
 > merge commits exclusively. The course staff has a more moderate view of
 > things: rewriting history is fine if it's a private, short-lived development
 > branch. Otherwise, merge.
+-->
 
 #### Merge
 
