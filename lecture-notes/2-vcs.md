@@ -2532,7 +2532,7 @@ The command is `git pull`. Now, directly from the man page:
 > current branch to match the remote. If the current branch and the remote have
 > diverged, the user needs to specify how to reconcile the divergent branches
 > with `--rebase` or `--no-rebase` [...].
-
+>
 > More precisely, `git pull` runs `git fetch` with the given parameters and
 > then depending on configuration options or command line flags, will call
 > either `git rebase` or `git merge` to reconcile diverging branches.
@@ -2582,7 +2582,7 @@ can digest the man page:
 > branches for each branch in the cloned repository (visible using `git branch
 > --remotes`), and creates and checks out an initial branch that is forked from
 > the cloned repository's currently active branch.
-
+>
 > After the clone, a plain `git fetch` without arguments will update all the
 > remote-tracking branches, and a `git pull` without arguments will in addition
 > merge the remote `master` branch into the current `master` branch, if any
