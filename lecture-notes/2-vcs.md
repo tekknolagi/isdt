@@ -2309,7 +2309,7 @@ and in the output of `git remote -v`.
 > the server chooses. In GitHub's case, though, separating out by username
 > gives nice namespacing (same for the other forges).
 
-So you have a remote now. You can tell Git to write a local ref (in this case,
+So you have a remote now. You can tell Git to copy a local ref (in this case,
 the `main` branch and the commits it points to) to the remote (in this case,
 `origin`) by using the `push` subcommand:
 
