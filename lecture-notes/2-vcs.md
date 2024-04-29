@@ -2450,10 +2450,20 @@ branches have "diverged"[^needs-all-info].
 
 [^needs-all-info]: If you have fetched all the new commits from the remote, Git
     may be able to let you know about this in the output of `git status`; it
-    has the information available locally. But sometimes you might not have
-    fetched, and might find this out when you tried to `git push`. In this
-    case, it is the Git software *on the remote* that is preventing you from
-    pushing to the remote branch:
+    has the information available locally.
+
+    ```console?prompt=$
+    $ git status
+    On branch mb-vcs-4
+    Your branch and 'origin/mb-vcs-4' have diverged,
+    and have 1 and 1 different commits each, respectively.
+      (use "git pull" to merge the remote branch into yours)
+    $
+    ```
+
+    But sometimes you might not have fetched, and might find this out when you
+    tried to `git push`. In this case, it is the Git software *on the remote*
+    that is preventing you from pushing to the remote branch:
 
     ```console?prompt=$
     $ git push
