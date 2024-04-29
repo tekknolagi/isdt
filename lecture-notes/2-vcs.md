@@ -2218,22 +2218,400 @@ possibilities of Git.
 
 CONTENTS: Collaboration with Git
 
+You've done enough solo development. It's now time to learn to work with your
+groupmates on projects. In order to do that, you need to know how to make your
+repository accessible to the others somehow.
+
+Git is pretty flexible about how repositories can be shared---after all, they
+are "just files"---but the easiest and most common way to share is via a code
+forge such as GitHub, SourceHut, or GitLab. These Git forges do a bunch of
+stuff but the most important part is hosting a copy of your `.git` folder and
+managing permissions. It's totally possible to DIY this with your own server
+and software such as Gitolite (I used to do that for years), but these forges
+*also* provide issue tracking and pull requests and other niceties.
+
+So you go ahead and make a repository on GitHub. Now you're in this weird
+situation where you have a repository locally and GitHub has this blank
+repository somewhere in San Francisco and you have to find a way to get your
+code across the country. (To be clear, *all* forges will create blank repos
+when you click the "New Repository" button on the website. This is expected.)
+To do this, you need to add a *remote*.
+
 ### Sharing branches with others
 
-TODO: What's a remote? Example of `git remote add` and `git remote -v`. Talk
-about different remote protocols.
+A *remote* is a copy of your repository that is... somewhere else. It could be
+the directory next door, it could be a big binary file called a
+*bundle*[^bundle], or---most commonly---it could be on someone else's
+computer[^xkcd908] accessible over the network. Network remotes are referenced
+using URLs: common types are HTTPS
+(`https://server.com/myusername/myreponame`), SSH
+(`git@server.com:myusername/myreponame.git`) and (less commonly) Git's native
+protocol (`git://server.com/myusername/myreponame.git`)[^protocols]. These
+days, `server.com` is often `github.com` or one of the other forges. These URLs
+specify the location and protocol for how your local Git installation should
+make network requests to the remote repository.
 
-TODO: Can either `git fetch` from or `git push` to a remote. These update
-*remote-tracking branches*, which can then be used to update your local
-branches via `git merge --ff-only` or `git rebase`. Mention `git pull` is a
-shortcut for fetch+merge but can be unintuitive.
+[^bundle]: A [bundle](https://git-scm.com/docs/git-bundle) is a snapshot of an
+    entire Git repository using *packfiles*. This gets pretty into the weeds of
+    Git, but feel free to read and learn more on your own.
+
+[^xkcd908]: See [XKCD 908](https://xkcd.com/908/).
+
+[^protocols]: Now, SSH is just one way to share Git objects over the network.
+    We prefer it because it is the most convenient once set up and does not
+    require typing in your password or using an additional HTTPS authentication
+    token on GitHub. You should feel free to use whatever protocol you like.
+
+A repository on your local machine can have zero or more remotes, though having
+one remote is probably the most common. To go from zero to one, you need to add
+the remote:
+
+```console?prompt=$
+$ git remote
+$ git remote add origin git@github.com:myusername/myreponame.git
+$ git remote
+origin
+$
+```
+
+(The name `origin` is convention and the default Git remote name; you could
+call it `fred` or `lemonade` if you prefer.)
+
+All this has done is make a little entry in your `.git/config` telling Git
+where the remote called `origin` points. It does not make any network requests
+or anything:
+
+```console?prompt=$
+$ cat .git/config
+...
+[remote "origin"]
+	url = git@github.com:myusername/myreponame.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+...
+$
+```
+
+To see this information without digging into the configuration, you can use
+`git remote -v`:
+
+```console?prompt=$
+$ git remote -v
+origin	git@github.com:myusername/myreponame.git (fetch)
+origin	git@github.com:myusername/myreponame.git (push)
+$
+```
+
+If you had more remotes, they would also show up both in the configuration file
+and in the output of `git remote -v`.
+
+> As another aside, this convention of the path being `username/projectname` is
+> just that---convention. The server name and path name could be anything that
+> the server chooses. In GitHub's case, though, separating out by username
+> gives nice namespacing (same for the other forges).
+
+So you have a remote now. You can tell Git to copy a local ref (in this case,
+the `main` branch and the commits it points to) to the remote (in this case,
+`origin`) by using the `push` subcommand:
+
+```console?prompt=$
+$ git push origin main
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 7 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 367 bytes | 367.00 KiB/s, done.
+Total 4 (delta 3), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+To github.com:tekknolagi/isdt.git
+   d509779..7cc7fb1  mb-vcs-4 -> mb-vcs-4
+$
+```
+
+TODO: describe above output
+
+TODO: Deleting branches with `git push :foo`
+
+To reduce the amount of typing, you can also use `--set-upstream`/`-u` one time
+to mark `origin/main` as the default destination for the local ref `origin`.
+This adds an entry in the `.git/config` file:
+
+```console?prompt=$
+$ git push -u origin main
+...
+Branch 'main' set up to track remote branch 'main' from 'origin'.
+$ cat .git/config
+...
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+...
+$ # Now you can do `git push`
+```
+
+#### Remote tracking branches
+
+Time for a light detour. Another side effect of a `git push` is updating
+*remote tracking branches*. These are local refs that cache the last known
+state of refs on the remotes you've added. For example, if you `git push origin
+main`, you know (for a little while at least) exactly what ref the remote's
+`main` branch points to: you just pushed it! You can inspect (but not manually
+update) this ref by (for example) the name `origin/main`. The remote state may
+change while you are disconnected from it, but that is okay.
+
+These remote tracking branches share similar names to your local branches. Your
+local `main` branch, for example, has a counterpart called `origin/main`. When
+you make a commit, `origin/main` is left alone; it falls behind your local
+`main`. For example, it might look like this:
+
+```
+* a879406 (HEAD -> main) My second new commit
+* 5e72155 My first new commit
+* 2187cc4 (origin/main) The last shared commit
+.
+.
+.
+```
+
+In the diagram above, the topmost commit `a879406` is the most recent, whereas
+the bottom commit `2187cc4` is the least recent. Commits are also labeled with
+what branches have that commit as their most recent commit.
+
+In order to update `origin/main`, you would need to push your changes again.
+But what if someone else has updated (pushed to) the remote in the meantime?
+Well, you'll need to download their changes. You can do that with `git fetch`.
+
+#### Fetch
+
+Running `git fetch` will update all of your remote tracking branches. For
+example, if someone updated `main` on the remote, you can see their changes
+(update your local `origin/main`) by fetching.
+
+```console?prompt=$
+$ git fetch
+remote: Enumerating objects: 22, done.
+remote: Counting objects: 100% (22/22), done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 16 (delta 12), reused 9 (delta 6), pack-reused 0
+Unpacking objects: 100% (16/16), 7.74 KiB | 792.00 KiB/s, done.
+From github.com:tekknolagi/isdt
+   b357867..d573c7f  mb-vcs-4         -> origin/mb-vcs-4
+ * [new branch]      tom-vcs-lecture2 -> origin/tom-vcs-lecture2
+$
+```
+
+In this output, we can see that the server has printed some messages for us to
+see (the lines starting with `remote:`). Then, Git unpacks the objects---this
+can take a long time in large repositories---and shows a summary of what refs
+have changed. We can see that the remote has updates on its `origin/mb-vcs-4`
+branch and on its (new to us!) `origin/tom-vcs-lecture2` branch.
+
+I use fetch a lot. Right before I go offline---say, for a plane or train
+trip---I'll fetch all of the changes to the upstream repo so that I have them
+available when I'm offline.
+
+Again: fetch *only* updates remote tracking branches. It does **not** update
+normal local branches. My `mb-vcs-4` branch will remain untouched until I
+manually incorporate the changes from upstream using `rebase` or (less
+commonly) `merge`.
+
+#### Rebase
+
+You learned about rebase earlier, but for the sake of completeness and
+repetition in learning, I'll show how I might incorporate the remote changes
+into my local branches using `rebase`. First, we'll take stock of the situation
+and reflexively type `git status` to see what's going on:
+
+```console?prompt=$
+$ git status
+On branch mb-vcs-4
+Your branch is behind 'origin/mb-vcs-4' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+$
+```
+
+As expected, the remote has updates that we do not, so our local branch is
+*behind*. The status message also notes that our local branch can be
+*fast-forwarded*, which we talked about earlier as well. This is the easiest
+case and is illustrated by the below diagram:
+
+```
+* a879406 (origin/mb-vcs-4) A shiny new thing, freshly downloaded
+* 5e72155 (mb-vcs-4) My most recent local commit
+* 2187cc4 My previous local commit
+.
+.
+.
+```
+
+It's not the *only* situation we could be in, though. We could also have a
+situation where the remote tracking branch has a new commit **and** the local
+branch has a *different* new commit. In that case, Git will note that the
+branches have "diverged"[^needs-all-info].
+
+[^needs-all-info]: If you have fetched all the new commits from the remote, Git
+    may be able to let you know about this in the output of `git status`; it
+    has the information available locally.
+
+    ```console?prompt=$
+    $ git status
+    On branch mb-vcs-4
+    Your branch and 'origin/mb-vcs-4' have diverged,
+    and have 1 and 1 different commits each, respectively.
+      (use "git pull" to merge the remote branch into yours)
+    $
+    ```
+
+    But sometimes you might not have fetched, and might find this out when you
+    tried to `git push`. In this case, it is the Git software *on the remote*
+    that is preventing you from pushing to the remote branch:
+
+    ```console?prompt=$
+    $ git push
+    To github.com:tekknolagi/isdt.git
+     ! [rejected]        mb-vcs-4 -> mb-vcs-4 (non-fast-forward)
+    error: failed to push some refs to 'github.com:tekknolagi/isdt.git'
+    hint: Updates were rejected because the tip of your current branch is behind
+    hint: its remote counterpart. Integrate the remote changes (e.g.
+    hint: 'git pull ...') before pushing again.
+    hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+    $
+    ```
+
+    That is, unless your remote is a local file-based remote or something, in
+    which case it is still your local Git. But you should still think of it as
+    the remote Git.
+
+Now, divergence only means that one ref is not strictly behind or in front of
+the other; it does not imply anything about the commit contents or whether the
+commits will textually conflict with one another. (For now, we'll assume *no
+conflicts*, because it's not the point of this section. The same principles
+from earlier still apply.)
+
+In either case, we can use rebase to bring in the remote changes. For example:
+
+```console?prompt=$
+$ git rebase origin/mb-vcs-4
+Successfully rebased and updated refs/heads/mb-vcs-4.
+$
+```
+
+This rebase command finds the *fork point* between the local `mb-vcs-4` and the
+remote `origin/mb-vcs-4`. Then, it applies (cherry-picks) all of the remote
+commits to the fork point. Last, it applies all of the local commits on top.
+
+If there are no local commits, Git will choose to automatically fast-forward
+the local branch to get it up to date with the remote branch. Otherwise, it
+will go through the full rigamarole of applying commits one by one (making new
+commits along the way!).
+
+After you have rebased, you can safely push your (renewed) local commits to the
+remote. That is, unless someone else has beaten you to the punch and pushed
+even more commits to the remote. In that case, keep fetching and rebasing.
+
+<!-- TODO(max): Figure out whether to keep this, delete it, or move it to
+lecture 5
+> Note that this re-applying of local commits on top of remote changes
+> constitutes *rewriting history*. As we have discussed before, some people
+> find this very distasteful and even ban it in their projects, preferring
+> merge commits exclusively. The course staff has a more moderate view of
+> things: rewriting history is fine if it's a private, short-lived development
+> branch. Otherwise, merge.
+-->
+
+#### Merge
+
+It's also possible to use `git merge` to reconcile local and remote changes.
+Like rebase, merge also comes with ability to fast-forward, and this will
+happen automatically unless disabled with `--no-ff`.
+
+We'll talk about `--ff-only` first because it's the most similar to what you
+have seen so far. If you run `git merge --ff-only origin/branch-name`, the
+merge will only succeed if it need not create a merge commit. That is, if the
+local branch can be fast-forwarded to the remote, great. If not, noisily fail.
+
+In the case where the two branches diverge (`--ff-only` would fail), you can
+use `git merge origin/branch-name` to make a merge commit between your local
+branch and the remote-tracking branch.
+
+A middle ground is `git merge --ff`, which will try to fast-forward if it can,
+and otherwise fall back to creating a merge commit.
+
+#### Pull
+
+We've talked about running `git fetch` and then either `git rebase` or
+`git merge` to reconcile differences between local and remote commits. Running
+two commands each time can be cumbersome, so Git provides a shortcut. We
+mention the shortcut last for two reasons:
+
+1. We want you to understand what is going behind the scenes; this combo
+   command is not magical
+2. The combo command can behave in unexpected ways, especially if you don't
+   understand the underlying concepts
+
+The command is `git pull`. Now, directly from the man page:
+
+> Incorporates changes from a remote repository into the current branch. If the
+> current branch is behind the remote, then by default it will fast-forward the
+> current branch to match the remote. If the current branch and the remote have
+> diverged, the user needs to specify how to reconcile the divergent branches
+> with `--rebase` or `--no-rebase` [...].
+>
+> More precisely, `git pull` runs `git fetch` with the given parameters and
+> then depending on configuration options or command line flags, will call
+> either `git rebase` or `git merge` to reconcile diverging branches.
+
+Now that you have both learned about remote tracking branches and refreshed
+your memory about rebase/merge, this may make perfect sense. Of
+course that's what it does, right? Why would it do anything else?
+
+Unfortunately, many people learn `pull` (and `push`) only as a black box that
+magically synchronizes a local branch to a remote one (or vice versa). Since
+much of the commands' behavior can only be explained by knowing the separate
+steps they take, those people risk an unpleasant surprise in all but the most
+simple branch states. Now you know, and hopefully can avoid future confusion.
 
 ### `git clone` for making a local copy of a remote repo
 
-### Tracking branches
+You don't always start off making a local repo and then pushing it to a forge.
+Sometimes, the project already exists and you want to contribute. To work
+locally, you will need to download the repository using `git clone`:
 
-TODO: Ugh, I still don't understand the full semantics of these. Figure it out
-and write it down.
+```console?prompt=$
+$ ls -dl isdt
+ls: cannot access 'isdt': No such file or directory
+$ git clone git@github.com:tekknolagi/isdt.git
+Cloning into 'isdt'...
+remote: Enumerating objects: 2103, done.
+remote: Counting objects: 100% (907/907), done.
+remote: Compressing objects: 100% (274/274), done.
+remote: Total 2103 (delta 685), reused 818 (delta 627), pack-reused 1196
+Receiving objects: 100% (2103/2103), 4.08 MiB | 20.98 MiB/s, done.
+Resolving deltas: 100% (1334/1334), done.
+$ ls -dl isdt
+drwxrwxr-x 13 max max 4096 Apr 29 18:47 isdt
+$
+```
+
+By default, `git clone` will create a new directory with the same name as the
+repository[^clone-repo-name]. Then it downloads all of the objects from the
+remote repository, and checks out the default branch.
+
+[^clone-repo-name]: It comes with a heuristic to determine what that is, but
+    you can think of it as the last piece of the URL, minus a trailing `.git`
+    or `/.git` if present.
+
+Now that you know a bunch of new terms from the first part of this lecture, you
+can digest the man page:
+
+> Clones a repository into a newly created directory, creates remote-tracking
+> branches for each branch in the cloned repository (visible using `git branch
+> --remotes`), and creates and checks out an initial branch that is forked from
+> the cloned repository's currently active branch.
+>
+> After the clone, a plain `git fetch` without arguments will update all the
+> remote-tracking branches, and a `git pull` without arguments will in addition
+> merge the remote `master` branch into the current `master` branch, if any
+> [...].
 
 ## Lecture 5
 
@@ -2245,11 +2623,18 @@ TODO: Single "upstream" copy of the repo that's the source of truth.
 Maintainers merge changes to it and many "downstreams" maintain changes based
 on it.
 
+TODO: Add a section about incorporating main branch changes into feature
+branches and all associated problems. Tom covers it a bit earlier in the VCS
+notes but it would be good to elaborate here.
+
 ### Merge/pull requests and patches
 
 TODO: Git has no built-in way to propose a change. So lots of solutions for
 proposing and reviewing changes before they're merged upstream have emerged.
 Talk about mailing lists, GitHub model, Phabricator model.
+
+TODO: mention https://github.com/vim/vim/pull/8859 since that came up during
+ISDT notes
 
 ### Integrating changes: merging vs squashing vs rebasing
 
