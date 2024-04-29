@@ -2587,7 +2587,8 @@ repository[^clone-repo-name]. Then it downloads all of the objects from the
 remote repository, and checks out the default branch.
 
 [^clone-repo-name]: It comes with a heuristic to determine what that is, but
-    you can think of it as the last piece of the URL, minus a trailing `.git` or `/.git` if present.
+    you can think of it as the last piece of the URL, minus a trailing `.git`
+    or `/.git` if present.
 
 Now that you know a bunch of new terms from the first part of this lecture, you
 can digest the man page:
