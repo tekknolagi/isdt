@@ -2189,7 +2189,8 @@ doesn't point anything to newly-created commits. This state is called *detached
 `HEAD`*, and it's very dangerous: if you ever navigate away from a commit you
 make in detached `HEAD`, you may never be able to find it again! Even if you do
 write down its hash somewhere, commits that aren't referenced by a branch or tag
-can get deleted when a repository is cloned or "garbage collected" (`git gc`).
+can get deleted when a repository is cloned or "garbage collected" during normal
+Git operation.
 
 TODO: Examples of what branches might be used for. Classify into long-lived
 branches and development/feature branches.
