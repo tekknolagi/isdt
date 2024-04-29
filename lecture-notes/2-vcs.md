@@ -2310,8 +2310,8 @@ and in the output of `git remote -v`.
 > gives nice namespacing (same for the other forges).
 
 So you have a remote now. You can tell Git to write a local ref (in this case,
-the `main` branch) to the remote (in this case, `origin`) by using the `push`
-subcommand:
+the `main` branch and the commits it points to) to the remote (in this case,
+`origin`) by using the `push` subcommand:
 
 ```console?prompt=$
 $ git push origin main
@@ -2446,19 +2446,30 @@ case and is illustrated by the below diagram:
 It's not the *only* situation we could be in, though. We could also have a
 situation where the remote tracking branch has a new commit **and** the local
 branch has a *different* new commit. In that case, Git will note that the
-branches have "diverged" and will not let you push to the remote branch:
+branches have "diverged"[^needs-all-info].
 
-```console?prompt=$
-$ git push
-To github.com:tekknolagi/isdt.git
- ! [rejected]        mb-vcs-4 -> mb-vcs-4 (non-fast-forward)
-error: failed to push some refs to 'github.com:tekknolagi/isdt.git'
-hint: Updates were rejected because the tip of your current branch is behind
-hint: its remote counterpart. Integrate the remote changes (e.g.
-hint: 'git pull ...') before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-$
-```
+[^needs-all-info]: If you have fetched all the new commits from the remote, Git
+    may be able to let you know about this in the output of `git status`; it
+    has the information available locally. But sometimes you might not have
+    fetched, and might find this out when you tried to `git push`. In this
+    case, it is the Git software *on the remote* that is preventing you from
+    pushing to the remote branch:
+
+    ```console?prompt=$
+    $ git push
+    To github.com:tekknolagi/isdt.git
+     ! [rejected]        mb-vcs-4 -> mb-vcs-4 (non-fast-forward)
+    error: failed to push some refs to 'github.com:tekknolagi/isdt.git'
+    hint: Updates were rejected because the tip of your current branch is behind
+    hint: its remote counterpart. Integrate the remote changes (e.g.
+    hint: 'git pull ...') before pushing again.
+    hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+    $
+    ```
+
+    That is, unless your remote is a local file-based remote or something, in
+    which case it is still your local Git. But you should still think of it as
+    the remote Git.
 
 Now, divergence only means that one ref is not strictly behind or in front of
 the other; it does not imply anything about the commit contents or whether the
