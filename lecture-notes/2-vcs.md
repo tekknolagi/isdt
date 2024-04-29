@@ -2609,6 +2609,10 @@ TODO: Single "upstream" copy of the repo that's the source of truth.
 Maintainers merge changes to it and many "downstreams" maintain changes based
 on it.
 
+TODO: Add a section about incorporating main branch changes into feature
+branches and all associated problems. Tom covers it a bit earlier in the VCS
+notes but it would be good to elaborate here.
+
 ### Merge/pull requests and patches
 
 TODO: Git has no built-in way to propose a change. So lots of solutions for
