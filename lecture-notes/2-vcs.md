@@ -2508,9 +2508,8 @@ even more commits to the remote. In that case, keep fetching and rebasing.
 #### Merge
 
 It's also possible to use `git merge` to reconcile local and remote changes.
-Like rebase, merge also comes with ability to fast-forward, but that does not
-happen automatically; it must be requested with `git merge --ff` or
-`--ff-only`.
+Like rebase, merge also comes with ability to fast-forward, and this will
+happen automatically unless disabled.
 
 We'll talk about `--ff-only` first because it's the most similar to what you
 have seen so far. If you run `git merge --ff-only origin/branch-name`, the
@@ -2526,7 +2525,7 @@ and otherwise fall back to creating a merge commit.
 
 #### Pull
 
-Now, we've talked about running `git fetch` and then either `git rebase` or
+We've talked about running `git fetch` and then either `git rebase` or
 `git merge` to reconcile differences between local and remote commits. Running
 two commands each time can be cumbersome, so Git provides a shortcut. We
 mention the shortcut last for two reasons:
@@ -2549,13 +2548,14 @@ The command is `git pull`. Now, directly from the man page:
 > either `git rebase` or `git merge` to reconcile diverging branches.
 
 Now that you have both learned about remote tracking branches and refreshed
-your memory about rebase/merge, this may sound like absolutely no big deal. Of
+your memory about rebase/merge, this may make perfect sense. Of
 course that's what it does, right? Why would it do anything else?
 
-Unfortunately, most people who start off with Git start with a
-`commit`+`push`+`pull` workflow and don't understand why things break when they
-do, or don't understand why there are these funky merge commits sometimes. Now
-you know.
+Unfortunately, many people learn `pull` (and `push`) only as a black box that
+magically synchronizes a local branch to a remote one (or vice versa). Since
+much of the commands' behavior can only be explained by knowing the separate
+steps they take, those people risk an unpleasant surprise in all but the most
+simple branch states. Now you know, and hopefully can avoid future confusion.
 
 ### `git clone` for making a local copy of a remote repo
 
