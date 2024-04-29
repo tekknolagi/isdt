@@ -2553,6 +2553,8 @@ Sometimes, the project already exists and you want to contribute. To work
 locally, you will need to download the repository using `git clone`:
 
 ```console?prompt=$
+$ ls -dl isdt
+ls: cannot access 'isdt': No such file or directory
 $ git clone git@github.com:tekknolagi/isdt.git
 Cloning into 'isdt'...
 remote: Enumerating objects: 2103, done.
@@ -2561,6 +2563,8 @@ remote: Compressing objects: 100% (274/274), done.
 remote: Total 2103 (delta 685), reused 818 (delta 627), pack-reused 1196
 Receiving objects: 100% (2103/2103), 4.08 MiB | 20.98 MiB/s, done.
 Resolving deltas: 100% (1334/1334), done.
+$ ls -dl isdt
+drwxrwxr-x 13 max max 4096 Apr 29 18:47 isdt
 $
 ```
 
