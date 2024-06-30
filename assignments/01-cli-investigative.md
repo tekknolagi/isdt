@@ -88,8 +88,8 @@ There was a murder last night at your old university colleague David's dinner
 party! A guest found a body in the living room, and nobody knows who did it.
 You, the premiere private investigator in Medford, MA, have been called in to
 help. Explore David's magnificent mansion (represented conveniently by a
-directory tree in `/comp/50ISDT/cli1-murder-mystery/`) to see what you can
-find! Start your journey in the *entryway*.
+directory tree in `/comp/50ISDT/mystery/`) to see what you can find! Start your
+journey in the *entryway*.
 
 Please provide the name of the murderer (and an outline of your investigation)
 as your answer.
