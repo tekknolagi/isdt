@@ -95,6 +95,9 @@ Please provide the outline of your investigation (we hope this is reasonably
 detailed and includes the commands you ran) and the name of the murderer as
 your answer.
 
+If you don't figure out the murderer, please provide your investigation details
+anyway for partial credit.
+
 ## Submitting your work
 
 Write your answers in a text file, `answers.txt`. It should be split into two
