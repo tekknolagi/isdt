@@ -22,6 +22,17 @@ Since we're going to be using the command line frequently in this course,
 developing muscle memory is going to be important. Building an intuition for
 what commands to use when will come in handy.
 
+To log in:
+
+```console?prompt=$,1857771c4d3278:~$
+$ ssh YOUR_USERNAME@isdt.fly.dev
+1857771c4d3278:~$
+```
+
+> NOTE: If you get asked for a password or get some kind of authentication
+> error, you have not correctly set up your public key authentication. Make a
+> post on Piazza if you need help.
+
 To get started, you're going to poke around the homework server using the tools
 we discussed in lecture. You'll get some hands-on experience with `pwd`, `cd`,
 `ls`, `cat`, `tree`, and `man`. Please answer the following questions and "show
