@@ -91,8 +91,9 @@ help. Explore David's magnificent mansion (represented conveniently by a
 directory tree in `/comp/50ISDT/mystery/`) to see what you can find! Start your
 journey in the *entryway*.
 
-Please provide the name of the murderer (and an outline of your investigation)
-as your answer.
+Please provide the outline of your investigation (we hope this is reasonably
+detailed and includes the commands you ran) and the name of the murderer as
+your answer.
 
 ## Submitting your work
 
