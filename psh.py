@@ -14,16 +14,12 @@ import sys
 # TODO(max): Read shell/environment variables
 
 
-class FakeProcess:
-    def __init__(self, output: bytes):
-        self.fd = fd = os.memfd_create("tmp")
-        self.stdout = stdout = open(fd, "w+b")
-        stdout.write(output)
-        stdout.seek(0)
-
-    def close(self):
-        self.stdout.close()
-        os.close(self.fd)
+def memfd(output: bytes):
+    fd = os.memfd_create("tmp")
+    result = open(fd, "w+b")
+    result.write(output)
+    result.seek(0)
+    return result
 
 
 def main():
@@ -49,8 +45,7 @@ def main():
             #     print(os.getcwd())
             #     continue
             if tokens[0] == "banana":
-                result = FakeProcess(b"Peel!\n")
-                stdin = result.stdout
+                stdin = memfd(b"Peel!\n")
                 continue
             if tokens == ["exit"]:
                 print("Goodbye.")
@@ -61,7 +56,7 @@ def main():
             sys.stderr.write(result.stderr.read().decode("utf-8"))
             stdin = result.stdout
         # Write the last command's stdout to shell stdout
-        sys.stdout.write(result.stdout.read().decode("utf-8"))
+        sys.stdout.write(stdin.read().decode("utf-8"))
 
 
 if "__main__" == __name__:
