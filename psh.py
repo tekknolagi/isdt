@@ -2,8 +2,6 @@
 
 """psh: a simple shell written in Python"""
 
-import io
-import mmap
 import os
 import subprocess
 import shlex
@@ -14,6 +12,18 @@ import sys
 # TODO(max): Define shell variables and add them to environment variables
 # TODO(max): Pass env to Popen
 # TODO(max): Read shell/environment variables
+
+
+class FakeProcess:
+    def __init__(self, output: bytes):
+        self.fd = fd = os.memfd_create("tmp")
+        self.stdout = stdout = open(fd, "w+b")
+        stdout.write(output)
+        stdout.seek(0)
+
+    def close(self):
+        self.stdout.close()
+        os.close(self.fd)
 
 
 def main():
@@ -39,7 +49,8 @@ def main():
             #     print(os.getcwd())
             #     continue
             if tokens[0] == "banana":
-                print("Peel!")
+                result = FakeProcess(b"Peel!\n")
+                stdin = result.stdout
                 continue
             if tokens == ["exit"]:
                 print("Goodbye.")
@@ -49,6 +60,7 @@ def main():
             )
             sys.stderr.write(result.stderr.read().decode("utf-8"))
             stdin = result.stdout
+        # Write the last command's stdout to shell stdout
         sys.stdout.write(result.stdout.read().decode("utf-8"))
 
 
