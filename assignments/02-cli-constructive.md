@@ -70,16 +70,16 @@ This means example runs might look like this:
 ```console?prompt=$
 $ ls
 build.sh  foo.c  foo.h  rng.c  rng.h
-$ ./build.sh 
+$ ./build.sh
 cc -c foo.c
 cc -c rng.c
 cc -o foo foo.o rng.o
-$ ./build.sh 
+$ ./build.sh
 $ touch rng.c
-$ ./build.sh 
+$ ./build.sh
 cc -c rng.c
 cc -o foo foo.o rng.o
-$ ./foo 
+$ ./foo
 hello, world! your randomly chosen number is 4
 $
 ```
@@ -302,7 +302,7 @@ file named `shim.c` and run myls with that library preloaded:
 $ clang -shared -fpic shim.c -o shim.so
 $ LD_PRELOAD="$(pwd)/shim.so" ./myls
 <...>
-$ 
+$
 ```
 
 Please note that the `$(pwd)/` is *essential*, as `LD_PRELOAD` does not allow
