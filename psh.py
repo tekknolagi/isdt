@@ -17,18 +17,15 @@ import sys
 
 
 def main():
-    toplevel_stdin = sys.stdin
-    toplevel_stdout = sys.stdout
-    toplevel_stderr = sys.stderr
     while True:
         try:
             inp = input("psh> ")
         except EOFError:
             inp = "exit"
         pipeline = inp.split("|")
-        stdin = toplevel_stdin
-        stdout = toplevel_stdout
-        stderr = toplevel_stderr
+        stdin = sys.stdin
+        stdout = sys.stdout
+        stderr = sys.stderr
         for idx, command in enumerate(pipeline):
             # TODO(max): Figure out how to do I/O pipes and stuff for built-in
             # commands.
@@ -50,9 +47,9 @@ def main():
             result = subprocess.Popen(
                 tokens, stdin=stdin, stdout=subprocess.PIPE, stderr=subprocess.PIPE
             )
-            toplevel_stderr.write(result.stderr.read().decode("utf-8"))
+            sys.stderr.write(result.stderr.read().decode("utf-8"))
             stdin = result.stdout
-        toplevel_stdout.write(result.stdout.read().decode("utf-8"))
+        sys.stdout.write(result.stdout.read().decode("utf-8"))
 
 
 if "__main__" == __name__:
