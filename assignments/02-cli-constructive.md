@@ -51,8 +51,9 @@ system. Later, though, you *will* write some C code and integrate it into your
 build system.
 
 Your job is to write a program in Bash or POSIX shell, `build.sh`, that
-compiles some C program. The minimal functional (but not acceptable to submit)
-solution looks something like this:
+compiles some C program (in particular, a specific mock program we provide).
+The minimal functional (but not acceptable to submit) solution looks something
+like this:
 
 ```sh
 #!/bin/sh
@@ -166,6 +167,31 @@ solution is 24 [SLOC](https://en.wikipedia.org/wiki/Source_lines_of_code) for
 the "build system" part and 6 SLOC for the project-specific component. Your
 solution may be longer or shorter; both are fine.
 
+### Instructions
+
+To start, do a recursive copy of the directory containing our sample files
+(`/comp/50ISDT/cli-constructive`) into your home directory. Change directories
+into that newly copied directory.
+
+Then, try compiling the program yourself manually using `cc`. You should be
+able to build using the instructions above and see the same output as above.
+Delete the `foo` binary.
+
+Then, start off with our (again, not acceptable to submit) "solution" above in
+a file named `build.sh`. Mark it executable with `chmod` and run it. Try
+running `foo` and see if it still runs.
+
+Now, incrementally add features to your build script. Compile each C source
+file to an object file and link separately. Learn how to get the last modified
+(m-time) of a file. Learn how to compare two m-times. Write a function that
+takes two files and returns true if the first file is newer than the second.
+Write a function that determines if a file should be re-built based on its
+dependencies' m-times. etc.
+
+Make sure that at the end of this process, your build script meets all the
+requirements listed above. If you get stuck, feel free to ask questions on
+Piazza. If you get really stuck, you can even move onto the next section before
+you finish this one.
 
 ## Using syscalls: write your own `ls`!
 Now that you have a tool that can be used to compile the course-provided sample
@@ -204,7 +230,9 @@ strict POSIX definition of "file" encompasses not only regular files but also
 directories, symlinks, devices, and every other thing that can go inside a
 directory. For this assignment, we are referring to the POSIX definition
 whenever we say "file." Your implementation of `myls.c` should consider
-directories, symlinks, and all other types of file when producing its output.
+directories, symlinks, and all other types of file when producing its output
+(this is simpler than it sounds; the "default" in the C functions you will call
+is to treat them all as files).
 
 Now, on to implementation notes. We suggest looking into a couple of different
 syscalls and their C wrappers as starting points.
@@ -268,7 +296,9 @@ compile `myls` by running `./build.sh` (and also follow all the other rebuild
 requirements listed above).
 
 ## Submitting your work
-Please submit your two files, `build.sh` and `myls.c`, on Gradescope.
+Please submit your two files, `build.sh` and `myls.c`, on Gradescope. Make sure
+that you have listed your references, as appropriate, in comments in each of
+the files.
 
 ## Just for fun...
 **At this point, you are done with the assignment. You need not read anything
