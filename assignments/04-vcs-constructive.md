@@ -2,6 +2,13 @@
 ---
 # Homework 4: VCS, Constructive
 
+## Before you start
+
+Please make a private post on Piazza with your GitHub username. If you do not
+already have an account there, please make one. You will not be able to submit
+your work until you do this (and then wait for the course staff to add you to
+the "classroom"). Please do this early.
+
 ## Tracking changes with Git: maintainer for a day
 
 You co-maintain a software project with your mustachioed friend Tommaso. You
