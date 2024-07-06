@@ -300,6 +300,9 @@ Please submit your two files, `build.sh` and `myls.c`, on Gradescope. Make sure
 that you have listed your references, as appropriate, in comments in each of
 the files.
 
+Don't worry about uploading the other files that `build.sh` needs such as
+`foo.c`. We will provide them in the grading environment.
+
 ## Just for fun...
 **At this point, you are done with the assignment. You need not read anything
 past this point if you don't want to.** However, if you're looking for a
