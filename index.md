@@ -49,7 +49,7 @@ tools for ensuring that your software meets quality standards.
 **Instructor:** [Max Bernstein](https://bernsteinbear.com)  
 **Teaching Assistants:** TBD
 
-**Office Hours:** TBD; extra hours to be announced on Piazza  
+**Office Hours:** immediately after lecture; extra hours to be announced on Piazza  
 **Discussion board:** Piazza (access via Canvas)
 
 **Prerequisites:** An introductory computer science class and the willingness
@@ -61,7 +61,7 @@ to learn a little C
 **Assignments:** 8 assignments (2 per module), to be submitted on Gradescope  
 **Exams:** none  
 
-## Schedule (to be updated!)
+## Schedule
 
 *Note:* We will publish notes or slides for each lecture after it happens, but
 the lecture recordings will not be available to students. If you require access
@@ -182,11 +182,15 @@ version of the project you submit.
 
 ### Late policy
 
-You have two late tokens that you can use during the semester. Using one late
+Please don't submit late homework. The summer term is too compressed. If you
+miss the deadline but would still like to submit it, it will be
+opportunistically graded on a case-by-case basis.
+
+~~You have two late tokens that you can use during the semester. Using one late
 token allows you to submit one project up to 24 hours late with no penalty. You
 may also use your two late tokens together to submit one project up to 48 hours
 late with no penalty. Contact a TA if you need to check the status of your late
-tokens.
+tokens.~~
 
 ## Contributors
 
