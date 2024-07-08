@@ -2,6 +2,7 @@ title: Introduction to Software Development Tooling
 description: "Learn the command line, version control, build systems, and correctness in NEU's CS 4973: ISDT."
 theme: jekyll-theme-primer
 google_analytics: UA-26440738-1
+repository: tekknolagi/isdt
 url: 'https://bernsteinbear.com'
 baseurl: /isdt
 permalink: pretty
