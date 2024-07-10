@@ -117,9 +117,9 @@ like a checklist.
 You MUST:
 
 * Be able to build `foo` by running `./build.sh`
-* Only recompile a target if at least one of its dependencies has been modified
+* Only recompile a target if at least one of its (transitive) dependencies has been modified
   more recently than it (see note about m-time below)
-* Write your program so that it runs under `sh` or `bash`
+* Write your program so that it runs under either `sh` or `bash`
 * Write your program entirely in one file
 * Include a shebang line at the beginning of your script for either `sh` or
   `bash`
