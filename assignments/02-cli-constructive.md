@@ -261,7 +261,8 @@ program directly using syscalls. Specifically, you'll probably want to use
 These functions can return a whole host of different errors in different
 conditions. If any of them returns a value that signals an error (check the man
 page for each one), you should print a helpful error message and exit
-immediately with a nonzero exit code[^perror].
+immediately with a nonzero exit code[^perror]. You need not write a loop to
+handle `EINTR`; treat that as a fatal error like the others.
 
 [^perror]: We won't require you to use it, but you may find the `perror`
     function (`man 3 perror`) helpful.
