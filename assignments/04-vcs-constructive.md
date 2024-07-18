@@ -34,7 +34,8 @@ sure you have `clang-format` installed if so).
    one-by-one or all at once, but make sure you've committed them by the time
    you submit!
    The point of this is to separate your answers from the rest of the messy
-   commit history you'll be creating.
+   commit history you'll be creating. Make sure to switch back to the `main`
+   branch before doing other work. `answers` is *just* for `answers.txt`.
 1. A user named Gianna opened a GitHub issue pointing out that the project has
    no LICENSE file, meaning she doesn't know if she's allowed to use the
    software in the way she wants. You did some research and found that the [MIT
