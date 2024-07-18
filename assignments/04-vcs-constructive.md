@@ -19,7 +19,7 @@ instructions on how to submit your answers to such questions.
 Expect to make good use of `git reflog` in this assignment as you make errors.
 
 Start by cloning the initial repository from
-`/comp/50ISDT/vcs2-constructive.git` (you may run into a warning about it not
+`/comp/50ISDT/vcs2-constructive` (you may run into a warning about it not
 being a "safe directory"; run the suggested command) . We suggest you work on
 the homework server, but you are also free to work on a personal computer (make
 sure you have `clang-format` installed if so).
