@@ -27,7 +27,8 @@ sure you have `clang-format` installed if so).
 1. A number of the following questions ask you to tell us what commands you
    used. Put your answers in the `answers.txt` file in the `answers` branch.
    **Create a local orphan `answers` branch by running `git
-   checkout --orphan answers` and then `git rm -rf .`** Make an empty
+   checkout --orphan answers` and then `git rm -rf .` (to prevent Git from
+   committing the files from the other branch to `answers`)** Make an empty
    `answers.txt` and commit it to the `answers` branch. As you answer our
    questions, make commits to that branch. You may commit your answers either
    one-by-one or all at once, but make sure you've committed them by the time
