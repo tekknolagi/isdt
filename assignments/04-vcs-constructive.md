@@ -2,13 +2,6 @@
 ---
 # Homework 4: VCS, Constructive
 
-## Before you start
-
-Please make a private post on Piazza with your GitHub username. If you do not
-already have an account there, please make one. You will not be able to submit
-your work until you do this (and then wait for the course staff to add you to
-the "classroom"). Please do this early.
-
 ## Tracking changes with Git: maintainer for a day
 
 You co-maintain a software project with your mustachioed friend Tommaso. You
@@ -26,9 +19,10 @@ instructions on how to submit your answers to such questions.
 Expect to make good use of `git reflog` in this assignment as you make errors.
 
 Start by cloning the initial repository from
-`/comp/50ISDT/vcs2-constructive.git`. We suggest you work on the homework
-server, but you are also free to work on a personal computer (make sure you
-have `clang-format` installed if so).
+`/comp/50ISDT/vcs2-constructive.git` (you may run into a warning about it not
+being a "safe directory"; run the suggested command) . We suggest you work on
+the homework server, but you are also free to work on a personal computer (make
+sure you have `clang-format` installed if so).
 
 1. A number of the following questions ask you to tell us what commands you
    used. Put your answers in the `answers.txt` file in the `answers` branch.
@@ -71,9 +65,10 @@ have `clang-format` installed if so).
    `add-new-operators` branch. Unlike Dr.  Garbarini, his commits are
    masterfully documented, and you want to add them to `main` as is. But you
    notice that the commit titled "Support modulo operator" has some formatting
-   errors. You can run `clang-format -i` to automatically fix those errors, but
-   you want to include the fix as part of the original commit instead of
-   putting it in a separate one.
+   errors. You can run `clang-format -i` to automatically fix those errors
+   (if you don't have this installed, do it manually), but you want to include
+   the fix as part of the original commit instead of putting it in a separate
+   one.
    1. **Change the `add-new-operators` branch to point to an updated version of
       the same set of commits (with matching commit messages, titles, and
       diffs) with fixed formatting in the problematic change. Tell us how you
@@ -107,14 +102,18 @@ have `clang-format` installed if so).
 
 ## Submitting your work
 
-To submit, first join our [GitHub Classroom
-instance](https://classroom.github.com/a/GJz9jQnu). You will need a GitHub
-account to do this. Once you've joined, you should be able to find yourself on
-the class roster, after which you will see a repository belonging to you for
-the "vcs-constructive" assignment. Add this repository as a remote to the local
-repository where you've been working, then push your `main` and `answers`
-branches to that remote. If you do this correctly, you'll see both branches
-shown in GitHub's web UI.
+Make sure your Git repository is somewhere in your home directory on the
+homework server. Make sure it has both a `main` and an `answers` branch.
+
+Make a private post on Piazza telling the course staff what the absolute path
+to this directory is. We will clone from this location.
+
+Do not modify this folder after the due date has passed or it will be
+considered late.
+
+Do not attempt to read other students' home directories. The course staff
+monitors activity on the homework server and academic integrity violations will
+be rewarded with no points and a report to the dean.
 
 ## Notes on being an open source maintainer
 
