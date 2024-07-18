@@ -26,12 +26,14 @@ sure you have `clang-format` installed if so).
 
 1. A number of the following questions ask you to tell us what commands you
    used. Put your answers in the `answers.txt` file in the `answers` branch.
-   **Create a local `answers` branch based on the initial one by running `git
-   checkout -b answers origin/answers`.** (Since this is such a common
-   operation, you can also use the shorthand `git checkout answers` to do the
-   same thing.) As you answer our questions, make commits to that branch. You
-   may commit your answers either one-by-one or all at once, but make sure
-   you've committed them by the time you submit!
+   **Create a local orphan `answers` branch by running `git
+   checkout --orphan answers` and then `git rm -rf .`** Make an empty
+   `answers.txt` and commit it to the `answers` branch. As you answer our
+   questions, make commits to that branch. You may commit your answers either
+   one-by-one or all at once, but make sure you've committed them by the time
+   you submit!
+   The point of this is to separate your answers from the rest of the messy
+   commit history you'll be creating.
 1. A user named Gianna opened a GitHub issue pointing out that the project has
    no LICENSE file, meaning she doesn't know if she's allowed to use the
    software in the way she wants. You did some research and found that the [MIT
