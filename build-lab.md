@@ -57,7 +57,8 @@ manually-created `Target` objects to make sense.
 ## Topological sort
 
 Start by writing a function `execute` that, given a target with no
-dependencies, adds the target's name to the `output` list.
+dependencies, prints the recipe and adds the target's name to the `output`
+list.
 
 ```python
 def execute(target: Target, output: list[str]): ...
@@ -66,9 +67,9 @@ def execute(target: Target, output: list[str]): ...
 Then, add another case: if the target has dependencies, `execute` them first.
 
 Now you have a problem: if targets `A` and `B` both depend on `C`, it will
-execute (print) the recipe for `C` twice. To fix this, add a `set` parameter
-called `visited` to `execute`. Before executing a target, check if its name is
-in the visited set.
+execute (print recipe and append to the output) the recipe for `C` twice. To
+fix this, add a `set` parameter called `visited` to `execute`. Before executing
+a target, check if its name is in the visited set.
 
 ```python
 def execute(target: Target, output: list[str], visited: set[str]): ...
