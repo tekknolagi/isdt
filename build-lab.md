@@ -34,7 +34,7 @@ method should return a list of the target's dependencies.
 Now, manually create a small graph of targets and dependencies. Try modeling
 the C example from `build.sh`:
 
-```
+```make
 foo: foo.o rng.o
 	cc -o foo foo.o rng.o
 
