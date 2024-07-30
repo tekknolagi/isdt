@@ -90,3 +90,47 @@ more about this next module.
 
 If you have a cycle in your graph, your topological sort will not work. How
 might you detect cycles?
+
+## Reading a 'real' Makefile
+
+Now let's try running your topological sort on a real Makefile.
+
+If you want to write your own parser, go for it. If you want to use this nasty
+hacked-up thing that accepts a very limited subset of Make syntax, you can use
+this too.
+
+```python
+name_to_target = {}
+
+first_target = None
+
+with open("Makefile", "r") as f:
+    for line in f:
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        target, dependencies = line.split(":")
+        if not first_target:
+            first_target = target
+        target = target.strip()
+        dependencies = dependencies.split()
+        recipe = next(f).strip()
+        for dependency in dependencies:
+            if dependency not in name_to_target:
+                name_to_target[dependency] = Target(dependency)
+        dependencies = [name_to_target[dependency] for dependency in dependencies]
+        if target not in name_to_target:
+            name_to_target[target] = Target(target, recipe, dependencies)
+        else:
+            name_to_target[target]._dependencies = dependencies
+            name_to_target[target]._recipe = recipe
+
+first_target = name_to_target[first_target]
+
+output = []
+execute(first_target, output)
+print(output)
+```
+
+It assumes every target has a recipe, and that the recipe is one line and on
+the next line.
