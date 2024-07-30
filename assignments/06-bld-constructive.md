@@ -10,12 +10,7 @@ The project in question, called *jvm*, has gotten to the point where manually
 rebuilding every file by hand is frustrating and error-prone. To make its
 developers' lives easier, you'll write a Makefile to build it automatically.
 
-Start by [accepting the assignment](https://classroom.github.com/a/ippLUPPr) on
-GitHub Classroom. Then clone your own personal copy of the project, which we've
-pre-populated for you using GitHub Classroom, from
-`git@github.com:cs50isdt/hw6-{yourgithubusername}`. (The URL should closely
-resemble that of your VCS Constructive repository.) This is also where you'll
-push your solution after completing the assignment.
+Start by cloning the repository from `https://github.com/cs50isdt/jvm`.
 
 ### Step 1: determine the build graph
 
@@ -158,8 +153,7 @@ be phony, as it needs to run even if a file called `test` exists on disk.
 
 ## Submitting your work
 
-To submit, commit your changes to the `main` branch of your repository and push
-that branch back to GitHub (see the cloning instructions). If you do this
-correctly, you'll see your changes in the GitHub UI. This is a good opportunity
-to exercise your Git skills from last module---you're free to make your changes
-using as many commits as you want!
+To submit, submit your Git repository to Gradescope.
+
+This is a good opportunity to exercise your Git skills from last
+module---you're free to make your changes using as many commits as you want!
