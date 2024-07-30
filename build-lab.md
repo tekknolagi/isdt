@@ -75,6 +75,11 @@ a target, check if its name is in the visited set.
 def execute(target: Target, output: list[str], visited: set[str]): ...
 ```
 
+Pause and think:
+
+* How many valid orders are there for `myls`?
+* ...for `foo`?
+
 Check that this works by writing some tests...
 
 ## Tests
