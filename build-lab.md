@@ -22,7 +22,7 @@ the syntax for the interface sketch pseudocode):
 class Target:
     def name(self) -> str: ...
     def recipe(self) -> str: ...
-    def dependencies(self) -> List[Target]: ...
+    def dependencies(self) -> list[Target]: ...
 ```
 
 The `name` method should return the name of the target. The `recipe` method
@@ -57,14 +57,24 @@ manually-created `Target` objects to make sense.
 ## Topological sort
 
 Start by writing a function `execute` that, given a target with no
-dependencies, prints the target's recipe.
+dependencies, adds the target's name to the `output` list.
 
-Then, add another case: if the target has dependencies, execute them first.
+```python
+def execute(target: Target, output: list[str]): ...
+```
+
+Then, add another case: if the target has dependencies, `execute` them first.
 
 Now you have a problem: if targets `A` and `B` both depend on `C`, it will
 execute (print) the recipe for `C` twice. To fix this, add a `set` parameter
 called `visited` to `execute`. Before executing a target, check if its name is
 in the visited set.
+
+```python
+def execute(target: Target, output: list[str], visited: set[str]): ...
+```
+
+Check that this works by writing some tests...
 
 ## Tests
 
