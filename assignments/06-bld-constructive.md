@@ -10,7 +10,7 @@ The project in question, called *jvm*, has gotten to the point where manually
 rebuilding every file by hand is frustrating and error-prone. To make its
 developers' lives easier, you'll write a Makefile to build it automatically.
 
-Start by cloning the repository from `https://github.com/cs50isdt/jvm`.
+Start by cloning the repository from [https://github.com/cs50isdt/jvm](https://github.com/cs50isdt/jvm).
 
 ### Step 1: determine the build graph
 
