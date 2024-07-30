@@ -102,6 +102,7 @@ material = iter(
         ],
         [
             lecture("BLD 5: The great wide world", "lecture-notes/3-bld-slides-l5.pdf"),
+            link("Graph lab", "build-lab/"),
         ],
         [
             lecture(
