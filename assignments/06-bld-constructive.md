@@ -12,6 +12,9 @@ developers' lives easier, you'll write a Makefile to build it automatically.
 
 Start by cloning the repository from [https://github.com/cs50isdt/jvm](https://github.com/cs50isdt/jvm).
 
+This is a good opportunity to exercise your Git skills from last
+module---you're free to make your changes using as many commits as you want!
+
 ### Step 1: determine the build graph
 
 Before you write a Makefile to automate the build process, however, you need to
@@ -153,7 +156,4 @@ be phony, as it needs to run even if a file called `test` exists on disk.
 
 ## Submitting your work
 
-To submit, submit your Git repository to Gradescope.
-
-This is a good opportunity to exercise your Git skills from last
-module---you're free to make your changes using as many commits as you want!
+To submit, submit only your `Makefile` to Gradescope.
