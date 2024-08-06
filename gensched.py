@@ -139,13 +139,13 @@ material = iter(
                 "lecture-notes/4-cor/#lecture-4",
                 "lecture-notes/4-cor-slides-l4.pdf",
             ),
-            "Homework 7 due; "
-            + link("Homework 8 out", "assignments/08-cor-constructive/"),
+            link("Homework 8 out", "assignments/08-cor-constructive/"),
         ],
         [
             lecture(
                 "COR 5: Continuous integration", "lecture-notes/4-cor-slides-l5.pdf"
             ),
+            "Homework 7 due; ",
         ],
         [
             lecture(
