@@ -163,7 +163,21 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Construct and initialize the buffer. Fill the screen with space (<code>' '</code>) characters. </p>
+
+<p></p>
+<p>Construct and initialize the buffer. Fill the screen with space (<code>' '</code>) characters. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width</td><td>width in columns </td></tr>
+    <tr><td class="paramname">height</td><td>height in rows </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>if width or height is negative </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="string-screen_8cpp_source.html#l00003">3</a> of file <a class="el" href="string-screen_8cpp_source.html">string-screen.cpp</a>.</p>
 
