@@ -66,7 +66,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a href="shape_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="shape_8h.html">shape.h</a>&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using</span> std::string;</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">using</span> std::vector;</div>
@@ -98,12 +98,20 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classShape.html#abeaee5bb2c72bc95a1480f3c115e3eaa">   31</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classShape.html#abeaee5bb2c72bc95a1480f3c115e3eaa">Shape::height</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> shape_.size(); }</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classShape.html#a5654971e365a74bf28727ce4a90a067b">   33</a></span>&#160;<span class="keywordtype">char</span> <a class="code" href="classShape.html#a5654971e365a74bf28727ce4a90a067b">Shape::charAt</a>(<span class="keywordtype">int</span> col, <span class="keywordtype">int</span> row)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  assert(col &gt;= 0 &amp;&amp; <span class="stringliteral">&quot;col must be nonnegative&quot;</span>);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  assert(col &lt; <a class="code" href="classShape.html#ab15928b3c279c4bbc16ff113b893c247">width</a>() &amp;&amp; <span class="stringliteral">&quot;col must be &lt; width&quot;</span>);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  assert(row &gt;= 0 &amp;&amp; <span class="stringliteral">&quot;row must be nonnegative&quot;</span>);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  assert(row &lt; <a class="code" href="classShape.html#abeaee5bb2c72bc95a1480f3c115e3eaa">height</a>() &amp;&amp; <span class="stringliteral">&quot;row must be &lt; height&quot;</span>);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordflow">return</span> shape_[row][col];</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keywordflow">if</span> (col &lt; 0) {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;col must be nonnegative&quot;</span>);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">if</span> (col &gt;= <a class="code" href="classShape.html#ab15928b3c279c4bbc16ff113b893c247">width</a>()) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;col must be &lt; width&quot;</span>);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordflow">if</span> (row &lt; 0) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;row must be nonnegative&quot;</span>);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> (row &gt;= <a class="code" href="classShape.html#abeaee5bb2c72bc95a1480f3c115e3eaa">height</a>()) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;row must be &lt; height&quot;</span>);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  }</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordflow">return</span> shape_[row][col];</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
 <div class="ttc" id="aclassShape_html_a43cc993f43790f341b03af7e9d5771b3"><div class="ttname"><a href="classShape.html#a43cc993f43790f341b03af7e9d5771b3">Shape::Shape</a></div><div class="ttdeci">Shape(std::vector&lt; std::string &gt; shape)</div><div class="ttdoc">Take in an array of lines and right-pad the shorter ones with ' ' to the width of the longest line.</div><div class="ttdef"><b>Definition:</b> <a href="shape_8cpp_source.html#l00009">shape.cpp:9</a></div></div>
 <div class="ttc" id="aclassShape_html_a5654971e365a74bf28727ce4a90a067b"><div class="ttname"><a href="classShape.html#a5654971e365a74bf28727ce4a90a067b">Shape::charAt</a></div><div class="ttdeci">char charAt(int col, int row) const</div><div class="ttdoc">Fetch the character at the given coordinate pair.</div><div class="ttdef"><b>Definition:</b> <a href="shape_8cpp_source.html#l00033">shape.cpp:33</a></div></div>
 <div class="ttc" id="aclassShape_html_ab15928b3c279c4bbc16ff113b893c247"><div class="ttname"><a href="classShape.html#ab15928b3c279c4bbc16ff113b893c247">Shape::width</a></div><div class="ttdeci">int width() const</div><div class="ttdef"><b>Definition:</b> <a href="shape_8cpp_source.html#l00029">shape.cpp:29</a></div></div>
