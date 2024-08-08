@@ -102,6 +102,24 @@ Step 1: Write tests, tests, and more tests</h2>
 <div class="line">  <span class="keywordtype">int</span> value = 5;</div>
 <div class="line">  EXPECT_EQ(5, value);</div>
 <div class="line">}</div>
+</div><!-- fragment --><p>and another one based on the <a class="el" href="classFish.html" title="Represents the position and velocity of a Shape on an infinite x-y grid.">Fish</a> class:</p>
+<div class="fragment"><div class="line">UTEST(FishTests, DrawWritesToScreen) {</div>
+<div class="line">  <a class="code" href="classShape.html">Shape</a> shape({<span class="stringliteral">&quot;&lt;&gt;&lt;&quot;</span>});</div>
+<div class="line">  <a class="code" href="classFish.html">Fish</a> fish(shape, 0, 0, 0, 0);</div>
+<div class="line">  <a class="code" href="classStringScreen.html">StringScreen</a> screen(5, 5);</div>
+<div class="line">  fish.draw(&amp;screen);</div>
+<div class="line">  std::string actual = screen.toString();</div>
+<div class="line">  EXPECT_STREQ(actual.c_str(), R<span class="stringliteral">&quot;(+-----+</span></div>
+<div class="line"><span class="stringliteral">|&lt;&gt;&lt;  |</span></div>
+<div class="line"><span class="stringliteral">|     |</span></div>
+<div class="line"><span class="stringliteral">|     |</span></div>
+<div class="line"><span class="stringliteral">|     |</span></div>
+<div class="line"><span class="stringliteral">|     |</span></div>
+<div class="line"><span class="stringliteral">+-----+)&quot;);</span></div>
+<div class="line"><span class="stringliteral">}</span></div>
+<div class="ttc" id="aclassFish_html"><div class="ttname"><a href="classFish.html">Fish</a></div><div class="ttdoc">Represents the position and velocity of a Shape on an infinite x-y grid.</div><div class="ttdef"><b>Definition:</b> <a href="fish_8h_source.html#l00009">fish.h:9</a></div></div>
+<div class="ttc" id="aclassShape_html"><div class="ttname"><a href="classShape.html">Shape</a></div><div class="ttdoc">Represents an ASCII-art drawing and its corresponding bounding box.</div><div class="ttdef"><b>Definition:</b> <a href="shape_8h_source.html#l00007">shape.h:7</a></div></div>
+<div class="ttc" id="aclassStringScreen_html"><div class="ttname"><a href="classStringScreen.html">StringScreen</a></div><div class="ttdoc">Serializable implementation of Screen using a 2D character buffer.</div><div class="ttdef"><b>Definition:</b> <a href="string-screen_8h_source.html#l00013">string-screen.h:13</a></div></div>
 </div><!-- fragment --><p>All the tests in a file should be part of the same <em>test case</em>, meaning the first argument to each UTEST macro (<code>SampleTestSuite</code>, in this example) should match. It's conventional to name the test case after the class being tested, for example <code>TankTests</code> or <code>FishTests</code>.</p>
 <p>You should expect to write many tests for each class. Although the code is relatively simple, there's still a lot that could go wrong, and we'll be running your unit tests to make sure they catch a variety of issues (see next section). The files you provide will likely contain several hundred lines of code in total, although some of this will be <code>UTEST()</code> macros and setup code that's common to multiple tests.</p>
 <h1><a class="anchor" id="autotoc_md6"></a>
