@@ -93,7 +93,10 @@ Step 0: Play with the fish</h2>
 Step 1: Write tests, tests, and more tests</h2>
 <ol type="1">
 <li>Look at the documentation we have provided for each class, either on the Doxygen-generated website or in the header files. Think about some tests that you would write. Test the behavior our documentation specifies, as well as any implicit behavior that you can infer from the API's structure.</li>
-<li>Now write those tests. Put tests for a given class inside the corresponding <code>-test.cpp</code> file. You might find <a href="https://github.com/sheredom/utest.h">the documentation for utest</a> and the example test below helpful. <b>Note that you only need to write unit tests for this assignment.</b> You need not write any integration tests, as UTest is not very well suited to writing integration tests.</li>
+<li>Now write those tests. Put tests for a given class inside the corresponding <code>-test.cpp</code> file. You might find <a href="https://github.com/sheredom/utest.h">the documentation for utest</a> and the example test below helpful. <b>Note that you only need to write unit tests for this assignment.</b> You need not write any integration tests, as UTest is not very well suited to writing integration tests.<ul>
+<li>Remember to test the smallest possible unit of code at a time. If you have to do some setup, though, that's okay.</li>
+</ul>
+</li>
 <li>Get in a defensive mindset. Think about what else you might test to catch logical corner cases or programming errors. Write those tests too. Tom and Max are devious and will break the code in unexpected ways.</li>
 <li><b>Now look at the <code>.cpp</code> files.</b> What corner cases did you miss? Reflect on that. Write some more unit tests.</li>
 </ol>
