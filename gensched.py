@@ -171,7 +171,7 @@ holidays = {
     datetime.date(2024, 7, 4),  # Independence day
 }
 start_date = datetime.date(2024, 7, 1)
-end_date = datetime.date(2024, 8, 20)
+end_date = datetime.date(2024, 8, 15)
 meeting_days = ["Monday", "Tuesday", "Wednesday", "Thursday"]
 
 
