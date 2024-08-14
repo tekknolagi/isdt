@@ -84,7 +84,7 @@ Steps</h1>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Step 0: Play with the fish</h2>
 <ol type="1">
-<li>Copy (<code>cp -r</code>) our fishtank implementation from <code>/comp/50ISDT/cor2-fishtank</code>. <b>Do not look at the <code>.cpp</code> files yet, except the ones ending in <code>-test</code></b>. Looking at the header and Markdown files is fine. You will look at the other source files later.</li>
+<li>Clone our fishtank implementation from <a href="https://github.com/cs50isdt/cor2-fishtank-base/">github.com/cs50isdt/cor2-fishtank-base/</a>. <b>Do not look at the <code>.cpp</code> files yet</b>. Looking at the header and Markdown files is fine. You will look at the other source files later.</li>
 <li>We have provided empty test files for you (<code>fish-test.cpp</code>, etc) that you will later fill in. <a class="el" href="build.html">Build the project</a>. Test that the project builds and runs as-is (<code>./build/fishtank-tests</code>). Zero tests should run.</li>
 <li>To demonstrate how the API might be used, we've written a client for it, which you can find in <code>main.cpp</code>. This client creates a tank with some fish, rocks, and seaweed, then calls the <a class="el" href="classTank.html#a6c8b0530f8e8e7d982c78aae1495558c">Tank::tick</a>, and <a class="el" href="classTank.html#a1992ee839eb20370adaafc1350a8f785">Tank::draw</a> functions to move the fish and draw them to the screen, respectively. The latter is accomplished with the help of a CursesScreen object, which is <em>not</em> part of the API you need to test, since it's specific to our demo app.</li>
 </ol>
