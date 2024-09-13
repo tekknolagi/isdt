@@ -2138,8 +2138,59 @@ CONTENTS: More complex workflows
 
 ### Branches
 
-TODO: "What is a branch?" paragraph. A convenient name you can use to reference
-a specific variant of your code or set of changes you're working on.
+Although we've mentioned them several times, we've yet to explain what
+*branches* actually are. Conceptually, a branch is one specific thread of
+development---in other words, a specific commit history---within a Git
+repository. Newly-created repositories have just a single branch, conventionally
+named either `main` or `master` (which, save for being automatically created, is
+identical to any other branch). So far we have only added commits to this
+branch.
+
+By creating other branches, you can keep track of more than just one history.
+One branch, for example, might be an old version of the project, lacking new
+commits from `main`. Another might contain everything from `main` plus
+additional commits pertaining to an in-development feature. And yet another
+might have no commits in common with `main` and hold a completely separate
+codebase (although this is not common---typically branches within a single
+repository share at least some commits).
+
+Every branch has a name, which is by convention lowercase with hyphens (`-`)
+between words. Depending on where you use it, a branch's name may refer either
+to the branch itself or to the latest commit made to that branch---for example,
+if you pass a branch name to a command that expects a revision parameter, like
+`git show`:
+
+```console?prompt=$
+$ git show -s main
+commit 0fb52357b6d1c76bda2d33890e1c8d2cd36ec792 (HEAD -> main)
+Author: Thomas Hebb <tommyhebb@gmail.com>
+Date:   Wed Feb 28 22:35:12 2024 -0500
+
+    Revert "Support the modulo operator"
+
+    This reverts commit 2d6603026105b168c126d2ee22c6f4dba8d48437.
+$ 
+```
+
+Note the annotation, `(HEAD -> main)`, that Git added to this commit. It tells
+us two things: firstly, that this commit is the most recent commit in the `main`
+branch; and secondly, that the working tree is currently based on `main`,
+because that's where `HEAD` points.
+
+There is a difference between `HEAD` pointing to a branch and `HEAD` pointing
+directly to the latest commit of that branch. In the former case (typically the
+preferable one), we say that the branch itself is "checked out". When a branch
+is checked out, `git commit` will automatically point that branch to the commit
+it creates: in other words, it will add the commit to the branch.
+
+But when no branch is checked out and `HEAD` points directly to a commit (even
+if there exists some branch that also points to that commit), `git commit`
+doesn't point anything to newly-created commits. This state is called *detached
+`HEAD`*, and it's very dangerous: if you ever navigate away from a commit you
+make in detached `HEAD`, you may never be able to find it again! Even if you do
+write down its hash somewhere, commits that aren't referenced by a branch or tag
+can get deleted when a repository is cloned or "garbage collected" during normal
+Git operation.
 
 TODO: Examples of what branches might be used for. Classify into long-lived
 branches and development/feature branches.
@@ -2167,12 +2218,10 @@ subdirectories (which are sometimes inferred for ease of use).
 
 TODO: `HEAD` as a special ref pointing to your current checkout.
 
-TODO: Talk about how either hashes or ref names can be used to refer to a
-commit. Hashes are immutable, while refs may change. Say that either method
-can be used in nearly every place you see us using one of them.
+TODO: Refs define what's "in" a repository, more or less. Mention `git gc`,
+dangers of committing while in detached HEAD.
 
-TODO: There are operators that let you "move around" from a ref. For example,
-`^` gets a ref's parent commit. Namedrop `man gitrevisions`.
+TODO: Hashes are immutable, while refs may change.
 
 ### Exploring multiple branches
 
