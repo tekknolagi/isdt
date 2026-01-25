@@ -1261,7 +1261,7 @@ HOME=/h/thebb01
 $ 
 ```
 
-Many servers has a much bigger environment than this, but I've omitted
+Many servers have a much bigger environment than this, but I've omitted
 most of the variables so we can focus on these. Some of these variables hold
 system information: HOSTNAME is the computer's name and LANG is the language
 that programs should prefer. Others hold information about my user: USER and
